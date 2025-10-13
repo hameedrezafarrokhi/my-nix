@@ -42,6 +42,9 @@ config = lib.mkIf (config.my.software.basic-cli.enable) {
 
     fd
 
+    eza
+    lsd
+
   ];
 
 };
