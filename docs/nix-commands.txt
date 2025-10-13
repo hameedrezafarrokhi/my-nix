@@ -1,0 +1,255 @@
+    sudo bootctl status                                                  ## Shows Boot Stuff
+
+   # Nix
+    bat /etc/os-release                                                  ## OS Info
+    nix search nixpkgs neofetch                                          ## General Search
+    nix search nixpkgs#kdePackages kate                                  ## Search for packages underneath a Specific attribute set
+    nix search nixpkgs 'firefox|chromium'                                ## Search for Firefox or Chromium
+    nix search nixpkgs git 'frontend|gui                                 ## packages containing git and either frontend or gui
+    nix search nixpkgs neovim --exclude 'python|gui'                     ## packages containing neovim but hide ones containing either gui or python
+    nix search nixpkgs neovim --exclude 'python' --exclude 'gui'
+    nvd list                                                             ## List All Installed Packages
+    nvd list -s neovim                                                   ## Search for Specific Installed Package
+    nvd list --sort
+    nix path-info nixpkgs#nerd-fonts.hack                                ## Find a /Nix/Store Path For a Package
+    nix-search
+    nix-search -c "<nixpkgs>" krohnkite
+    nix-locate <command>                                                 ## Searcg Store Path For A Command Binary (example: wl-copy)
+    ns (alias)                                                           ## Fuzzu nix-search-tv output for packages and options
+    nix-tree                                                             ## See Storage Stuff for system
+    nix-web                                                              ## See Nix Store Stuff in web view
+    nix-inspect                                                          ## nix tree to browse
+    nix-melt                                                             ## visualizer for flake.lock
+    nix eval --raw nixpkgs#hello                                         ## Find Store Hashes!!!!
+    nix eval --raw --inputs-from /etc/nixos stable#heroic                ## same as above but with your flake
+    nix store --query --tree /nix/store/wvfhs8k86740b7j3h1iss94z7cb0ggj1-hello-2.12.2
+    nix-visualize /nix/store/wvfhs8k86740b7j3h1iss94z7cb0ggj1-hello-2.12.2           ## Show Store Dependency Tree
+    nix-query-tree-viewer /nix/store/wvfhs8k86740b7j3h1iss94z7cb0ggj1-hello-2.12.2   ## Same as Above but a GUI
+    nix why-depends nixpkgs#heroic nixpkgs#glibc                         ## same as above but for specific deps
+    nix why-depends --all nixpkgs#thunderbird nixpkgs#xorg.libX11
+    nix-store -r $(which heroic)                                         ## prints the store for the "which" command
+    nix-locate heroic                                                    ## searches everything in store
+    nix-locate bin/hello                                                 ## search for a binary
+    nix store ?? has lots of commands??
+
+    nix-instantiate sarek.nix                                            ## Make a Derivation file
+
+    nix-top                                                              ## htop for nix prossecces
+    nix-health                                                           ## check the state of your NixOS
+    cd /etc/nixos && nix-forecast -c ".#nixosConfigurations.nixos"       ## check cache Availablility of your nix packages
+    nix-weather                                                          ## same as above?
+    nix-weather -n nixos -c /etc/nixos                                   ## Chesh Cache Status
+    nix-template rust --from-url https://github...                       ## create nix expressions
+    nix-init -u <URL>                                                    ## Generate Nix packages with hash prefetching
+    nix-... a lot more
+
+    comma -x nautilus                                                    ## Find /nix/store path hash
+    comma -p lspci                                                       ## List Packages with the bin
+    comma -e                                                             ## Empty Cache
+    comma -d hello                                                       ## Clear Cache then run
+
+   # Rebuilding
+    sudo nixos-rebuild switch                                            ## Applys Changes Made To /etc/nixos/configuration.nix
+    sudo nixos-rebuild switch --upgrade                                  ## Upgrade Packages (like sudo apt upgrade)
+    sudo nixos-rebuild build                                             ## Build Without Switching (For Test)
+    sudo nixos-rebuild boot                                              ## Build (NOT A TEST) but Dont Switch (ADDS BOOT ENTRY)
+    nh os switch --ask
+    nh os switch -u --ask
+    nh os test --ask
+
+   # Clean Ups
+    sudo nix-collect-garbage -d                                          ## Delete Every Generation Execpt The Current (for clean up)
+    sudo nix-collect-garbage -d --delete-older-than 10d
+    sudo nh clean all --keep 3 --ask                                     ## Delete All But The Last 3
+    nix-du ??                                                            ## last resort for gc-root cleanup (3rd party app)
+    trim-gen                                                             ## Trim Generation Bash Alias
+
+    sudo nix-store --gc                                                  ## Delete Every Residual Generation (prev. command should be enough on its own)
+    sudo nix store gc
+    sudo nix-store --optimise                                            ## Hardlink Paths To Save Lots of Space
+    sudo nix store optimise
+
+   # Boot Stuff
+    sudo nixos-rebuild --install-bootloader boot                         ## Changing The Bootloader or Reinstalling For When Needed
+    sudo efibootmgr -b 0000 --delete-bootnum                             ## Delete Previous Bootloader (systemd for example) To Let New One To Install
+    sudo efibootmgr                                                      ## Shows EFI Boot Entries
+
+   # Device Listings
+    ls -l /dev/disk/by-id/                                               ## Shows Device IDs Nixos Style (by-id)
+    sudo lsblk -o name,size,fstype,label,model,serial,mountpoint,id      ## To list devices by id for grub devices
+    sudo lshw -c display                                                 ## Determine PCIE Number ID For Nvidia Optimus Stuff
+
+   # Channel Stuff
+    nix --version                                                        ## Shows Nix Version
+    sudo nix-channel --list-generations                                  ## Shows Each Channel generation Created After a Switch --Upgrade
+    sudo nix-channel --list                                              ## Show Latest Channel (version of Nixos) Available
+    sudo nix-channel --add https://nixos.org/channels/nixos-25.05 nixos  ## Add Latest Channel (version) Available
+    sudo nix-channel --remove nixos-24.11                                ## Remove An Old Channel
+    sudo nix-channel --update nixos-25.05                                ## Update The Channel (Repo)
+    sudo nix-channel --update                                            ## Updates All Channels (Repos)
+    sudo nix-channel --rollback                                          ## Rollback to the Previous Channel
+    sudo nix-channel --rollback <number>                                 ## Rollback to the Specific Channel
+    # run a nixos-rebuild switch after channel adding or updating or switching
+
+   # Flakes (cd /etc/nixos)
+    nix flake init                                                       ## Generate Template in working directory
+    nix flake init --template home-manager                               ## Creates Various Templates
+    nix flake update                                                     ## UPDATES ALL INPUTS IN LOCK
+    nix flake lock --update-input <nixpkgs,nixpkgs-alt,home-manager,...> ## Update Specific Input in Lock Instead of Every Input
+    nix flake info                                                       ## All Lock File Inut Data
+    nix flake metadata . (inside /etc/nixos)                             ## All Lock File Inut Data
+    nix flake metadata <url>                                             ## Fetch Specific Metadata From the Internet
+    nix flake metadata nixpkgs                                           ## FROM GITHUB NOT YOUR LOCK FILE
+    nix flake metadata github:NixOS/nixpkgs/nixos-unstable
+    nix flake metadata nixpkgs --inputs-from  /etc/nixos
+
+    nix flake lock --update-input nixpkgs                                ## Update flake inputs individualy (depricated)
+    nix flake update nixpkgs                                             ## Update flake inputs individualy
+    update-input                                                         ## my alias for fzf input update selection with tab
+    nix run github:vimjoyer/nix-update-input                             ## Nice Selective Flake Input Update Menu From VIMJOYER!!!
+
+   # Home Stuff
+    sudo chown -R hrf:users hrf/                                         ## Owning New Home After New Install:
+
+   # Generations Stuff
+    nixos-rebuild list-generations                                       ## Listing Generations
+    nh os info                                                           ## NH list Generations
+
+   # Generation Diffs
+    nvd history                                                          ## Shows All Generations With Diffs
+    nvd history -m 29                                                    ## Minimun Number of the Generation Number (Shortens the List)
+    nvd history --list-oldest                                            ## List All Packages In Oldest Generation and Diffs for Each Generation After
+    nvd history --list-oldest -m 29                                      ## Mixing the two above!
+    nvd diff /nix/var/nix/profiles/system-{29,30}-link                   ## Diff between Specific Generations
+
+   # Deleting Specific Gen 1
+    nix profile history --profile /nix/var/nix/profiles/system
+    cd /nix/var/nix/profiles
+    ls
+    sudo rm system-<gen-num>-link
+    rebuild switch
+    sudo nix store gc
+
+   # Deleting Specific Gen 2
+    sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+    sudo nix-env -p /nix/var/nix/profiles/system --delete-generations <gen-num>
+    rebuild switch
+    sudo nix store gc
+
+   # Rollback One Generation (Best Method)
+    sudo nixos-rebuild switch --rollback
+    nh os rollback --ask
+
+   # Rollback To Specific Generation (Best Method)
+    nh os rollback --ask -t <Generation Number>
+
+   # Switching Gens From Live Environment:
+    nixos-rebuild list-generations
+    sudo nix-env --switch-generation <gen-num> -p /nix/var/nix/profiles/system
+    sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+
+   # To Check if Rollbacks Worked:
+    nixos-rebuild list-generations
+    ls -lah /var/run/*system
+   # Output Example:
+     (lrwxrwxrwx 1 root root 88 Mar 23 18:18 /var/run/booted-system -> /nix/store/n23dk6agv60kx6b171mgyi86nfvnx70m-nixos-system-nixos-24.11.715908.7105ae395770)
+     (lrwxrwxrwx 1 root root 88 Mar 23 18:45 /var/run/current-system -> /nix/store/n23dk6agv60kx6b171mgyi86nfvnx70m-nixos-system-nixos-24.11.715908.7105ae395770)
+    ls -lah /nix/var/nix/profiles/|grep n23dk6agv60kx6b171mgyi86nfvnx70m
+   # Output Example:
+     (lrwxrwxrwx 1 root root   88 Mar 22 22:05 system-178-link -> /nix/store/n23dk6agv60kx6b171mgyi86nfvnx70m-nixos-system-nixos-24.11.715908.7105ae395770)
+
+
+
+
+   # Sevices
+    sudo systemctl status bluetooth                                  ## Show If Bluetooth Is Running
+
+   # App Stuff
+    nix-store -r $(which firefox)                                    ## Find a Nix Store Path For a Bin Package
+    sudo find /nix/store -name '*noto-fonts*'                        ## Find a Nix Store Path For a Non Bin Package
+    ls /run/current-system/sw/share/applications | grep -i amberol   ## Show App ID For Mime Default App Openning Selection
+
+   # Containers & Shells
+    nix-shell -p screenfetch                                         ## Run Packages And Apps Without Installing, In Nix-Shell
+    nom shell nixpkgs#fastfetch                                      ## Nix Shells With Pretty Trees!
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    sudo docker run --rm -it debian bash
+    sudo docker pull debian:bookworm
+    sudo docker pull debian:latest
+    sudo podman run --rm -it debian bash
+    sudo steam-run --run "steam-run dpkg -i /home/hrf/windscribe_2.13.8_amd64.deb"
+
+   # Nix Specific FHS Stuff
+    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
+    #!/bin/bash
+
+   # Websites
+    https://search.nixos.org/packages
+    https://search.nixos.org/options
+    https://github.com/NixOS/nixpkgs
+    https://nixos.wiki/wiki/Main_Page                                ## Unofficial
+    https://wiki.nixos.org/wiki/NixOS_Wiki                           ## Official
+    https://nixhub.io                                                ## for simple hash finding
+    https://satus.nixos.org                                          ## chech build Availablility
+    https://hyrda.nixos.org                                          ## for complex hash finding
+    https://hydra.nixos.org/job/nixos/trunk-combined/tested/all
+    https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-constituents
+    https://hydra.nixos.org/jobset/nixos/trunk-combined
+    https://github.com/NixOS/nixpkgs/activity?ref=nixos-unstable
+
+
+
+###################################### CHROOT FROM_NIXOS (RECOMMENDED)
+
+  # Mount Nixos Partition:
+     sudo mount /dev/[root partition,i.e. sdd2] /mnt
+     sudo mount /dev/[boot partition,i.e. sdd3] /mnt/boot
+
+  # Entering
+     sudo nixos-enter
+
+  # Modify Config:
+     (Do Modifications In Configuration.nix)
+
+  # Rebuild Switch:
+     NIXOS_SWITCH_USE_DIRTY_ENV=1 nixos-rebuild switch
+     (OR NIXOS_SWITCH_USE_DIRTY_ENV=1 nixos-rebuild build)
+     NIXOS_SWITCH_USE_DIRTY_ENV=1 nixos-rebuild boot
+     (if nothing works, replace configuration.nix and do a nixos-install)
+
+  # Reinstalling Bootloader:
+     NIXOS_INSTALL_BOOTLOADER=1 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+
+  # Tips:
+     Tip: If the installation command fails with "systemd-boot not installed in ESP", try running bootctl install.
+     Tip: If you've replaced your drives, or have otherwise re-created the /mnt/boot partition, you may want to keep using the same UUID for it. You can use mlabel from the mtools package for this.
+
+  # Unmount Nixos:
+     sudo umount /mnt/boot
+     sudo umount /mnt
+
+################################### CHROOT FROM_OTHER (NOT RECOMMENDED)
+
+    (EMPTY THE MNT FOLDER FIRST)
+    sudo cp /etc/resolv.conf /mnt/etc #(FOR NETWORK,test pin google)
+
+    sudo mount /dev/[root partition,i.e. sdd2] /mnt
+    sudo mount /dev/[boot partition,i.e. sdd3] /mnt/boot
+
+    sudo mount -o bind /dev /mnt/dev
+    sudo mount -o bind /proc /mnt/proc
+    sudo mount -o bind /sys /mnt/sys
+    sudo mount -o bind /run /mnt/nixos/run
+
+    sudo chroot /mnt /nix/var/nix/profiles/system/activate
+    sudo chroot /mnt /run/current-system/sw/bin/bash
+    (for other distros /bin/bahs or /usr/bin/bash etc)
+
+    sudo umount /mnt/boot
+    sudo umount /mnt
+
+  # Tips
+     to list devices by id for grub devices
+     sudo lsblk -o name,size,fstype,label,model,serial,mountpoint,id

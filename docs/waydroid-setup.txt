@@ -1,0 +1,50 @@
+################################################################   WAYDROID
+# https://wiki.nixos.org/wiki/Waydroid
+
+  # Automatric Setup (Not Recommended)
+   # Just Launch Waydroid-helper
+
+  # Manual Setup (Recommended)
+
+   # Initial Step
+
+    # 1.Gui: Just lauch waydroid
+
+    # 2.CLI:
+     # sudo waydroid init           (Vanilla)
+     # sudo waydroid init -f        (Force)
+     # sudo waydroid init -s GAPPS  (Google play)
+
+     # sudo waydroid container start
+
+     # waydroid session start
+     # waydroid session stop
+
+   # Authenticate PC for Google Play
+     # https://docs.waydro.id/faq/google-play-certification
+
+   # IF You Want To Delete Residual Files OR For Reinitialization:
+     # sudo rm -rf /var/lib/waydroid /home/.waydroid ~/waydroid ~/.share/waydroid ~/.local/share/applications/*aydroid* ~/.local/share/waydroid
+
+   # To Check If Working:
+     # sudo systemctl status waydroid-container
+
+   # To Update The Android Image:
+     # sudo waydroid upgrade
+
+   # ARM Translation (https://github.com/casualsnek/waydroid_script):
+     # sudo waydroid-script
+     ## (Select Android 11 >> Install >> libhoudini...)
+
+
+  # For Flakeless Config Add this Repo/Overlay to be able to run the casualsnek/waydroid_script:
+  # USE --impure flag to avoid sha256 problem
+
+# nixpkgs.config.packageOverrides = pkgs: {
+#   nur = import (builtins.fetchTarball {
+#           url = "https://github.com/nix-community/NUR/archive/main.tar.gz";
+#           sha256 = "0bbda91xi5xjqxq4l4cvsk1cm436wv8gjpnwrkqvw9gd5h3sd0x4";
+# }) {
+#     inherit pkgs;
+#   };
+# };

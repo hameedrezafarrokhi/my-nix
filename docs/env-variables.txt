@@ -1,0 +1,82 @@
+
+   # env sessionVariables location set by nix
+    /run/current-system/etc/profiles/per-user/hrf/etc/profile.d/
+
+   # this is for system wide early boot services stuff
+    environment.variables = {};
+
+   # this is for the session of the logged in user
+    environment.sessionVariables = {
+
+
+   # Defaults
+    TERMINAL = kitty alacritty ...
+    EDITOR = neovim (nvim) vim nano ...
+    VISUAL = neovim (nvim) vim kate? ...
+    BROWSER = brave firefox ...
+    PAGER =
+    SHELL = bash zsh fish ...
+
+
+    # GTK GRAPHICS
+    GDK_BACKEND = x11 wayland ...
+    GSK_RENDERER = ngl(opengl) gl(opengl/depricated) cairo(?)
+
+    # GTK THEME
+    GTK_THEME = (depricated)
+    GTK2_RC_FILES = "/home/hrf/.gtkrc-2.0"
+    GTK_CSD = 1(decorations) 0(serverside decoration off) ((only gtk3))
+
+
+    # QT SETTINGS
+    QT_SELECT = 5 6 ...
+    QT_WAYLAND_FORCE_CSD = 1 (clientside decoration force on)
+    QT_QPA_PLATFORMT = wayland:xcb (xcb is x11) (this is wayland first x fallback)
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = 1 (1 means no decorations)
+    QT_QUICK_CONTROLS_STYLE = "org.kde.desktop" ?not tested
+    QT_AUTTO_SCREEN_SCALE_FACTOR = 1 ?donno what is does, not tested
+    QT_ENABLEHIGHDPI_SCALING = 1 ?not tested
+    QT_WIDGETS_LIB = ${pkgs.kdePackages.qtbase}/lib ?not tested
+
+    # QT THEME
+    QT_QPA_PLATFORMTHEME = kvantum
+    QT_STYLE_OVERRIDE = Kvantum
+    QML2_IMPORT_PATH= /etc/profiles/per-user/hrf/lib/qt-5.15.17/qml:/etc/profiles/per-user/hrf/lib/qt-6/qml
+    QT_PLUGIN_PATH= /etc/profiles/per-user/hrf/lib/qt-5.15.17/plugins:/etc/profiles/per-user/hrf/lib/qt-6/plugins
+
+    # HYPR
+    HYPRCURSOR_SIZE = "24"
+    HYPRCURSOR_THEME= "catppuccin-macchiato-sapphire-cursors"
+
+    # X
+    XCURSOR_SIZE = "24"
+    XCURSOR_THEME = "catppuccin-macchiato-sapphire-cursors"
+    XCURSOR_PATH= "/etc/profiles/per-user/hrf/share/icons${XCURSOR_PATH:+:}$XCURSOR_PATH"
+
+    # XDG
+    XDG_CURRENT_DESKTOP = KDE HYPRLAND ... (for stand alone wms)
+    (for xdg directory stuff see home-manager options)
+    XDG_SESSION_TYPE = "wayland" ?not tested
+
+    # Video Acceleration
+    LIBVA_DRIVER_NAME = nvidia radeonsi ...
+    VDPAU_DRIVER = nvidia radeonsi ...
+    VDPAU_DRIVER_NAME = nvidia radeonsi ...
+
+    # DISPLAY
+    DISPLAY = ":0" ?not tested
+
+    # I DONNO WHAT THESE ARE!!
+    CLUTTER_BACKEND = "wayland"
+    SDL_VIDEODRIVER = "wayland"
+    _JAVA_AWT_WM_NONREPARENTING = "1"
+    MOZ_ENABLE_WAYLAND = "1"
+    QT_WAYLAND_FORCE_DPI = "physical"
+
+    ELECTRON_OZONE_PLATFORM_HINT = "auto" (or wayland ?)
+    ELECTRON_ENABLE_LOGGING = "1"
+    ELECTRON_ENABLE_STACKDUMPING = "1"
+
+    CHROME_EXTRA_ARGS = ??????????????
+
+

@@ -1,0 +1,2 @@
+/run/current-system/sw/share/xsessions/
+/run/current-system/sw/share/wayland-sessions/

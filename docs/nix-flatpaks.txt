@@ -1,0 +1,12 @@
+#####################################################################################################################################################
+################################################################## FLATPAK_APPS #####################################################################
+#####################################################################################################################################################
+
+  # WebApps: BoxySVG, Convert NOW
+  #Flatpaks: Bottles, Avvie, REALVideoEnhancer, TimeSwitch, Trivia-Quiz, JamesDSP
+  #flatpak install flathub com.usebottles.bottles com.github.taiko2k.avvie io.github.tntwise.REAL-Video-Enhancer io.github.fsobolev.TimeSwitch io.github.nokse22.trivia-quiz me.timschneeberger.jdsp4linux
+  #Flatpak maintanance: Warehouse, FlatSeal
+  #flatpak install flathub com.github.tchx84.Flatseal io.github.flattool.Warehouse
+  #Extra_Flatpaks: FORMAT LAB, Hidamari, Gradience(adw-gtk3), Flatsweep
+
+
