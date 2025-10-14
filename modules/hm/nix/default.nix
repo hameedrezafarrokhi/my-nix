@@ -22,6 +22,20 @@ let
 
   trim-gen = pkgs.writeShellScriptBin "trim-gen" (builtins.readFile ./trim-generations.sh);
 
+  full-nix-backup = pkgs.writeShellScriptBin "full-nix-backup" ''
+    mkdir -p $HOME/nix-backup/folder
+    mkdir -p $HOME/nix-backup/tar
+    cp -r ${nix-path} $HOME/nix-backup/folder/nix-"$(date +%F_%H-%M-%S)" &&
+    tar -czf $HOME/nix-backup/tar/nix-"$(date +%F_%H-%M-%S)".tar.gz ${nix-path} &&
+    borgmatic create --repository nix &&
+    cd ${nix-path} &&
+    git add . &&
+    git commit -m "$(date +%F_%H-%M-%S)" &&
+    git branch -M main &&
+    git push -u origin main &&
+    builtin cd
+  '';
+
 in
 
 {
@@ -170,6 +184,8 @@ in
       flake-update
       trim-gen
       lock-up lock-backup
+      full-nix-backup
+
     ]
     ;
 
