@@ -94,15 +94,15 @@ in
        #configPackages = [ pkgs.gnome-session ];
         config = { # same as nixos options
           common = {
-            default = ["gtk" "kde" "gnome" "gnome-keyring" "hyprland" "wlr" "cosmic" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
-            "org.freedesktop.impl.portal.FileChooser" = ["shana"];
+            default = ["gtk" "kde" "gnome" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
+            "org.freedesktop.impl.portal.FileChooser" = ["shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
           };
           hyprland = {
-            default = ["hyprland" "gtk" "kde" "gnome" "gnome-keyring" "shana" "termfilechooser" "kwallet" "lxqt"];
+            default = ["hyprland" "gtk" "kde" "gnome" "gnome-keyring" "shana" "termfilechooser" "lxqt" "cosmic" "wlr" "xapp" "kwallet"];
            #"org.freedesktop.impl.portal.Secret" = ["kwallet"];
-            "org.freedesktop.impl.portal.Settings" = ["hyprland" "gtk" "kde" "gnome" "lxqt"];
-            "org.freedesktop.impl.portal.FileChooser" = ["shana" "gtk" "kde" "gnome" "lxqt"];
-           #"org.freedesktop.impl.portal.AppChooser" = ["kde" "gtk" "gnome"];
+            "org.freedesktop.impl.portal.Settings" = ["hyprland" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
+            "org.freedesktop.impl.portal.FileChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
+            "org.freedesktop.impl.portal.AppChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
           };
          #kde = {
          #  default = ["kde"];
@@ -113,11 +113,11 @@ in
       };
 
       configFile."./xdg-desktop-portal-shana/config.toml".text = ''
-          open_file = "Gtk"
-          save_file = "Gtk"
+          open_file = "Kde"
+          save_file = "Kde"
 
           [tips]
-          open_file_when_folder = "Gtk"
+          open_file_when_folder = "Kde"
         '';  # Gnome Kde Gtk Lxqt  "org.freedesktop.desktop.impl.lxqt"
     };
 

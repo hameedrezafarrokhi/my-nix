@@ -58,6 +58,11 @@
     konsole-theme = "Konsole-catppuccin-${myStuff.myCat.myGlobal-Flav}";
     kate-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
     kate-ui = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
+    kwrite-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
+    kwrite-color = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
+    marknote-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
+    okular-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
+    dolphin-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
 
     freetube-base = "catppuccinMocha";
     freetube-main = "CatppuccinMochaSapphire";
@@ -264,7 +269,7 @@
 
   qt = {
     enable = true;
-    platformTheme.name = qt-platform; # WARNING BE CAREFUL, QT BREAKS A LOT
+   #platformTheme.name = qt-platform; # WARNING BE CAREFUL, QT BREAKS A LOT
     style = {
       name = qt-name; # WARNING style name for kvantum platform is "Kvantun", and for qtct platform is "kvantum" (lower case!)
       package = qt-package;
@@ -632,6 +637,35 @@
       windowTitle = {
         family = Sans;
         pointSize = SansSize;
+      };
+    };
+    file = {
+      "/.config/dolphinrc" = {
+        "UiSettings" = {
+          "ColorScheme" = dolphin-theme; # "*"
+        };
+      };
+      "/.config/okularrc" = {
+        "UiSettings" = {
+          "ColorScheme" = okular-theme;
+        };
+      };
+      "/.config/kwriterc" = {
+        "KTextEditor Renderer" = {
+          "Color Theme" = kwrite-theme;
+          "Auto Color Theme Selection" = false;
+        };
+        "UiSettings" = {
+          "ColorScheme" = kwrite-color;
+        };
+      };
+      "/.config/marknoterc" = {
+        "General" = {
+          "colorScheme" = marknote-theme;
+        };
+        "UiSettings" = {
+          "ColorScheme" = marknote-theme;
+        };
       };
     };
   };
