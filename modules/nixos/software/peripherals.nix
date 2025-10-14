@@ -27,7 +27,7 @@ config = lib.mkIf (config.my.software.peripherals.enable) {
 
    #coolercontrol.coolercontrol-gui ##Fan control gui
    #coolercontrol.coolercontrold    ##Fan control
-    fanctl                          ##Fan control (another)
+   #fanctl                          ##Fan control (another)  # WARNING BASED ON FANCONTROL WHICH IS BAAAAAAD
 
     displaycal                    ##Display Calibration Tool
 

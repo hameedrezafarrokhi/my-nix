@@ -163,8 +163,8 @@
 
     obs-studio = {
       enable = true;
-      package = pkgs.obs-studio;
-     #plugins = [ pkgs.obs-studio-plugins.wlrobs ];
+      package = config.home-manager.users.${admin}.programs.obs-studio.package;
+      plugins = config.home-manager.users.${admin}.programs.obs-studio.plugins;
       enableVirtualCamera = true;
     };
 

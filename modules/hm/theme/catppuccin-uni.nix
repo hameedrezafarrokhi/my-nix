@@ -24,7 +24,7 @@
     hypr-cursor-package = myCursorCatppuccin;
     cursor-size = 24;
 
-    qt-platform = "kde"; # "qt6ct"; (breaks plasma) # "kde"; (WORKS, but breaks quickshell) # "qtct"; (its qt5ct, breaks plasma) # "kvantum";
+    qt-platform = "kvantum"; # "qt6ct"; (breaks plasma) # "kde"; (WORKS, but breaks qt) # "qtct"; (its qt5ct, breaks plasma) # "kvantum";
     qt-name = "Kvantum";
     qt-package = pkgs.kdePackages.qtstyleplugin-kvantum;
     qt-icon = "Papirus-Dark";
@@ -264,12 +264,16 @@
 
   qt = {
     enable = true;
-    platformTheme.name = qt-platform;
+    platformTheme.name = qt-platform; # WARNING BE CAREFUL, QT BREAKS A LOT
     style = {
       name = qt-name; # WARNING style name for kvantum platform is "Kvantun", and for qtct platform is "kvantum" (lower case!)
       package = qt-package;
     };
   };
+
+ #home.sessionVariables = {
+ #  QT_QPA_PLATFORMTHEME = lib.mkForce "";
+ #};
 
   services.xsettingsd = {
     settings = {

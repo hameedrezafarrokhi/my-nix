@@ -98,26 +98,26 @@ in
             "org.freedesktop.impl.portal.FileChooser" = ["shana"];
           };
           hyprland = {
-            default = ["kde" "hyprland" "gtk" "gnome" "gnome-keyring" "shana" "termfilechooser" "kwallet"];
+            default = ["hyprland" "gtk" "kde" "gnome" "gnome-keyring" "shana" "termfilechooser" "kwallet" "lxqt"];
            #"org.freedesktop.impl.portal.Secret" = ["kwallet"];
-            "org.freedesktop.impl.portal.Settings" = ["hyprland" "kde" "gtk" "gnome"];
-            "org.freedesktop.impl.portal.FileChooser" = ["shana" "kde" "gtk" "gnome"];
-            "org.freedesktop.impl.portal.AppChooser" = ["kde" "gtk" "gnome"];
+            "org.freedesktop.impl.portal.Settings" = ["hyprland" "gtk" "kde" "gnome" "lxqt"];
+            "org.freedesktop.impl.portal.FileChooser" = ["shana" "gtk" "kde" "gnome" "lxqt"];
+           #"org.freedesktop.impl.portal.AppChooser" = ["kde" "gtk" "gnome"];
           };
-          kde = {
-            default = ["kde"];
-            "org.freedesktop.impl.portal.Secret" = ["kwallet"];
-            "org.freedesktop.impl.portal.Settings" = ["kde" "gtk"];
-          };
+         #kde = {
+         #  default = ["kde"];
+         #  "org.freedesktop.impl.portal.Secret" = ["kwallet"];
+         #  "org.freedesktop.impl.portal.Settings" = ["kde" "gtk"];
+         #};
         };
       };
 
       configFile."./xdg-desktop-portal-shana/config.toml".text = ''
-          open_file = "Kde"
-          save_file = "Kde"
+          open_file = "Gtk"
+          save_file = "Gtk"
 
           [tips]
-          open_file_when_folder = "Kde"
+          open_file_when_folder = "Gtk"
         '';  # Gnome Kde Gtk Lxqt  "org.freedesktop.desktop.impl.lxqt"
     };
 

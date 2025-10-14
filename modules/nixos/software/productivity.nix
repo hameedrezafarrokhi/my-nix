@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.software.productivity.enable) {
+{ config = lib.mkIf (config.my.software.productivity.enable) {
 
   environment.systemPackages = with pkgs; [
 
@@ -39,5 +38,4 @@ config = lib.mkIf (config.my.software.productivity.enable) {
 
   ];
 
-};
-}
+};}

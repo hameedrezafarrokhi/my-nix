@@ -295,7 +295,7 @@
             mangohud.enable = true;
             neovim.enable = true;
             nautilus.enable = true;
-            obs.enable = false;
+            obs.enable = true;
             obsidian.enable = false;
             onboard.enable = true;
             onlyoffice.enable = true;
