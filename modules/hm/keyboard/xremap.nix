@@ -181,7 +181,7 @@ in
                     KEY_SEMICOLON:
                       remap:
                             KEY_SEMICOLON:
-                              launch: [ "grim-full" ]
+                              launch: [ "grim-slurp" ]
 
 
 
