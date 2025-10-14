@@ -18,6 +18,8 @@ in
        "quickshell"
        "waybar"
        "polybar"
+       "tint2"
+       "trayer"
 
      ]);
      default = [ ];
@@ -32,6 +34,8 @@ in
     ./quickshell.nix
     ./waybar.nix
     ./polybar.nix
+    ./tint2.nix
+    ./trayer.nix
 
   ];
 

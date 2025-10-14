@@ -11,6 +11,8 @@ let
     git push -u origin main
   '';
 
+  # Only git-nix-up alone Or git-nix-commit followed bye git-nix-push
+
   git-nix-up = pkgs.writeShellScriptBin "git-nix-up" ''
     cd ${nix-path} &&
     git add . &&
