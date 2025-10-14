@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
   with lib.hm.gvariant;
 
@@ -70,7 +70,7 @@
       exec="env GDK_BACKEND=x11 ${pkgs.onboard}/bin/onboard";
       categories=["Utility" "Accessibility"];
       mimeType=["application/x-onboard"];
-      icon=../../../assets/keyboard-svgrepo-com.svg;
+      icon="${inputs.assets}/icons/keyboard-purple.svg";
       startupNotify = null;
       prefersNonDefaultGPU = null;
       noDisplay = false;

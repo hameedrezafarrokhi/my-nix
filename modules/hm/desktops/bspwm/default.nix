@@ -41,7 +41,7 @@ in
       startupPrograms = [
        #"numlockx on"
        #"tilda"
-       #"feh --bg-fill /home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/macchiato-hald8-background.png2.png"
+       #"feh --bg-fill /home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/background.png"
         "polybar example"
       ];
 

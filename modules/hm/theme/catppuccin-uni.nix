@@ -1,11 +1,11 @@
-{ config, pkgs, lib, admin, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
   let
 
     scheme ="dark";
     global-package = myGlobalCatppuccin;
-    wallpaper = "/home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/macchiato-hald8-background.png2.png";
-    wallpaper-alt = "file:///home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/macchiato-hald8-background.png2.png";
+    wallpaper = "${config.home.homeDirectory}/Pictures/Wallpapers/astronaut-macchiato.png";
+    wallpaper-alt = "file:///home/${config.home.username}/Pictures/Wallpapers/astronaut-macchiato.png";
 
     gtk-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-standard";
     gtk-decoration = ":minimize,maximize,close";

@@ -77,6 +77,8 @@
 
          nix-artwork = { url = "github:NixOS/nixos-artwork";
                                 flake = false; };
+              assets = { url = "github:hameedrezafarrokhi/assets";
+                                flake = false; };
 
           catppuccin = { url = "github:catppuccin/nix";};
   catppuccin-openbox = { url = "github:catppuccin/openbox";

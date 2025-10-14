@@ -41,7 +41,7 @@ in
   #
   # configDir = "${config.xdg.configHome}/ax-shell";
   #
-  # currentWallpaperPath = "/home/hrf/Pictures/Wallpapers/macchiato-hald8-background.png2.png";
+  # currentWallpaperPath = "/home/hrf/Pictures/Wallpapers/1background.png";
   ##faceIconPath = ;
   # hyprlandColorsConfPath = "/nix/store/3wq3w61g2vzcz7f9xb0qz03s4ll060k5-catppuccin-hyprland-0-unstable-2024-06-19/macchiato.conf";
   #

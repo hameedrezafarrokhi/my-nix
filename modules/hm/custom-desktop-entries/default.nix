@@ -29,7 +29,7 @@ in
         name="Dolphin";
         exec="env XDG_MENU_PREFIX=plasma- dolphin";
         categories=["System"];
-        icon=../../../assets/dolphin-svgrepo-com.svg;
+        icon="${inputs.assets}/icons/dolphin.svg";
       };
       "Timeshift-gtk" = {
         name="Timeshift-gtk";
@@ -39,7 +39,7 @@ in
         type="Application";
         exec="sudo -E ${pkgs.timeshift}/bin/timeshift-gtk";
         categories=["System"];
-        icon=../../../assets/backup-clock-clockwise-svgrepo-com.svg;
+        icon="${inputs.assets}/icons/backup-clock.svg";
         startupNotify = null;
         prefersNonDefaultGPU = null;
         noDisplay = false;
@@ -54,7 +54,7 @@ in
         type="Application";
         exec="sudo -E ${pkgs.gparted}/bin/gparted";
         categories=["GNOME" "System" "Filesystem"];
-        icon=../../../assets/floppy-disk-svgrepo-com.svg;
+        icon="${inputs.assets}/icons//floppy-disk.svg";
         startupNotify = null;
         prefersNonDefaultGPU = null;
         noDisplay = false;

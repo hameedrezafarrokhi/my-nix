@@ -37,6 +37,22 @@
         "type": "github"
       }
     },
+    "assets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760436374,
+        "narHash": "sha256-/TgQmFZ6L72UHaKkhXc95Y+68hqAnQLqlqF37ympLwk=",
+        "owner": "hameedrezafarrokhi",
+        "repo": "assets",
+        "rev": "2c64033c6309792228667dd566b7f58505ced13c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hameedrezafarrokhi",
+        "repo": "assets",
+        "type": "github"
+      }
+    },
     "ax-shell": {
       "inputs": {
         "fabric-cli": "fabric-cli",
@@ -1620,6 +1636,7 @@
     },
     "root": {
       "inputs": {
+        "assets": "assets",
         "ax-shell": "ax-shell",
         "bread-wm": "bread-wm",
         "caelestia-cli": "caelestia-cli",

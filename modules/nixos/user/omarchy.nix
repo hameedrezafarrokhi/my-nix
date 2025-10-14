@@ -7,7 +7,6 @@
     users = {
 
       omarchy = {
-       #hashedPassword = "$y$jET$iv7e2lxu11INbxzfzpusK0$cvyd5Opx4L9B7MPP7gYuUuNKElEpOPj8ew.uzGql0H4";
        #password  initialPassword  hashedPassword  initialHashedPassword hashedPasswordFile
        #initialPassword = ;
         isNormalUser = true;
