@@ -28,7 +28,7 @@ in
    #'';
 
     PlasmaAppletsrc = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ln -sf "${nix-path}/modules/hm/desktops/kde/appletrc/plasma-org.kde.plasma.desktop-appletsrc" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
+      ln -sf "${nix-path}/modules/hm/desktops/kde/appletrc/nirvana/plasma-org.kde.plasma.desktop-appletsrc" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
     '';
 
   };
