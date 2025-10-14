@@ -1,9 +1,23 @@
 { config, pkgs, lib, admin, ... }:
 
+let
+
+  girm-full = pkgs.writeShellScriptBin "grim-full" ''
+    grim ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
+  '';
+
+  grim-slurp = pkgs.writeShellScriptBin "grim-slurp" ''
+    grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
+  '';
+
+in
+
 { config = lib.mkIf (config.my.keyboard.xremap.enable) {
 
   home.packages = [
     pkgs.xremap
+    girm-full
+    grim-slurp
   ];
 
   services.xremap = {
@@ -65,6 +79,8 @@
                               launch: [ "lutris" ]
                     p:
                       launch: [ "flameshot", "full", "-p", "${config.home.homeDirectory}/Pictures/Screenshots" ]
+                    KEY_SEMICOLON:
+                      launch: [ "grim-full" ]
 
 
 
@@ -162,6 +178,11 @@
                              launch: [ "flameshot", "screen", "-p", "${config.home.homeDirectory}/Pictures/Screenshots" ]
                             c:
                               launch: [ "flameshot", "config" ]
+                    KEY_SEMICOLON:
+                      remap:
+                            KEY_SEMICOLON:
+                              launch: [ "grim-full" ]
+
 
 
 
