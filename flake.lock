@@ -403,6 +403,22 @@
         "type": "github"
       }
     },
+    "dot-collection": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760440036,
+        "narHash": "sha256-1zAWKozeEbvHDLQw7xLBwXHccql4ilYQCmvQ2itQUag=",
+        "owner": "hameedrezafarrokhi",
+        "repo": "dot-collection",
+        "rev": "15ee0cbf03c4293140ea22c3dbc1599ba48d9849",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hameedrezafarrokhi",
+        "repo": "dot-collection",
+        "type": "github"
+      }
+    },
     "drew-wm": {
       "flake": false,
       "locked": {
@@ -1647,6 +1663,7 @@
         "chaotic": "chaotic",
         "dankMaterialShell": "dankMaterialShell",
         "disko": "disko",
+        "dot-collection": "dot-collection",
         "drew-wm": "drew-wm",
         "dwm-titus": "dwm-titus",
         "fallback": "fallback",

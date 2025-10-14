@@ -32,6 +32,7 @@
     ./fluxbox
     ./xmonad
     ./awesome
+    ./qtile
     ./bspwm
     ./dwm
     ./uwsm

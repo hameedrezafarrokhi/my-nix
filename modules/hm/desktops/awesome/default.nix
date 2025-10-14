@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
 
@@ -18,6 +18,15 @@ in
       package = pkgs.awesome;
       luaModules = [ pkgs.luaPackages.vicious pkgs.luaPackages.awesome-wm-widgets ];
       noArgb = false;
+
+    };
+
+    xdg.configFile = {
+
+      awesome-conf = {
+        target = "awesome/";
+        source = "${inputs.dot-collection}/awesome/drew-awesome/";
+      };
 
     };
 

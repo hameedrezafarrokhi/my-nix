@@ -59,6 +59,7 @@
     i3.enable = true;
     xmonad.enable = true;
     awesome.enable = true;
+    qtile.enable = true;
     bspwm.enable = true;
     spectrwm.enable = true;
     herbstluftwm.enable = true;

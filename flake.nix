@@ -64,6 +64,8 @@
           # ax-shell = { url = "github:Axenide/Ax-Shell";
           #                     flake = false; };
 
+      dot-collection = { url = "github:hameedrezafarrokhi/dot-collection";
+                                flake = false; };
            dwm-titus = { url = "github:ChrisTitusTech/dwm-titus";
                                 flake = false; };
               chadwm = { url = "github:siduck/chadwm";
