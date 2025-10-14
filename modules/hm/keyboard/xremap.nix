@@ -10,6 +10,10 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
   '';
 
+  vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
+    QT_QPA_PLATFORMTHEME=qt6ct vlc
+  '';
+
 in
 
 { config = lib.mkIf (config.my.keyboard.xremap.enable) {
@@ -18,7 +22,14 @@ in
     pkgs.xremap
     girm-full
     grim-slurp
+    vlc-env
   ];
+
+  xdg.desktopEntries = {
+
+    "vlc-env" = { name="vlc-env"; exec="vlc-env"; };
+
+  };
 
   services.xremap = {
     enable = true;
@@ -62,7 +73,7 @@ in
                     o:
                       launch: [ "onlyoffice-desktopeditors" ]
                     m:
-                      launch: [ "vlc" ]
+                      launch: [ "vlc-env" ]
                     a:
                       launch: [ "amberol" ]
                     v:
@@ -129,11 +140,13 @@ in
                     m:
                       remap:
                             v:
-                              launch: [ "vlc" ]
+                              launch: [ "vlc-env" ]
                             s:
                               launch: [ "showtime" ]
                             m:
                               launch: [ "mpv" ]
+                            c:
+                              launch: [ "celluloid" ]
                     a:
                       remap:
                             a:

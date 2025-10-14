@@ -27,7 +27,13 @@ in
    #};
   };
 
-  systemd.user.services.flameshot.Service.ExecStartPre = "${flame-env}/bin/flame-env";
+  systemd.user.services.flameshot.Service = {
+    ExecStartPre = "${flame-env}/bin/flame-env";
+    Environment = [
+      "QT_QPA_PLATFORM=xcb"
+      "QT_QPA_PLATFORMTHEME=qt6ct"
+    ];
+  };
 
   home.packages = [ flame-env ];
 

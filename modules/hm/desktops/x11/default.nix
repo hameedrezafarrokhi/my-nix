@@ -6,6 +6,17 @@ let
 
   cfg = config.my.x11;
 
+  x-cursor = pkgs.writeShellScriptBin "x-cursor" ''sleep 3 && xsetroot -cursor_name left_ptr'';
+  x-cursor-start = pkgs.writeTextFile {
+    name = "x-cursor.desktop";
+    text = ''
+      [Desktop Entry]
+      Name=X-Cursor
+      Comment=X-Cursor
+      Exec=${x-cursor}/bin/x-cursor
+    '';
+  };
+
  #cinnamon-gsettings-overrides = pkgs.cinnamon-gsettings-overrides.override {
  #  extraGSettingsOverridePackages = osConfig.services.xserver.desktopManager.cinnamon.extraGSettingsOverridePackages;
  #  extraGSettingsOverrides = osConfig.services.xserver.desktopManager.cinnamon.extraGSettingsOverrides;
@@ -165,7 +176,23 @@ in
       };
     };
 
-    home.packages = [ pkgs.wayback-x11 ];
+    systemd.user.services.x-cursor = {
+      Unit = {
+        Description = "x-cursor";
+        After = [ "graphical-session.target" ];
+        Wants = [ "graphical-session.target" ];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${x-cursor}/bin/x-cursor";
+        RemainsAfterExit = "yes";
+      };
+      Install = {
+        WantedBy = ["graphical-session.target"];
+      };
+    };
+
+    home.packages = [ pkgs.wayback-x11 x-cursor ];
 
   };
 
