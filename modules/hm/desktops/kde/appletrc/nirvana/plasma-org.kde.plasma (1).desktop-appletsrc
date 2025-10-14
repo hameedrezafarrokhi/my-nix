@@ -459,7 +459,7 @@ DialogWidth=720
 positions={"1366x768":[]}
 
 [Containments][574][Wallpaper][org.kde.image][General]
-Image=/home/hrf/Pictures/Wallpapers/astronaut-macchiato.png
+Image=file:///home/hrf/Pictures/Wallpapers/astronaut-macchiato.png
 SlidePaths=/nix/store/kipymdgpkx7mz3gamv1fa365048c4szb-breeze-6.4.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [ScreenMapping]

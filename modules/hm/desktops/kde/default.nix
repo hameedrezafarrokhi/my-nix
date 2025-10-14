@@ -27,7 +27,7 @@ in
   imports = [
 
     ./plasma.nix
-    ./appletrc/nirvana.nix
+    ./appletrc/nirvana/default.nix
 
     ./kate.nix
     ./konsole.nix
