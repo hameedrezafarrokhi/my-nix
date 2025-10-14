@@ -73,7 +73,14 @@
 
     distrobox.enable = true;
 
-    bar-shell.shells = [ "ags" "quickshell" "waybar" "polybar" "tint2" /* "trayer" */ ];
+    bar-shell.shells = [
+      # wayland
+      "ags" "quickshell" "waybar"
+      # x11
+      "polybar"
+     #"tint2"   # WARNING BROKEN
+     #"trayer"
+    ];
     apps = {
       amberol.enable = true;
       bazaar.enable = false;

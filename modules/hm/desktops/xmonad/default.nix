@@ -68,7 +68,7 @@ in
 
       xmonad-conf = {
         target = "xmonad/";
-        source = "${inputs.dot-collection}/xmonad/shahab-xmonad/xmonad/";
+        source = "${inputs.dot-collection}/xmonad/shahab-xmonad-dots/xmonad/";
       };
 
     };
