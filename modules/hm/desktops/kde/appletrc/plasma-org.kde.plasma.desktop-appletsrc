@@ -464,4 +464,4 @@ SlidePaths=/nix/store/kipymdgpkx7mz3gamv1fa365048c4szb-breeze-6.4.5/share/wallpa
 
 [ScreenMapping]
 itemsOnDisabledScreens=
-screenMapping=desktop:/hello4,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello2,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello3,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello1,0,86330a09-a727-4026-90f9-209056b51473
+screenMapping=desktop:/hello1,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello3,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello2,0,86330a09-a727-4026-90f9-209056b51473,desktop:/hello4,0,86330a09-a727-4026-90f9-209056b51473

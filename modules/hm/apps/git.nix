@@ -19,6 +19,18 @@ let
     git push -u origin main
   '';
 
+  git-nix-commit = pkgs.writeShellScriptBin "git-nix-commit" ''
+    cd ${nix-path} &&
+    git add . &&
+    git commit -m "$(date +%F_%H-%M-%S)"
+  '';
+
+  git-nix-push = pkgs.writeShellScriptBin "git-nix-push" ''
+    cd ${nix-path} &&
+    git branch -M main &&
+    git push -u origin main
+  '';
+
   git-nix-pull = pkgs.writeShellScriptBin "git-nix-pull" ''
     cd ${nix-path} &&
     git remote add origin git@github.com:hameedrezafarrokhi/my-nix.git &&
@@ -34,7 +46,7 @@ in
 
 { config = lib.mkIf (config.my.apps.git.enable) {
 
-  home.packages = [ git-nix-up git-nix-init git-nix-pull git-nix-clone ];
+  home.packages = [ git-nix-up git-nix-init git-nix-pull git-nix-clone git-nix-push git-nix-commit  ];
 
   programs.git = {
 

@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{ config = lib.mkIf (builtins.elem "test" config.my.user.users) {
+{ config = lib.mkIf (builtins.elem "hello" config.my.user.users) {
 
   users = {
 
