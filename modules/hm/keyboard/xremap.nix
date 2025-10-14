@@ -68,7 +68,7 @@ in
                       launch: ["bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop"]
                     t:
                       launch: [ "kate" ]
-                    r:
+                    Space:
                       launch: [ "rofi", "-show", "drun", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons" ]
                     o:
                       launch: [ "onlyoffice-desktopeditors" ]
@@ -157,7 +157,7 @@ in
                       remap:
                             p:
                               launch: [ "protonvpn-app" ]
-                    r:
+                    Space:
                       remap:
                             Enter:
                               launch: [ "rofi", "-show", "run", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons" ]
