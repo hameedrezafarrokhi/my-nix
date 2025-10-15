@@ -21,14 +21,16 @@ in
       extraPackages = haskellPackages: [
         haskellPackages.xmonad-contrib
         haskellPackages.monad-logger
-       #haskellPackages.xmonad-eval                      # WARNING BROKEN
+        haskellPackages.DescriptiveKeys
         haskellPackages.xmonad-dbus
         haskellPackages.xmonad-utils
         haskellPackages.xmonad-volume
         haskellPackages.xmonad-extras
-       #haskellPackages.xmonad-vanessa                   # WARNING BROKEN
         haskellPackages.xmonad-spotify
         haskellPackages.xmonad-contrib
+
+       #haskellPackages.xmonad-eval                      # WARNING BROKEN
+       #haskellPackages.xmonad-vanessa                   # WARNING BROKEN
        #haskellPackages.xmonad-wallpaper                 # WARNING BROKEN
        #haskellPackages.xmonad-screenshot                # WARNING BROKEN
        #haskellPackages.xmonad-windownames               # WARNING BROKEN
@@ -36,7 +38,6 @@ in
        #haskellPackages.xmonad-contrib-gpl               # WARNING BROKEN
        #haskellPackages.xmonad-bluetilebranch            # WARNING BROKEN
        #haskellPackages.xmonad-contrib-bluetilebranch    # WARNING BROKEN
-        haskellPackages.DescriptiveKeys
        #haskellPackages.TaskMonad                        # WARNING BROKEN
        #haskellPackages.ixmonad                          # WARNING BROKEN
       ];

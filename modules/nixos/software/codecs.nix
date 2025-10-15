@@ -22,7 +22,7 @@
 
     taglib_extras
     wslay
-   #previewqt   # WARNING BROKEN
+  ##previewqt   # WARNING BROKEN LONG TIME
 
     x265
     x264

@@ -23,7 +23,7 @@
     kdePackages.minuet            ##KDE games (music game)
 
     extremetuxracer
-   #superTuxKart                  # WARNING BROKEN
+    superTuxKart
     vitetris
    #zeroad
    #zeroad-data

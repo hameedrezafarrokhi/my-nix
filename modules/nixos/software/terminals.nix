@@ -19,7 +19,7 @@ config = lib.mkIf (config.my.software.terminals.enable) {
    #gnomeExtensions.yakuake       ##Dropdown terminal plugin (gnome)
     guake
    #kitti3
-   #hyper                        ## WARNING BROKEN
+ ###hyper                        ## WARNING BROKEN LONG TIME
     tdrop                        ## anything dropdown!
     hdrop                        ## tdrop for hyprland
 

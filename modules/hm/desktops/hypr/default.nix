@@ -35,8 +35,8 @@ in
        #hycov       # insecure
         hyprexpo
         hyprbars
-       #hyprsplit   # WARNING BROKEN
-       #hyprspace   # WARNING BROKEN
+        hyprsplit   # WARNING BROKEN
+        hyprspace   # WARNING BROKEN
        #hyprgrass   # WARNING BROKEN
         hyprfocus
         hyprtrails
