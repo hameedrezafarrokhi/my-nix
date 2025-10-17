@@ -10,9 +10,9 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
   '';
 
-  vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
-    QT_QPA_PLATFORMTHEME=qt6ct vlc
-  '';
+ #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
+ #  QT_QPA_PLATFORMTHEME=qt6ct vlc
+ #'';
 
 in
 
@@ -22,14 +22,12 @@ in
     pkgs.xremap
     girm-full
     grim-slurp
-    vlc-env
+   #vlc-env
   ];
 
-  xdg.desktopEntries = {
-
-    "vlc-env" = { name="vlc-env"; exec="vlc-env"; };
-
-  };
+ #xdg.desktopEntries = {
+ #  "vlc-env" = { name="vlc-env"; exec="vlc-env"; };
+ #};
 
   services.xremap = {
     enable = true;
@@ -51,6 +49,11 @@ in
 
    # TO Find Key Names ", xev | grep keysym"
 
+   # "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop"
+   # "${lib.getExe pkgs.kitty}"
+   # "${lib.getExe pkgs.brave}"
+   # "flameshot", "full", "-p", "${config.home.homeDirectory}/Pictures/Screenshots"
+
     yamlConfig = ''
 
 
@@ -61,11 +64,11 @@ in
             Super-z:
               remap:
                     Enter:
-                      launch: [ "${lib.getExe pkgs.kitty}" ]
+                      launch: [ "kitty" ]
                     b:
-                      launch: [ "${lib.getExe pkgs.brave}" ]
+                      launch: [ "brave" ]
                     e:
-                      launch: ["bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop"]
+                      launch: [ "dolphin" ]
                     t:
                       launch: [ "kate" ]
                     Space:
@@ -73,7 +76,7 @@ in
                     o:
                       launch: [ "onlyoffice-desktopeditors" ]
                     m:
-                      launch: [ "vlc-env" ]
+                      launch: [ "vlc" ]
                     a:
                       launch: [ "amberol" ]
                     v:
@@ -140,7 +143,7 @@ in
                     m:
                       remap:
                             v:
-                              launch: [ "vlc-env" ]
+                              launch: [ "vlc" ]
                             s:
                               launch: [ "showtime" ]
                             m:
@@ -417,6 +420,13 @@ in
    #  ];
    #};
 
+  };
+
+  xdg.configFile = {
+    xremap = {
+      target = "xremap/xremap.yaml";
+      text = config.services.xremap.yamlConfig;
+    };
   };
 
   #systemd.user.services.xremap = {

@@ -64,6 +64,9 @@
           # ax-shell = { url = "github:Axenide/Ax-Shell";
           #                     flake = false; };
 
+               mango = { url = "github:DreamMaoMao/mango";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+
       dot-collection = { url = "github:hameedrezafarrokhi/dot-collection";
                                 flake = false; };
            dwm-titus = { url = "github:ChrisTitusTech/dwm-titus";
@@ -137,6 +140,7 @@
               inputs.dankMaterialShell.homeModules.dankMaterialShell.default
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
               inputs.ax-shell.homeManagerModules.default
+              inputs.mango.hmModules.mango
               (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
             ];
           };
@@ -160,6 +164,7 @@
             inputs.chaotic.nixosModules.default
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
+            inputs.mango.nixosModules.mango
            #inputs.xremap-flake.nixosModules.default
            #(import "${inputs.windscribe}/windscribe/default.nix")
 
@@ -205,6 +210,7 @@
             inputs.dankMaterialShell.homeModules.dankMaterialShell.default
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
             inputs.ax-shell.homeManagerModules.default
+            inputs.mango.hmModules.mango
             (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
       ];
     };

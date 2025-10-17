@@ -27,9 +27,25 @@ in
      #};
       "org.kde.dolphin" = {
         name="Dolphin";
-        exec="env XDG_MENU_PREFIX=plasma- dolphin";
-        categories=["System"];
+        genericName = "File Manager";
+        exec="dolphin %u"; # XDG_MENU_PREFIX=plasma- # env QT_QPA_PLATFORMTHEME=kde
+        categories=["Qt" "KDE" "System" "FileTools" "FileManager"];
+        mimeType= ["inode" "directory"];
+       #noDisplay=;
+       #prefersNonDefaultGPU=;
+       #startupNotify=;
+       #terminal=;
+        type="Application";
+        comment="Manage your files";
         icon="${inputs.assets}/icons/dolphin.svg";
+        settings = {
+          X-DocPath="dolphin/index.html";
+          InitialPreference="10";
+          Keywords="files;file management;file browsing;samba;network shares;Explorer;Finder;";
+          X-DBUS-ServiceName="org.kde.dolphin";
+          X-KDE-Shortcuts="Meta+E";
+          StartupWMClass="dolphin";
+        };
       };
       "Timeshift-gtk" = {
         name="Timeshift-gtk";

@@ -56,4 +56,17 @@
    #];
   };
 
+ #systemd.user.services.plasma-dolphin = {
+ #  description = "Dolphin file manager";
+ #  partOf = ["graphical-session.target"];
+ #  environment = { QT_QPA_PLATFORMTHEME="kde"; };
+ #  serviceConfig = {
+ #    ExecStart = "${pkgs.kdePackages.dolphin}/bin/dolphin --daemon";
+ #    BusName="org.freedesktop.FileManager1";
+ #    Environment = ["QT_QPA_PLATFORMTHEME=kde"];
+ #    Slice = "background.slice";
+ #  };
+ #  wantedBy = ["graphical-session.target"];
+ #};
+
 };}

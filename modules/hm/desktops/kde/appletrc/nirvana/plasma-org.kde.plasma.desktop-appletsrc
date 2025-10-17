@@ -320,6 +320,9 @@ migrated=true
 immutability=1
 plugin=org.kde.plasma.volume
 
+[Containments][527][Applets][538][Applets][550][Configuration]
+PreloadWeight=85
+
 [Containments][527][Applets][538][Applets][550][Configuration][General]
 migrated=true
 
@@ -461,6 +464,18 @@ positions={"1366x768":[]}
 [Containments][574][Wallpaper][org.kde.image][General]
 Image=file:///home/hrf/Pictures/Wallpapers/astronaut-macchiato.png
 SlidePaths=/nix/store/kipymdgpkx7mz3gamv1fa365048c4szb-breeze-6.4.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
+
+[Containments][575]
+activityId=86330a09-a727-4026-90f9-209056b51473
+formfactor=0
+immutability=1
+lastScreen=1
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
+[Containments][575][General]
+positions={"1363x767":[]}
 
 [ScreenMapping]
 itemsOnDisabledScreens=

@@ -64,6 +64,7 @@
     spectrwm.enable = true;
     herbstluftwm.enable = true;
     fluxbox.enable = true;
+    mango.enable = true;
     rice-shells = [
 
       "niri-dms" "niri-noctalia"

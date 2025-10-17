@@ -104,6 +104,12 @@ in
             "org.freedesktop.impl.portal.FileChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
             "org.freedesktop.impl.portal.AppChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
           };
+          niri = {
+            default = ["gnome" "gtk" "kde" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
+            "org.freedesktop.impl.portal.Access" = ["gtk"];
+            "org.freedesktop.impl.portal.Notification" = ["gtk"];
+            "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+          };
          #kde = {
          #  default = ["kde"];
          #  "org.freedesktop.impl.portal.Secret" = ["kwallet"];

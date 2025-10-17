@@ -1001,6 +1001,7 @@
       enable = true;
         flavor = myStuff.myCat.myGlobal-Flav;
     };
+    waybar.mode = "createLink";  # "prependImport" (for declarative nix way)
   };
 
 };}

@@ -77,6 +77,7 @@
       "sway" "qtile" "dwl"
       "labwc" "river" "wayfire"
       "miracle-wm" "miriway"
+      "mango"
 
       "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
       "i3" "spectrwm" "herbstluftwm" "dk"
@@ -252,6 +253,7 @@
           spectrwm.enable = true;
           herbstluftwm.enable = true;
           fluxbox.enable = true;
+          mango.enable = true;
           rices-shells = [
 
             "niri-dms" "niri-noctalia"

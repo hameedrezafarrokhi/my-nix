@@ -16,6 +16,7 @@ in
        "sway" "qtile" "dwl"
        "labwc" "river" "wayfire"
        "miracle-wm" "miriway"
+       "mango"
 
        "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
        "i3" "spectrwm" "herbstluftwm" "dk"
@@ -88,6 +89,7 @@ in
     ./ratpoison.nix
     ./leftwm.nix
     ./e16.nix
+    ./mango.nix
 
     ./rices-shells/hyprland-noctalia.nix
     ./rices-shells/hyprland-caelestia.nix

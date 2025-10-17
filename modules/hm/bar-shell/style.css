@@ -1,0 +1,311 @@
+
+@define-color color1 #f5e0dc;
+@define-color color2 #f2cdcd;
+@define-color color3 #f5c2e7;
+@define-color color4 #cba6f7;
+@define-color color5 #f38ba8;
+@define-color color6 #eba0ac;
+@define-color color7 #fab387;
+@define-color color8 #f9e2af;
+@define-color color9 #a6e3a1;
+@define-color color10 #94e2d5;
+@define-color color11 #89dceb;
+@define-color color12 #74c7ec;
+@define-color color13 #89b4fa;
+@define-color color14 #b4befe;
+@define-color foreground #cdd6f4;
+@define-color background2 #bac2de;
+@define-color subtext0 #a6adc8;
+@define-color color16 #9399b2;
+@define-color color15 #7f849c;
+@define-color overlay0 #6c7086;
+@define-color surface2 #585b70;
+@define-color lightbg #45475a;
+@define-color surface0 #313244;
+@define-color background #1e1e2e;
+@define-color crust #181825;
+@define-color something #11111b;
+
+* {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  font-family: "JetBrains Mono Nerd Font";
+  font-size: 10pt;
+  font-weight: 700;
+  padding-bottom: 0px;
+}
+
+tooltip {
+  background: @background;
+  border: 2px solid @border;
+}
+
+#window {
+	margin: 0px 5px 0px 5px;
+	padding-left: 10px;
+	padding-right: 7px;
+	background-color: @color14;
+	color: #282828;
+}
+
+window#waybar.empty #window {
+	background-color: transparent;
+	border-bottom: none;
+	border-right: none;
+}
+
+window#waybar {
+  background-color:@color14;
+  color: @color2;
+}
+
+/* Workspaces */
+
+#workspaces {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  background-color: @background;
+  color: @color2;
+
+}
+
+#workspaces button {
+  margin: 0px 0px 0px 0px;
+  padding-left: 3px;
+  padding-right: 9px;
+  background-color: @background;
+  color: @color7;
+}
+
+#workspaces button.active {
+	padding: 0 2px 0 1px;
+    color: @color4;
+}
+
+#workspaces button.urgent {
+	color: @color9;
+}
+
+#custom-gpu-util {
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: @background;
+  color: @foreground;
+}
+
+#tray {
+  margin: 0px 0px 0px 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: @background;
+  color: @foreground; 
+}
+
+#idle_inhibitor {
+  margin: 0px 0px 0px 0px;
+  padding-left: 10px;
+  padding-right: 12px;
+  background-color: @background;
+  color: @foreground;
+}
+
+#idle_inhibitor.activated {
+  color: @color9;
+}
+
+#network {
+  margin: 0px 0px 0px 0px;
+  padding-left: 10px;
+  padding-right: 12px;
+  background-color: @background;
+  color: @color11;
+}
+
+#network.linked {
+  color: @color6;
+}
+#network.disconnected,
+#network.disabled {
+  color: @color4;
+}
+
+#custom-subs {
+	color: @foreground;
+	margin: 0px 5px 0px 5px;
+    padding-left: 10px;
+    padding-right: 12px;
+	border-bottom: 2px solid @background;
+	border-right: 2px solid @background;
+    border-color: @color8;
+    background-color: @color13;
+}
+
+#custom-cliphist {
+	color: @color14;
+	margin: 0px 5px 0px 5px;
+    padding-left: 10px;
+    padding-right: 12px;
+    background-color: @background;
+
+}
+
+#custom-gpu-temp,
+#custom-clipboard {
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: @foreground;
+  background-color: @background;
+}
+
+#cpu {
+  margin: 0px 0px 0px 0px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: @foreground;
+  background-color: @background;
+}
+
+#custom-cpuicon {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 10px 0px 10px;
+  color: @color14;
+  background-color: @background;
+}
+
+#custom-diskicon {
+  margin: 0px 0px 0px 0px;
+  padding: 0 10px 0 10px;
+  color: @color2;
+  background-color: @background;
+}
+
+#disk {
+  margin: 0px 0px 0px 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  color: @foreground;
+  background-color: @background;
+}
+
+#custom-notification {
+background-color: @background;
+color: @color15;
+padding: 0 12px;
+margin-right: 0px;
+font-size: 14px;
+font-family: "JetBrainsMono Nerd Font";
+}
+
+#custom-memoryicon {
+  margin: 0px 0px 0px 0px;
+  color: @color4;
+  padding: 0 11px 0 7px;
+  background-color: @background;
+}
+
+#memory {
+  margin: 0px 0px 0px 0px;
+  padding-left: 5px;
+  padding-right: 10px;
+  color: @color4;
+  background-color: @background;
+}
+
+#custom-tempicon {
+  margin: 0px 0px 0px 0px;
+  color: @color7;
+  padding: 0 11px 0 8px;
+  background-color: @background;
+}
+
+#temperature {
+  margin: 0px 0px 0px 0px;
+  padding-left: 5px;
+  padding-right: 10px;
+  color: @color4;
+  background-color: @background;
+}
+
+
+#custom-playerctl {
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: @foreground;
+  background-color: @background;
+}
+
+#battery,
+#backlight,
+#bluetooth,
+#pulseaudio {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: @foreground;
+  background-color: @background;
+}
+
+#pulseaudio {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: @color15;
+  background-color: @background;
+}
+
+#battery,
+#bluetooth {
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 2px;
+}
+
+#backlight,
+#pulseaudio {
+	margin-right: 0px;
+	margin-left: 0px;
+	padding-left: 10px;
+  	padding-right: 7.5px;
+}
+
+#clock {
+  margin: 0px 0px 0px 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: @color6;
+  background-color: @background;
+}
+
+#custom-clockicon {
+  margin: 0px 0 0px 0px;
+  color: @color6;
+  padding: 0 5px 0 10px;
+  background-color: @background;
+}
+
+#taskbar {
+    padding: 0 3px;
+    margin: 0 0px;
+    color: #ffffff;
+    background-color: rgba(120,118,117,0.3);
+}
+#taskbar button {
+    padding: 0 0 0 3px;
+    margin: 0px 0px;
+    color: #ffffff;
+    background-color: rgba(120,118,117,0.1);
+}
+#taskbar button.active {
+    background-color: rgba(120,118,117,0.8);
+}
+
+#mode {
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: @background;
+  color: @color9;
+}

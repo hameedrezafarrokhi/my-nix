@@ -26,6 +26,7 @@
     ./river
     ./wayfire
     ./labwc
+    ./mango
     ./i3
     ./spectrwm
     ./herbstluftwm
