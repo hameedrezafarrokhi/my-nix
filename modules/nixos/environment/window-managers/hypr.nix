@@ -1,7 +1,29 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
-{ config = lib.mkIf (builtins.elem "hypr" config.my.window-managers) {
+with lib;
 
-  services.xserver.windowManager.hypr.enable = true;
+let
 
-};}
+  cfg = config.services.xserver.windowManager.hypr;
+
+in
+
+{#config = lib.mkIf (builtins.elem "hypr" config.my.window-managers) {
+ #
+ #services.xserver.windowManager.hypr.enable = true;
+
+#};}
+
+  ###### implementation
+  config = mkIf (builtins.elem "hypr" config.my.window-managers) {
+    services.xserver.windowManager.session = singleton {
+      name = "hypr";
+      start = ''
+        ${mypkgs.stable.hypr}/bin/Hypr &
+        waitPID=$!
+      '';
+    };
+    environment.systemPackages = [ mypkgs.stable.hypr ];
+  };
+
+}

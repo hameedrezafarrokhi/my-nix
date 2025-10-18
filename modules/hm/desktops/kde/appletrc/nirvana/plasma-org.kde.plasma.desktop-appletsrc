@@ -479,4 +479,4 @@ positions={"1363x767":[]}
 
 [ScreenMapping]
 itemsOnDisabledScreens=
-screenMapping=
+screenMapping=desktop:/root.desktop,0,86330a09-a727-4026-90f9-209056b51473,desktop:/tmp.desktop,0,86330a09-a727-4026-90f9-209056b51473,desktop:/home.desktop,0,86330a09-a727-4026-90f9-209056b51473

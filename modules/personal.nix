@@ -67,7 +67,7 @@
       "lumina"
      #"retroarch"
      #"cde"               # WARNING BROKEN    (build fail)
-     #"enlightenment"     # WARNING BROKEN    (python 3.13 incompatibility)
+      "enlightenment"     # WARNING BROKEN    (python 3.13 incompatibility)
      #"gnome" "pantheon"  # WARNING THE DEVIL
 
     ];
@@ -86,7 +86,7 @@
       "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
       "fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
       "twm" "jwm" "ratpoison" "e16"
-     #"hypr"  # WARNING BROKEN
+      "hypr"  # WARNING BROKEN
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
