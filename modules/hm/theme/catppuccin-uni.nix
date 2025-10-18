@@ -819,6 +819,68 @@
       font = MonoRofi;
      #theme = { };
     };
+    waybar = {
+      style = lib.mkBefore ''
+        @define-color rosewater ${Rosewater};
+        @define-color flamingo  ${Flamingo};
+        @define-color pink      ${Pink};
+        @define-color mauve     ${Mauve};
+        @define-color red       ${Red};
+        @define-color maroon    ${Maroon};
+        @define-color peach     ${Peach};
+        @define-color yellow    ${Yellow};
+        @define-color green     ${Green};
+        @define-color teal      ${Teal};
+        @define-color sky       ${Sky};
+        @define-color sapphire  ${Sapphire};
+        @define-color blue      ${Blue};
+        @define-color lavender  ${Lavender};
+        @define-color text      ${Text};
+        @define-color subtext1  ${Subtext1};
+        @define-color subtext0  ${Subtext0};
+        @define-color overlay2  ${Overlay2};
+        @define-color overlay1  ${Overlay1};
+        @define-color overlay0  ${Overlay0};
+        @define-color surface2  ${Surface2};
+        @define-color surface1  ${Surface1};
+        @define-color surface0  ${Surface0};
+        @define-color base      ${Base};
+        @define-color mantle    ${Mantle};
+        @define-color crust     ${Crust};
+        * {
+          min-height: 0;
+          margin: 0;
+          padding: 0;
+          font-family: "${Sans}";
+          font-size: 10pt;
+          font-weight: 700;
+          padding-bottom: 0px;
+        }
+      '';
+    };
+    ashell.settings = {
+      appearance = {
+        style = "Gradient";  # "Islands"
+        font_name = Sans;
+      };
+      primary_color = Base;
+      success_color = Green;
+      text_color = Text;
+      workspace_colors = [ Overlay2 Text ];
+      special_workspace_colors = [ Sapphire Rosewater ];
+      appearance.danger_color = {
+        base = Base;
+        weak = Subtext0;
+      };
+      appearance.background_color = {
+        base = Base;
+        weak = Subtext1;
+        strong = Mantle;
+      };
+      appearance.secondary_color = {
+      base = Overlay2;
+      };
+    };
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
   };
   services = {

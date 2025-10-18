@@ -6,7 +6,7 @@
 
      type = lib.types.listOf (lib.types.enum [
 
-       "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax"
+       "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax" "hyprland-ashell"
        "niri-uwsm" "niri-noctalia" "niri-dms"
 
       ]);

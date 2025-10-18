@@ -13,8 +13,6 @@
       enableDebug = false;
     };
 
-    style = ./style.css;
-
     settings = {
 
       mainBar = {
@@ -26,9 +24,28 @@
        #  "eDP-1"
        #  "HDMI-A-1"
        #];
-        modules-left = ["ext/workspaces" "dwl/window" "dwl/tags" "sway/workspaces" "sway/mode" "mango/workspaces" "niri/workspaces" "niri/window" "hyprland/workspaces" "hyprland/window"]; # "wlr/taskbar"
+        modules-left = ["ext/workspaces" "hyprland/workspaces" "sway/workspaces" "niri/window" "hyprland/window" "sway/window" "dwl/window"]; #  "wlr/taskbar" "dwl/tags" "sway/mode" "niri/workspaces"
        #modules-center = [ "sway/window" "custom/hello-from-waybar" ];
-        modules-right = ["custom/tempicon" "temperature" "custom/diskicon" "disk" "custom/cpuicon" "cpu" "custom/memoryicon" "memory" "custom/clockicon" "pulseaudio" "bluetooth" "idle_inhibitor" "custom/notification" "tray" "clock"];
+        modules-right = ["custom/tempicon" "temperature" "custom/diskicon" "disk" "custom/cpuicon" "cpu" "custom/memoryicon" "memory" "pulseaudio" "tray" "custom/notification" "idle_inhibitor" "custom/clockicon" "clock"]; # "bluetooth"
+
+        "ext/workspaces" = {
+          format = "{icon}";
+          active-only = false;
+          sort-by-number = true;
+          on-click = "activate";
+          all-outputs = false;
+          format-icons = {
+            "1" = "1";
+            "2" = "2";
+            "3" = "3";
+            "4" = "4";
+            "5" = "5";
+            "6" = "6";
+            "7" = "7";
+            "8" = "8";
+            "9" = "9";
+          };
+        };
 
         "niri/workspaces" = {
           format = "{icon}";
@@ -93,24 +110,36 @@
             "12" = "12";
           };
         };
-        "ext/workspaces" = {
-          format = "{icon}";
-          ignore-hidden = true;
-          on-click = "activate";
-          on-click-right = "deactivate";
-          sort-by-id = true;
-        };
+       #"ext/workspaces" = {
+       #  format = "{icon}";
+       #  ignore-hidden = true;
+       #  on-click = "activate";
+       #  on-click-right = "deactivate";
+       #  sort-by-id = true;
+       #};
         "dwl/tags" = {
           "num-tags" = 9;
         };
         "dwl/window" = {
-          format = "[{layout}]{title}";
+          format = "{title}";
+          max-length = 333;
+          seperate-outputs = true;
         };
        #"sway/workspaces" = {
        #  disable-scroll = true;
        #  all-outputs = true;
        #};
         "niri/window" = {
+          format = "{title}";
+          max-length = 333;
+          seperate-outputs = true;
+        };
+        "sway/window" = {
+          format = "{title}";
+          max-length = 333;
+          seperate-outputs = true;
+        };
+        "hyprland/window" = {
           format = "{title}";
           max-length = 333;
           seperate-outputs = true;
@@ -291,6 +320,276 @@
       };
 
     };
+
+    style = lib.mkAfter ''
+      tooltip {
+        background: @crust;
+        border: 2px solid @subtext0;
+      }
+
+      #window {
+      	margin: 0px 5px 0px 5px;
+      	padding-left: 10px;
+      	padding-right: 7px;
+      	background-color: @base;
+      	color: @subtext1;
+      }
+
+      window#waybar.empty #window {
+      	background-color: transparent;
+      	border-bottom: none;
+      	border-right: none;
+      }
+
+      window#waybar {
+        background-color:@base;
+        color: @flamingo;
+      }
+
+      /* Workspaces */
+
+      #workspaces {
+        margin: 0px 0px 0px 0px;
+        padding: 0px;
+        background-color: @base;
+        color: @rosewater;
+
+      }
+
+      #workspaces button {
+        margin: 0px 0px 0px 0px;
+        padding-left: 3px;
+        padding-right: 9px;
+        background-color: @base;
+        color: @text;
+      }
+
+      #workspaces button.active {
+      	padding: 0 2px 0 1px;
+          color: @sapphire;
+      }
+
+      #workspaces button.urgent {
+      	color: @red;
+      }
+
+      #custom-gpu-util {
+        margin: 0px 5px 0px 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: @base;
+        color: @text;
+      }
+
+      #tray {
+        margin: 0px 0px 0px 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: @base;
+        color: @text;
+      }
+
+      #idle_inhibitor {
+        margin: 0px 0px 0px 0px;
+        padding-left: 10px;
+        padding-right: 12px;
+        background-color: @base;
+        color: @text;
+      }
+
+      #idle_inhibitor.activated {
+        color: @mauve;
+      }
+
+      #network {
+        margin: 0px 0px 0px 0px;
+        padding-left: 10px;
+        padding-right: 12px;
+        background-color: @base;
+        color: @rosewater;
+      }
+
+      #network.linked {
+        color: @green;
+      }
+      #network.disconnected,
+      #network.disabled {
+        color: @red;
+      }
+
+      #custom-cliphist {
+      	color: @rosewater;
+      	margin: 0px 5px 0px 5px;
+          padding-left: 10px;
+          padding-right: 12px;
+          background-color: @base;
+
+      }
+
+      #custom-gpu-temp,
+      #custom-clipboard {
+        margin: 0px 5px 0px 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: @text;
+        background-color: @base;
+      }
+
+      #cpu {
+        margin: 0px 0px 0px 0px;
+        padding-left: 6px;
+        padding-right: 6px;
+        color: @text;
+        background-color: @base;
+      }
+
+      #custom-cpuicon {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 10px 0px 10px;
+        color: @sapphire;
+        background-color: @base;
+      }
+
+      #custom-diskicon {
+        margin: 0px 0px 0px 0px;
+        padding: 0 10px 0 10px;
+        color: @flamingo;
+        background-color: @base;
+      }
+
+      #disk {
+        margin: 0px 0px 0px 0;
+        padding-left: 0px;
+        padding-right: 0px;
+        color: @test;
+        background-color: @base;
+      }
+
+      #custom-notification {
+      background-color: @base;
+      color: @overlay2;
+      padding: 0 12px;
+      margin-right: 0px;
+      font-size: 14px;
+      font-family: "JetBrainsMono Nerd Font";
+      }
+
+      #custom-memoryicon {
+        margin: 0px 0px 0px 0px;
+        color: @mauve;
+        padding: 0 11px 0 7px;
+        background-color: @base;
+      }
+
+      #memory {
+        margin: 0px 0px 0px 0px;
+        padding-left: 5px;
+        padding-right: 10px;
+        color: @text;
+        background-color: @base;
+      }
+
+      #custom-tempicon {
+        margin: 0px 0px 0px 0px;
+        color: @peach;
+        padding: 0 11px 0 8px;
+        background-color: @base;
+      }
+
+      #temperature {
+        margin: 0px 0px 0px 0px;
+        padding-left: 5px;
+        padding-right: 10px;
+        color: @lavender;
+        background-color: @base;
+      }
+
+
+      #custom-playerctl {
+        margin: 0px 5px 0px 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: @text;
+        background-color: @base;
+      }
+
+      #battery,
+      #backlight,
+      #bluetooth,
+      #pulseaudio {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: @blue;
+        background-color: @base;
+      }
+
+      #pulseaudio {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: @blue;
+        background-color: @base;
+      }
+
+      #battery,
+      #bluetooth {
+      	margin-left: 0px;
+      	margin-right: 0px;
+      	padding-left: 0px;
+      	padding-right: 2px;
+      }
+
+      #backlight,
+      #pulseaudio {
+      	margin-right: 0px;
+      	margin-left: 0px;
+      	padding-left: 10px;
+        	padding-right: 7.5px;
+            color: @blue;
+            background-color: @base;
+      }
+
+      #clock {
+        margin: 0px 0px 0px 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: @maroon;
+        background-color: @base;
+      }
+
+      #custom-clockicon {
+        margin: 0px 0 0px 0px;
+        color: @maroon;
+        padding: 0 5px 0 10px;
+        background-color: @base;
+        color: @maroon;
+      }
+
+      #taskbar {
+          padding: 0 3px;
+          margin: 0 0px;
+          color: @subtext1;
+          background-color: rgba(120,118,117,0.3);
+      }
+      #taskbar button {
+          padding: 0 0 0 3px;
+          margin: 0px 0px;
+          color: @subtext0;
+          background-color: rgba(120,118,117,0.1);
+      }
+      #taskbar button.active {
+          background-color: rgba(120,118,117,0.8);
+      }
+
+      #mode {
+        margin: 0px 5px 0px 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: @base;
+        color: @green;
+      }
+
+    '';
+
   };
 
   systemd.user.services.waybar-niri = {

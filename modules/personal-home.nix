@@ -68,7 +68,7 @@
     rice-shells = [
 
       "niri-dms" "niri-noctalia"
-      "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax"
+      "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax" "hyprland-ashell"
 
     ];
 
@@ -76,7 +76,7 @@
 
     bar-shell.shells = [
       # wayland
-      "ags" "quickshell" "waybar"
+      "ags" "quickshell" "waybar" "ashell"
       # x11
       "polybar"
      #"tint2"   # WARNING BROKEN

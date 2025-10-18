@@ -222,6 +222,7 @@ in
     ./hyprland-uwsm.nix
     ./hyprland-dms.nix
     ./hyprland-ax.nix
+    ./hyprland-ashell.nix
 
   ];
 

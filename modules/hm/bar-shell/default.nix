@@ -17,6 +17,7 @@ in
        "ags"
        "quickshell"
        "waybar"
+       "ashell"
        "polybar"
        "tint2"
        "trayer"
@@ -36,6 +37,7 @@ in
     ./polybar.nix
     ./tint2.nix
     ./trayer.nix
+    ./ashell.nix
 
   ];
 
