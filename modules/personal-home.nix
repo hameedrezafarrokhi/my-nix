@@ -79,7 +79,7 @@
       "ags" "quickshell" "waybar" "ashell"
       # x11
       "polybar"
-     #"tint2"   # WARNING BROKEN
+      "tint2"
      #"trayer"
     ];
     apps = {

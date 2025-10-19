@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, mypkgs, ... }:
 
 {
 config = lib.mkIf (config.my.software.peripherals.enable) {
@@ -12,9 +12,9 @@ config = lib.mkIf (config.my.software.peripherals.enable) {
 
     piper                         ##Gaming mouse config
    #libratbag                     ##Library for piper
-   #qjoypad                       ##Controller as Mouse  # WARNING BROKEN
+   #qjoypad                       ##Controller as Mouse
     joystickwake                  ##Joystick screen waker
-   #jstest-gtk                    ##Joystick tester   # WARNING BROKEN
+   #jstest-gtk                    ##Joystick tester
 
    #xsane                         ##Scanner app
    #hplip                         ##HP scanner stuff
@@ -31,6 +31,10 @@ config = lib.mkIf (config.my.software.peripherals.enable) {
 
     displaycal                    ##Display Calibration Tool
 
+  ] ++
+  [
+    mypkgs.stable.qjoypad
+    mypkgs.stable.jstest-gtk
   ];
 
 };

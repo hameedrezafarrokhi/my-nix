@@ -39,7 +39,7 @@ config = lib.mkIf (config.my.software.fetch.enable) {
 
   ] ++
 
-  [ mypkgs.fallback.fastfetch ]
+  [ mypkgs.stable.fastfetch ]
 
   ;
 

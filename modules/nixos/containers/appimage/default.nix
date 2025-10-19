@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
 let
 
@@ -20,9 +20,9 @@ in
 
     environment.systemPackages = with pkgs; [
 
-      gearlever                     ##AppImage management
-     #appimageupdate
-     #appimageupdate-qt             # WARNING BROKEN
+      pkgs.gearlever                     ##AppImage management
+     #pkgs.appimageupdate
+      mypkgs.stable.appimageupdate-qt
 
     ];
 

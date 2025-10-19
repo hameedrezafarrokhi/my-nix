@@ -68,7 +68,7 @@
       "lumina"
      #"retroarch"
      #"cde"               # WARNING BROKEN    (build fail)
-      "enlightenment"     # WARNING BROKEN    (python 3.13 incompatibility)
+      "enlightenment"
      #"gnome" "pantheon"  # WARNING THE DEVIL
 
     ];
@@ -87,7 +87,7 @@
       "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
       "fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
       "twm" "jwm" "ratpoison" "e16"
-      "hypr"  # WARNING BROKEN
+      "hypr"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
@@ -269,7 +269,7 @@
             "ags" "quickshell" "waybar" "ashell"
             # x11
             "polybar"
-           #"tint2"   # WARNING BROKEN
+            "tint2"
            #"trayer"
           ];
           apps = {

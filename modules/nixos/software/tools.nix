@@ -88,12 +88,12 @@
     ddcutil
 
     feishin
-   #CuboCore.coretime     # WARNING BROKEN
+   #CuboCore.coretime
 
-  ]
-
-++[
+  ] ++
+  [
     mypkgs.stable.ulauncher
+    mypkgs.stable.CuboCore.coretime
   ]
 
    #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe/package.nix" { })]

@@ -22,7 +22,7 @@
 
     pkgs.xmonadctl
     pkgs.xmonad-log
-   #pkgs.xmonad_log_applet             # WARNING BROKEN
+   #pkgs.xmonad_log_applet
 
   ];
 

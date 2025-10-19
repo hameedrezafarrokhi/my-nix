@@ -29,17 +29,17 @@ in
         haskellPackages.xmonad-spotify
         haskellPackages.xmonad-contrib
 
-       #haskellPackages.xmonad-eval                      # WARNING BROKEN
-       #haskellPackages.xmonad-vanessa                   # WARNING BROKEN
-       #haskellPackages.xmonad-wallpaper                 # WARNING BROKEN
-       #haskellPackages.xmonad-screenshot                # WARNING BROKEN
-       #haskellPackages.xmonad-windownames               # WARNING BROKEN
-       #haskellPackages.xmonad-entryhelper               # WARNING BROKEN
-       #haskellPackages.xmonad-contrib-gpl               # WARNING BROKEN
-       #haskellPackages.xmonad-bluetilebranch            # WARNING BROKEN
-       #haskellPackages.xmonad-contrib-bluetilebranch    # WARNING BROKEN
-       #haskellPackages.TaskMonad                        # WARNING BROKEN
-       #haskellPackages.ixmonad                          # WARNING BROKEN
+       #haskellPackages.xmonad-eval                     # WARNING BROKEN
+       #haskellPackages.xmonad-vanessa
+       #haskellPackages.xmonad-wallpaper
+       #haskellPackages.xmonad-screenshot
+       #haskellPackages.xmonad-windownames
+       #haskellPackages.xmonad-entryhelper
+       #haskellPackages.xmonad-contrib-gpl
+       #haskellPackages.xmonad-bluetilebranch
+       #haskellPackages.xmonad-contrib-bluetilebranch
+       #haskellPackages.TaskMonad
+       #haskellPackages.ixmonad
       ];
 
      #libFiles = { };
@@ -57,11 +57,11 @@ in
 
     };
 
-    home.packages = [
+    home.packages = with pkgs; [
 
-      pkgs.xmonadctl
-      pkgs.xmonad-log
-     #pkgs.xmonad_log_applet                             # WARNING BROKEN
+       xmonadctl
+       xmonad-log
+      #xmonad_log_applet
 
     ];
 

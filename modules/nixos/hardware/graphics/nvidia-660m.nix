@@ -89,7 +89,8 @@ in
 
         vulkan-loader                        # LunarG Vulkan loader
         vulkan-validation-layers             # Official Khronos Vulkan validation layers
-      ];
+      ] ++
+      [ mypkgs.stable.intel-media-sdk ];
       enable32Bit = true;
      #package32 = ;
       extraPackages32 = with pkgs.pkgsi686Linux; [

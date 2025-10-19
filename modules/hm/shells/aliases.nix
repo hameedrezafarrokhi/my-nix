@@ -60,7 +60,7 @@ in
     sudo nix store gc --refresh -v
     nh os switch --ask";
 
-    ns = "${lib.getExe mypkgs.fallback.nix-search-tv} print | fzf --preview 'nix-search-tv preview {}' --scheme history";
+    ns = "${lib.getExe pkgs.nix-search-tv} print | fzf --preview 'nix-search-tv preview {}' --scheme history";
 
     now = ''date "+%Y-%m-%d %A %T %Z"'';
 

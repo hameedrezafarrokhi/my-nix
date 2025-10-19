@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
 { config = lib.mkIf (builtins.elem "tint2" config.my.bar-shell.shells) {
 
 
   programs.tint2 = {
     enable = true;
-    package = pkgs.tint2;
+    package = mypkgs.stable.tint2;
    #extraConfig = '' '';
   };
 

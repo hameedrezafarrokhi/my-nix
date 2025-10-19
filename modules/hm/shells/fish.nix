@@ -21,7 +21,7 @@
 
     interactiveShellInit = ''
 
-      ${lib.getExe mypkgs.fallback.fastfetch} --gpu-hide-type Integrated --logo-height 5  --logo-color-1 blue --logo-color-2 white --logo-padding-top 2 --logo-padding-left 46
+      ${lib.getExe mypkgs.stable.fastfetch} --gpu-hide-type Integrated --logo-height 5  --logo-color-1 blue --logo-color-2 white --logo-padding-top 2 --logo-padding-left 46
 
       set -g fish_greeting
 

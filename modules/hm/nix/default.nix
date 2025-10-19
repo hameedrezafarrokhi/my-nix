@@ -1,4 +1,4 @@
-{ config, pkgs, lib, admin, system, nix-path, inputs, mypkgs, ... }:
+{ config, pkgs, lib, admin, system, nix-path, inputs, ... }:
 
 let
 
@@ -222,7 +222,7 @@ in
 
       nix-search-tv = {
         enable = true;
-        package = mypkgs.fallback.nix-search-tv;
+        package = pkgs.nix-search-tv;
         enableTelevisionIntegration = true;
         settings = {
           indexes = [ "nixpkgs" "home-manager" "nixos" "nur" ];

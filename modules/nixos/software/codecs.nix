@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.software.codecs.enable) {
 
@@ -22,7 +22,7 @@
 
     taglib_extras
     wslay
-  ##previewqt   # WARNING BROKEN LONG TIME
+  ##previewqt
 
     x265
     x264
@@ -43,6 +43,9 @@
     gst_all_1.gst-libav
     gst_all_1.gst-vaapi
 
+  ] ++
+  [
+    mypkgs.stable.previewqt
   ];
 
 };}
