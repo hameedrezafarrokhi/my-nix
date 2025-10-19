@@ -68,7 +68,7 @@
       "lumina"
      #"retroarch"
      #"cde"               # WARNING BROKEN    (build fail)
-      "enlightenment"
+     #"enlightenment"
      #"gnome" "pantheon"  # WARNING THE DEVIL
 
     ];

@@ -66,7 +66,7 @@ in
          #{ command = "export XDG_CURRENT_DESKTOP=i3"; always = true; }
          #{ command = "export XDG_SESSION_DESKTOP=i3"; always = true; }
          #{ command = "export XDG_MENU_PREFIX=plasma-"; always = true; }
-
+          { command = "waybar"; always = true; }
         ];
 
         gaps = config.xsession.windowManager.i3.config.gaps;

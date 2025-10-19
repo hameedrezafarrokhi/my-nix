@@ -19,18 +19,19 @@ in
     enable = true;
     package = pkgs.flameshot;
    #package = pkgs.flameshot.override { enableWlrSupport = true; enableMonochromeIcon = true; };
-   #settings = { # example: INI format
-   #  General = {
-   #    disabledTrayIcon = true;
-   #    showStartupLaunchMessage = false;
-   #  };
-   #};
+    settings = { # example: INI format
+      General = {
+        contrastOpacity = 188;
+        disabledTrayIcon = true;
+        showStartupLaunchMessage = false;
+      };
+    };
   };
 
   systemd.user.services.flameshot.Service = {
-    ExecStartPre = "${flame-env}/bin/flame-env";
+   #ExecStartPre = "${flame-env}/bin/flame-env";
     Environment = [
-      "QT_QPA_PLATFORM=xcb"
+     #"QT_QPA_PLATFORM=xcb"
       "QT_QPA_PLATFORMTHEME=qt6ct"
     ];
   };

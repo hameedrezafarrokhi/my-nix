@@ -68,45 +68,104 @@ in
    #signing.signByDefault
    #signing.key
    #signing.format
+
    #riff.package
    #riff.enable
    #riff.commandLineOptions
+
    #patdiff.package
    #patdiff.enable
-   #
+
    #maintenance.timers
    #maintenance.repositories
    #maintenance.enable
+
    #lfs.skipSmudge
    #lfs.enable
+
    #includes.*.path
    #includes.*.contents
    #includes.*.contentSuffix
    #includes.*.condition
    #includes
-   #
+
    #hooks
    #extraConfig
-   #
+
    #difftastic.package
    #difftastic.options
    #difftastic.enableAsDifftool
    #difftastic.enable
-   #diff-so-fancy.useUnicodeRuler
-   #diff-so-fancy.stripLeadingSymbols
-   #diff-so-fancy.rulerWidth
-   #diff-so-fancy.pagerOpts
-   #diff-so-fancy.markEmptyLines
-   #diff-so-fancy.enable
-   #diff-so-fancy.changeHunkIndicators
+
+    diff-so-fancy = {
+      enable = true;
+      useUnicodeRuler = true;
+      stripLeadingSymbols = true;
+     #rulerWidth = null;
+      pagerOpts = [
+        "--tabs=4"
+        "-RFX"
+      ];
+      markEmptyLines = true;
+      changeHunkIndicators = true;
+    };
+
    #diff-highlight.pagerOpts
    #diff-highlight.enable
+
    #delta.package
    #delta.options
    #delta.enable
    #attributes
+
    #aliases
 
+  };
+
+  programs.gh = {
+    enable = true;
+    package = pkgs.gh;
+    settings = {
+      git_protocol = "ssh";
+     #editor = "";
+     #aliases = { };
+    };
+    hosts = {
+      "github.com" = {
+        user = "hameedrezafarrokhi";
+      };
+    };
+    gitCredentialHelper = {
+      enable = true;
+      hosts = [ "https://github.com" "https://github.com/hameedrezafarrokhi" ];
+    };
+    extensions = with pkgs; [
+      gh-s
+      gh-i
+      gh-f
+      gh-poi
+      gh-ost
+      gh-gei
+      gh-eco
+      gh-cal
+      gh-notify
+      gh-skyline
+      gh-signoff
+     #gh-copilot
+      gh-contribs
+     #gh-classroom
+      gh-screensaver
+      gh-actions-cache
+      gh-markdown-preview
+      gh-dash
+    ];
+
+  };
+
+  programs.gh-dash = {
+    enable = true;
+    package = pkgs.gh-dash;
+   #settings = { };
   };
 
 };}

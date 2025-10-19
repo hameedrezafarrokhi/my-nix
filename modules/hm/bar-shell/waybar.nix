@@ -19,7 +19,7 @@ in
     package = pkgs.waybar;
 
     systemd = {
-      enable = false;
+      enable = true;
       target = config.wayland.systemd.target;
       enableInspect = false;
       enableDebug = false;
@@ -604,92 +604,94 @@ in
 
   };
 
-  systemd.user.services.waybar-niri = {
-    Unit = {
-      Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
-      Documentation = "https://github.com/Alexays/Waybar/wiki";
-      PartOf = [
-        config.programs.waybar.systemd.target
-        "tray.target"
-      ];
-      After = [ config.programs.waybar.systemd.target ];
-      ConditionEnvironment = "DESKTOP_SESSION=niri";
-      X-Reload-Triggers =
-        lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
-        ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
-    };
+  systemd.user.services.waybar.Unit.ConditionEnvironment = lib.mkForce "DESKTOP_SESSION=niri";
 
-    Service = {
-      Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
-      ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
-      ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
-      KillMode = "mixed";
-      Restart = "on-failure";
-    };
+ #systemd.user.services.waybar-niri = {
+ #  Unit = {
+ #    Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
+ #    Documentation = "https://github.com/Alexays/Waybar/wiki";
+ #    PartOf = [
+ #      config.programs.waybar.systemd.target
+ #      "tray.target"
+ #    ];
+ #    After = [ config.programs.waybar.systemd.target ];
+ #    ConditionEnvironment = "DESKTOP_SESSION=niri";
+ #    X-Reload-Triggers =
+ #      lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
+ #      ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
+ #  };
+ #
+ #  Service = {
+ #    Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
+ #    ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+ #    ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
+ #    KillMode = "mixed";
+ #    Restart = "on-failure";
+ #  };
+ #
+ #  Install.WantedBy = [
+ #    config.programs.waybar.systemd.target
+ #    "tray.target"
+ #  ];
+ #};
 
-    Install.WantedBy = [
-      config.programs.waybar.systemd.target
-      "tray.target"
-    ];
-  };
+ #systemd.user.services.waybar-sway = {
+ #  Unit = {
+ #    Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
+ #    Documentation = "https://github.com/Alexays/Waybar/wiki";
+ #    PartOf = [
+ #      config.programs.waybar.systemd.target
+ #      "tray.target"
+ #    ];
+ #    After = [ config.programs.waybar.systemd.target ];
+ #    ConditionEnvironment = "XDG_CURRENT_DESKTOP=sway";
+ #    X-Reload-Triggers =
+ #      lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
+ #      ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
+ #  };
+ #
+ #  Service = {
+ #    Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
+ #    ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+ #    ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
+ #    KillMode = "mixed";
+ #    Restart = "on-failure";
+ #  };
+ #
+ #  Install.WantedBy = [
+ #    config.programs.waybar.systemd.target
+ #    "tray.target"
+ #  ];
+ #};
 
-  systemd.user.services.waybar-sway = {
-    Unit = {
-      Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
-      Documentation = "https://github.com/Alexays/Waybar/wiki";
-      PartOf = [
-        config.programs.waybar.systemd.target
-        "tray.target"
-      ];
-      After = [ config.programs.waybar.systemd.target ];
-      ConditionEnvironment = "XDG_CURRENT_DESKTOP=sway";
-      X-Reload-Triggers =
-        lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
-        ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
-    };
-
-    Service = {
-      Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
-      ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
-      ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
-      KillMode = "mixed";
-      Restart = "on-failure";
-    };
-
-    Install.WantedBy = [
-      config.programs.waybar.systemd.target
-      "tray.target"
-    ];
-  };
-
-  systemd.user.services.waybar-mango = {
-    Unit = {
-      Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
-      Documentation = "https://github.com/Alexays/Waybar/wiki";
-      PartOf = [
-        config.programs.waybar.systemd.target
-        "tray.target"
-      ];
-      After = [ config.programs.waybar.systemd.target ];
-      ConditionEnvironment = "XDG_CURRENT_DESKTOP=mango";
-      X-Reload-Triggers =
-        lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
-        ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
-    };
-
-    Service = {
-      Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
-      ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
-      ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
-      KillMode = "mixed";
-      Restart = "on-failure";
-    };
-
-    Install.WantedBy = [
-      config.programs.waybar.systemd.target
-      "tray.target"
-    ];
-  };
+ #systemd.user.services.waybar-mango = {
+ #  Unit = {
+ #    Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors.";
+ #    Documentation = "https://github.com/Alexays/Waybar/wiki";
+ #    PartOf = [
+ #      config.programs.waybar.systemd.target
+ #      "tray.target"
+ #    ];
+ #    After = [ config.programs.waybar.systemd.target ];
+ #    ConditionEnvironment = "XDG_CURRENT_DESKTOP=mango";
+ #    X-Reload-Triggers =
+ #      lib.optional (config.programs.waybar.settings != [ ]) "${config.xdg.configFile."waybar/config".source}"
+ #      ++ lib.optional (config.programs.waybar.style != null) "${config.xdg.configFile."waybar/style.css".source}";
+ #  };
+ #
+ #  Service = {
+ #    Environment = lib.optional config.programs.waybar.systemd.enableInspect "GTK_DEBUG=interactive";
+ #    ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+ #    ExecStart = "${config.programs.waybar.package}/bin/waybar${lib.optionalString config.programs.waybar.systemd.enableDebug " -l debug"}";
+ #    KillMode = "mixed";
+ #    Restart = "on-failure";
+ #  };
+ #
+ #  Install.WantedBy = [
+ #    config.programs.waybar.systemd.target
+ #    "tray.target"
+ #  ];
+ #};
 
 
 };}
