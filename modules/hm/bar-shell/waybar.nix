@@ -19,7 +19,7 @@ in
     package = pkgs.waybar;
 
     systemd = {
-      enable = true;
+      enable = false;
       target = config.wayland.systemd.target;
       enableInspect = false;
       enableDebug = false;
@@ -604,7 +604,7 @@ in
 
   };
 
-  systemd.user.services.waybar.Unit.ConditionEnvironment = lib.mkForce "DESKTOP_SESSION=niri";
+ #systemd.user.services.waybar.Unit.ConditionEnvironment = lib.mkForce "DESKTOP_SESSION=niri";
 
  #systemd.user.services.waybar-niri = {
  #  Unit = {
