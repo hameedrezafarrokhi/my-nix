@@ -94,27 +94,28 @@ in
        #configPackages = [ pkgs.gnome-session ];
         config = { # same as nixos options
           common = {
-            default = ["gtk" "kde" "gnome" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
-            "org.freedesktop.impl.portal.FileChooser" = ["shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
+           #default = ["gtk" "kde" "gnome" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
+           #default = [ "*" ];
+            "org.freedesktop.impl.portal.FileChooser" = ["shana"];
           };
           hyprland = {
-            default = ["hyprland" "gtk" "kde" "gnome" "gnome-keyring" "shana" "termfilechooser" "lxqt" "cosmic" "wlr" "xapp" "kwallet"];
+            default = ["hyprland" "kde" "gtk" "gnome" "gnome-keyring" "shana"];
            #"org.freedesktop.impl.portal.Secret" = ["kwallet"];
-            "org.freedesktop.impl.portal.Settings" = ["hyprland" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
-            "org.freedesktop.impl.portal.FileChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
-            "org.freedesktop.impl.portal.AppChooser" = ["hyprland" "shana" "gtk" "kde" "gnome" "lxqt" "cosmic" "xapp"];
+            "org.freedesktop.impl.portal.Settings" = ["hyprland" "kde" "gtk" "gnome"];
+            "org.freedesktop.impl.portal.FileChooser" = ["shana" "kde" "gtk" "gnome"];
+            "org.freedesktop.impl.portal.AppChooser" = ["kde" "gtk" "gnome"];
           };
           niri = {
-            default = ["gnome" "gtk" "kde" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
-            "org.freedesktop.impl.portal.Access" = ["gtk"];
+            default = ["gnome" "gtk" "gnome-keyring" "kde" "shana" "wlr"];
+            "org.freedesktop.impl.portal.Access" = ["gtk" "gnome"];
             "org.freedesktop.impl.portal.Notification" = ["gtk"];
             "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
           };
-         #kde = {
-         #  default = ["kde"];
-         #  "org.freedesktop.impl.portal.Secret" = ["kwallet"];
-         #  "org.freedesktop.impl.portal.Settings" = ["kde" "gtk"];
-         #};
+          kde = {
+            default = ["kde"];
+            "org.freedesktop.impl.portal.Secret" = ["kwallet"];
+            "org.freedesktop.impl.portal.Settings" = ["kde" "gtk"];
+          };
         };
       };
 

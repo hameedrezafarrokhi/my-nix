@@ -59,11 +59,11 @@
  #systemd.user.services.plasma-dolphin = {
  #  description = "Dolphin file manager";
  #  partOf = ["graphical-session.target"];
- #  environment = { QT_QPA_PLATFORMTHEME="kde"; };
+ #  environment = { XDG_MENU_PREFIX="plasma-"; };
  #  serviceConfig = {
  #    ExecStart = "${pkgs.kdePackages.dolphin}/bin/dolphin --daemon";
  #    BusName="org.freedesktop.FileManager1";
- #    Environment = ["QT_QPA_PLATFORMTHEME=kde"];
+ #    Environment = ["XDG_MENU_PREFIX=plasma-"];
  #    Slice = "background.slice";
  #  };
  #  wantedBy = ["graphical-session.target"];

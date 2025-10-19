@@ -667,6 +667,11 @@
           "ColorScheme" = marknote-theme;
         };
       };
+      "/.config/kdedefaults/kdegloblas" = {
+        "Icons" = {
+          "Theme" = qt-icon; # "*"
+        };
+      };
     };
   };
 
