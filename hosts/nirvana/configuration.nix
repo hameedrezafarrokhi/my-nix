@@ -1,10 +1,10 @@
-{ config, lib, pkgs, mypkgs, admin, ... }:
+{ config, lib, pkgs, admin, ... }:
 
 {
 
   my = {
     boot = {
-      kernel = mypkgs.kernel.linuxPackages_6_12;
+      kernel = pkgs.linuxPackages_6_12;
     };
     hardware = {
       gpu = "nvidia-660m";

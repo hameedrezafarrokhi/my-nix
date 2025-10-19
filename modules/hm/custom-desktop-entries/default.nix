@@ -28,7 +28,7 @@ in
       "org.kde.dolphin" = {
         name="Dolphin";
         genericName = "File Manager";
-        exec="dolphin %u"; # XDG_MENU_PREFIX=plasma- # env QT_QPA_PLATFORMTHEME=kde
+        exec="env XDG_MENU_PREFIX=plasma- dolphin %u"; # QT_QPA_PLATFORMTHEME=kde
         categories=["Qt" "KDE" "System" "FileTools" "FileManager"];
         mimeType= ["inode" "directory"];
        #noDisplay=;

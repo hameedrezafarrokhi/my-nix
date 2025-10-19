@@ -11,7 +11,7 @@ in
   nixpkgs.config.nvidia.acceptLicense = true;
 
   boot = {
-    kernelPackages = lib.mkForce mypkgs.kernel.linuxPackages_6_12;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
     extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];
     kernelModules = [
       "nvidia"

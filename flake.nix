@@ -10,8 +10,8 @@
           stable.url = "github:NixOS/nixpkgs/nixos-25.05";
       old-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
 
-          kernel.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
-        fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+     #    kernel.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
+     #  fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
   # NIX_COMMUNITY
 
@@ -109,8 +109,8 @@
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};
 
-        kernel = import inputs.kernel     {system=system;config=pkgsConf;};
-      fallback = import inputs.fallback   {system=system;config=pkgsConf;};
+   #    kernel = import inputs.kernel     {system=system;config=pkgsConf;};
+   #  fallback = import inputs.fallback   {system=system;config=pkgsConf;};
       };
 
   # NIXOS
