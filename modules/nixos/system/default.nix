@@ -8,6 +8,7 @@
     ./shell
     ./font
     ./console
+    ./systemd
 
   ];
 

@@ -147,8 +147,15 @@
         }
 
             { networking.hostName  = hostname; }
-            { nixpkgs.hostPlatform = system;   }
             { system.stateVersion  = state;    }
+
+            { nixpkgs = {
+                hostPlatform = system;
+                overlays = [
+                  inputs.ax-shell.overlays.default
+                ];
+              };
+            }
 
             ./hosts/${hostname}/configuration.nix
             ./hosts/${hostname}/hardware-configuration.nix
@@ -167,19 +174,6 @@
             inputs.mango.nixosModules.mango
            #inputs.xremap-flake.nixosModules.default
            #(import "${inputs.windscribe}/windscribe/default.nix")
-
-            {nixpkgs.overlays = [
-              (final: prev:
-                let
-                  sys = prev.system;
-                  axpkgs = inputs.ax-shell.packages.${sys} or {};
-                in {
-                  ax-shell = axpkgs.ax-shell or null;
-                  fabric-cli = axpkgs.fabric-cli or null;
-                  ax-send = axpkgs.ax-send or null;
-                }
-              )
-            ]; }
 
       ];
     };

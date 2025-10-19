@@ -11,6 +11,7 @@
       kernel = pkgs.linuxPackages_latest;
     };
 
+    systemd.enable = true;
     hardware = {
       gpu = "none";
       cpu = {

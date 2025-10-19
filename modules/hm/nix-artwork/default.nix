@@ -36,11 +36,11 @@ in
         recursive = true;
       };
 
-      faces = {
-        source = "${inputs.assets}/icons/faces/";
-        target = ".face/";
-        recursive = true;
-      };
+     #faces = {
+     #  source = "${inputs.assets}/icons/faces/";
+     #  target = ".face/";
+     #  recursive = true;
+     #};
 
     };
 

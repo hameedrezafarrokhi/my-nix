@@ -1,5 +1,17 @@
 { config, pkgs, lib, inputs, system, ... }:
 
+let
+
+  waybar-bluetooth-control = pkgs.writeShellScriptBin "waybar-bluetooth-control" ''
+  if bluetoothctl show | grep -q "Powered: yes"; then
+      bluetoothctl power off
+  else
+      bluetoothctl power on
+  fi
+  '';
+
+in
+
 { config = lib.mkIf (builtins.elem "waybar" config.my.bar-shell.shells) {
 
   programs.waybar = {
