@@ -12,6 +12,8 @@ in
 
   config = lib.mkIf cfg.enable {
 
+    boot.supportedFilesystems = [ "ntfs" ];
+
     services.udisks2 = {
       enable = true;
       package = pkgs.udisks2;

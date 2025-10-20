@@ -7,16 +7,17 @@
 
   # Local drivers
 
- fileSystems."/mnt/windows" = {
-   device = "/dev/disk/by-uuid/86DCAF76DCAF5F65";
-   fsType = "ntfs";
-   options = [ "auto" "nofail" "rw" ];
- };
+  fileSystems."/mnt/windows" = {
+    device = "/dev/disk/by-uuid/86DCAF76DCAF5F65";
+    fsType = "ntfs";
+    options = [ "auto" "nofail" "rw" ];
+  };
 
- fileSystems."/mnt/media" = {
-   device = "/dev/disk/by-uuid/00DA0670DA066270";
-   fsType = "ntfs";
-   options = [ "auto" "nofail" "rw" ];
- };
+  fileSystems."/mnt/media" = {
+    device = "/dev/disk/by-uuid/00DA0670DA066270";
+   #fsType = "ntfs";
+    fsType = "ntfs-3g";
+    options = [ "auto" "nofail" "rw" "uid=1001" ];
+  };
 
 };}
