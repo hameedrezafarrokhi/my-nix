@@ -30,6 +30,7 @@
     qt-icon = "Papirus-Dark";
     qt-icon-package = myIconCatppuccin;
     kvantum-package = myKvantumCatppuccin;
+    kvantum-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}";
     plasma-package = myKDECatppuccin;
     plasma-look = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
     plasma-theme = "default";
@@ -667,11 +668,11 @@
           "ColorScheme" = marknote-theme;
         };
       };
-      "/.config/kdedefaults/kdegloblas" = {
-        "Icons" = {
-          "Theme" = qt-icon; # "*"
-        };
-      };
+     #"/.config/kdedefaults/kdegloblas" = {
+     #  "Icons" = {
+     #    "Theme" = qt-icon; # "*"
+     #  };
+     #};
     };
   };
 
@@ -974,12 +975,17 @@
       target = ".local/share/themes/${gtk-theme}";
       recursive = true;
     };
-    icon = {
+   #icons = {
+   #  target = ".icons/${gtk-icon}/";
+   #  source = "${pkgs.papirus-icon-theme}/share/icons/${gtk-icon}/";
+   #  recursive = true;
+   #};
+    cursor-icon = {
       source = "${gtk-icon-package}/share/icons";
       target = ".icons/";
       recursive = true;
     };
-    icon2 = {
+    cursor-icon2 = {
       source = "${gtk-icon-package}/share/icons";
       target = ".local/share/icons/";
       recursive = true;
@@ -1019,7 +1025,26 @@
       };
     };
 
+    Kvantum = {
+      target = "Kvantum/kvantum.kvconfig";
+      text = ''
+        [General]
+        theme=${kvantum-theme}
+        icon_theme=${qt-icon}
+      '';
+    };
+
+    "Kvantum/${kvantum-theme}".source = "${config.catppuccin.sources.kvantum}/share/Kvantum/${kvantum-theme}";
+
   };
+
+ #xdg.dataFile = {
+ #  icons = {
+ #    target = "icons/${gtk-icon}/";
+ #    source = "${pkgs.papirus-icon-theme}/share/icons/${gtk-icon}/";
+ #    recursive = true;
+ #  };
+ #};
 
  #home.activation = {
  #  openbox-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -1035,7 +1060,7 @@
       accent = myStuff.myCat.myGlobal-Color;
     kvantum = {
       enable = true;
-      apply = true;
+      apply = false;
         flavor = myStuff.myCat.myGlobal-Flav;
         accent = myStuff.myCat.myGlobal-Color;
     };

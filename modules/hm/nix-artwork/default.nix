@@ -30,7 +30,7 @@ in
         recursive = true;
       };
 
-      icons = {
+      face-icons = {
         source = "${inputs.assets}/icons/";
         target = "Pictures/icons/";
         recursive = true;
