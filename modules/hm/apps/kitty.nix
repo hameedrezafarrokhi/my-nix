@@ -13,6 +13,8 @@ config = lib.mkIf (config.my.apps.kitty.enable) {
       enableZshIntegration = true;
     };
 
+    enableGitIntegration = lib.mkIf (config.my.default.terminal == "kitty") true;
+
    #environment = ;
    #extraConfig = ;
 

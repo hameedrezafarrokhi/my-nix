@@ -152,6 +152,8 @@
             { nixpkgs = {
                 hostPlatform = system;
                 overlays = [
+                 #inputs.nur.overlays.default
+                 #inputs.chaotic.overlays.default
                   inputs.ax-shell.overlays.default
                 ];
               };

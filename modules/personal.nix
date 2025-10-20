@@ -313,6 +313,7 @@
             swww.enable = true;
             television.enable = true;
             tldr.enable = true;
+            udiskie.enable = true;
             vim.enable = true;
             yazi.enable = true;
             yt-dlp.enable = true;

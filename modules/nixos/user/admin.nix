@@ -7,6 +7,7 @@
     users = {
 
       ${admin} = {
+        uid = 1001;
        #password  initialPassword  hashedPassword  initialHashedPassword hashedPasswordFile
         isNormalUser = true;
         description = admin;

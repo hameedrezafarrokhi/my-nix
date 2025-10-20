@@ -50,6 +50,7 @@ in
     swww.enable = lib.mkEnableOption "swww";
     television.enable = lib.mkEnableOption "television";
     tldr.enable = lib.mkEnableOption "tldr";
+    udiskie.enable = lib.mkEnableOption "udiskie";
     vim.enable = lib.mkEnableOption "vim";
     yazi.enable = lib.mkEnableOption "yazi";
     yt-dlp.enable = lib.mkEnableOption "yt-dlp";
@@ -99,6 +100,7 @@ in
       ./superfile.nix
       ./swww.nix
       ./tldr.nix
+      ./udiskie.nix
       ./vim.nix
       ./yazi.nix
       ./yt-dlp.nix

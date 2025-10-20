@@ -61,6 +61,8 @@ in
 
       "${nix-path}/modules/hm/secrets/secrets"
       "${nix-path}/modules/nixos/secrets/secrets"
+      "modules/hm/secrets/secrets/*"
+      "modules/nixos/secrets/secrets/*"
 
     ];
 

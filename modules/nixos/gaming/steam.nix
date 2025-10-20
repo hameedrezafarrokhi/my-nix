@@ -44,9 +44,17 @@
   programs.gamescope = {
     enable = true;
     capSysNice = true;
-   #env = {  };
+    env = {
+     #XDG_RUNTIME_DIR = "/run/user/1001";
+     #WAYLAND_DISPLAY = "wayland-1";
+     #DISPLAY = ":0";
+     #__NV_PRIME_RENDER_OFFLOAD = "1";
+     #__VK_LAYER_NV_optimus = "NVIDIA_only";
+     #__GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    };
    #args = [  ];
   };
+  security.wrappers.gamescope.capabilities = lib.mkForce "cap_sys_nice,cap_sys_admin+ep";
 
   programs.gamemode = {          # Command For Gamemode In Steam: gamemoderun %command%
     enable = true;               # OR Run This In Terminal; gamemoderun steam
