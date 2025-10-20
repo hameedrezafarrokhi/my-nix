@@ -159,7 +159,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][527][Applets][533][Configuration][General]
-savedAt=2025,10,5,3,1,58.929
+savedAt=2025,10,20,6,20,3.283
 
 [Containments][527][Applets][534]
 immutability=1
@@ -359,7 +359,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][527][Applets][538][Applets][555][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][527][Applets][538][Applets][575]
 immutability=1
