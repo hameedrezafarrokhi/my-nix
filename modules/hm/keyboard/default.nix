@@ -27,7 +27,13 @@ in
       layout = "us,ir";
      #model = ;
      #variant = ;
-     #options = ;
+      options = [
+
+       #"grp:caps_toggle"
+        "terminate:ctrl_alt_bksp"
+        "grp:alt_shift_space_toggle"
+
+      ];
 
     };
 

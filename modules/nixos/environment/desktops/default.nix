@@ -8,12 +8,18 @@ let
     extraGSettingsOverridePackages = config.services.xserver.desktopManager.cinnamon.extraGSettingsOverridePackages;
     extraGSettingsOverrides = config.services.xserver.desktopManager.cinnamon.extraGSettingsOverrides;
   };
+
   budgie-gsettings-overrides = pkgs.budgie-gsettings-overrides.override {
     inherit (config.services.xserver.desktopManager.budgie) extraGSettingsOverrides extraGSettingsOverridePackages;
     inherit nixos-background-dark nixos-background-light;
   };
   nixos-background-light = pkgs.nixos-artwork.wallpapers.nineish;
   nixos-background-dark = pkgs.nixos-artwork.wallpapers.nineish-dark-gray;
+
+  pantheon-gsettings-overrides = pkgs.pantheon.elementary-gsettings-schemas.override {
+    extraGSettingsOverridePackages = config.services.desktopManager.pantheon.extraGSettingsOverridePackages;
+    extraGSettingsOverrides = config.services.desktopManager.pantheon.extraGSettingsOverrides;
+  };
 
 in
 
@@ -39,7 +45,20 @@ in
 
      ]);
      default = [ ];
+  };
 
+  options.my.default-gnome-based-de = lib.mkOption {
+
+     type = lib.types.nullOr (lib.types.enum [
+
+       "cinnamon"
+       "mate"
+       "budgie"
+       "gnome"
+       "pantheon"
+
+     ]);
+     default = null;
   };
 
   imports = [
@@ -60,27 +79,32 @@ in
 
   ];
 
-  config = {
+  config =
 
-    # For Gnome Based DEs to Co-Exist, they have the same freakin line
-    # gnome.nixos-gsettings-overrides, mate.mate-gsettings-overrides, cinnamon-gsettings-overrides, budgie-gsettings-overrides
+    (lib.mkIf (config.my.default-gnome-based-de != null) { environment.sessionVariables = lib.mkMerge [
 
-    # GNOME (breaks Budgie, Cinnamon OK, MATE bad borders)
-    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${pkgs.gnome.nixos-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+      # For Gnome Based DEs to Co-Exist, they have the same freakin line
+      # gnome.nixos-gsettings-overrides, mate.mate-gsettings-overrides, cinnamon-gsettings-overrides, budgie-gsettings-overrides
 
-    # Budgie (i think budgie doesnt work properly with sddm, crashes (only works correct with lightdm and startx))
-   #environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+      # GNOME (breaks Budgie, Cinnamon OK, MATE bad borders)
+      (lib.mkIf (config.my.default-gnome-based-de == "gnome") { NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${pkgs.gnome.nixos-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";})
 
-    # Cinnamon (cinnamon(env) session works pretty fine with anything)
-   #environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+      # Budgie (i think budgie doesnt work properly with sddm, crashes (only works correct with lightdm and startx))
+      (lib.mkIf (config.my.default-gnome-based-de == "budgie") { NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";})
 
-    # MATE (same problem as budgie (only works correct with lightdm and startx) but doesnt crash, bad borders )
-   #environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+      # Cinnamon (cinnamon(env) session works pretty fine with anything)
+      (lib.mkIf (config.my.default-gnome-based-de == "cinnamon") { NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";})
 
+      # MATE (same problem as budgie (only works correct with lightdm and startx) but doesnt crash, bad borders )
+      (lib.mkIf (config.my.default-gnome-based-de == "mate") { NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";})
 
+      (lib.mkIf (config.my.default-gnome-based-de == "pantheon") { NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${pantheon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";})
 
+    ];})
 
+  ;
 
+}
 
    # NOT WORKING
 
@@ -158,6 +182,5 @@ in
    #  fi
    #'';
 
-  };
 
-}
+

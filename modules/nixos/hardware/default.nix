@@ -14,6 +14,7 @@
     ./sound
     ./keyboard
     ./libinput
+    ./touchegg
     ./dbus
     ./storage
     ./gamepads

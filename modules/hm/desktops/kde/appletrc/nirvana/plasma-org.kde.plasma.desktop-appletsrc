@@ -128,7 +128,7 @@ plugin=org.kde.plasma.weather
 
 [Containments][527][Applets][532][Configuration]
 PreloadWeight=100
-popupHeight=331
+popupHeight=304
 popupWidth=336
 
 [Containments][527][Applets][532][Configuration][ConfigDialog]
@@ -267,6 +267,9 @@ PreloadWeight=55
 immutability=1
 plugin=org.kde.plasma.devicenotifier
 
+[Containments][527][Applets][538][Applets][540][Configuration]
+PreloadWeight=65
+
 [Containments][527][Applets][538][Applets][541]
 immutability=1
 plugin=org.kde.plasma.manage-inputmethod
@@ -276,7 +279,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][527][Applets][538][Applets][542][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][527][Applets][538][Applets][543]
 immutability=1
@@ -359,7 +362,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][527][Applets][538][Applets][555][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][527][Applets][538][Applets][575]
 immutability=1

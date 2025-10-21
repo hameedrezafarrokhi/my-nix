@@ -31,6 +31,7 @@
       dbus.enable = true;
       fwupd.enable = true;
       libinput.enable = true;
+      touchegg.enable = true;
       keyboard = {
         enable = true;
        #xremap.enable = false;
@@ -58,28 +59,39 @@
     defaultSession = "plasma";
     desktops = [
 
+      # Wayland
       "plasma"
       "cosmic"
+
+      # Gnome-Based
       "cinnamon"
       "mate"
       "budgie"
-      "xfce"
-     #"lxqt"
-      "lumina"
-     #"retroarch"
-     #"cde"               # WARNING BROKEN    (build fail)
-     #"enlightenment"
      #"gnome" "pantheon"  # WARNING THE DEVIL
 
+      # X11
+      "xfce"
+      "lumina"
+     #"lxqt"
+     #"enlightenment"
+
+      # Misc
+     #"retroarch"
+     #"cde"               # WARNING BROKEN    (build fail)
+
     ];
+    default-gnome-based-de = "gnome";
     window-managers = [
 
+      # Wayland
       "hyprland" "niri"
-      "sway" "qtile" "dwl"
+      "sway" "qtile" "dwl" "mango"
       "labwc" "river" "wayfire"
-      "miracle-wm" "miriway"
-      "mango"
 
+      # Mir
+      "miracle-wm" "miriway"
+
+      # X11
       "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
       "i3" "spectrwm" "herbstluftwm" "dk"
       "dwm" "chadwm" "drew-wm" "titus-wm" "bread-wm"

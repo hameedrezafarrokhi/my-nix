@@ -23,9 +23,8 @@
       layout = config.home-manager.users.${admin}.home.keyboard.layout;
      #variant = "";
       # including layout switching. strings concatenated with ",". example"grp:caps_toggle,grp_led:scroll"
-     #options = ''
-     #  grp:alt_shift_bksp
-     #'';
+      options = "terminate:ctrl_alt_bksp,grp:alt_shift_space_toggle";
+     #options = [ "terminate:ctrl_alt_bksp", "grp:alt_shift_space_toggle" ];
      #model = "pc104";
      #dir = "${pkgs.xkeyboard_config}/etc/X11/xkb";
      #extraLayouts = {
