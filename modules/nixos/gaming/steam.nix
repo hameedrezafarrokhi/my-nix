@@ -20,11 +20,16 @@
     dedicatedServer.openFirewall = true;                  # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true;        # Open ports in the firewall for Steam Local Network Game Transfers
 
-    extraCompatPackages = with pkgs; [ proton-ge-bin proton-cachyos proton-ge-custom ];
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+      proton-cachyos
+     #proton-ge-custom
+    ];
     protontricks = {
       enable = true;
-      package = pkgs.protontricks;
+     #package = pkgs.protontricks;
     };
+
     extest.enable = true;                                 # Translate X11 input (e.g. for using Steam Input on Wayland)
 
     gamescopeSession = {
@@ -43,7 +48,7 @@
 
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+   #capSysNice = true;
     env = {
      #XDG_RUNTIME_DIR = "/run/user/1001";
      #WAYLAND_DISPLAY = "wayland-1";
@@ -54,7 +59,7 @@
     };
    #args = [  ];
   };
-  security.wrappers.gamescope.capabilities = lib.mkForce "cap_sys_nice,cap_sys_admin+ep";
+ #security.wrappers.gamescope.capabilities = lib.mkForce "cap_sys_nice,cap_sys_admin+ep"; # cap_sys_nice,cap_sys_admin+ep # cap_sys_nice+pie # cap_sys_nice,cap_sys_admin+pie
 
   programs.gamemode = {          # Command For Gamemode In Steam: gamemoderun %command%
     enable = true;               # OR Run This In Terminal; gamemoderun steam
@@ -74,7 +79,9 @@
   hardware.steam-hardware.enable = true;
 
   environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/steam/compatibilitytools.d"; };
+   #STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/steam/compatibilitytools.d";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.local/share/Steam/compatibilitytools.d";
+  };
 
  #home-manager.users.${admin} = {
  #  home.activation = {

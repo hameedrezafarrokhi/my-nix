@@ -1,15 +1,14 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.apps.lutris.enable) {
+{ config = lib.mkIf (config.my.apps.lutris.enable) {
 
   programs.lutris = {
     enable = true;
    #package = pkgs.lutris;
-    extraPackages = with pkgs; [ mangohud gamemode umu-launcher ]; # winetricks gamescope
+    extraPackages = with pkgs; [ mangohud gamemode umu-launcher ]; # winetricks #  gamescope
     protonPackages = [ pkgs.proton-ge-bin ];
-    steamPackage = pkgs.steam;
-    winePackages = [ pkgs.wineWowPackages.stagingFull ];
+   #steamPackage = pkgs.steam; # pkgs.streamlink is default
+   #winePackages = [ pkgs.wineWowPackages.stagingFull ]; # lutris Downloads wine on load anyways
    #runners = { # example:
    #  cemu.package = pkgs.cemu;
    #  pcsx2.config = {
@@ -19,5 +18,6 @@ config = lib.mkIf (config.my.apps.lutris.enable) {
    #};
   };
 
-};
-}
+  home.packages = [ pkgs.heroic ];
+
+};}

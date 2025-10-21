@@ -187,7 +187,7 @@ in
     };
   };
 
-  programs.steam.extraCompatPackages = [ proton-sarek-async ];
+ #programs.steam.extraCompatPackages = [ proton-sarek-async ];
  #home-manager.users.${admin} = {
  #  programs.lutris.protonPackages = [ proton-sarek-async ];
  #  home.activation = {

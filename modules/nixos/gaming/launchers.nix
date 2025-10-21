@@ -6,7 +6,7 @@
 
    #steam                         ##STEAM
    #steam-run                     ##STEAM hack for non-nix-packages
-    lutris                        ##Lutris launcher
+   #lutris                        ##Lutris launcher (in home-manager)
     heroic
    #(heroic.override {
    #  extraPkgs = pkgs: [
