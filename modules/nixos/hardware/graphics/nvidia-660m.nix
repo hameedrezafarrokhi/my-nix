@@ -12,8 +12,8 @@ in
 
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
-   #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];
-    kernelModules = [
+   #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];  # DOES NOTHING
+    kernelModules = [   # HANDLED BY NIXOS AND NVIDIA OPTIONS
    #  "nvidia"
    #  "nvidia_modeset"
    # #"nvidia_uvm"
@@ -21,15 +21,15 @@ in
    # #"nvidiafb"
    #  "i915"
     ];
-    kernelParams = [
-      "nvidia-drm.modeset=1"
+    kernelParams = [   # HANDLED BY NIXOS AND NVIDIA OPTIONS
+   #  "nvidia-drm.modeset=1"
      #"video=1366x768@60"
      #"fbcon=nodefer"
-      "nvidia.NVreg_preserveVideoMemoryAllocations=1" # DO NOT USE UNLESS NEEDED (ONLY TRY TO USE IF FSYNC DOESNT WORK)
+   #  "nvidia.NVreg_preserveVideoMemoryAllocations=1" # DO NOT USE UNLESS NEEDED (ONLY TRY TO USE IF FSYNC DOESNT WORK)
      #"module_blacklist=i915"                         # Causes Problem
     ];
     initrd.kernelModules = [
-   #  "nvidia"
+   #  "nvidia"           # WARNING CAUSES LONGER BOOT TIMES
       "i915"
    #  "nvidia_modeset"
    #  "nvidia_uvm"
@@ -113,7 +113,7 @@ in
       forceFullCompositionPipeline = false; # Not Usually Recommended (for screen tearing)
      #datacenter.enable = true;
       powerManagement = {
-        enable = false;                     # Experimental,can cause sleep/suspend fail.Enable if graphical issues or crashes after sleep
+        enable = true;                     # Experimental,can cause sleep/suspend fail.Enable if graphical issues or crashes after sleep
         finegrained = false;                # Experimental,Turns off GPU when not in use. ONLY works on Turing or newer
       };
 
@@ -170,9 +170,11 @@ in
     xserver = {
       videoDrivers = [
 
-        "nvidia"
-       #"i915"
-       #"modesetting"
+        "nvidia"         # WARNING NVIDIA SHOULD PREFERABLY BE THE ONLY ONE
+       #"i915"           # Adding i915 for intel wont break anything but not doing anything either!
+
+
+       #"modesetting"    # WARNING DO NOT USE MODSETTING AND FBDEV WITH NVIDIA
        #"fbdev"
 
       ];  # Load NVIDIA driver for Xorg and Wayland
