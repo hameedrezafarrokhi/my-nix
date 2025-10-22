@@ -12,14 +12,14 @@ in
 
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
-    extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];
+   #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];
     kernelModules = [
-      "nvidia"
-      "nvidia_modeset"
-      "nvidia_uvm"
-      "nvidia_drm"
-     #"nvidiafb"
-      "i915"
+   #  "nvidia"
+   #  "nvidia_modeset"
+   # #"nvidia_uvm"
+   #  "nvidia_drm"
+   # #"nvidiafb"
+   #  "i915"
     ];
     kernelParams = [
       "nvidia-drm.modeset=1"
@@ -29,11 +29,11 @@ in
      #"module_blacklist=i915"                         # Causes Problem
     ];
     initrd.kernelModules = [
-      "nvidia"
+   #  "nvidia"
       "i915"
-      "nvidia_modeset"
-      "nvidia_uvm"
-      "nvidia_drm"
+   #  "nvidia_modeset"
+   #  "nvidia_uvm"
+   #  "nvidia_drm"
     ];
   };
 
@@ -133,7 +133,7 @@ in
         offload = {                         # Offload is iGPU default and dGPU usage with "offload" command
             enable = true;
             enableOffloadCmd = config.hardware.nvidia.prime.offload.enable;
-            offloadCmdMainProgram = "no";   # default: "nvidia-offload"
+            offloadCmdMainProgram = "nvidia-run";   # default: "nvidia-offload"
         };
       };
     };
@@ -166,14 +166,18 @@ in
  #};
 
   services = {
+
     xserver = {
       videoDrivers = [
+
         "nvidia"
-        "i915"
-        "modesetting"
-        "fbdev"
+       #"i915"
+       #"modesetting"
+       #"fbdev"
+
       ];  # Load NVIDIA driver for Xorg and Wayland
     };
+
     lact = {                        # OverClocking GUI App
       enable = true;
       package = pkgs.lact;
@@ -196,6 +200,18 @@ in
  #    '';
  #  };
  #};
+
+  environment.systemPackages = [
+
+    (pkgs.writeShellScriptBin "no" ''
+      export __NV_PRIME_RENDER_OFFLOAD=1
+      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export __VK_LAYER_NV_optimus=NVIDIA_only
+      exec "$@"
+    '')
+
+  ];
 
 };}
 
