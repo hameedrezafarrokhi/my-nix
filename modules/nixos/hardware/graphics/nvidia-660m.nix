@@ -30,7 +30,7 @@ in
     ];
     initrd.kernelModules = [
    #  "nvidia"           # WARNING CAUSES LONGER BOOT TIMES
-      "i915"
+      "i915"             # for Correct early resolution intel available: amdgpu, i915, nouveau, (nvidia nvidia_modeset nvidia_uvm nvidia_drm) all togheter for nvidia
    #  "nvidia_modeset"
    #  "nvidia_uvm"
    #  "nvidia_drm"
@@ -39,15 +39,28 @@ in
 
   environment = {
    #variables = {};           # this is for system wide early boot services stuff
+
     sessionVariables = {      # this is for the session of the logged in user
 
-     #"GDK_BACKEND" = "x11";
      #GDK_BACKEND="x11";
-
       PROTON_DXVK_SAREK = 1;
 
-      LIBVA_DRIVER_NAME = "nvidia";     # "i915" "iHD" for intel, "nvidia" "nouveau" for nvidia, "radeonsi" for amd
-      VDPAU_DRIVER = "nvidia";          # "va_gl" fot intel, "radeonsi" for amd, "nouveau" "nvidia" for nvidia
+      # WARNING WARNING WARNING UNSET ALL IF ISSUES SHOW UP ( MESA HAS DEFAULTS ANYWAYS )
+
+      # VAAPI (nvidia is basically useless)
+      LIBVA_DRIVER_NAME = "i965";     # "i965" "iHD" for intel, "nvidia" "nouveau" for nvidia, "radeonsi" for amd
+
+      # VDPAU (nvidia is basically useless)
+      VDPAU_DRIVER = "va_gl";          # "va_gl" fot intel, "radeonsi" for amd, "nouveau" "nvidia" for nvidia
+
+      # VULKAN ( WARNING MAY BREAK APPS IN OLDER GPUs )
+      ANV_DEBUG = "video-decode,video-encode";       # For intel
+     #RADV_PERFTEST = "video_decode,video_encode";  # For AMD
+
+      # VULKAN DEVICE FOR HYBRIDS ( to see available devices: MESA_VK_DEVICE_SELECT=list vulkaninfo )
+      MESA_VK_DEVICE_SELECT = "10de:fd4";               # WARNING ONLY THIS DEVICE: 10de:fd4 for nvidia, 8086:166 for intel ( Using “vid:did!” will have the same effect as using the MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE variable )
+     #MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE = 1;   # Forces the default
+
      #DRI_PRIME = 1;                    # For Prime Hybrid Laptops
 
     };
@@ -62,41 +75,51 @@ in
      #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
       extraPackages = with pkgs; [ # (Nvidia-utils handles vaapi/vdpau)
 
-        libva-vdpau-driver                    # Vdpau For Hybrid Nvidia
-        libva                                 # Vaapi/Vdpau libs
-        libvdpau                              # Vaapi/Vdpau libs
+        # General Libs (not neede)
+       #libva-vdpau-driver                    # Vdpau For Hybrid Nvidia
+       #libva                                 # Vaapi/Vdpau libs
+       #libvdpau                              # Vaapi/Vdpau libs
 
+        # Nvidia VAAPI (useless)
+       #nvidia-vaapi-driver                   # CUDA based Translation for VAAPI
 
-        nvidia-vaapi-driver                   # CUDA based Translation for VAAPI
+        # Intel VAAPI
+        (intel-vaapi-driver.override {        # Old intel
+          enableHybridCodec = true; })
+       #intel-media-driver                    # New intel
+
+        # Intel VDPAU
         libvdpau-va-gl                        # VDPAU Driver with OpenGL/VAAPI Backend
 
+        # Intel VPL
+       #intel-compute-runtime
+     #  libvpl
+     #  vpl-gpu-rt
+     #  intel-compute-runtime-legacy1
+       #intel-media-sdk                       # WARNING BROKEN AND INSECURE AND LEGACY :)
 
-        intel-vaapi-driver                    # Intel VAAPI
-     #  intel-media-driver
+        # Intel OCL
+     #  intel-ocl                             # Intel OCL
 
-     #  intel-compute-runtime                 # Intel VPL
-        libvpl
-        vpl-gpu-rt
-        intel-compute-runtime-legacy1
-     #  intel-media-sdk                       # WARNING BROKEN AND INSECURE AND LEGACY :)
+        # General OCL # OpenCL:(Not Needed/Works with Nvidia-utils/CHOOSE_ONLY_ONE)
+     #  ocl-icd                               #StandAlone OpenCL For All!
+       #khronos-ocl-icd-loader                #Khronos StandAlone OpenCL For All!
+       #pocl                                  #LLVM Based/Hardware Indipendent
 
-        intel-ocl                             # Intel OCL
+       # Intel VULKAN ( NOT NEEDED, IN MESA )
+       #vulkan-loader                        # LunarG Vulkan loader
+       #vulkan-validation-layers             # Official Khronos Vulkan validation layers
 
-
-        # OpenCL:(Not Needed/Works with Nvidia-utils/CHOOSE_ONLY_ONE)
-        ocl-icd                               #StandAlone OpenCL For All!
-     # #khronos-ocl-icd-loader                #Khronos StandAlone OpenCL For All!
-     # #pocl                                  #LLVM Based/Hardware Indipendent
-
-        vulkan-loader                        # LunarG Vulkan loader
-        vulkan-validation-layers             # Official Khronos Vulkan validation layers
       ] ++
-      [ mypkgs.stable.intel-media-sdk ];
+      [
+        mypkgs.stable.intel-media-sdk
+      ];
+
       enable32Bit = true;
      #package32 = ;
       extraPackages32 = with pkgs.pkgsi686Linux; [
-        nvidia-vaapi-driver
-        libva-vdpau-driver
+       #nvidia-vaapi-driver
+       #libva-vdpau-driver
         intel-vaapi-driver                    # Intel CPU Graphics
         libvdpau-va-gl                        # Intel CPU Graphics
       ];
