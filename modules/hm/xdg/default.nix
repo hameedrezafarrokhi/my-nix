@@ -112,8 +112,8 @@ in
             "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
           };
           kde = {
-            default = ["kde"];
-            "org.freedesktop.impl.portal.Secret" = ["kwallet"];
+            default = ["kde" "gnome-keyring"];
+            "org.freedesktop.impl.portal.Secret" = ["kwallet" "gnome-keyring"];
             "org.freedesktop.impl.portal.Settings" = ["kde" "gtk"];
           };
         };

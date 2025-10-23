@@ -37,20 +37,21 @@ in
     ];
   };
 
- #environment = {
- #  variables = {};           # this is for system wide early boot services stuff
- #  sessionVariables = {      # this is for the session of the logged in user
- #   #"GDK_BACKEND" = "x11";
- #   #GDK_BACKEND="x11";
- #
- #    LIBVA_DRIVER_NAME = "nvidia";     # "i915" "iHD" for intel, "nvidia" "nouveau" for nvidia, "radeonsi" for amd
- #
- #    VDPAU_DRIVER = "nvidia";          # "va_gl" fot intel, "radeonsi" for amd, "nouveau" "nvidia" for nvidia
- #    DRI_PRIME = 1;                    # For Prime Hybrid Laptops
- #
- #
- #  };
- #};
+  environment = {
+   #variables = {};           # this is for system wide early boot services stuff
+    sessionVariables = {      # this is for the session of the logged in user
+
+     #"GDK_BACKEND" = "x11";
+     #GDK_BACKEND="x11";
+
+      PROTON_DXVK_SAREK = 1;
+
+      LIBVA_DRIVER_NAME = "nvidia";     # "i915" "iHD" for intel, "nvidia" "nouveau" for nvidia, "radeonsi" for amd
+      VDPAU_DRIVER = "nvidia";          # "va_gl" fot intel, "radeonsi" for amd, "nouveau" "nvidia" for nvidia
+     #DRI_PRIME = 1;                    # For Prime Hybrid Laptops
+
+    };
+  };
 
   hardware = {
 
