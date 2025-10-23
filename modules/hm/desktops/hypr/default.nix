@@ -223,6 +223,7 @@ in
     ./hyprland-dms.nix
     ./hyprland-ax.nix
     ./hyprland-ashell.nix
+    ./hyprland-exo.nix
 
   ];
 

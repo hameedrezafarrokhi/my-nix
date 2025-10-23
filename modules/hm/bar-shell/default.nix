@@ -21,6 +21,7 @@ in
        "polybar"
        "tint2"
        "trayer"
+       "ignis"
 
      ]);
      default = [ ];
@@ -38,6 +39,7 @@ in
     ./tint2.nix
     ./trayer.nix
     ./ashell.nix
+    ./ignis.nix
 
   ];
 

@@ -64,6 +64,9 @@
           # ax-shell = { url = "github:Axenide/Ax-Shell";
           #                     flake = false; };
 
+               ignis = { url = "github:ignis-sh/ignis";
+                               inputs.nixpkgs.follows = "nixpkgs"; };
+
                mango = { url = "github:DreamMaoMao/mango";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
@@ -141,6 +144,7 @@
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
               inputs.ax-shell.homeManagerModules.default
               inputs.mango.hmModules.mango
+              inputs.ignis.homeManagerModules.default
               (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
             ];
           };
@@ -207,6 +211,7 @@
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
             inputs.ax-shell.homeManagerModules.default
             inputs.mango.hmModules.mango
+            inputs.ignis.homeManagerModules.default
             (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
       ];
     };

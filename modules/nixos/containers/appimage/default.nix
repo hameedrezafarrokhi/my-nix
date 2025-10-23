@@ -29,3 +29,5 @@ in
   };
 
 }
+
+ # For QT apps that wont run: QT_PLUGIN_PATH= appimage-run DuckStation-x64.appimage
