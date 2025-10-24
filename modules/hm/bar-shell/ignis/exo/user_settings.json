@@ -1,0 +1,46 @@
+{
+    "appearance": {
+        "wallcolors": {
+            "color_scheme": "tonal-spot",
+            "wallpaper_path": "/home/hrf/Pictures/Wallpapers/astronaut-macchiato.png",
+            "auto_dark": {}
+        }
+    },
+    "interface": {
+        "modules": {
+            "location": {},
+            "visibility": {
+                "launcher": true,
+                "tasks": true
+            },
+            "bar_id": {
+                "tasks": 1,
+                "launcher": 0
+            },
+            "options": {
+                "workspaces_style": "windows",
+                "fixed_workspaces_amount": 10
+            }
+        },
+        "bar": {
+            "side": "top",
+            "density": 0,
+            "floating": false,
+            "vertical": false
+        },
+        "bar2": {
+            "side": "bottom",
+            "density": 2,
+            "enabled": true,
+            "floating": false,
+            "vertical": false
+        },
+        "notifications": {},
+        "launcher": {},
+        "misc": {}
+    },
+    "services": {
+        "recorder": {},
+        "osd": {}
+    }
+}
