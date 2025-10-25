@@ -163,4 +163,19 @@
 
   };
 
+  programs = {
+
+   #openvpn3 = {
+   #  enable = true;
+   #  package= pkgs.openvpn3;
+   #};
+   #amnezia-vpn = {
+   #  enable = true;
+   #  package = pkgs.amnezia-vpn;
+   #};
+   #appgate-sdp.enable = true;
+   #haguichi.enable = true;
+
+  };
+
 };}

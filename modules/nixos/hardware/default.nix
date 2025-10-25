@@ -26,6 +26,7 @@
     ./cd
     ./screen
     ./rgb
+    ./android
 
   ];
 

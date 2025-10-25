@@ -18,6 +18,7 @@ in
     nm-applet.enable  = lib.mkEnableOption "nm-applet";
     nfs.enable  = lib.mkEnableOption "nfs";
     torrent.enable  = lib.mkEnableOption "torrent services";
+    tools.enable  = lib.mkEnableOption "networking tools";
 
   };
 
@@ -31,6 +32,7 @@ in
     ./nm-applet.nix
     ./nfs.nix
     ./torrent.nix
+    ./tools.nix
 
   ];
 

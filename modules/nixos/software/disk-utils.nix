@@ -28,4 +28,15 @@ config = lib.mkIf (config.my.software.disk-utils.enable) {
 
   config.my.software.disk-utils.include;
 
+  programs = {
+
+    gnome-disks.enable = true;
+
+    partition-manager = {
+      enable = true;
+      package = lib.mkForce pkgs.kdePackages.partitionmanager;
+    };
+
+  };
+
 };}

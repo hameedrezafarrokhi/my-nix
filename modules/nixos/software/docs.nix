@@ -47,4 +47,29 @@
 
   config.my.software.docs.include;
 
+  programs = {
+
+    vim = {
+      enable = true;
+      package = pkgs.vim-full;
+      defaultEditor = false;
+    };
+
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+      withNodeJs = false;
+      withPython3 = true;
+      withRuby = true;
+      defaultEditor = true;
+     #configure = { };
+      viAlias = false;
+      vimAlias = false;
+     #runtime = { };
+    };
+
+    evince.enable = true;
+
+  };
+
 };}

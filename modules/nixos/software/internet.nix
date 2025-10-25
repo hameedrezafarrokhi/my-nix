@@ -55,4 +55,47 @@
 
   config.my.software.internet.include;
 
+  programs = {
+
+    firefox = {
+      enable = true;
+      package = pkgs.firefox;
+      languagePacks = [ "en-US" "fa" ];
+      nativeMessagingHosts = {
+        packages = [ pkgs.uget-integrator pkgs.ff2mpv ];
+       #ugetIntegrator = true;
+       #tridactyl = true;
+       #passff = true;
+       #jabref = true;
+       #gsconnect = true;
+       #fxCast = true;
+       #euwebid = true;
+       #bukubrow = true;
+       #browserpass = true;
+       #ff2mpv = true;
+      };
+     #autoConfig = ""
+     #autoConfigFiles = [ ];
+     #preferencesStatus = "locked"; # one of "default", "locked", "user", "clear"
+     #preferences = {
+     #  "browser.tabs.tabmanager.enabled" = false;
+     #};
+     #policies = { };
+    };
+
+    chromium = {
+      enable = true;
+      enablePlasmaBrowserIntegration = true;
+      plasmaBrowserIntegrationPackage = lib.mkForce pkgs.kdePackages.plasma-browser-integration;
+    };
+
+   #ladybird.enable = true;
+
+   #evolution = {
+   #  enable = true;
+   # #plugin = [ pkgs.evolution-ews ];
+   #};
+
+  };
+
 };}

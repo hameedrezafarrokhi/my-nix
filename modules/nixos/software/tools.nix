@@ -120,4 +120,14 @@
    #++ [(pkgs.callPackage ../myPackages/run-widget.nix { })]
   ;
 
+  programs = {
+
+    java = {      #For Minecraft
+      enable = true;
+      binfmt = true;
+     #package = pkgs.jdk;
+    };
+
+  };
+
 };}

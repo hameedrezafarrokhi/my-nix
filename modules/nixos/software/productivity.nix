@@ -1,4 +1,4 @@
-{ config, lib, pkgs, utils, ... }:
+{ config, lib, pkgs, utils, admin, ... }:
 
 { config = lib.mkIf (config.my.software.productivity.enable) {
 
@@ -43,5 +43,21 @@
    ++
 
   config.my.software.productivity.include;
+
+  programs = {
+
+    obs-studio = {
+      enable = true;
+      package = config.home-manager.users.${admin}.programs.obs-studio.package;
+      plugins = config.home-manager.users.${admin}.programs.obs-studio.plugins;
+      enableVirtualCamera = true;
+    };
+
+    gpu-screen-recorder = {
+      enable = true;
+      package = pkgs.gpu-screen-recorder;
+    };
+
+  };
 
 };}

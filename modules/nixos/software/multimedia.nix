@@ -30,6 +30,7 @@
     parlatype                     ##Another Gnome Music Player
 
     spotify                       ##Spotify Client (unofficial)
+    spotdl                        ##Spotify Downloader
     monophony                     ##Online music player
     mousai                        ##Shazam for linux
     shortwave                     ##Online radio

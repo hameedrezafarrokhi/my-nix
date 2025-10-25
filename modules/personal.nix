@@ -47,6 +47,7 @@
       cd.enable = false;
       screen.enable = true;
       rgb.enable = true;
+      android.enable = true;
     };
 
     tty = {
@@ -126,6 +127,7 @@
       nm-applet.enable = true;
       nfs.enable = true;
       torrent.enable = false;
+      tools.enable = true;
     };
 
     services.enable = true;
@@ -175,16 +177,9 @@
     systemTheme = config.home-manager.users.${admin}.my.theme;
 
     software = {
-      programs.enable = true;
-
       ai = {
         enable = true;
         exclude = with pkgs; [ gpt4all gpt4all-cuda chatd aichat yai ];
-        include = with pkgs; [ ];
-      };
-      connectivity = {
-        enable = true;
-        exclude = with pkgs; [ ];
         include = with pkgs; [ ];
       };
       codecs = {

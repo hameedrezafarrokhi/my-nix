@@ -19,9 +19,11 @@
     shellInitLast = '' '';
     shellInit = '' '';
 
+    # ${lib.getExe mypkgs.stable.fastfetch} --gpu-hide-type Integrated --logo-height 5  --logo-color-1 blue --logo-color-2 white --logo-padding-top 2 --logo-padding-left 46
+
     interactiveShellInit = ''
 
-      ${lib.getExe mypkgs.stable.fastfetch} --gpu-hide-type Integrated --logo-height 5  --logo-color-1 blue --logo-color-2 white --logo-padding-top 2 --logo-padding-left 46
+      ${lib.getExe pkgs.microfetch}
 
       set -g fish_greeting
 

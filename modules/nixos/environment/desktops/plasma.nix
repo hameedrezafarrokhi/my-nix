@@ -56,6 +56,17 @@
    #];
   };
 
+  programs = {
+
+    kde-pim = {
+      enable = false;
+      kmail = true;
+      kontact = true;
+      merkuro = true;
+    };
+
+  };
+
  #systemd.user.services.plasma-dolphin = {
  #  description = "Dolphin file manager";
  #  partOf = ["graphical-session.target"];

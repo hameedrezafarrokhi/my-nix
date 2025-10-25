@@ -10,9 +10,6 @@ in
 
   options.my.software = {
 
-    programs.enable = lib.mkEnableOption "options from programs";
-    services.enable = lib.mkEnableOption "options from services";
-
     ai = {
       enable = lib.mkEnableOption "ai softwares";
       exclude = lib.mkOption { default = [ ]; type = lib.types.listOf lib.types.package; };
@@ -30,11 +27,6 @@ in
     };
     codecs = {
       enable = lib.mkEnableOption "various codecs";
-      exclude = lib.mkOption { default = [ ]; type = lib.types.listOf lib.types.package; };
-      include = lib.mkOption { default = [ ]; type = lib.types.listOf lib.types.package; };
-    };
-    connectivity = {
-      enable = lib.mkEnableOption "connectivity tools";
       exclude = lib.mkOption { default = [ ]; type = lib.types.listOf lib.types.package; };
       include = lib.mkOption { default = [ ]; type = lib.types.listOf lib.types.package; };
     };
@@ -123,13 +115,10 @@ in
 
   imports = [
 
-    ./programs.nix
-
     ./ai.nix
     ./audio-control.nix
     ./basic-cli.nix
     ./codecs.nix
-    ./connectivity.nix
     ./daw.nix
     ./disk-utils.nix
     ./docs.nix

@@ -19,7 +19,7 @@
         xfce.thunar-volman
       ];
     })
-   #krusader                      ##Complex filemanager
+    krusader                      ##Complex filemanager
    #pcmanfm                       ##LXQT filemanager
     lf                            ##CLI filemanager
     fff                           ##CLI filemanager
@@ -45,5 +45,32 @@
    ++
 
   config.my.software.files.include;
+
+  programs = {
+
+    yazi = {
+      enable = true;
+      package = pkgs.yazi;
+      plugins = { inherit (pkgs.yaziPlugins.starship); };
+     #initLua = ./  .lua;
+     #flavors = {};
+     #settings = {
+     #  yazi = {};
+     #  keymap = {};
+     #  theme = {};
+     #};
+    };
+
+    nautilus-open-any-terminal = {
+      enable = true;
+      terminal = config.my.default.terminal;
+    };
+
+    file-roller = {
+      enable = true;
+      package = pkgs.file-roller;
+    };
+
+  };
 
 };}

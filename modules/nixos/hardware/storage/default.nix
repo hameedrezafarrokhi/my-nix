@@ -53,6 +53,10 @@ in
     # gracefully shutdown HDDs during reboot/shutdwon
     hardware.usbStorage.manageShutdown = true;
 
+    programs = {
+      usbtop.enable = true; #btop for usb and bus bandwidth
+    };
+
     environment.systemPackages = with pkgs; [
 
       ntfs3g                        ##Protocol for NTFS

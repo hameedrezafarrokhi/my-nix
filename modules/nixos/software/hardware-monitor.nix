@@ -6,6 +6,9 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
+   #htop                          ##System monitor cli
+   #btop
+
     mission-center                ##Mission control center
     resources                     ##Mission control center
     monitorets                    ##System monitor widgets
@@ -21,5 +24,15 @@
    ++
 
   config.my.software.hardware-monitor.include;
+
+  programs = {
+
+    htop = {
+      enable = true;
+      package = pkgs.htop;
+     #settings = {};
+    };
+
+  };
 
 };}

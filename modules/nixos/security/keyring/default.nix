@@ -18,6 +18,25 @@ in
 
     };
 
+    programs = {
+
+      gnupg = {
+        package = pkgs.gnupg;
+        dirmngr.enable = true;
+       #settings = { };
+        agent = {
+          enable = true;
+          pinentryPackage = pkgs.pinentry-qt;
+          enableExtraSocket = true;
+          enableBrowserSocket = true;
+          enableSSHSupport = true;
+        };
+      };
+
+      seahorse.enable = true;
+
+    };
+
   };
 
 }
