@@ -1,14 +1,18 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.connectivity.enable) {
+{ config = lib.mkIf (config.my.software.connectivity.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     scrcpy                        ##Andriod screen mirror
     qtscrcpy
 
-  ];
+  ] ) config.my.software.connectivity.exclude)
 
-};
-}
+   ++
+
+  config.my.software.connectivity.include;
+
+};}

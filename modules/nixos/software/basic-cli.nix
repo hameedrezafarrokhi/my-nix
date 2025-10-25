@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.basic-cli.enable) {
+{ config = lib.mkIf (config.my.software.basic-cli.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
    #vim                           ##Text editor
    #neovim                        ##Text editor
@@ -45,7 +46,10 @@ config = lib.mkIf (config.my.software.basic-cli.enable) {
     eza
     lsd
 
-  ];
+  ] ) config.my.software.basic-cli.exclude)
 
-};
-}
+   ++
+
+  config.my.software.basic-cli.include;
+
+};}

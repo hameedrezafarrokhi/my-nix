@@ -17,6 +17,7 @@ in
     avahi.enable  = lib.mkEnableOption "avahi mDNS things";
     nm-applet.enable  = lib.mkEnableOption "nm-applet";
     nfs.enable  = lib.mkEnableOption "nfs";
+    torrent.enable  = lib.mkEnableOption "torrent services";
 
   };
 
@@ -29,6 +30,7 @@ in
     ./avahi.nix
     ./nm-applet.nix
     ./nfs.nix
+    ./torrent.nix
 
   ];
 

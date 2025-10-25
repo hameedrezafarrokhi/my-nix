@@ -1,8 +1,10 @@
-{ config, lib, pkgs, mypkgs, ... }:
+{ config, lib, pkgs, mypkgs, utils, ... }:
 
 { config = lib.mkIf (config.my.software.codecs.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     ffmpeg-full
    #((ffmpeg-full.override {
@@ -43,7 +45,14 @@
     gst_all_1.gst-libav
     gst_all_1.gst-vaapi
 
-  ] ++
+  ] ) config.my.software.codecs.exclude)
+
+   ++
+
+  config.my.software.codecs.include
+
+   ++
+
   [
     mypkgs.stable.previewqt
   ];

@@ -23,6 +23,14 @@ in
 
     ];
 
+   #services = {
+   #  rsyncd = {
+   #    enable = true;
+   #   #port = 873;
+   #   #settings = {};
+   #   #socketActivated = false;
+   #  };
+   #};
 
   };
 

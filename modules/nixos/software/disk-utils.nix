@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
 {
 config = lib.mkIf (config.my.software.disk-utils.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     gparted                       ##Partitioning tool
     gnome-disk-utility            ##Partitioning tool (Gnome)
@@ -20,7 +22,10 @@ config = lib.mkIf (config.my.software.disk-utils.enable) {
    #ventoy-full-qt
    #ventoy-full-gtk
 
-  ];
+  ] ) config.my.software.disk-utils.exclude)
 
-};
-}
+   ++
+
+  config.my.software.disk-utils.include;
+
+};}

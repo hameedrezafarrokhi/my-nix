@@ -1,8 +1,10 @@
-{ config, lib, pkgs, mypkgs, ... }:
+{ config, lib, pkgs, mypkgs, utils, ... }:
 
 { config = lib.mkIf (config.my.software.theming.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     base16-schemes
     base16-shell-preview
@@ -55,12 +57,16 @@
     # GRUB Themes
    #catppuccin-grub
 
-  ]
+  ] ) config.my.software.theming.exclude)
 
-++[
+   ++
+
+  config.my.software.theming.include
+
+   ++
+
+  [
     mypkgs.stable.gradience                     ##Theming for gtk2/3/4
-  ]
-
-  ;
+  ];
 
 };}

@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
 { config = lib.mkIf (config.my.software.productivity.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
    #krita                         ##Drawing app
    #drawing                       ##Drawing app
@@ -36,6 +38,10 @@
    #minder                        ##Create Plans
    #planify                       ##Create Plans
 
-  ];
+  ] ) config.my.software.productivity.exclude)
+
+   ++
+
+  config.my.software.productivity.include;
 
 };}

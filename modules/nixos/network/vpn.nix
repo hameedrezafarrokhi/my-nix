@@ -84,4 +84,83 @@
  #  };
  #};
 
+  services = {
+
+   #openvpn.enable = true;              #LOOOTS of Options and import protonvpn sftuff
+
+   #mozillavpn.enable = true;
+
+   #mullvad-vpn.enable = true;
+    cloudflare-warp = {
+      enable = true;
+      package = pkgs.cloudflare-warp;
+      rootDir = "/var/lib/cloudflare-warp";
+      openFirewall = true;
+      udpPort = 2408;
+    };
+
+   #windscribe = {
+   #  enable = true;
+   #  autoStart = true;
+   #};
+
+   #snowflake-proxy = {
+   #  enable = true;
+   # #stun = “stun:stun.stunprotocol.org:3478”;
+   # #relay =  “wss://snowflake.bamsoftware.com/”;
+   # #broker = “https://snowflake-broker.torproject.net/”;
+   # #capacity = ;
+   #};
+
+   #softether = {
+   #  enable = true;
+   #  package = pkgs.softether;
+   #  dataDir = "/var/lib/softether";
+   #  vpnserver.enable = true;
+   #  vpnbridge.enable = true;
+   #  vpnclient = {
+   #    enable = true;
+   #   #up = "";
+   #   #down = "";
+   #  };
+   #};
+
+   #logmein-hamachi.enable = false;
+
+   #ivpn.enable = true;
+
+   #expressvpn.enable = true;
+
+   #v2ray = {
+   #  enable = true;
+   #  package = pkgs.v2ray;
+   # #config = {};           #Either config or configFile SHOULD BE SET
+   # #configFile = "";
+   #};
+
+   #v2raya = {
+   #  enable = true;
+   #  package = pkgs.v2raya;
+   #  cliPackage = pkgs.v2ray; # Or pkgs.xray
+   #};
+
+   #xray = {
+   #  enable = true;
+   #  package = pkgs.xray;
+   # #settingsFile = "";
+   #  settings = {};
+   #};
+
+   #libreswan = {
+   #  enable = true;
+   # #disableRedirects = true;
+   # #connections = {};
+   # #configSetup = '' '';
+   # #policies = {};
+   #};
+
+   #shadowsocks = {};
+
+  };
+
 };}

@@ -1,9 +1,10 @@
-{ config, lib, pkgs, mypkgs, ... }:
+{ config, lib, pkgs, mypkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.peripherals.enable) {
+{ config = lib.mkIf (config.my.software.peripherals.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
    #kdePackages.kdeconnect-kde    ##KDE mobile connect
 
@@ -31,11 +32,17 @@ config = lib.mkIf (config.my.software.peripherals.enable) {
 
     displaycal                    ##Display Calibration Tool
 
-  ] ++
+  ] ) config.my.software.peripherals.exclude)
+
+   ++
+
+  config.my.software.peripherals.include
+
+   ++
+
   [
     mypkgs.stable.qjoypad
     mypkgs.stable.jstest-gtk
   ];
 
-};
-}
+};}

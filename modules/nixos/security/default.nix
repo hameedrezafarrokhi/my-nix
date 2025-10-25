@@ -8,6 +8,7 @@
     ./sudo
     ./pam
     ./tpm
+    ./keyring
 
   ];
 

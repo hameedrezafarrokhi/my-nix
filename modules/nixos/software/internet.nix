@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.internet.enable) {
+{ config = lib.mkIf (config.my.software.internet.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     brave                         ##Chromium spin
    #firefox                       ##Its just Firefox
@@ -48,7 +49,10 @@ config = lib.mkIf (config.my.software.internet.enable) {
     video-downloader
     media-downloader
 
-  ];
+  ] ) config.my.software.internet.exclude)
 
-};
-}
+   ++
+
+  config.my.software.internet.include;
+
+};}

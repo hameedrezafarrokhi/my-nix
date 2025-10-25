@@ -9,6 +9,9 @@
     ./font
     ./console
     ./systemd
+    ./tasks
+    ./search
+    ./services
 
   ];
 

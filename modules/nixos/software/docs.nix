@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.docs.enable) {
+{ config = lib.mkIf (config.my.software.docs.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
    #libreoffice-qt6-fresh         ##Office (qt/kde unwrapped)
    #libreoffice-fresh             ##Office (rolling)
@@ -40,7 +41,10 @@ config = lib.mkIf (config.my.software.docs.enable) {
     morphosis                     ##Convert docs
     gnome-frog                    ##PDF/img text extractor
 
-  ];
+  ] ) config.my.software.docs.exclude)
 
-};
-}
+   ++
+
+  config.my.software.docs.include;
+
+};}

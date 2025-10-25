@@ -1,8 +1,10 @@
-{ config, lib, pkgs, mypkgs, ... }:
+{ config, lib, pkgs, mypkgs, utils, ... }:
 
 { config = lib.mkIf (config.my.software.tools.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     onboard                       ##Onscreen keyboard
 
@@ -90,7 +92,14 @@
     feishin
    #CuboCore.coretime
 
-  ] ++
+  ] ) config.my.software.tools.exclude)
+
+   ++
+
+  config.my.software.tools.include
+
+   ++
+
   [
     mypkgs.stable.ulauncher
     mypkgs.stable.CuboCore.coretime

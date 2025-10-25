@@ -36,6 +36,8 @@
      #};
     };
 
+   #buffyboard.enable = true;           # Virtual Keyboard (More Options)
+
   };
 
 }

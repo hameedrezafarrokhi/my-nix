@@ -1,9 +1,10 @@
-{ config, lib, pkgs, mypkgs, ... }:
+{ config, lib, pkgs, mypkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.fetch.enable) {
+{ config = lib.mkIf (config.my.software.fetch.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     neofetch                      ##Fetch script
    #fastfetch                     ##Fetch script
@@ -37,11 +38,14 @@ config = lib.mkIf (config.my.software.fetch.enable) {
     bfetch
     afetch
 
-  ] ++
+  ] ) config.my.software.fetch.exclude)
 
-  [ mypkgs.stable.fastfetch ]
+   ++
 
-  ;
+  config.my.software.fetch.include
 
-};
-}
+   ++
+
+  [ mypkgs.stable.fastfetch ];
+
+};}

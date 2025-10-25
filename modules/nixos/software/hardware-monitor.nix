@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.hardware-monitor.enable) {
+{ config = lib.mkIf (config.my.software.hardware-monitor.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     mission-center                ##Mission control center
     resources                     ##Mission control center
@@ -15,7 +16,10 @@ config = lib.mkIf (config.my.software.hardware-monitor.enable) {
     gpu-viewer                    ##View gpu drivers
     glxinfo
 
-  ];
+  ] ) config.my.software.hardware-monitor.exclude)
 
-};
-}
+   ++
+
+  config.my.software.hardware-monitor.include;
+
+};}

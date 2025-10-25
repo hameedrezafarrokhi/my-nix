@@ -24,6 +24,8 @@
     ./mounts
     ./power
     ./cd
+    ./screen
+    ./rgb
 
   ];
 

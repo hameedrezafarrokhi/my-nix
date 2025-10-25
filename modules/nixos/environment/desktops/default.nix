@@ -42,6 +42,7 @@ in
        "gnome"
        "pantheon"
        "cde"
+       "retroarch"
 
      ]);
      default = [ ];

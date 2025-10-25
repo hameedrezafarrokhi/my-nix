@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
 { config = lib.mkIf (config.my.software.wine.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
    #wine-staging
 
@@ -21,6 +23,10 @@
    #winetricks                    ## Winetricks stuff
    #bottles                       ## Run windows app/games
 
-  ];
+  ] ) config.my.software.wine.exclude)
+
+   ++
+
+  config.my.software.wine.include;
 
 };}

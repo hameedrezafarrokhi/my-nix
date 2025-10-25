@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.multimedia.enable) {
+{ config = lib.mkIf (config.my.software.multimedia.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
   ############################################################   VIDEO_PLAYER
 
@@ -54,7 +55,10 @@ config = lib.mkIf (config.my.software.multimedia.enable) {
     switcheroo                    ##Image Conversion
     converseen                    ##Bulk image editor
 
-  ];
+  ] ) config.my.software.multimedia.exclude)
 
-};
-}
+   ++
+
+  config.my.software.multimedia.include;
+
+};}

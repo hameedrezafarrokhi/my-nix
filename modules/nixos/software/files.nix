@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.files.enable) {
+{ config = lib.mkIf (config.my.software.files.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     kdePackages.dolphin
     kdePackages.dolphin-plugins
@@ -39,7 +40,10 @@ config = lib.mkIf (config.my.software.files.enable) {
     unzip                         ##ZIP protocol
     file                          ##file utility like mime type finder
 
-  ];
+  ] ) config.my.software.files.exclude)
 
-};
-}
+   ++
+
+  config.my.software.files.include;
+
+};}

@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.daw.enable) {
+{ config = lib.mkIf (config.my.software.daw.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     solfege                       ##Learn music
     timidity
@@ -28,7 +29,10 @@ config = lib.mkIf (config.my.software.daw.enable) {
    #sooperlooper
    #calf
 
-  ];
+  ] ) config.my.software.daw.exclude)
 
-};
-}
+   ++
+
+  config.my.software.daw.include;
+
+};}

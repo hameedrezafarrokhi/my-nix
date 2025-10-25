@@ -45,6 +45,8 @@
         upower.enable = false;
       };
       cd.enable = false;
+      screen.enable = true;
+      rgb.enable = true;
     };
 
     tty = {
@@ -112,6 +114,7 @@
       polkit.enable = true;
       pam.enable = true;
       tpm.enable = true;
+      keyring.enable = true;
     };
 
     network = {
@@ -122,12 +125,18 @@
       avahi.enable = true;
       nm-applet.enable = true;
       nfs.enable = true;
+      torrent.enable = false;
     };
+
+    services.enable = true;
 
     locale = "en_US.UTF-8";
     geoclue.enable = true;
     timeZone = "Asia/Tehran";
     fonts.enable = true;
+
+    tasks.enable = false;
+    search.enable = true;
 
     user = {
       enable = true;
@@ -167,29 +176,112 @@
 
     software = {
       programs.enable = true;
-      services.enable = true;
 
-      connectivity.enable = true;
-      codecs.enable = true;
-      internet.enable = true;
-      multimedia.enable = true;
-      wallpaper.enable = true;
-      disk-utils.enable = true;
-      files.enable = true;
-      docs.enable = true;
-      tools.enable = true;
-      audio-control.enable = true;
-      daw.enable = true;
-      productivity.enable = true;
-      fetch.enable = true;
-      basic-cli.enable = true;
-      terminals.enable = true;
-      wine.enable = true;
-      hardware-monitor.enable = true;
-      peripherals.enable = true;
-      social.enable = true;
-      ai.enable = true;
-      theming.enable = true;
+      ai = {
+        enable = true;
+        exclude = with pkgs; [ gpt4all gpt4all-cuda chatd aichat yai ];
+        include = with pkgs; [ ];
+      };
+      connectivity = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      codecs = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      internet = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      multimedia = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      wallpaper = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      disk-utils = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      files = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      docs = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      tools = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      audio-control = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      daw = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      productivity = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      fetch = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      basic-cli = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      terminals = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      wine = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      hardware-monitor = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      peripherals = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      social = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
+      theming = {
+        enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
+      };
     };
 
     gaming = {

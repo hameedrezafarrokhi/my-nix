@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
-{
-config = lib.mkIf (config.my.software.terminals.enable) {
+{ config = lib.mkIf (config.my.software.terminals.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages =
+
+  (utils.removePackagesByName ( with pkgs; [
 
     kitty                         ##Terminal emulator
     st                            ##Terminal emulator
@@ -25,7 +26,10 @@ config = lib.mkIf (config.my.software.terminals.enable) {
     tdrop                        ## anything dropdown!
     hdrop                        ## tdrop for hyprland
 
-  ];
+  ] ) config.my.software.terminals.exclude)
 
-};
-}
+   ++
+
+  config.my.software.terminals.include;
+
+};}
