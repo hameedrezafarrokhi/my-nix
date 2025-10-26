@@ -316,6 +316,9 @@ plugin=org.kde.plasma.printmanager
 immutability=1
 plugin=org.kde.kdeconnect
 
+[Containments][527][Applets][538][Applets][549][Configuration]
+PreloadWeight=60
+
 [Containments][527][Applets][538][Applets][549][Configuration][General]
 migrated=true
 
@@ -362,7 +365,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][527][Applets][538][Applets][555][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][527][Applets][538][Applets][575]
 immutability=1

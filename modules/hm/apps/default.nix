@@ -15,6 +15,7 @@ in
     borg.enable = lib.mkEnableOption "borg";
     btop.enable = lib.mkEnableOption "btop";
     cava.enable = lib.mkEnableOption "cava";
+    crystal-dock.enable = lib.mkEnableOption "crystal dock";
     direnv.enable = lib.mkEnableOption "direnv";
     dunst.enable = lib.mkEnableOption "dunst";
     fastfetch.enable = lib.mkEnableOption "fastfetch";
@@ -27,6 +28,7 @@ in
     gpg.enable = lib.mkEnableOption "gpg";
     htop.enable = lib.mkEnableOption "htop";
     joplin.enable = lib.mkEnableOption "joplin";
+    kdeconnect.enable =  lib.mkEnableOption "kde connect";
     keyrings.enable = lib.mkEnableOption "keyrings";
     kitty.enable = lib.mkEnableOption "kitty";
     lf.enable = lib.mkEnableOption "lf";
@@ -66,6 +68,7 @@ in
       ./borg.nix
       ./btop.nix
       ./cava.nix
+      ./crystal-dock.nix
       ./direnv.nix
       ./dunst.nix
       ./fastfetch.nix
@@ -78,6 +81,7 @@ in
       ./gpg.nix
       ./htop.nix
       ./joplin.nix
+      ./kdeconnect.nix
       ./keyrings.nix
       ./kitty.nix
       ./lf.nix

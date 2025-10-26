@@ -39,7 +39,7 @@ in
     xsession = {
       enable = true;
       numlock.enable = true;
-      preferStatusNotifierItems = false;
+      preferStatusNotifierItems = true;
       profilePath = ".xprofile";
       scriptPath = ".xsession";
           # export XDG_MENU_PREFIX=plasma-

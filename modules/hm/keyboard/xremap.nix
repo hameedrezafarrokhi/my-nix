@@ -83,6 +83,8 @@ in
                       launch: [ "protonvpn-app" ]
                     l:
                       launch: [ "Telegram" ]
+                    k:
+                      launch: [ "kdeconnect-app" ]
                     g:
                       remap:
                             s:

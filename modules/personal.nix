@@ -377,6 +377,7 @@
             borg.enable = true;
             btop.enable = true;
             cava.enable = true;
+            crystal-dock.enable = true;
             direnv.enable = true;
             dunst.enable = true;
             fastfetch.enable = true;
@@ -389,6 +390,7 @@
             gpg.enable = true;
             htop.enable = true;
             joplin.enable = false;
+            kdeconnect.enable = true;
             keyrings.enable = true;
             kitty.enable = true;
             lf.enable = true;

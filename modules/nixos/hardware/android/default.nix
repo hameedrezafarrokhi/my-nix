@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, admin, ... }:
 
 {
 
@@ -15,7 +15,7 @@
       adb.enable = true;
       kdeconnect = {
         enable = true;
-        package = lib.mkForce pkgs.kdePackages.kdeconnect-kde;
+        package = lib.mkForce config.home-manager.users.${admin}.services.kdeconnect.package;
       };
       droidcam.enable = true;
 
