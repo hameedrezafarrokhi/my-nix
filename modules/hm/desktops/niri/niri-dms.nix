@@ -18,7 +18,7 @@ in
     enableClipboard = true;
     enableVPN = true;
     enableBrightnessControl = true;
-    enableNightMode = true;
+   #enableNightMode = true;          # Removed Option
     enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = true;

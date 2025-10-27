@@ -1,9 +1,9 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, nix-path, ... }:
 
 let
 
   cfg = config.my.hypr;
-  confPath = toString ./hyprland.conf;
+ #confPath = toString ./hyprland.conf;
 
  #ax-shell = pkgs.fetchFromGitHub {
  #  owner = "Axenide";
@@ -66,13 +66,16 @@ in
       ];
       settings = {
         source = [
-          confPath
+          "${nix-path}/modules/hm/desktops/hypr/hyprland.conf"
+         #confPath
         ];
         bind = [
           "$mainMod, space, exec, $menu"
         ];
       };
-     #extraConfig = '' '';
+      extraConfig = ''
+        exec-once = hyprpanel
+      '';
     };
 
     services = {
@@ -150,10 +153,10 @@ in
       };
 
       hyprpanel = {
-        enable = true;
+        enable = false;              # Damn Stupid Hyprpanel Cant be enabled wiht swaync and dunst
         package = pkgs.hyprpanel;
         systemd.enable = false;
-        dontAssertNotificationDaemons = true;
+       #dontAssertNotificationDaemons = true; # Removed Option
        #settings = { };
       };
 
@@ -212,6 +215,8 @@ in
    #  };
    #
    #};
+
+   home.packages = [ pkgs.hyprpanel ];
 
   };
 

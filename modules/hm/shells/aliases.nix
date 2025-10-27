@@ -17,9 +17,9 @@ in
     nixos = "cd ${nix-path}";
     store = "builtin cd /nix/store";
     flake = "${config.my.default.gui-editor-alt-name} ${nix-path}/flake.nix";
-    flake-find = "${lib.getExe pkgs.bat} ${nix-path}/flake.nix | ${lib.getExe pkgs.bat-extras.batgrep}";
+    flake-find = "${lib.getExe pkgs.bat} ${nix-path}/flake.nix | ${lib.getExe mypkgs.stable.bat-extras.batgrep}";
     flake-lock = "${lib.getExe pkgs.bat} ${nix-path}/flake.lock";
-    flake-lock-find = "${lib.getExe pkgs.bat} ${nix-path}/flake.lock | ${lib.getExe pkgs.bat-extras.batgrep}";
+    flake-lock-find = "${lib.getExe pkgs.bat} ${nix-path}/flake.lock | ${lib.getExe mypkgs.stable.bat-extras.batgrep}";
     flake-inspect = "builtin cd ${nix-path} && nix-melt && builtin cd";
 
     nix-tldr = "${lib.getExe pkgs.bat} ${nix-path}/docs/nix-commands.txt";

@@ -54,8 +54,13 @@ in
 
     enable = true;
     package = pkgs.gitFull;
-    userName = "hameedrezafarrokhi";
-    userEmail = "hameedrezafarrokhi@gmail.com";
+
+    settings = {
+      user = {
+        name = "hameedrezafarrokhi";
+        email = "hameedrezafarrokhi@gmail.com";
+      };
+    };
 
     ignores = [
 
@@ -98,19 +103,6 @@ in
    #difftastic.options
    #difftastic.enableAsDifftool
    #difftastic.enable
-
-    diff-so-fancy = {
-      enable = true;
-      useUnicodeRuler = true;
-      stripLeadingSymbols = true;
-     #rulerWidth = null;
-      pagerOpts = [
-        "--tabs=4"
-        "-RFX"
-      ];
-      markEmptyLines = true;
-      changeHunkIndicators = true;
-    };
 
    #diff-highlight.pagerOpts
    #diff-highlight.enable
@@ -168,6 +160,21 @@ in
     enable = true;
     package = pkgs.gh-dash;
    #settings = { };
+  };
+
+  programs.diff-so-fancy = {
+    enable = true;
+    settings = {
+      useUnicodeRuler = true;
+      stripLeadingSymbols = true;
+     #rulerWidth = null;
+      markEmptyLines = true;
+      changeHunkIndicators = true;
+    };
+    pagerOpts = [
+      "--tabs=4"
+      "-RFX"
+    ];
   };
 
 };}

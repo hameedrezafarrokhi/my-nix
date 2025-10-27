@@ -1,4 +1,4 @@
-{ config, lib, pkgs, utils, admin, ... }:
+{ config, lib, pkgs, utils, admin, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.software.basic-cli.enable) {
 
@@ -48,14 +48,15 @@
 
    ++
 
+
   config.my.software.basic-cli.include;
 
   programs = {
 
     bat = {
       enable = true;
-      package = pkgs.bat;
-      extraPackages = with pkgs.bat-extras; [
+      package = mypkgs.stable.bat;
+      extraPackages = with mypkgs.stable.bat-extras; [
         core batdiff batman
         batwatch batpipe batgrep
        #prettybat

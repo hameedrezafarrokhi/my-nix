@@ -71,6 +71,9 @@
 
     superfile-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
 
+    tv-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}";
+    tv-preview = "TwoDark";
+
     catppuccinifier-flav = "${myStuff.myCat.myGlobal-Flav}";
     catppuccinifier-flavC = "${myStuff.myCat.myGlobal-FlavC}";
     catppuccinifier-acc = "${myStuff.myCat.myGlobal-Color}";
@@ -887,6 +890,13 @@
       base = Overlay2;
       };
     };
+    television = {
+      settings = {
+        ui.theme = tv-theme;
+        previewers.file.theme = tv-preview;
+      };
+    };
+
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
   };
   services = {

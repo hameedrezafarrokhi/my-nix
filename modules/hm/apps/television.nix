@@ -73,7 +73,7 @@
           input_bar_prompt = ">";
           input_bar_border_type = "rounded"; # https://docs.rs/ratatui/latest/ratatui/widgets/block/enum.BorderType.html#variants
 
-          theme = "default";
+         #theme = "default";
 
           status_bar_separator_open = "";
           status_bar_separator_close = "";
@@ -84,9 +84,9 @@
           remote_control_show_channel_descriptions = true;
           remote_control_sort_alphabetically = true;
         };
-        previewers.file = {
-          theme = "TwoDark";
-        };
+       #previewers.file = {
+       #  theme = "TwoDark";
+       #};
         keybindings = {
           esc = "quit";
           ctrl-c = "quit";
