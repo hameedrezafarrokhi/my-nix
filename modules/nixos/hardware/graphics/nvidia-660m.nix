@@ -10,6 +10,8 @@ in
 
   nixpkgs.config.nvidia.acceptLicense = true;
 
+  # To See Kernel Drivers in Use ( or available ): lspci -k -d ::03xx
+
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
    #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];  # DOES NOTHING
