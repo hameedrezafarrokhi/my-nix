@@ -111,14 +111,10 @@
      #cudaSupport = false;
       allowBroken=true;
       permittedInsecurePackages=[ ];
-      overlays = [
-       #inputs.nur.overlays.default
-       #inputs.chaotic.overlays.default
-       #inputs.ax-shell.overlays.default
-      ];
+      overlays = myOverlays;
      #hostPlatform = system;
     };
-      myPKGS =  system: {
+    myPKGS =  system: {
         master = import inputs.master     {system=system;config=pkgsConf;};
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
@@ -126,7 +122,18 @@
 
    #    kernel = import inputs.kernel     {system=system;config=pkgsConf;};
    #  fallback = import inputs.fallback   {system=system;config=pkgsConf;};
-      };
+    };
+    myOverlays = [
+     #inputs.nur.overlays.default
+     #inputs.chaotic.overlays.default
+     #inputs.ax-shell.overlays.default
+      (final: prev: {
+        plasma-panel-colorizer = prev.plasma-panel-colorizer.overrideAttrs {
+          postInstall = "chmod 755 $out/share/plasma/plasmoids/luisbocanegra.panel.colorizer/contents/ui/tools/list_presets.sh";
+        };
+      })
+    ];
+
 
   # NIXOS
 
@@ -164,19 +171,10 @@
           };
         }
 
-            { networking.hostName  = hostname; }
-            { system.stateVersion  = state;    }
-
-           #{ nixpkgs = {
-           # #  config.allowBroken = true;
-           # #  hostPlatform = system;
-           #    overlays = [
-           #     #inputs.nur.overlays.default
-           #     #inputs.chaotic.overlays.default
-           #     #inputs.ax-shell.overlays.default
-           #    ];
-           #  };
-           #}
+            { networking.hostName  = hostname;   }
+            { system.stateVersion  = state;      }
+            { nixpkgs.hostPlatform = system;     }
+            { nixpkgs.overlays     = myOverlays; }
 
             ./hosts/${hostname}/configuration.nix
             ./hosts/${hostname}/hardware-configuration.nix
@@ -216,6 +214,8 @@
 
             { home.stateVersion = state;             }
             { home.enableNixpkgsReleaseCheck = true; }
+            { nixpkgs.hostPlatform = system;         }
+            { nixpkgs.overlays = myOverlays;         }
             inputs.chaotic.homeManagerModules.default
             inputs.nix-flatpak.homeManagerModules.nix-flatpak
             inputs.plasma-manager.homeModules.plasma-manager

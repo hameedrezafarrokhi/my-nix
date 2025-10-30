@@ -129,7 +129,7 @@ plugin=org.kde.plasma.weather
 [Containments][527][Applets][532][Configuration]
 PreloadWeight=100
 popupHeight=304
-popupWidth=336
+popupWidth=337
 
 [Containments][527][Applets][532][Configuration][ConfigDialog]
 DialogHeight=540
@@ -216,8 +216,8 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][527][Applets][536][Configuration]
-PreloadWeight=60
-popupHeight=450
+PreloadWeight=65
+popupHeight=451
 popupWidth=560
 
 [Containments][527][Applets][536][Configuration][Appearance]
