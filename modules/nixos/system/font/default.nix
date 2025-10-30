@@ -68,7 +68,7 @@ in
       packages = with pkgs; [
         junction-font
 
-        noto-fonts noto-fonts-emoji noto-fonts-color-emoji noto-fonts-monochrome-emoji noto-fonts-emoji-blob-bin
+        noto-fonts /*noto-fonts-emoji*/ noto-fonts-color-emoji noto-fonts-monochrome-emoji noto-fonts-emoji-blob-bin
 
         terminus_font tamsyn termsyn terminus_font_ttf
 

@@ -6,12 +6,12 @@
    #proton-ge-bin
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem [
-    "steam"
-    "steam-original"
-    "steam-unwrapped"
-    "steam-run"
-  ];
+ #nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem [
+ #  "steam"
+ #  "steam-original"
+ #  "steam-unwrapped"
+ #  "steam-run"
+ #];
 
   programs.steam = {
     enable = true;

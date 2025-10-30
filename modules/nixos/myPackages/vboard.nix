@@ -1,7 +1,7 @@
 { lib
 , stdenv
 , python3
-, wrapGAppsHook
+, wrapGAppsHook3
 , glib
 , gtk3
 , gobject-introspection
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   src = ./.;
 
   nativeBuildInputs = [
-    wrapGAppsHook
+    wrapGAppsHook3
     gobject-introspection
   ];
 

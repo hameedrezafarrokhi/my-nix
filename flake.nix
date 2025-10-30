@@ -51,11 +51,11 @@
                                 inputs.nixpkgs.follows = "nixpkgs";
                                 inputs.quickshell.follows = "quickshell"; };
    dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.quickshell.follows = "quickshell"; };
-
-            ax-shell = { url = "github:poogas/Ax-Shell";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
+                               #inputs.quickshell.follows = "quickshell"; };
+
+          # ax-shell = { url = "github:poogas/Ax-Shell";
+          #                     inputs.nixpkgs.follows = "nixpkgs"; };
 
           #   fabric = { url = "github:Fabric-Development/fabric";      # OLD STUFF
           #                     inputs.nixpkgs.follows = "nixpkgs"; };
@@ -105,7 +105,19 @@
 
   # PKGS
 
-    pkgsConf = {allowUnfree=true;nvidia.acceptLicense=true;};
+    pkgsConf = {
+      allowUnfree = true;
+      nvidia.acceptLicense=true;
+     #cudaSupport = false;
+      allowBroken=true;
+      permittedInsecurePackages=[ ];
+      overlays = [
+       #inputs.nur.overlays.default
+       #inputs.chaotic.overlays.default
+       #inputs.ax-shell.overlays.default
+      ];
+     #hostPlatform = system;
+    };
       myPKGS =  system: {
         master = import inputs.master     {system=system;config=pkgsConf;};
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
@@ -118,9 +130,11 @@
 
   # NIXOS
 
-    mkSystem = pkgs: state: system: hostname: admin: type: nix-path: nix-path-alt:
-    pkgs.lib.nixosSystem {
+    mkSystem = pkg: state: system: hostname: admin: type: nix-path: nix-path-alt:
+    pkg.lib.nixosSystem {
       system = system;
+      pkgs = import pkg {system=system;config=pkgsConf;};
+
                                specialArgs = { inputs = inputs; self = self; admin = admin;
                                                nix-path = nix-path; nix-path-alt = nix-path-alt;
                                                system = system; mypkgs = myPKGS system; };
@@ -142,7 +156,7 @@
               inputs.catppuccin.homeModules.catppuccin
               inputs.dankMaterialShell.homeModules.dankMaterialShell.default
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-              inputs.ax-shell.homeManagerModules.default
+             #inputs.ax-shell.homeManagerModules.default
               inputs.mango.hmModules.mango
               inputs.ignis.homeManagerModules.default
               (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
@@ -153,15 +167,16 @@
             { networking.hostName  = hostname; }
             { system.stateVersion  = state;    }
 
-            { nixpkgs = {
-                hostPlatform = system;
-                overlays = [
-                 #inputs.nur.overlays.default
-                 #inputs.chaotic.overlays.default
-                  inputs.ax-shell.overlays.default
-                ];
-              };
-            }
+           #{ nixpkgs = {
+           # #  config.allowBroken = true;
+           # #  hostPlatform = system;
+           #    overlays = [
+           #     #inputs.nur.overlays.default
+           #     #inputs.chaotic.overlays.default
+           #     #inputs.ax-shell.overlays.default
+           #    ];
+           #  };
+           #}
 
             ./hosts/${hostname}/configuration.nix
             ./hosts/${hostname}/hardware-configuration.nix
@@ -209,7 +224,7 @@
             inputs.catppuccin.homeModules.catppuccin
             inputs.dankMaterialShell.homeModules.dankMaterialShell.default
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-            inputs.ax-shell.homeManagerModules.default
+           #inputs.ax-shell.homeManagerModules.default
             inputs.mango.hmModules.mango
             inputs.ignis.homeManagerModules.default
             (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
@@ -218,7 +233,7 @@
 
   # NIX_ON_DROID
 
-    mkDroid = pkgs: droid-state: hm-state: system: hostname: admin: type: nix-path: nix-path-alt:
+    mkDroid = pkg: droid-state: hm-state: system: hostname: admin: type: nix-path: nix-path-alt:
     inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
                           extraSpecialArgs = { inputs = inputs; self = self; admin = admin;
@@ -249,7 +264,7 @@
         { system.stateVersion = droid-state; }
       ];
       home-manager-path = inputs.home-manager.outPath;
-      pkgs = import pkgs {
+      pkgs = import pkg {
         system = "aarch64-linux";
         overlays = [
           inputs.nix-on-droid.overlays.default

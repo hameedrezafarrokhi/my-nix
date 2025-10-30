@@ -22,15 +22,15 @@ in
 
   config = lib.mkIf (config.my.nix.enable) {
 
-    nixpkgs.config = {
-      allowUnfree = true;
-      allowUnsupportedSystem = false;
-     #allowBroken = true;
-      permittedInsecurePackages = [
-       #"intel-media-sdk-23.2.2"
-       #"libsoup-2.74.3"
-      ];
-    };
+   #nixpkgs.config = {
+   #  allowUnfree = true;
+   #  allowUnsupportedSystem = false;
+   #  allowBroken = true;
+   #  permittedInsecurePackages = [
+   #   #"intel-media-sdk-23.2.2"
+   #   #"libsoup-2.74.3"
+   #  ];
+   #};
 
     nix = {
       enable = true;

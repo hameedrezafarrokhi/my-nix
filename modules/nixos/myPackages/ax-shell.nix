@@ -29,7 +29,7 @@
 , hyprsunset
 , imagemagick
 , libnotify
-, noto-fonts-emoji
+, noto-fonts-color-emoji
 , nvtopPackages
 , playerctl
 , swappy
@@ -108,7 +108,7 @@ stdenv.mkDerivation rec {
     imagemagick
     libnotify
     matugen
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     nvtopPackages.amd
     nvtopPackages.intel
     nvtopPackages.nvidia

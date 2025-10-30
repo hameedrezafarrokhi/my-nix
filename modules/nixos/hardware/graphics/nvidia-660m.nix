@@ -8,7 +8,7 @@ in
 
 { config = lib.mkIf (config.my.hardware.gpu == "nvidia-660m") {
 
-  nixpkgs.config.nvidia.acceptLicense = true;
+ #nixpkgs.config.nvidia.acceptLicense = true;
 
   # To See Kernel Drivers in Use ( or available ): lspci -k -d ::03xx
 

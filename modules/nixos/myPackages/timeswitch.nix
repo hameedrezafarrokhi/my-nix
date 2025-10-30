@@ -4,7 +4,7 @@
 , meson
 , ninja
 , pkg-config
-, wrapGAppsHook
+, wrapGAppsHook3
 , makeWrapper
 , python3
 , gobject-introspection
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     meson
     ninja
     pkg-config
-    wrapGAppsHook
+    wrapGAppsHook3
     makeWrapper
     gobject-introspection
     python3

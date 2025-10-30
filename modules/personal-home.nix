@@ -5,12 +5,12 @@
   imports = [ ./hm ];
 
   nix.package = pkgs.nix;
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnsupportedSystem = false;
-   #allowBroken = true;
-   #permittedInsecurePackages = [ ];
-  };
+ #nixpkgs.config = {
+ #  allowUnfree = true;
+ #  allowUnsupportedSystem = false;
+ # #allowBroken = true;
+ # #permittedInsecurePackages = [ ];
+ #};
 
   home = {
     username = admin;

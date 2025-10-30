@@ -17,7 +17,7 @@
     lshw                          ##Find PCIE for gpu
     pciutils                      ##Lspci is better than lshw for pci finidng
     gpu-viewer                    ##View gpu drivers
-    glxinfo
+    mesa-demos                    # FORMER NAME: glxinfo
 
   ] ) config.my.software.hardware-monitor.exclude)
 

@@ -7,7 +7,7 @@
 , python3
 , gtk4
 , libadwaita
-, wrapGAppsHook
+, wrapGAppsHook3
 , glib
 , gobject-introspection
 , desktop-file-utils
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
     meson
     ninja
     pkg-config
-    wrapGAppsHook
+    wrapGAppsHook3
     desktop-file-utils
     gobject-introspection
   ];
