@@ -19,7 +19,7 @@
       rofi-mpd
       rofi-menugen
       rofi-games
-     #rofi-file-browser    # WARNING BROKEN
+      rofi-file-browser
       rofi-emoji
       rofi-calc
       rofi-bluetooth

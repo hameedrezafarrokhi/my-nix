@@ -174,7 +174,7 @@ let
       DEFAULT_WALLPAPER="${paths.defaultWallpaper}"
 
       if [ ! -L "$CURRENT_WALL_PATH" ] || [ ! -e "$CURRENT_WALL_PATH" ]; then
-        echo "Ax-Shell: current.wall is missing or broken. Re-linking and setting default wallpaper."
+        echo "Ax-Shell: current.wall is missing or broke. Re-linking and setting default wallpaper."
         mkdir -p "$(dirname "$CURRENT_WALL_PATH")"
         rm -f "$CURRENT_WALL_PATH"
         ln -s "$DEFAULT_WALLPAPER" "$CURRENT_WALL_PATH"

@@ -22,7 +22,7 @@
    #gnomeExtensions.yakuake       ##Dropdown terminal plugin (gnome)
     guake
    #kitti3
- ###hyper                        ## WARNING BROKEN LONG TIME
+    hyper                        ## web based terminal?
     tdrop                        ## anything dropdown!
     hdrop                        ## tdrop for hyprland
 

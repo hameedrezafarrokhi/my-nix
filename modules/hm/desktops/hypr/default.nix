@@ -32,12 +32,11 @@ in
      #finalPortalPackage = [object Object];
       plugins = with pkgs.hyprlandPlugins; [
         hy3
-       #hycov       # insecure
         hyprexpo
         hyprbars
-        hyprsplit   # WARNING BROKEN
-        hyprspace   # WARNING BROKEN
-       #hyprgrass   # WARNING BROKEN
+        hyprsplit
+        hyprspace
+        hyprgrass
         hyprfocus
         hyprtrails
         hyprwinwrap

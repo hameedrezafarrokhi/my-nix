@@ -80,7 +80,7 @@
 
       # Misc
      #"retroarch"
-     #"cde"               # WARNING BROKEN    (build fail)
+     #"cde"               # WARNING BROKEN stable and unstable
 
     ];
     default-gnome-based-de = "gnome";

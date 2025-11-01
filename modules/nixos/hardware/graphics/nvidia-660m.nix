@@ -98,7 +98,7 @@ in
      #  libvpl
      #  vpl-gpu-rt
      #  intel-compute-runtime-legacy1
-       #intel-media-sdk                       # WARNING BROKEN AND INSECURE AND LEGACY :)
+       #intel-media-sdk                       # WARNING use stable only, legacy package
 
         # Intel OCL
      #  intel-ocl                             # Intel OCL

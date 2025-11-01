@@ -29,7 +29,7 @@ in
         haskellPackages.xmonad-spotify
         haskellPackages.xmonad-contrib
 
-       #haskellPackages.xmonad-eval                     # WARNING BROKEN
+       #haskellPackages.xmonad-eval                     # WARNING UNMAINTANED
        #haskellPackages.xmonad-vanessa
        #haskellPackages.xmonad-wallpaper
        #haskellPackages.xmonad-screenshot
