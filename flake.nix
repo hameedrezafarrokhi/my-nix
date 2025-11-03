@@ -111,7 +111,7 @@
      #cudaSupport = false;
       allowBroken=true;
       permittedInsecurePackages=[ ];
-      overlays = myOverlays;
+     #overlays = myOverlays;
      #hostPlatform = system;
     };
     myPKGS =  system: {
@@ -139,8 +139,8 @@
 
     mkSystem = pkg: state: system: hostname: admin: type: nix-path: nix-path-alt:
     pkg.lib.nixosSystem {
-      system = system;
-      pkgs = import pkg {system=system;config=pkgsConf;};
+     #system = system; # Legacy (nixpkgs.hostPlatform instead)
+     #pkgs = import pkg {system=system;config=pkgsConf;}; # Legacy (nixpkgs.config instead)
 
                                specialArgs = { inputs = inputs; self = self; admin = admin;
                                                nix-path = nix-path; nix-path-alt = nix-path-alt;
@@ -175,6 +175,7 @@
             { system.stateVersion  = state;      }
             { nixpkgs.hostPlatform = system;     }
             { nixpkgs.overlays     = myOverlays; }
+            { nixpkgs.config       = pkgsConf;   }
 
             ./hosts/${hostname}/configuration.nix
             ./hosts/${hostname}/hardware-configuration.nix
@@ -206,7 +207,7 @@
                            nix-path = nix-path; nix-path-alt = nix-path-alt;
                            system = system; mypkgs = myPKGS system; };
 
-      pkgs = import pkg {system=system;config=pkgsConf;};
+     #pkgs = import pkg {system=system;config=pkgsConf;}; # Legacy (nixpkgs.hostPlatform instead)
       modules = [
 
             ./homes/${admin}/home.nix
