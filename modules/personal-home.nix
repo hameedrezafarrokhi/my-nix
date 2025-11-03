@@ -5,12 +5,15 @@
   imports = [ ./hm ];
 
   nix.package = pkgs.nix;
- #nixpkgs.config = {
- #  allowUnfree = true;
- #  allowUnsupportedSystem = false;
- # #allowBroken = true;
- # #permittedInsecurePackages = [ ];
- #};
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnsupportedSystem = false;
+    nvidia.acceptLicense=true;
+   #cudaSupport = false;
+    allowBroken = true;
+    permittedInsecurePackages = [ ];
+  };
+ #nixpkgs.overlays = [ ];
 
   home = {
     username = admin;
