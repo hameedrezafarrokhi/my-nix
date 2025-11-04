@@ -54,8 +54,40 @@ in
    # "${lib.getExe pkgs.brave}"
    # "flameshot", "full", "-p", "${config.home.homeDirectory}/Pictures/Screenshots"
 
+
+
+       #- name: easy-life
+       #  remap:
+       #    CAPSLOCK: SUPER-Z
+       #
+       #- name: New-CapsLock
+       #  remap:
+       #    Super-CapsLock: CapsLock
+
     yamlConfig = ''
 
+      modmap:
+
+        - name: caps
+          remap:
+            CAPSLOCK:
+              held: [LEFTMETA, Z]
+              alone: CAPSLOCK
+              alone_timeout_millis: 5000
+
+        - name: r-ctrl
+          remap:
+            RIGHTCTRL:
+              alone: [LEFTMETA, Z]
+              held: RIGHTCTRL
+              alone_timeout_millis: 1000
+
+        - name: r-alt
+          remap:
+            RIGHTALT:
+              held: RIGHTALT
+              alone: [LEFTALT, X]
+              alone_timeout_millis: 1000
 
       keymap:
 
@@ -108,10 +140,38 @@ in
               remap:
                     Enter:
                       remap:
-                            k:
+                            p:
                               launch: [ "konsole" ]
-                            t:
+                            k:
                               launch: [ "kitty" ]
+                            g:
+                              launch: [ "ghostty" ]
+                            w:
+                              launch: [ "wezterm" ]
+                            a:
+                              launch: [ "alacritty" ]
+                            f:
+                              launch: [ "foot" ]
+                            y:
+                              launch: [ "yakuake" ]
+                            s:
+                              launch: [ "st" ]
+                            q:
+                              launch: [ "xterm" ]
+                            x:
+                              launch: [ "xfce4-terminal" ]
+                            h:
+                              launch: [ "hyper" ]
+                            u:
+                              launch: [ "guake" ]
+                            c:
+                              launch: [ "cosmic-term" ]
+                            m:
+                              launch: [ "mate-terminal" ]
+                            u:
+                              launch: [ "urxvt" ]
+                            t:
+                              launch: [ "tilda" ]
                     b:
                       remap:
                             b:

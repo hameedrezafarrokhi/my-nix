@@ -64,6 +64,8 @@
     marknote-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
     okular-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
     dolphin-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
+    alacritty-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+    ghostty-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
 
     freetube-base = "catppuccinMocha";
     freetube-main = "CatppuccinMochaSapphire";
@@ -102,6 +104,7 @@
 
     MonoSize = 10;
     MonoSizeKitty = 9;
+    MonoSizeAlacritty = 9.5;
     MonoSizePlasma = 11;
     MonoSizePlasmaSmall = 8;
     MonoSizeI3 = 9.0;
@@ -118,52 +121,52 @@
     kitty-for-tab-inact =  "#FFFFFF";
     kitty-marg-tab =       "#1D2231";
 
-    Rosewater = "#f4dbd6";    rgb-Rosewater = "rgb(244, 219, 214)";
-    Flamingo =  "#f0c6c6";    rgb-Flamingo =  "rgb(240, 198, 198)";
-    Pink =      "#f5bde6";    rgb-Pink =      "rgb(245, 189, 230)";
-    Mauve =     "#c6a0f6";    rgb-Mauve =     "rgb(198, 160, 246)";
-    Red =       "#ed8796";    rgb-Red =       "rgb(237, 135, 150)";
-    Maroon =    "#ee99a0";    rgb-Maroon =    "rgb(238, 153, 160)";
-    Peach =     "#f5a97f";    rgb-Peach =     "rgb(245, 169, 127)";
-    Yellow =    "#eed49f";    rgb-Yellow =    "rgb(238, 212, 159)";
-    Green =     "#a6da95";    rgb-Green =     "rgb(166, 218, 149)";
-    Teal =      "#8bd5ca";    rgb-Teal =      "rgb(139, 213, 202)";
-    Sky =       "#91d7e3";    rgb-Sky =       "rgb(145, 215, 227)";
-    Sapphire =  "#7dc4e4";    rgb-Sapphire =  "rgb(125, 196, 228)";
-    Blue =      "#8aadf4";    rgb-Blue =      "rgb(138, 173, 244)";
-    Lavender =  "#b7bdf8";    rgb-Lavender =  "rgb(183, 189, 248)";
+    Rosewater = "#f4dbd6";  alt-Rosewater = "f4dbd6";  rgb-Rosewater = "rgb(244, 219, 214)";  rgb-alt-Rosewater = "244,219,214";
+    Flamingo =  "#f0c6c6";  alt-Flamingo =  "f0c6c6";  rgb-Flamingo =  "rgb(240, 198, 198)";  rgb-alt-Flamingo =  "240,198,198";
+    Pink =      "#f5bde6";  alt-Pink =      "f5bde6";  rgb-Pink =      "rgb(245, 189, 230)";  rgb-alt-Pink =      "245,189,230";
+    Mauve =     "#c6a0f6";  alt-Mauve =     "c6a0f6";  rgb-Mauve =     "rgb(198, 160, 246)";  rgb-alt-Mauve =     "198,160,246";
+    Red =       "#ed8796";  alt-Red =       "ed8796";  rgb-Red =       "rgb(237, 135, 150)";  rgb-alt-Red =       "237,135,150";
+    Maroon =    "#ee99a0";  alt-Maroon =    "ee99a0";  rgb-Maroon =    "rgb(238, 153, 160)";  rgb-alt-Maroon =    "238,153,160";
+    Peach =     "#f5a97f";  alt-Peach =     "f5a97f";  rgb-Peach =     "rgb(245, 169, 127)";  rgb-alt-Peach =     "245,169,127";
+    Yellow =    "#eed49f";  alt-Yellow =    "eed49f";  rgb-Yellow =    "rgb(238, 212, 159)";  rgb-alt-Yellow =    "238,212,159";
+    Green =     "#a6da95";  alt-Green =     "a6da95";  rgb-Green =     "rgb(166, 218, 149)";  rgb-alt-Green =     "166,218,149";
+    Teal =      "#8bd5ca";  alt-Teal =      "8bd5ca";  rgb-Teal =      "rgb(139, 213, 202)";  rgb-alt-Teal =      "139,213,202";
+    Sky =       "#91d7e3";  alt-Sky =       "91d7e3";  rgb-Sky =       "rgb(145, 215, 227)";  rgb-alt-Sky =       "145,215,227";
+    Sapphire =  "#7dc4e4";  alt-Sapphire =  "7dc4e4";  rgb-Sapphire =  "rgb(125, 196, 228)";  rgb-alt-Sapphire =  "125,196,228";
+    Blue =      "#8aadf4";  alt-Blue =      "8aadf4";  rgb-Blue =      "rgb(138, 173, 244)";  rgb-alt-Blue =      "138,173,244";
+    Lavender =  "#b7bdf8";  alt-Lavender =  "b7bdf8";  rgb-Lavender =  "rgb(183, 189, 248)";  rgb-alt-Lavender =  "183,189,248";
 
-    Text =      "#cad3f5";    rgb-Text =      "rgb(202, 211, 245)";
-    Subtext1 =  "#b8c0e0";    rgb-Subtext1 =  "rgb(184, 192, 224)";
-    Subtext0 =  "#a5adcb";    rgb-Subtext0 =  "rgb(165, 173, 203)";
-    Overlay2 =  "#939ab7";    rgb-Overlay2 =  "rgb(147, 154, 183)";
-    Overlay1 =  "#8087a2";    rgb-Overlay1 =  "rgb(128, 135, 162)";
-    Overlay0 =  "#6e738d";    rgb-Overlay0 =  "rgb(110, 115, 141)";
-    Surface2 =  "#5b6078";    rgb-Surface2 =    "rgb(91, 96, 120)";
-    Surface1 =  "#494d64";    rgb-Surface1 =    "rgb(73, 77, 100)";
-    Surface0 =  "#363a4f";    rgb-Surface0 =     "rgb(54, 58, 79)";
-    Base =      "#24273a";    rgb-Base =         "rgb(36, 39, 58)";
-    Mantle =    "#1e2030";    rgb-Mantle =       "rgb(30, 32, 48)";
-    Crust =     "#181926";    rgb-Crust =        "rgb(24, 25, 38)";
+    Text =      "#cad3f5";  alt-Text =      "cad3f5";  rgb-Text =      "rgb(202, 211, 245)";  rgb-alt-Text =      "202,211,245";
+    Subtext1 =  "#b8c0e0";  alt-Subtext1 =  "b8c0e0";  rgb-Subtext1 =  "rgb(184, 192, 224)";  rgb-alt-Subtext1 =  "184,192,224";
+    Subtext0 =  "#a5adcb";  alt-Subtext0 =  "a5adcb";  rgb-Subtext0 =  "rgb(165, 173, 203)";  rgb-alt-Subtext0 =  "165,173,203";
+    Overlay2 =  "#939ab7";  alt-Overlay2 =  "939ab7";  rgb-Overlay2 =  "rgb(147, 154, 183)";  rgb-alt-Overlay2 =  "147,154,183";
+    Overlay1 =  "#8087a2";  alt-Overlay1 =  "8087a2";  rgb-Overlay1 =  "rgb(128, 135, 162)";  rgb-alt-Overlay1 =  "128,135,162";
+    Overlay0 =  "#6e738d";  alt-Overlay0 =  "6e738d";  rgb-Overlay0 =  "rgb(110, 115, 141)";  rgb-alt-Overlay0 =  "110,115,141";
+    Surface2 =  "#5b6078";  alt-Surface2 =  "5b6078";  rgb-Surface2 =    "rgb(91, 96, 120)";  rgb-alt-Surface2 =    "91,96,120";
+    Surface1 =  "#494d64";  alt-Surface1 =  "494d64";  rgb-Surface1 =    "rgb(73, 77, 100)";  rgb-alt-Surface1 =    "73,77,100";
+    Surface0 =  "#363a4f";  alt-Surface0 =  "363a4f";  rgb-Surface0 =     "rgb(54, 58, 79)";  rgb-alt-Surface0 =     "54,58,79";
+    Base =      "#24273a";  alt-Base =      "24273a";  rgb-Base =         "rgb(36, 39, 58)";  rgb-alt-Base =         "36,39,58";
+    Mantle =    "#1e2030";  alt-Mantle =    "1e2030";  rgb-Mantle =       "rgb(30, 32, 48)";  rgb-alt-Mantle =       "30,32,48";
+    Crust =     "#181926";  alt-Crust =     "181926";  rgb-Crust =        "rgb(24, 25, 38)";  rgb-alt-Crust =        "24,25,38";
 
     Transparent = "#FF00000";
 
-    base00 =     "24273a"; # base
-    base01 =     "1e2030"; # mantle
-    base02 =     "363a4f"; # surface0
-    base03 =     "494d64"; # surface1
-    base04 =     "5b6078"; # surface2
-    base05 =     "cad3f5"; # text
-    base06 =     "f4dbd6"; # rosewater
-    base07 =     "b7bdf8"; # lavender
-    base08 =     "ed8796"; # red
-    base09 =     "f5a97f"; # peach
-    base0A =     "eed49f"; # yellow
-    base0B =     "a6da95"; # green
-    base0C =     "8bd5ca"; # teal
-    base0D =     "8aadf4"; # blue
-    base0E =     "c6a0f6"; # mauve
-    base0F =     "f0c6c6"; # flamingo
+    base00 =     "24273a";  alt-base00 =   "#24273a";  # base
+    base01 =     "1e2030";  alt-base01 =   "#1e2030";  # mantle
+    base02 =     "363a4f";  alt-base02 =   "#363a4f";  # surface0
+    base03 =     "494d64";  alt-base03 =   "#494d64";  # surface1
+    base04 =     "5b6078";  alt-base04 =   "#5b6078";  # surface2
+    base05 =     "cad3f5";  alt-base05 =   "#cad3f5";  # text
+    base06 =     "f4dbd6";  alt-base06 =   "#f4dbd6";  # rosewater
+    base07 =     "b7bdf8";  alt-base07 =   "#b7bdf8";  # lavender
+    base08 =     "ed8796";  alt-base08 =   "#ed8796";  # red
+    base09 =     "f5a97f";  alt-base09 =   "#f5a97f";  # peach
+    base0A =     "eed49f";  alt-base0A =   "#eed49f";  # yellow
+    base0B =     "a6da95";  alt-base0B =   "#a6da95";  # green
+    base0C =     "8bd5ca";  alt-base0C =   "#8bd5ca";  # teal
+    base0D =     "8aadf4";  alt-base0D =   "#8aadf4";  # blue
+    base0E =     "c6a0f6";  alt-base0E =   "#c6a0f6";  # mauve
+    base0F =     "f0c6c6";  alt-base0F =   "#f0c6c6";  # flamingo
 
     myStuff.myCat = {
       myGlobal-Flav   = "macchiato";
@@ -810,6 +813,60 @@
         size = lib.mkForce MonoSizeKitty;
       };
     };
+    alacritty = {
+      theme = alacritty-theme;
+      settings = {
+        font = {
+         #glyph_offset = { x = 1, y = 0 }
+          size = lib.mkForce MonoSizeAlacritty;
+          normal = {
+            family = lib.mkForce MonoSpace;
+            style = "Regular";
+          };
+          bold = {
+            family = lib.mkForce MonoSpace;
+            style = "Bold";
+          };
+          italic = {
+            family = lib.mkForce MonoSpace;
+            style = "Italic";
+          };
+        };
+      };
+    };
+    ghostty = {
+      settings = {
+        theme = ghostty-theme;
+        font-size = 10;
+      };
+      themes = {
+        ${alacritty-theme} = {
+          background = Base;
+          cursor-color = Overlay0;
+          foreground = Text;
+          palette = [
+             "0=${base00}"
+             "1=${base01}"
+             "2=${base02}"
+             "3=${base03}"
+             "4=${base04}"
+             "5=${base05}"
+             "6=${base06}"
+             "7=${base07}"
+             "8=${base08}"
+             "9=${base09}"
+            "10=${base0A}"
+            "11=${base0B}"
+            "12=${base0C}"
+            "13=${base0D}"
+            "14=${base0E}"
+            "15=${base0F}"
+          ];
+          selection-background = "353749";
+          selection-foreground = "cdd6f4";
+        };
+      };
+    };
     freetube = {
       settings = {
         baseTheme = freetube-base;
@@ -1073,6 +1130,9 @@
       apply = false;
         flavor = myStuff.myCat.myGlobal-Flav;
         accent = myStuff.myCat.myGlobal-Color;
+    };
+    alacritty = {
+      enable = false;
     };
     hyprland = {
       enable = true;

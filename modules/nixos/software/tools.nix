@@ -6,6 +6,8 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
+    xdotool
+
     onboard                       ##Onscreen keyboard
 
    #(flameshot.override {

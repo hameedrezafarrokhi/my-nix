@@ -372,6 +372,7 @@
            #"trayer"
           ];
           apps = {
+            alacritty.enable = true;
             amberol.enable = true;
             bazaar.enable = false;
             borg.enable = true;
@@ -387,6 +388,7 @@
             freetube.enable = true;
             fzf.enable = true;
             git.enable = true;
+            ghostty.enable = true;
             gpg.enable = true;
             htop.enable = true;
             joplin.enable = false;

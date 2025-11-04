@@ -10,6 +10,7 @@ in
 
   options.my.apps = {
 
+    alacritty.enable = lib.mkEnableOption "alacritty";
     amberol.enable = lib.mkEnableOption "amberol";
     bazaar.enable = lib.mkEnableOption "bazaar";
     borg.enable = lib.mkEnableOption "borg";
@@ -25,6 +26,7 @@ in
     freetube.enable = lib.mkEnableOption "freetube";
     fzf.enable = lib.mkEnableOption "fzf";
     git.enable = lib.mkEnableOption "git";
+    ghostty.enable = lib.mkEnableOption "ghostty";
     gpg.enable = lib.mkEnableOption "gpg";
     htop.enable = lib.mkEnableOption "htop";
     joplin.enable = lib.mkEnableOption "joplin";
@@ -63,6 +65,7 @@ in
 
     imports = [
 
+      ./alacritty.nix
       ./amberol.nix
       ./bazaar.nix
       ./borg.nix
@@ -78,6 +81,7 @@ in
       ./freetube.nix
       ./fzf.nix
       ./git.nix
+      ./ghostty.nix
       ./gpg.nix
       ./htop.nix
       ./joplin.nix
