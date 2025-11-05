@@ -280,14 +280,14 @@
 
     nixosConfigurations = { #"/home/${admin}/nixos"
 
-      nirvana = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "nirvana" "hrf" "personal" "$HOME/nixos" "~/nixos";
-         blue = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "blue"    "hrf" "personal"  "/etc/nixos" "/etc/nixos";
-          red = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "red"     "hrf" "personal"  "/etc/nixos" "/etc/nixos";
+      nirvana = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "nirvana" "hrf" "personal"  "$HOME/nixos"    "~/nixos";
+         blue = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "blue"    "hrf" "personal"  "/etc/nixos"  "/etc/nixos";
+          red = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "red"     "hrf" "portable"  "$HOME/nixos"    "~/nixos";
     };
 
     homeConfigurations = {
 
-          hrf =   mkHome inputs.nixpkgs "25.05" "x86_64-linux"  "hrf"   "personal-home"   "$HOME/nixos" "~/nixos";
+          hrf =   mkHome inputs.nixpkgs "25.05" "x86_64-linux" "hrf"     "personal-home"   "$HOME/nixos"    "~/nixos";
     };
 
     nixOnDroidConfigurations = {

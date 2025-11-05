@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.hardware.gpu == "amd") {
+{ config = lib.mkIf (config.my.hardware.gpu == "amd") {
 
   boot = {
     initrd = {
@@ -76,7 +75,6 @@ config = lib.mkIf (config.my.hardware.gpu == "amd") {
     };
   };
 
-};
-}
+};}
 
 

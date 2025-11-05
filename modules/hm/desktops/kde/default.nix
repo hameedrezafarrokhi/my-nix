@@ -12,7 +12,7 @@ in
 
     plasma.enable = lib.mkEnableOption "plasma";
     appletrc = lib.mkOption {
-      type = lib.types.nullOr (lib.types.enum [ "nirvana" "blue" ]);
+      type = lib.types.nullOr (lib.types.enum [ "nirvana" "blue" "red" ]);
       default = null;
     };
     kate.enable = lib.mkEnableOption "kate";

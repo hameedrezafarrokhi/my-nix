@@ -2,22 +2,14 @@
 
 {
 
-  my = {
-    boot = {
-      kernel = pkgs.linuxPackages_6_12;
-    };
-    hardware = {
-      gpu = "nvidia-660m";
-      mounts = [ "nirvana" "blue" ];
-    };
-  };
+ #my = { };
 
   home-manager = {
     users = {
       ${admin} = {
         my = {
           kde = {
-            appletrc = "nirvana";
+            appletrc = "red";
           };
         };
       };
@@ -29,7 +21,7 @@
   swapDevices = [
     {
       device = "/var/swapfile";
-      size = 8192;
+      size = 16384; # 8192;
     }
   ];
 
