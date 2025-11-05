@@ -29,16 +29,16 @@ in
   ];
 
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-Noctalia = {
-        prettyName = "Hyprland-Noctalia";
-        comment = "Hyprland with Noctalia Shell (UWSM)";
-        binPath = "${Hyprland-Noctalia}/bin/Hyprland-Noctalia";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-Noctalia = {
+ #      prettyName = "Hyprland-Noctalia";
+ #      comment = "Hyprland with Noctalia Shell (UWSM)";
+ #      binPath = "${Hyprland-Noctalia}/bin/Hyprland-Noctalia";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-Noctalia ];
 

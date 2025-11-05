@@ -29,16 +29,16 @@ in
     } // { providedSessions = [ "Niri-Noctalia" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Niri-Noctalia = {
-        prettyName = "Niri-Noctalia";
-        comment = "Niri with DankMaterialShell (UWSM)";
-        binPath = "${Niri-Noctalia}/bin/Niri-Noctalia";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Niri-Noctalia = {
+ #      prettyName = "Niri-Noctalia";
+ #      comment = "Niri with DankMaterialShell (UWSM)";
+ #      binPath = "${Niri-Noctalia}/bin/Niri-Noctalia";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Niri-Noctalia ];
 

@@ -95,7 +95,7 @@ in
     ./rices-shells/hyprland-caelestia.nix
     ./rices-shells/hyprland-uwsm.nix
     ./rices-shells/hyprland-dms.nix
-   #./rices-shells/hyprland-ax.nix
+    ./rices-shells/hyprland-ax.nix
     ./rices-shells/hyprland-ashell.nix
     ./rices-shells/hyprland-exo.nix
 

@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.apps.ghostty.enable) {
 
   programs.ghostty = {
 
     enable = true;
-    package = pkgs.ghostty;
+    package = mypkgs.stable.ghostty;
     enableZshIntegration = true;
     enableBashIntegration = true;
     enableFishIntegration = true;

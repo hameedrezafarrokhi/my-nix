@@ -1,6 +1,4 @@
-{ config, pkgs, lib,
-#osConfig,
-... }:
+{ config, pkgs, lib, ... }:
 
 let
 
@@ -17,17 +15,6 @@ let
     '';
   };
 
- #cinnamon-gsettings-overrides = pkgs.cinnamon-gsettings-overrides.override {
- #  extraGSettingsOverridePackages = osConfig.services.xserver.desktopManager.cinnamon.extraGSettingsOverridePackages;
- #  extraGSettingsOverrides = osConfig.services.xserver.desktopManager.cinnamon.extraGSettingsOverrides;
- #};
- #budgie-gsettings-overrides = pkgs.budgie-gsettings-overrides.override {
- #  inherit (osConfig.services.xserver.desktopManager.budgie) extraGSettingsOverrides extraGSettingsOverridePackages;
- #  inherit nixos-background-dark nixos-background-light;
- #};
- #nixos-background-light = pkgs.nixos-artwork.wallpapers.nineish;
- #nixos-background-dark = pkgs.nixos-artwork.wallpapers.nineish-dark-gray;
-
 in
 
 {
@@ -42,53 +29,18 @@ in
       preferStatusNotifierItems = true;
       profilePath = ".xprofile";
       scriptPath = ".xsession";
-          # export XDG_MENU_PREFIX=plasma-
-     #initExtra = ''
-     #  # Detect session
-     #  if [[ $XDG_CURRENT_DESKTOP == "X-Cinnamon" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $CINNAMON_VERSION == "6.4.13" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "MATE" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $MATE_PANEL_EXTRA_MODULES == "/nix/store/46h8bn62vn0y0ik7m6b6hyfsl10cxy1f-mate-panel-with-applets-1.28.6/lib/mate-panel/applets" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "Budgie:GNOME" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "Budgie" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $BUDGIE_PLUGIN_DATADIR == "/nix/store/g4fsbq7k1va8f0zqy0832gwynlhm2v3f-budgie-desktop-with-plugins-10.9.2/share/budgie-desktop/plugins" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  fi
-     #  '';
-
-     #profileExtra = ''
-     #  # Detect session
-     #  if [[ $XDG_CURRENT_DESKTOP == "X-Cinnamon" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $CINNAMON_VERSION == "6.4.13" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${cinnamon-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "MATE" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $MATE_PANEL_EXTRA_MODULES == "/nix/store/46h8bn62vn0y0ik7m6b6hyfsl10cxy1f-mate-panel-with-applets-1.28.6/lib/mate-panel/applets" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${pkgs.mate.mate-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "Budgie:GNOME" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $XDG_CURRENT_DESKTOP == "Budgie" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  elif [[ $BUDGIE_PLUGIN_DATADIR == "/nix/store/g4fsbq7k1va8f0zqy0832gwynlhm2v3f-budgie-desktop-with-plugins-10.9.2/share/budgie-desktop/plugins" ]]; then
-     #      export NIX_GSETTINGS_OVERRIDES_DIR="${budgie-gsettings-overrides}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas"
-     #  fi
-     #'';
-
-       #"export XDG_SESSION_DESKTOP=x11"
-       #"export XDG_CURRENT_DESKTOP=x11"
-
+      initExtra = ''
+        export GDK_BACKEND=x11 &
+      '';
+      profileExtra = ''
+        export GDK_BACKEND=x11 &
+      '';
       importedVariables = [ ];
       windowManager.command = lib.mkForce "test -n \"$1\" && eval \"$@\"";
     };
 
     services = {
+
       xsettingsd = {
         enable = true;
         package = pkgs.xsettingsd;
@@ -99,6 +51,7 @@ in
           "Gdk/WindowScalingFactor" = 1;
         };
       };
+
       picom ={
         enable = true;
         package = pkgs.picom;
@@ -174,7 +127,18 @@ in
         };
        #extraArgs = { };
       };
+
+      # Bridge for Legacy X Apps thta dont have SNI features ( Choose One )
+      snixembed.enable = true; # StandAlone and lightweight ( works great in x11 but breaks wayland wm tray )
+      xembed-sni-proxy = { # Part of Plasma ecosystem ( works great in wayland but breaks x11 tray )
+        enable = false;
+        package = pkgs.kdePackages.plasma-workspace;
+      };
+
     };
+
+    # "!XDG_BACKEND=wayland"
+    systemd.user.services.snixembed.Unit.ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
 
     systemd.user.services.x-cursor = {
       Unit = {

@@ -28,16 +28,16 @@ in
     } // { providedSessions = [ "Hyprland-Caelestia" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-Caelestia = {
-        prettyName = "Hyprland-Caelestia";
-        comment = "Hyprland with Caelestia Shell (UWSM)";
-        binPath = "${Hyprland-Caelestia}/bin/Hyprland-Caelestia";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-Caelestia = {
+ #      prettyName = "Hyprland-Caelestia";
+ #      comment = "Hyprland with Caelestia Shell (UWSM)";
+ #      binPath = "${Hyprland-Caelestia}/bin/Hyprland-Caelestia";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-Caelestia ];
 

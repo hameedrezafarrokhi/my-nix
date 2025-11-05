@@ -13,11 +13,19 @@
     programs = {
 
       adb.enable = true;
+
       kdeconnect = {
         enable = true;
         package = lib.mkForce config.home-manager.users.${admin}.services.kdeconnect.package;
       };
+
       droidcam.enable = true;
+
+      localsend = {
+        enable = true;
+        package = pkgs.localsend;
+        openFirewall = true;
+      };
 
     };
 

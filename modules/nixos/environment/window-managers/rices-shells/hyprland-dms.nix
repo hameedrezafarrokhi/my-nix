@@ -31,16 +31,16 @@ in
     } // { providedSessions = [ "Hyprland-DMS" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-DMS = {
-        prettyName = "Hyprland-DMS";
-        comment = "Hyprland with DankMaterialShell (UWSM)";
-        binPath = "${Hyprland-DMS}/bin/Hyprland-DMS";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-DMS = {
+ #      prettyName = "Hyprland-DMS";
+ #      comment = "Hyprland with DankMaterialShell (UWSM)";
+ #      binPath = "${Hyprland-DMS}/bin/Hyprland-DMS";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-DMS ];
 

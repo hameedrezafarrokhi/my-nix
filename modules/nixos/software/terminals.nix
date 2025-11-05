@@ -10,7 +10,7 @@
     st                            ##Terminal emulator
     foot                          ##Terminal emulator
     alacritty                     ##Terminal emulator
-    ghostty
+   #ghostty
     wezterm
    #gnome-terminal                ##Terminal emulator (gnome)
    #kdePackages.konsole           ##Terminal emulator (kde)

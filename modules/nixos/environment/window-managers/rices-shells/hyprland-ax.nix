@@ -31,16 +31,16 @@ in
     } // { providedSessions = [ "Hyprland-AX" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-AX = {
-        prettyName = "Hyprland-AX";
-        comment = "Hyprland with AxShell (UWSM)";
-        binPath = "${Hyprland-AX}/bin/Hyprland-AX";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-AX = {
+ #      prettyName = "Hyprland-AX";
+ #      comment = "Hyprland with AxShell (UWSM)";
+ #      binPath = "${Hyprland-AX}/bin/Hyprland-AX";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-AX ];
 

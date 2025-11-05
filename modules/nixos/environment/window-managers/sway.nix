@@ -41,16 +41,32 @@ in
    #extraSessionCommands = '' '';
   };
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      SwayFx = {
-        prettyName = "SwayFx";
-        comment = "Sway but with eye candy (UWSM)";
-        binPath = "${SwayFx}/bin/SwayFx";
-      };
-    };
-  };
+  services.displayManager.sessionPackages = [
+    (pkgs.writeTextFile {
+      name = "SwayFx";
+      text = ''
+        [Desktop Entry]
+        Name=SwayFx
+        Comment=SwayFx
+        Exec=${SwayFx}/bin/SwayFx
+        TryExec=${SwayFx}/bin/SwayFx
+        Type=Application
+        DesktopNames=sway
+      '';
+      destination = "/share/wayland-sessions/SwayFx.desktop";
+    } // { providedSessions = [ "SwayFx" ]; })
+  ];
+
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    SwayFx = {
+ #      prettyName = "SwayFx";
+ #      comment = "Sway but with eye candy (UWSM)";
+ #      binPath = "${SwayFx}/bin/SwayFx";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ SwayFx ];
 

@@ -31,16 +31,16 @@ in
     } // { providedSessions = [ "Hyprland-Exo" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-Exo = {
-        prettyName = "Hyprland-Exo";
-        comment = "Hyprland with ExoShell (Ignis) (UWSM)";
-        binPath = "${Hyprland-Exo}/bin/Hyprland-Exo";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-Exo = {
+ #      prettyName = "Hyprland-Exo";
+ #      comment = "Hyprland with ExoShell (Ignis) (UWSM)";
+ #      binPath = "${Hyprland-Exo}/bin/Hyprland-Exo";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-Exo ];
 

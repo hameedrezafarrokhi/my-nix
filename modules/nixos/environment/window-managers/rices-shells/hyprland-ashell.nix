@@ -31,16 +31,16 @@ in
     } // { providedSessions = [ "Hyprland-Ashell" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-Ashell = {
-        prettyName = "Hyprland-Ashell";
-        comment = "Hyprland with Ashell (UWSM)";
-        binPath = "${Hyprland-Ashell}/bin/Hyprland-Ashell";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-Ashell = {
+ #      prettyName = "Hyprland-Ashell";
+ #      comment = "Hyprland with Ashell (UWSM)";
+ #      binPath = "${Hyprland-Ashell}/bin/Hyprland-Ashell";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-Ashell ];
 

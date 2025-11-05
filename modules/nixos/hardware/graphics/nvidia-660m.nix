@@ -8,7 +8,12 @@ in
 
 { config = lib.mkIf (config.my.hardware.gpu == "nvidia-660m") {
 
- #nixpkgs.config.nvidia.acceptLicense = true;
+  nixpkgs.config = {
+    nvidia.acceptLicense = true;
+    cudaSupport = false;
+   #cudaCapabilities = [ <target-architectures> ]; # Example: [ "8.9" ]
+   #cudaForwardCompat = false;
+  };
 
   # To See Kernel Drivers in Use ( or available ): lspci -k -d ::03xx
 

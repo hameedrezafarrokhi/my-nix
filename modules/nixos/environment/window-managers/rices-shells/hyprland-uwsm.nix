@@ -10,16 +10,16 @@ in
 
 { config = lib.mkIf (builtins.elem "hyprland-uwsm" config.my.rices-shells) {
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Hyprland-UWSM = {
-        prettyName = "Hyprland-UWSM";
-        comment = "Hyprland (UWSM)";
-        binPath = "${Hyprland-UWSM}/bin/Hyprland-UWSM";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Hyprland-UWSM = {
+ #      prettyName = "Hyprland-UWSM";
+ #      comment = "Hyprland (UWSM)";
+ #      binPath = "${Hyprland-UWSM}/bin/Hyprland-UWSM";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Hyprland-UWSM ];
 

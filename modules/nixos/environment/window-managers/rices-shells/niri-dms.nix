@@ -29,16 +29,16 @@ in
     } // { providedSessions = [ "Niri-DMS" ]; })
   ];
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      Niri-DMS = {
-        prettyName = "Niri-DMS";
-        comment = "Niri with DankMaterialShell (UWSM)";
-        binPath = "${Niri-DMS}/bin/Niri-DMS";
-      };
-    };
-  };
+ #programs.uwsm = {
+ #  enable = true;
+ #  waylandCompositors = {
+ #    Niri-DMS = {
+ #      prettyName = "Niri-DMS";
+ #      comment = "Niri with DankMaterialShell (UWSM)";
+ #      binPath = "${Niri-DMS}/bin/Niri-DMS";
+ #    };
+ #  };
+ #};
 
   environment.systemPackages = [ Niri-DMS ];
 
