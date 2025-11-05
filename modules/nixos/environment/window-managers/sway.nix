@@ -70,4 +70,5 @@ in
 
   environment.systemPackages = [ SwayFx ];
 
+
 };}
