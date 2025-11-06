@@ -287,7 +287,7 @@
  #  QT_QPA_PLATFORMTHEME = lib.mkForce "";
  #};
 
-  services.xsettingsd = {
+  services.xsettingsd = lib.mkIf config.xsession.enable {
     settings = {
       "Net/SoundThemeName" = sound;
       "Net/IconThemeName" = gtk-icon;
@@ -303,7 +303,7 @@
       "Gtk/CursorThemeSize" = cursor-size;
     };
   };
-  xsession.initExtra = ''
+  xsession.initExtra = lib.mkIf config.xsession.enable ''
     xsetroot -solid ${Base} &
     hsetroot -cover ${wallpaper} &
     xrdb -load ${config.xresources.path} &
@@ -313,10 +313,10 @@
     blueman-applet &
     ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
   '';
-  xsession.profileExtra = ''
+  xsession.profileExtra = lib.mkIf config.xsession.enable ''
     xsetroot -cursor_name left_ptr &
   '';
-  xresources.properties = {
+  xresources.properties = lib.mkIf config.xsession.enable {
     #! basics
     "*background" =   Base;
     "*foreground" =   Text;
@@ -368,7 +368,7 @@
    #dwm.selbordercolor: #B48EAD
    #dwm.selbgcolor: #81A1C1
   };
- #xsession = {   # DEPRICATED
+ #xsession = lib.mkIf config.xsession.enable {   # DEPRICATED
  #  pointerCursor = {
  #    defaultCursor = x-cursor;
  #    name = x-cursor;
@@ -377,7 +377,7 @@
  #  };
  #};
 
-  services.flatpak = {
+  services.flatpak = lib.mkIf config.my.flatpak.enable {
     overrides = {
       global = {
         Environment = {
@@ -399,18 +399,18 @@
     size = cursor-size;
     dotIcons.enable = true;
     gtk.enable = true;
-    sway.enable = true;
-    hyprcursor = {
+    sway.enable = lib.mkIf (config.wayland.windowManager.sway.enable) true;
+    hyprcursor = lib.mkIf config.my.hypr.hyprland.enable {
       enable = true;
       size = cursor-size;
     };
-    x11 = {
+    x11 = lib.mkIf config.xsession.enable {
       enable = true;
       defaultCursor = x-cursor;
     };
   };
 
-  fonts = {
+  fonts = lib.mkIf config.my.fonts.enable {
     fontconfig = {
       enable = true;
       defaultFonts = {
@@ -422,7 +422,7 @@
     };
   };
 
-  xsession.windowManager.i3.config = {
+  xsession.windowManager.i3.config = lib.mkIf config.xsession.windowManager.i3.enable {
     fonts = {
       names = [ MonoSpace Sans ];
       style = i3Style;
@@ -521,7 +521,7 @@
       }
     ];
   };
-  programs.i3status-rust = {
+  programs.i3status-rust = lib.mkIf config.programs.i3status-rust.enable {
     bars = {
       top = {
         icons = i3status-icon;
@@ -538,12 +538,12 @@
       };
     };
   };
-  wayland.windowManager.sway.config = {
+  wayland.windowManager.sway.config = lib.mkIf config.wayland.windowManager.sway.enable {
     fonts = config.xsession.windowManager.i3.config.fonts;
     colors = config.xsession.windowManager.i3.config.colors;
     bars = config.xsession.windowManager.i3.config.bars;
   };
-  xsession.windowManager.bspwm = {
+  xsession.windowManager.bspwm = lib.mkIf config.xsession.windowManager.bspwm.enable {
     settings = {
       presel_feedback_color = Overlay1;
       active_border_color = Lavender;
@@ -555,8 +555,7 @@
     ];
   };
 
-  programs.plasma = {
-    enable = true;
+  programs.plasma = lib.mkIf config.programs.plasma.enable {
     kwin = {
       titlebarButtons = { # “more-window-actions”, “application-menu”, “on-all-desktops”, “minimize”, “maximize”, “close”, “help”, “shade”, “keep-below-windows”, “keep-above-windows”
         left = plasma-decoration-left;
@@ -682,7 +681,7 @@
     };
   };
 
-  programs.gnome-shell = {
+  programs.gnome-shell = lib.mkIf config.my.gnome.enable {
     enable = true;
    #extensions = [ ];
     theme = {
@@ -694,39 +693,39 @@
   dconf.settings = {
 
      # Cinnamon
-    "org/cinnamon/desktop/interface" = {
+    "org/cinnamon/desktop/interface" = lib.mkIf config.my.cinnamon.enable {
       gtk-theme = gtk-theme;
       icon-theme = gtk-icon;
     };
-    "org/cinnamon/theme" = {
+    "org/cinnamon/theme" = lib.mkIf config.my.cinnamon.enable {
       name = cinnamon-theme;
     };
-    "org/cinnamon/desktop/background" = {
+    "org/cinnamon/desktop/background" = lib.mkIf config.my.cinnamon.enable {
       picture-uri = wallpaper-alt;
     };
 
      # Mate
-    "org/mate/marco/general" = {
+    "org/mate/marco/general" = lib.mkIf config.my.mate.enable {
       theme = mate-theme;
     };
-    "org/mate/desktop/background" = {
+    "org/mate/desktop/background" = lib.mkIf config.my.mate.enable {
       picture-filename = wallpaper;
       picture-options = "wallpaper";
     };
-    "org/mate/desktop/interface" = {
+    "org/mate/desktop/interface" = lib.mkIf config.my.mate.enable {
       gtk-theme = gtk-theme;
       icon-theme = gtk-icon;
     };
-    "org/mate/desktop/peripherals/mouse" = {
+    "org/mate/desktop/peripherals/mouse" = lib.mkIf config.my.mate.enable {
       cursor-theme = gtk-cursor;
     };
 
      # Onboard
-    "org/onboard" = {
+    "org/onboard" = lib.mkIf config.my.apps.onboard.enable {
       layout = onboard-layout;
       theme = onboard-theme;
     };
-    "org/onboard/theme-settings" = {
+    "org/onboard/theme-settings" = lib.mkIf config.my.apps.onboard.enable {
       color-scheme = onboard-color;
       key-label-font = MonoOnboard;
       key-style = onboard-key;
@@ -742,7 +741,7 @@
 
   };
 
-  xfconf.settings = {
+  xfconf.settings = lib.mkIf config.my.xfce.enable {
     xsettings = {
       "Net/SoundThemeName" = sound;
       "Net/IconThemeName" = gtk-icon;
@@ -768,8 +767,7 @@
   };
 
   programs = {
-    konsole = {
-      enable=true;
+    konsole = lib.mkIf config.my.kde.konsole.enable {
       customColorSchemes = {
         Konsole-catppuccin-macchiato = konsole-scheme;
       };
@@ -784,7 +782,7 @@
         };
       };
     };
-    kate = {
+    kate = lib.mkIf config.my.kde.kate.enable {
       enable=true;
       editor = {
         theme = {
@@ -798,7 +796,7 @@
       };
       ui.colorScheme=kate-ui;
     };
-    kitty = {
+    kitty = lib.mkIf config.programs.kitty.enable {
       settings = {
         background = kitty-back;
         tab_bar_background = kitty-back-tab;
@@ -813,7 +811,7 @@
         size = lib.mkForce MonoSizeKitty;
       };
     };
-    alacritty = {
+    alacritty = lib.mkIf config.programs.alacritty.enable {
       theme = alacritty-theme;
       settings = {
         font = {
@@ -834,7 +832,7 @@
         };
       };
     };
-    ghostty = {
+    ghostty = lib.mkIf config.programs.ghostty.enable {
       settings = {
         theme = ghostty-theme;
         font-size = 10;
@@ -867,25 +865,25 @@
         };
       };
     };
-    freetube = {
+    freetube = lib.mkIf config.programs.freetube.enable {
       settings = {
         baseTheme = freetube-base;
         mainColor = freetube-main;
         secColor = freetube-sec;
       };
     };
-    superfile = {
+    superfile = lib.mkIf config.programs.superfile.enable {
       settings = {
         theme = superfile-theme;
         transparent_background = false;
       };
      #themes = {};
     };
-    rofi = {
+    rofi = lib.mkIf config.programs.rofi.enable {
       font = MonoRofi;
      #theme = { };
     };
-    waybar = {
+    waybar = lib.mkIf config.programs.waybar.enable {
       style = lib.mkBefore ''
         @define-color rosewater ${Rosewater};
         @define-color flamingo  ${Flamingo};
@@ -924,7 +922,7 @@
         }
       '';
     };
-    ashell.settings = {
+    ashell.settings = lib.mkIf config.programs.ashell.enable {
       appearance = {
         style = "Gradient";  # "Islands"
         font_name = Sans;
@@ -947,7 +945,7 @@
       base = Overlay2;
       };
     };
-    television = {
+    television = lib.mkIf config.programs.television.enable {
       settings = {
         ui.theme = tv-theme;
         previewers.file.theme = tv-preview;
@@ -957,7 +955,7 @@
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
   };
   services = {
-    polybar = {
+    polybar = lib.mkIf config.services.polybar.enable {
       settings = {
        #colors ={
        #  background = "#0d1117";
