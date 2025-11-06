@@ -18,6 +18,10 @@ wallpaperplugin=org.kde.image
 immutability=1
 plugin=org.kde.plasma.icontasks
 
+[Containments][525][Applets][526][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
 [Containments][525][Applets][526][Configuration][General]
 fill=true
 forceStripes=false
