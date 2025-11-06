@@ -27,7 +27,7 @@ in
    #  chown "$(id u):$(id -g)" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
    #'';
 
-    PlasmaAppletsrc = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    PlasmaAppletsrcRed = lib.hm.dag.entryAfter ["writeBoundary"] ''
       ln -sf "${nix-path}/modules/hm/desktops/kde/appletrc/red/plasma-org.kde.plasma.desktop-appletsrc" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc"
     '';
 

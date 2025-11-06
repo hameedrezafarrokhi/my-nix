@@ -300,6 +300,7 @@
 
           theme = "catppuccin-uni";
           fonts.enable = true;
+          nix-artwork.enable = true;
 
           flatpak.enable = true;
 

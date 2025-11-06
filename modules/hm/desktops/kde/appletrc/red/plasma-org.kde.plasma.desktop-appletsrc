@@ -381,10 +381,10 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][527][Applets][538][General]
-extraItems=org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.cameraindicator,org.kde.kdeconnect,org.kde.plasma.brightness,org.kde.plasma.battery,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.mediacontroller,org.kde.kscreen,org.kde.plasma.volume,org.kde.plasma.printmanager
+extraItems=org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.cameraindicator,org.kde.kdeconnect,org.kde.plasma.brightness,org.kde.plasma.battery,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.mediacontroller,org.kde.kscreen,org.kde.plasma.volume
 hiddenItems=Yakuake,blueman,org.kde.merkuro.contact.applet
 iconSpacing=1
-knownItems=org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.cameraindicator,org.kde.kdeconnect,org.kde.plasma.brightness,org.kde.plasma.battery,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.mediacontroller,org.kde.kscreen,org.kde.plasma.volume,org.kde.plasma.printmanager
+knownItems=org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.clipboard,org.kde.plasma.cameraindicator,org.kde.kdeconnect,org.kde.plasma.brightness,org.kde.plasma.battery,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.mediacontroller,org.kde.kscreen,org.kde.plasma.volume
 
 [Containments][527][Applets][550]
 immutability=1
@@ -451,10 +451,10 @@ plugin=org.kde.plasma.marginsseparator
 [Containments][527][General]
 AppletOrder=528;568;570;529;569;571;530;572;531;573;534;567;533;535;532;536;566;557;537;562;538;550
 
-[Containments][574]
+[Containments][576]
 ItemGeometries-1366x768=
 ItemGeometriesHorizontal=
-activityId=86330a09-a727-4026-90f9-209056b51473
+activityId=79a00912-7bda-40ff-9ee6-d5f47eee18b3
 formfactor=0
 immutability=1
 lastScreen=0
@@ -462,28 +462,13 @@ location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
-[Containments][574][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
+[Containments][576][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
 
-[Containments][574][General]
-positions={"1366x768":[]}
-
-[Containments][574][Wallpaper][org.kde.image][General]
+[Containments][576][Wallpaper][org.kde.image][General]
 Image=file:///home/hrf/Pictures/Wallpapers/astronaut-macchiato.png
-SlidePaths=/nix/store/kipymdgpkx7mz3gamv1fa365048c4szb-breeze-6.4.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
-
-[Containments][575]
-activityId=86330a09-a727-4026-90f9-209056b51473
-formfactor=0
-immutability=1
-lastScreen=1
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][575][General]
-positions={"1363x767":[]}
+SlidePaths=/nix/store/qc0y5hlx0jsqc8cn01idcivjz8a9i3zp-breeze-6.5.1/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [ScreenMapping]
 itemsOnDisabledScreens=

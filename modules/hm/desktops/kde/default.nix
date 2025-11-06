@@ -28,6 +28,7 @@ in
 
     ./plasma.nix
     ./appletrc/nirvana/default.nix
+    ./appletrc/red/default.nix
 
     ./kate.nix
     ./konsole.nix
