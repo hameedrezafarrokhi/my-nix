@@ -14,7 +14,7 @@ in
 
   programs.dankMaterialShell = {
     enable = true;
-    enableSystemd = true;
+    systemd.enable = true;
     enableClipboard = true;
     enableVPN = true;
     enableBrightnessControl = true;

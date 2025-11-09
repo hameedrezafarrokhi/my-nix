@@ -109,7 +109,9 @@
       allowUnfree = true;
       nvidia.acceptLicense=true;
       allowBroken=true;
-      permittedInsecurePackages=[ ];
+      permittedInsecurePackages=[
+        "electron-36.9.5"
+      ];
      #overlays = myOverlays;
     };
     myPKGS =  system: {

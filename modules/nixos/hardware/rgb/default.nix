@@ -8,7 +8,7 @@
 
   };
 
-  config = {
+  config = lib.mkIf config.my.hardware.rgb.enable {
 
     services = {
 

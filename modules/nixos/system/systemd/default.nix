@@ -10,7 +10,7 @@ in
 
   options.my.systemd.enable = lib.mkEnableOption "systemd config";
 
-  config = {
+  config = lib.mkIf config.my.systemd.enable {
 
     systemd.user.extraConfig = ''
 

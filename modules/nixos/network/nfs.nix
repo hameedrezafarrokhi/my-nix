@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{ config = lib.mkIf (config.my.hardware.fwupd.enable) {
+{ config = lib.mkIf (config.my.network.nfs.enable) {
 
   services.rpcbind.enable = true;
 
