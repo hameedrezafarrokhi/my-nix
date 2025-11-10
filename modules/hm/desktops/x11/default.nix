@@ -156,7 +156,7 @@ in
       };
     };
 
-    home.packages = [ pkgs.wayback-x11 x-cursor ];
+    home.packages = [ pkgs.wayback-x11 x-cursor pkgs.xbacklight ];
 
   };
 

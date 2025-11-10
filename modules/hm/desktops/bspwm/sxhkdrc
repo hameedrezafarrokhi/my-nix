@@ -94,13 +94,13 @@ super + ctrl + Down
 super + ctrl + Up
 	bspc node -z top 0 -40; bspc node -z bottom -40 0
 
-# Increase Volume (Using pamixer)
+# Increase Volume
 XF86AudioRaiseVolume
-	pamixer -i 2
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
 
-# Decrease Volume (Using pamixer)
+# Decrease Volume
 XF86AudioLowerVolume
-	pamixer -d 2
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
