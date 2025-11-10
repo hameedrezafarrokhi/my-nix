@@ -84,6 +84,8 @@ in
         comic-mono
 
         fira-sans
+        fantasque-sans-mono
+        icomoon-feather
 
         material-symbols material-design-icons material-icons
 

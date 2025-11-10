@@ -3,15 +3,15 @@ super + space
    	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons
 
 # Set Window State: Floating Mode
-alt + shift + f
+super + f
 	bspc node -t ~floating
 
 # Set Window State: Fullscreen Mode
-alt + shift + Return
+super + Return
 	bspc node -t fullscreen
 
 # Set Window State: Fullscreen Mode
-alt + shift + t
+super + shift + Return
 	bspc node -t ~tiled
 
 # Reload sxhkd (Hotkey Daemon)
@@ -79,11 +79,11 @@ super + shift + {1-9,0}
 	bspc node --to-desktop ^{1-9,10}
 
 # Expand window width both sides
-super + ctrl + Left
+super + ctrl + Right
 	bspc node -z right 40 0; bspc node -z left 40 0
 
 # Shrink window width both sides
-super + ctrl + Right
+super + ctrl + Left
 	bspc node -z right -40 0; bspc node -z left -40 0
 
 # Resize Window: Shrink Down
@@ -121,3 +121,25 @@ Print
 # Resize All Windows Equally
 super + equal
 	bspc query -N -d | xargs -I % bspc node % -B
+
+
+
+
+super + t
+      bsp-layout set tall
+super + alt + t
+      bsp-layout set rtall
+super + w
+      bsp-layout set wide
+super + alt + w
+      bsp-layout set rwide
+super + m
+      bsp-layout set monocle
+super + BackSpace
+      bsp-layout set tiled
+super + g
+      bsp-layout set grid
+super + alt + g
+      bsp-layput set rgrid
+super + e
+      bsp-layout set even

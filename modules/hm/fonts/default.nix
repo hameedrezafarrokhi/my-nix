@@ -32,6 +32,8 @@ in
         comic-mono
 
         fira-sans
+        fantasque-sans-mono
+        icomoon-feather
 
         material-symbols material-design-icons material-icons
 
@@ -123,6 +125,11 @@ in
         cp -rn "${pkgs.nerd-fonts.meslo-lg}/share/fonts" "$HOME/.local/share/fonts/nerd-fonts/meslo-lg"
         mkdir -p "$HOME/.local/share/fonts/nerd-fonts/jetbrains-mono"
         cp -rn "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts" "$HOME/.local/share/fonts/nerd-fonts/jetbrains-mono"
+        mkdir -p "$HOME/.local/share/fonts/fantasque-sans-mono/opentype"
+        cp -rn "${pkgs.fantasque-sans-mono}/share/fonts" "$HOME/.local/share/fonts/fantasque-sans-mono"
+        mkdir -p "$HOME/.local/share/fonts/icomoon-feather"
+        cp -rn "${pkgs.icomoon-feather}/share/fonts" "$HOME/.local/share/fonts/icomoon-feather"
+
       '';
     };
 

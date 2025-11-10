@@ -43,6 +43,7 @@ in
        #"tilda"
        #"feh --bg-fill /home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/background.png"
         "polybar example"
+        "plank"
       ];
 
       settings = {

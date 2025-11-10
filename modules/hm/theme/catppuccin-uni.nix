@@ -91,13 +91,16 @@
     MonoAlt = "Monofur Nerd Font Mono";
     MonoRofi = "Comic Mono 10";
     MonoOnboard = "Monofur Nerd Font Mono bold";
-    MonoPoly = "Comic Mono:size=10.5:weight=medium;3";
     MonoSt = "Comic Mono:style:Regular:pixelsize=10";
     MonoURxvt = "xft:Comic Mono:size=10";
     Sans = "Comic Sans MS";
     Sans-X = "Comic Sans MS,  10";
     Serif = "Comic Sans MS";
     Emoji = "Blobmoji";
+
+    Poly1 = "Comic Mono:size=10.5:weight=medium;3";
+    Poly2 = "Hack Nerd Font:size=10.5:weight=medium;3";
+    PolySymbols = "Symbols Nerd Font:size=10.5:weight=medium;3";
 
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
@@ -978,13 +981,16 @@
           module-margin = 1;
           separator = "|";
           separator-foreground = Base;
-          font-0 = MonoPoly;
+          font-0 = Poly1;
+          font-1 = PolySymbols;
+          font-2 = Poly2;
          #font-1 = "FontAwesome:size=12;3";
          #font-2 = "Hack Nerd Font:size=12;3";
         };
         "module/xworkspaces" = {
           label = {
             active = {
+              foreground = Base;
               background = Sapphire;
               underline= Blue;
             };
@@ -997,7 +1003,7 @@
           label-unmounted-foreground = Mantle;
         };
         "module/pulseaudio" = {
-          format-volume-prefix-foreground = Text;
+          format-volume-prefix-foreground = Flamingo;
           label-muted-foreground = Red;
         };
         "module/lock" = {
@@ -1005,10 +1011,10 @@
           format-background = Base;
         };
         "module/memory" = {
-          format-prefix-foreground = Text;
+          format-prefix-foreground = Mauve;
         };
         "module/cpu" = {
-          format-prefix-foreground = Text;
+          format-prefix-foreground = Maroon;
         };
         "network-base" = {
          #label-disconnected = %{F#F0C674}%ifname%%{F#707880} disconnected;
@@ -1023,7 +1029,7 @@
           label-foreground = Flamingo;
         };
         "module/date" = {
-          label-foreground = Text;
+          label-foreground = Peach;
         };
       };
     };

@@ -92,6 +92,11 @@
   catppuccin-openbox = { url = "github:catppuccin/openbox";
                                 flake = false; };
 
+      polybar-themes = { url = "github:adi1090x/polybar-themes";
+                                flake = false; };
+  polybar-collection = { url = "github:Murzchnvok/polybar-collection";
+                                flake = false; };
+
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest";};
              chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable";};
          flake-utils = { url = "github:numtide/flake-utils";};

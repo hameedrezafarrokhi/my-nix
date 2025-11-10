@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
@@ -44,6 +44,7 @@
         label-urgent-padding = 1;
         label-empty = "";
         label-empty-padding = 0;
+        label-font = 3;
       };
 
       "module/xwindow" = {
@@ -60,7 +61,7 @@
 
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
-        format-volume-prefix = ''"VOL "'';
+        format-volume-prefix = ''"󰕾 "'';
         format-volume = "<label-volume>";
         label-volume = "%percentage%%";
         label-muted = "muted";
@@ -82,14 +83,14 @@
       "module/memory" = {
         type = "internal/memory";
         interval = 2;
-        format-prefix = ''"RAM "'';
+        format-prefix = ''" "'';
         label = "%percentage_used:2%%";
       };
 
       "module/cpu" = {
         type = "internal/cpu";
         interval = 02;
-        format-prefix = ''"CPU "'';
+        format-prefix = ''" "'';
         label = "%percentage:2%%";
       };
 
@@ -167,6 +168,67 @@
    #Install = {
    #  WantedBy = [ "tray.target" ];
    #};
+  };
+
+  xdg.configFile = {
+
+    polybar-themes-blocks = {
+      source = "${inputs.polybar-themes}/bitmap/blocks";
+      target = "polybar/blocks";
+    };
+    polybar-themes-colorblocks = {
+      source = "${inputs.polybar-themes}/bitmap/colorblocks";
+      target = "polybar/colorblocks";
+    };
+    polybar-themes-cuts = {
+      source = "${inputs.polybar-themes}/bitmap/cuts";
+      target = "polybar/cuts";
+    };
+    polybar-themes-docky = {
+      source = "${inputs.polybar-themes}/bitmap/docky";
+      target = "polybar/docky";
+    };
+    polybar-themes-forest = {
+      source = "${inputs.polybar-themes}/bitmap/forest";
+      target = "polybar/forest";
+    };
+    polybar-themes-grayblocks = {
+      source = "${inputs.polybar-themes}/bitmap/grayblocks";
+      target = "polybar/grayblocks";
+    };
+    polybar-themes-hack = {
+      source = "${inputs.polybar-themes}/bitmap/hack";
+      target = "polybar/hack";
+    };
+    polybar-themes-material = {
+      source = "${inputs.polybar-themes}/bitmap/material";
+      target = "polybar/material";
+    };
+    polybar-themes-shades = {
+      source = "${inputs.polybar-themes}/bitmap/shades";
+      target = "polybar/shades";
+    };
+    polybar-themes-shapes = {
+      source = "${inputs.polybar-themes}/bitmap/shapes";
+      target = "polybar/shapes";
+    };
+    polybar-themes-launch = {
+      source = "${inputs.polybar-themes}/bitmap/launch.sh";
+      target = "polybar/launch.sh";
+    };
+
+  };
+
+  home.file = {
+
+    polybar-collection = {
+
+      source = "${inputs.polybar-collection}/";
+      target = "polybar-collection/";
+      recursive = true;
+
+    };
+
   };
 
 };}
