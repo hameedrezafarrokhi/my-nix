@@ -97,6 +97,11 @@
   polybar-collection = { url = "github:Murzchnvok/polybar-collection";
                                 flake = false; };
 
+        picom-ftlabs = { url = "github:r0-zero/picom"; };
+      git-ignore-nix = { url = "github:hercules-ci/gitignore.nix";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+
+
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest";};
              chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable";};
          flake-utils = { url = "github:numtide/flake-utils";};
@@ -137,6 +142,23 @@
           postInstall = "chmod 755 $out/share/plasma/plasmoids/luisbocanegra.panel.colorizer/contents/ui/tools/list_presets.sh";
         };
       })
+     #(final: prev: {
+     #  picom = prev.picom.overrideAttrs (oldAttrs: rec {
+     #    version = "11";
+     #    pname = "picom";
+     #    buildInputs =
+     #      [
+     #        final.pcre2
+     #        final.xorg.xcbutil
+     #        final.libepoxy
+     #        final.asciidoc-full-with-plugins
+     #      ]
+     #      ++ final.lib.remove final.xorg.libXinerama (
+     #        final.lib.remove final.pcre oldAttrs.buildInputs
+     #      );
+     #    src = /*inputs.git-ignore-nix.lib.gitignoreSource*/ inputs.picom-ftlabs;
+     #  });
+     #})
     ];
 
 

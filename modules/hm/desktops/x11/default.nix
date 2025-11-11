@@ -31,6 +31,7 @@ in
       scriptPath = ".xsession";
       initExtra = ''
         export GDK_BACKEND=x11 &
+        setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
       '';
       profileExtra = ''
         export GDK_BACKEND=x11 &
@@ -98,6 +99,7 @@ in
           rounded-corners-exclude = [
             "window_type = 'dock'"
             "window_type = 'desktop'"
+            "class_name = 'Rofi'"
           ];
           vsync = true;
           mark-wmwin-focused = true;

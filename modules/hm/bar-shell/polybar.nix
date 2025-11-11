@@ -20,7 +20,7 @@
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "memory cpu filesystem";
+          left = "apps memory cpu filesystem xwindow";
           center = "xworkspaces";
           right = "lock tray pulseaudio date hour";
         };
@@ -50,18 +50,23 @@
       "module/xwindow" = {
         type = "internal/xwindow";
         label = "%title:0:75:...%";
+        format-prefix = ''"󰖯 "'';
+        label-maxlen = 30;
       };
 
       "module/filesystem" = {
+        format-mounted = "<label-mounted>%{O-8pt}";
         type = "internal/fs";
         interval = 25;
         mount-0 = "/";
+        format-mounted-prefix = '' %{O-2pt}'';
+        label-mounted = "%percentage_free%%";
         label-unmounted = "%mountpoint% not mounted";
       };
 
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
-        format-volume-prefix = ''"󰕾 "'';
+        format-volume-prefix = ''"󰜟 "'';
         format-volume = "<label-volume>";
         label-volume = "%percentage%%";
         label-muted = "muted";
@@ -81,16 +86,18 @@
       };
 
       "module/memory" = {
+        format = "<label>%{O-5pt}";
         type = "internal/memory";
         interval = 2;
-        format-prefix = ''" "'';
+        format-prefix = '' %{O-5pt}'';
         label = "%percentage_used:2%%";
       };
 
       "module/cpu" = {
+        format = "<label>%{O-5pt}";
         type = "internal/cpu";
         interval = 02;
-        format-prefix = ''" "'';
+        format-prefix = '' %{O-5pt}'';
         label = "%percentage:2%%";
       };
 
@@ -118,6 +125,7 @@
         label = "%date%";
         label-padding = 0;
         label-font = 1;
+        format-prefix = ''"󰥔 "'';
       };
 
       "module/date" = {
@@ -127,12 +135,19 @@
         exec = ''"LC_TIME="en_us_utf8" date +"%a, %b %-d""'';
         label-padding = 0;
         label-font = 1;
+        format-prefix = ''" "'';
         click-left = "gsimplecal";
       };
 
       "module/tray" = {
         type = "internal/tray";
         tray-spacing = "4px";
+      };
+      "module/apps" = {
+        type = "custom/script";
+        exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
+        interval = 999999999999;
+        click-left = "rofi -show drun -modi drun -show-icons -location 1 -yoffset 40 -xoffset 10  ";
       };
 
       "settings" = {

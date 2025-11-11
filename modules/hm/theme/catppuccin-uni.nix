@@ -987,6 +987,9 @@
          #font-1 = "FontAwesome:size=12;3";
          #font-2 = "Hack Nerd Font:size=12;3";
         };
+        "module/xwindow" = {
+          format-prefix-foreground = Sapphire;
+        };
         "module/xworkspaces" = {
           label = {
             active = {
@@ -1000,14 +1003,20 @@
         };
         "module/filesystem" = {
          #label-mounted = %{F#F0C674}%mountpoint%%{F-} %percentage_used%%;
-          label-unmounted-foreground = Mantle;
+          label-unmounted-foreground = Red;
+          label-mounted-foreground = Lavender;
+          format-mounted-foreground = Green;
+          format-mounted-prefix-foreground = Green;
+          format-prefix-foreground = Green;
+          format-foreground = Green;
+          format-prefix-mounted-foreground = Green;
         };
         "module/pulseaudio" = {
           format-volume-prefix-foreground = Flamingo;
           label-muted-foreground = Red;
         };
         "module/lock" = {
-          format-foreground = Text;
+          format-foreground = Red;
           format-background = Base;
         };
         "module/memory" = {
@@ -1027,9 +1036,14 @@
         };
         "module/hour" = {
           label-foreground = Flamingo;
+          format-prefix-foreground = Rosewater;
         };
         "module/date" = {
           label-foreground = Peach;
+          format-prefix-foreground = Rosewater;
+        };
+        "module/tray" = {
+          tray-foreground = Rosewater;
         };
       };
     };

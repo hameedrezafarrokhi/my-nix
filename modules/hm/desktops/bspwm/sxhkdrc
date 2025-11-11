@@ -143,3 +143,9 @@ super + alt + g
       bsp-layput set rgrid
 super + e
       bsp-layout set even
+
+alt + Caps_Lock
+    setxkbmap -layout us,ir -option "grp:alt_caps_toggle"
+
+alt + shift + p
+    pkill plank && plank

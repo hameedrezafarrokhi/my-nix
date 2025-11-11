@@ -3,6 +3,16 @@
 let
 
   cfg = config.my.bspwm;
+ #bsp-plank = pkgs.writeShellScriptBin "bsp-plank" ''
+ #  sleep 10
+ #  if pgrep -u $USER bspwm >/dev/null; then
+ #     ${pkgs.plank}/bin/plank
+ #  fi
+ #'';
+  bsp-plank-reset = pkgs.writeShellScriptBin "bsp-plank-reset" ''
+    pkill plank
+    plank &
+  '';
 
 in
 
@@ -23,7 +33,8 @@ in
       # bspc monitor -d 1 2 3 4 5 6 7 8 9 10
       extraConfigEarly = ''
         bspc monitor -d 1 2 3 4 5 6 7 8 9 10
-        export XDG_CURRENT_DESKTOP=BSPWM
+        export XDG_CURRENT_DESKTOP=BSPWM &
+        export desktop=BSPWM &
       '';
 
       # killall -q polybar
@@ -43,6 +54,7 @@ in
        #"tilda"
        #"feh --bg-fill /home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/background.png"
         "polybar example"
+        "export desktop=BSPWM"
         "plank"
       ];
 
@@ -57,6 +69,12 @@ in
         borderless_monocle = true;
         gapless_monocle = true;
 
+      };
+
+      rules = {
+        Plank = {
+          layer = "above";
+        };
       };
 
      #rules = {
@@ -89,7 +107,26 @@ in
 
     };
 
-    home.packages = [ pkgs.sxhkd pkgs.bc pkgs.bsp-layout ];
+    home.packages = [ pkgs.sxhkd pkgs.bc pkgs.bsp-layout bsp-plank-reset /*bsp-plank*/ ];
+
+   #systemd.user.services.plank-bspwm = {
+   #  Unit = {
+   #    Description = "Plank for BSPWM";
+   #    After = "xdg-desktop-autostart.target";
+   #   #BindsTo = "xdg-desktop-autostart.target";
+   #    PartOf = [ "tray.target" ];
+   #  };
+   #
+   #  Service = {
+   #    ExecStart = "${bsp-plank}/bin/bsp-plank";
+   #    Restart = "on-failure";
+   #   #ExecCondition = "${bsp-plank}/bin/bsp-plank";
+   #  };
+   #
+   #  Install = {
+   #    WantedBy = [ "tray.target" ];
+   #  };
+   #};
 
   };
 
