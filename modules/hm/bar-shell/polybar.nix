@@ -70,6 +70,10 @@
         format-volume = "<label-volume>";
         label-volume = "%percentage%%";
         label-muted = "muted";
+        click-right = "pavucontrol";
+        double-click-left = "resources";
+       #double-click-middle = ;
+        double-click-right = "baobab";
       };
 
       "module/lock" = {
@@ -136,7 +140,11 @@
         label-padding = 0;
         label-font = 1;
         format-prefix = ''" "'';
-        click-left = "gsimplecal";
+        click-left = "gnome-calendar";
+        click-right = "gnome-clocks";
+        double-click-left = "timeswitch";
+       #double-click-middle = ;
+        double-click-right = "kalarm";
       };
 
       "module/tray" = {
@@ -148,6 +156,10 @@
         exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
         interval = 999999999999;
         click-left = "rofi -show drun -modi drun -show-icons -location 1 -yoffset 40 -xoffset 10  ";
+        click-right = "dolphin";
+        double-click-left = "kate";
+       #double-click-middle = ;
+        double-click-right = "kitty";
       };
 
       "settings" = {

@@ -55,7 +55,7 @@ in
 
       picom ={
         enable = true;
-        package = pkgs.picom;
+        package = pkgs.picom-pijulius; # pkgs.picom;
         backend = "egl"; # "egl", "glx", "xrender", "xr_glx_hybrid"
 
         shadow = true;
@@ -86,8 +86,8 @@ in
          #blur-kern = "3x3box";
           corner-radius = 10;
           shadow-radius = 20;
-          shadow-offset-x = "5";
-          shadow-offset-y = "-5";
+         #shadow-offset-x = "5";
+         #shadow-offset-y = "-5";
           frame-opacity = 1.0;
           inactive-opacity-override = false;
          #round-borders = 8;
@@ -99,7 +99,9 @@ in
           rounded-corners-exclude = [
             "window_type = 'dock'"
             "window_type = 'desktop'"
-            "class_name = 'Rofi'"
+            "class_name = 'rofi'"
+            "class_g = 'Rofi'"
+            "class_g = 'rofi'"
           ];
           vsync = true;
           mark-wmwin-focused = true;
@@ -127,7 +129,134 @@ in
 
 
         };
+
+        extraConfig = ''
+animations = ({
+    triggers = ["close", "hide"];
+    opacity = {
+        curve = "linear";
+        duration = 0.15;
+        start = "window-raw-opacity-before";
+        end = "window-raw-opacity";
+    };
+    blur-opacity = "0";
+    shadow-opacity = "opacity";
+    offset-x = "(1 - scale-x) / 2 * window-width";
+    offset-y = "(1 - scale-y) / 2 * window-height * 5";
+    scale-x = {
+        curve = "cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+        duration = 0.15;
+        start = 1;
+        end = 0.9;
+    };
+    scale-y = "scale-x";
+    shadow-scale-x = "scale-x";
+    shadow-scale-y = "scale-y";
+    shadow-offset-x = "offset-x";
+    shadow-offset-y = "offset-y";
+}, {
+    triggers = ["open", "show"];
+    opacity = {
+        curve = "linear";
+        duration = 0.15;
+        start = "window-raw-opacity-before";
+        end = "window-raw-opacity";
+    };
+    blur-opacity = {
+        curve = "linear";
+        duration = 0.1;
+        delay = 0.15;
+        start = "window-raw-opacity-before";
+        end = "window-raw-opacity";
+    };
+    shadow-opacity = "opacity";
+    offset-x = "(1 - scale-x) / 2 * window-width";
+    offset-y = "(1 - scale-y) / 2 * window-height * 5";
+    scale-x = {
+        curve = "cubic-bezier(0.24, 0.64, 0.79, 0.98)";
+        duration = 0.15;
+        start = 0.95;
+        end = 1;
+    };
+    scale-y = "scale-x";
+    shadow-scale-x = "scale-x";
+    shadow-scale-y = "scale-y";
+    shadow-offset-x = "offset-x";
+    shadow-offset-y = "offset-y";
+}, {
+    triggers = ["workspace-out"];
+    offset-y = {
+        duration = 0.15;
+        timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+        start = "0";
+        end = "-window-monitor-height";
+    };
+    shadow-offset-y = "offset-y";
+    opacity = {
+        duration = 0.2;
+        timing = "0.2s linear";
+        start = "window-raw-opacity-before";
+        end = "window-raw-opacity-before";
+    };
+    blur-opacity = "opacity";
+    shadow-opacity = "opacity";
+}, {
+    triggers = ["workspace-out-inverse"];
+    offset-y = {
+        duration = 0.15;
+        timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+        start = "0";
+        end = "window-monitor-height";
+    };
+    shadow-offset-y = "offset-y";
+    opacity = {
+        duration = 0.2;
+        timing = "0.2s linear";
+        start = "window-raw-opacity-before";
+        end = "window-raw-opacity-before";
+    };
+    blur-opacity = "opacity";
+    shadow-opacity = "opacity";
+}, {
+    triggers = ["workspace-in"];
+    offset-y = {
+        duration = 0.15;
+        timing = "0.15s cubic-bezier(0.24, 0.64, 0.79, 0.98)";
+        start = "window-monitor-height";
+        end = "0";
+    };
+    shadow-offset-y = "offset-y";
+    opacity = {
+        duration = 0.2;
+        timing = "0.2s linear";
+        start = "window-raw-opacity";
+        end = "window-raw-opacity";
+    };
+    blur-opacity = "opacity";
+    shadow-opacity = "opacity";
+}, {
+    triggers = ["workspace-in-inverse"];
+    offset-y = {
+        duration = 0.15;
+        timing = "0.15s cubic-bezier(0.24, 0.64, 0.79, 0.98)";
+        start = "-window-monitor-height";
+        end = "0";
+    };
+    shadow-offset-y = "offset-y";
+    opacity = {
+        duration = 0.2;
+        timing = "0.2s linear";
+        start = "window-raw-opacity";
+        end = "window-raw-opacity";
+    };
+    blur-opacity = "opacity";
+    shadow-opacity = "opacity";
+})
+
+        '';
+
        #extraArgs = { };
+
       };
 
       # Bridge for Legacy X Apps thta dont have SNI features ( Choose One )
