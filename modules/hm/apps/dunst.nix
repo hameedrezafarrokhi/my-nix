@@ -7,11 +7,12 @@
     package = pkgs.dunst;
    #waylandDisplay = "";
    #configFile = ;
-   #settings = {
-   #  global = {
-   #    icon_path = '' '';
-   #  };
-   #};
+    settings = {
+      global = {
+       #icon_path = '' '';
+        offset = "(27,60)";
+      };
+    };
    #iconTheme = {
    #  package = ;
    #  name = ;
