@@ -236,13 +236,13 @@
 
   home.file = {
 
-    polybar-collection = {
-
-      source = "${inputs.polybar-collection}/";
-      target = "polybar-collection/";
-      recursive = true;
-
-    };
+   #polybar-collection = {
+   #
+   #  source = "${inputs.polybar-collection}/";
+   #  target = "polybar-collection/";
+   #  recursive = true;
+   #
+   #};
 
   };
 
