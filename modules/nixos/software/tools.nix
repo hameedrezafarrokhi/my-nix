@@ -114,6 +114,7 @@
     ++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
     ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
    #++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
