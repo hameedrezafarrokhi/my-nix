@@ -290,6 +290,8 @@
  #  QT_QPA_PLATFORMTHEME = lib.mkForce "";
  #};
 
+ #services.screen-locker.lockCmd = lib.mkIf config.xsession.enable "\${pkgs.i3lock}/bin/i3lock -n -c ${Base} -f -k ";
+
   services.xsettingsd = lib.mkIf config.xsession.enable {
     settings = {
       "Net/SoundThemeName" = sound;

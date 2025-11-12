@@ -81,10 +81,49 @@ in
         package = pkgs.kdePackages.plasma-workspace;
       };
 
+      screen-locker = {
+        enable = true;
+        inactiveInterval = 1;
+        lockCmdEnv = [
+          "XSECURELOCK_PAM_SERVICE=xsecurelock"
+        ];
+        lockCmd = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10  -n -c 24273a -p default";
+        #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";
+        # "${pkgs.betterlockscreen}/bin/betterlockscreen --lock"
+        xautolock = {
+          enable = true;
+          package = pkgs.xautolock; # pkgs.xidlehook
+          detectSleep = true;
+          extraOptions = [ ];
+        };
+        xss-lock = {
+          package = pkgs.xss-lock;
+          extraOptions = [ ];
+          screensaverCycle = 60;
+        };
+      };
+     #betterlockscreen = {
+     #  enable = true;
+     # #package = ;
+     #  arguments = [ ];
+     #  inactiveInterval = 10;
+     #};
+
+      xscreensaver = {
+        enable = false;
+        package = pkgs.xscreensaver;
+        settings = {
+          fadeTicks = 20;
+          mode = "off"; # "blank" "random" "one"
+          lock = true;
+         #timeout = "0:02:00";
+        };
+      };
+
       picom ={
         enable = true;
         package = pkgs.callPackage ../../../nixos/myPackages/picom-ft.nix { };# pkgs.picom-pijulius; # pkgs.picom;
-        backend = "glx"; # "egl", "glx", "xrender", "xr_glx_hybrid"
+        backend = "egl"; # "egl", "glx", "xrender", "xr_glx_hybrid"
 
         shadow = true;
         shadowOpacity = 0.80;
@@ -216,16 +255,16 @@ in
 
 animations = true;
 #change animation speed of windows in current tag e.g open window in current tag
-animation-stiffness-in-tag = 50;
+animation-stiffness-in-tag = 40;
 #change animation speed of windows when tag changes
-animation-stiffness-tag-change = 50.0;
+animation-stiffness-tag-change = 40.0;
 
 animation-window-mass = 0.25;
 animation-dampening = 1;
 animation-clamping = true;
 
 #open windows
-animation-for-open-window = "slide-in-center";
+animation-for-open-window = "zoom";
 #minimize or close windows
 animation-for-unmap-window = "squeeze";
 #popup windows

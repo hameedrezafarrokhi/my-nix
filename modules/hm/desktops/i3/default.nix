@@ -12,6 +12,12 @@ in
 
   config = lib.mkIf cfg.enable {
 
+    home.packages = [
+      pkgs.i3lock
+      pkgs.i3status
+      pkgs.i3blocks
+    ];
+
     xsession.windowManager.i3 = {
       enable = true;
       package = pkgs.i3;

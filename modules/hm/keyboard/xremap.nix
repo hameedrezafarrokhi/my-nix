@@ -10,6 +10,16 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
   '';
 
+  xlock = pkgs.writeShellScriptBin "xlock" ''
+    ${config.services.screen-locker.lockCmd}
+  '';
+
+  xss-kill = pkgs.writeShellScriptBin "xss-kill" ''
+    pkill .xscreensaver-w
+    pkill xscreensaver-sy
+    pkill .xscreensaver-s
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -18,10 +28,14 @@ in
 
 { config = lib.mkIf (config.my.keyboard.xremap.enable) {
 
+  services.screen-locker.lockCmd = lib.mkDefault "${pkgs.betterlockscreen}/bin/betterlockscreen --lock";
+
   home.packages = [
     pkgs.xremap
     girm-full
     grim-slurp
+    xlock
+    xss-kill
    #vlc-env
   ];
 
@@ -287,7 +301,13 @@ in
                       launch: [ "systemctl", "hibernate" ]
                     m:
                       launch: [ "systemctl", "suspend-then-hibernate" ]
+                    x:
+                      launch: [ "xscreensaver", "-no-splash" ]
 
+            Super-Shift-Ctrl-l:
+                      launch: [ "xlock" ]
+            Super-Shift-Ctrl-x:
+                      launch: [ "xss-kill" ]
 
 
 
