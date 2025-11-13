@@ -97,7 +97,7 @@
       # X11
       "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
       "i3" "spectrwm" "herbstluftwm" "dk"
-      "dwm" "chadwm" "drew-wm" "titus-wm" "bread-wm"
+      "dwm" "chadwm" "drew-wm" "titus-wm" "bread-wm" #"pd-wm"
       "bspwm" "awesome" "xmonad"
       "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
       "fvwm2" "fvwm3" "leftwm" "berry" "sawfish"

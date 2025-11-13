@@ -98,6 +98,11 @@
                                 flake = false; };
             bread-wm = { url = "github:BreadOnPenguins/dwm";
                                 flake = false; };
+               pd-wm = { url = "github:r0-zero/pdwm";
+                                flake = false; };
+               pdwmc = { url = "github:r0-zero/pdwmc";
+                                flake = false; };
+
              omarchy = { url = "github:basecamp/omarchy";
                                 flake = false; };
 

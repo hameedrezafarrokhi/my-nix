@@ -1,4 +1,4 @@
-{ config, lib, pkgs, mypkgs, utils, ... }:
+{ config, lib, pkgs, mypkgs, utils, inputs, ... }:
 
 { config = lib.mkIf (config.my.software.tools.enable) {
 
@@ -115,6 +115,7 @@
     ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
     ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
    #++ [(pkgs.callPackage ../myPackages/fabric.nix { })]

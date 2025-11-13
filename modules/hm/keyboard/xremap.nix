@@ -286,6 +286,9 @@ in
                               launch: [ "rofi", "-show", "nerdy", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons" ]
                             g:
                               launch: [ "rofi", "-show", "games", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons" ]
+                            Space:
+                              launch: [ "jgmenu_run" ]
+
                     p:
                       remap:
                             p:
