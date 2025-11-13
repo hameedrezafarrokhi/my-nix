@@ -918,9 +918,9 @@
         @define-color crust     ${Crust};
         * {
           min-height: 0;
-          margin: 0;
-          padding: 0;
-          font-family: "${Sans}";
+          margin: 1;
+          padding: 1;
+          font-family: "${MonoSpace}";
           font-size: 10pt;
           font-weight: 700;
           padding-bottom: 0px;

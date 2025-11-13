@@ -131,6 +131,44 @@
         "Window Quick Tile Top Left" = "";
         "Window Quick Tile Top Right" = "";
 
+        "Window Maximize" = "Meta+Return";
+        "Window Fullscreen" = "Meta+Shift+Ctrl+Return";
+        "Window Minimize" = "Meta+Backspace";
+
+        "KrohnkiteFloatAll" = "Meta+Alt+F";
+        "KrohnkiteToggleFloat" = "Meta+F";
+
+        "KrohnkiteSetMaster" = "Meta+H";
+
+        "KrohnkiteRotate" = "Meta+Shift+I";
+        "KrohnkiteRotatePart" = "Meta+Shift+U";
+
+        "KrohnkiteShiftDown" = "Meta+Shift+Down";
+        "KrohnkiteShiftUp" = "Meta+Shift+Up";
+        "KrohnkiteShiftRight" = "Meta+Shift+Right";
+        "KrohnkiteShiftLeft" = "Meta+Shift+Left";
+
+        "KrohnkiteShrinkWidth" = "Meta+Ctrl+Left";
+        "KrohnkiteShrinkHeight" = "Meta+Ctrl+Down";
+        "KrohnkitegrowWidth" = "Meta+Ctrl+Right";
+        "KrohnkitegrowHeight" = "Meta+Ctrl+Up";
+
+        "KrohnkiteNextLayout" = "Meta+}";
+        "KrohnkitePreviousLayout" = "Meta+{";
+
+        "KrohnkiteTileLayout" = "Meta+Shift+Backspace";
+        "KrohnkiteDockLayout" = "Meta+Shift+D";
+        "KrohnkiteBTreeLayout" = "Meta+Shift+B";
+        "KrohnkiteFloatingLayout" = "Meta+Shift+F";
+        "KrohnkiteMonocleLayout" = "Meta+Shift+M";
+        "KrohnkiteQuarterLayout" = "Meta+Shift+Q";
+        "KrohnkiteSpiralLayout" = "Meta+Shift+S";
+        "KrohnkiteSpreadLayout" = "Meta+Shift+J";
+        "KrohnkiteStackedLayout" = "Meta+Shift+K";
+        "KrohnkiteStairLayout" = "Meta+Shift+T";
+        "KrohnkiteTreeColumnLayout" = "Meta+Shift+E";
+
+
       };
 
       "plasmashell" = {

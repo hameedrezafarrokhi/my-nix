@@ -1,1 +1,40 @@
 include ~/.config/sway/config
+
+blur enable
+blur_xray disable
+
+blur_passes 4
+blur_radius 4
+#blur_noise 0.5
+blur_brightness 0.9
+#blur_contrast 1.0
+#blur_saturation 1.0
+
+corner_radius 15
+
+shadows enable
+shadows_on_csd enable
+shadow_blur_radius 12
+#shadow_color #000000
+shadow_offset 15 15
+#shadow_inactive_color #000000
+
+#layer_effects "waybar" {
+#    blur enable;
+#    blur_xray enable;
+#    blur_ignore_transparent enable;
+#    shadows enable;
+#    corner_radius 0;
+#}
+
+default_dim_inactive 0.4
+dim_inactive_colors.unfocused #000000
+#dim_inactive_colors.urgent #900000
+
+titlebar_separator enable
+
+scratchpad_minimize enable
+
+for_window [app_id="kitty"] opacity 0.8
+for_window [app_id="org.kde.kate"] opacity 0.9
+for_window [app_id="org.kde.dolphin"] opacity 0.9

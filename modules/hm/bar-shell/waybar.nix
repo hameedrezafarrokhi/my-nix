@@ -3,16 +3,22 @@
 let
 
   waybar-bluetooth-control = pkgs.writeShellScriptBin "waybar-bluetooth-control" ''
-  if bluetoothctl show | grep -q "Powered: yes"; then
-      bluetoothctl power off
-  else
-      bluetoothctl power on
-  fi
+    if bluetoothctl show | grep -q "Powered: yes"; then
+        bluetoothctl power off
+    else
+        bluetoothctl power on
+    fi
+  '';
+
+  my-host-name-icon = pkgs.writeShellScriptBin "my-host-name-icon" ''
+    echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'
   '';
 
 in
 
 { config = lib.mkIf (builtins.elem "waybar" config.my.bar-shell.shells) {
+
+  home.packages = [ my-host-name-icon ];
 
   programs.waybar = {
     enable = true;
@@ -36,9 +42,25 @@ in
        #  "eDP-1"
        #  "HDMI-A-1"
        #];
-        modules-left = ["ext/workspaces" "sway/workspaces" "wlr/taskbar"]; #  "wlr/taskbar" "dwl/tags" "sway/mode" "niri/workspaces" "hyprland/window" "hyprland/workspaces" "niri/window" "sway/window" "dwl/window"
-       #modules-center = [ "sway/window" "custom/hello-from-waybar" ];
-        modules-right = ["custom/tempicon" "temperature" "custom/diskicon" "disk" "custom/cpuicon" "cpu" "custom/memoryicon" "memory" "pulseaudio" "tray" "custom/notification" "idle_inhibitor" "custom/clockicon" "clock"]; # "bluetooth"
+        modules-left = ["custom/apps" "custom/tempicon" "temperature" "custom/diskicon" "disk" "custom/cpuicon" "cpu" "custom/memoryicon" "memory" "custom/windowicon" "sway/window" "hyprland/window" "niri/window" "wlr/window"]; #  "wlr/taskbar" "dwl/tags" "sway/mode" "niri/workspaces" "hyprland/window" "hyprland/workspaces" "niri/window" "sway/window" "dwl/window"
+        modules-center = [ "ext/workspaces" "sway/workspaces" ];
+        modules-right = [ "tray" "custom/notification" "idle_inhibitor" "pulseaudio" "custom/clockicon" "clock"]; # "bluetooth"
+
+        "custom/apps" = {
+          exec = "my-host-name-icon";
+          on-click = "rofi -show drun -modi drun -show-icons -location 1 -yoffset 40 -xoffset 10  ";
+        };
+
+        "custom/windowicon" = {
+          format = "󰖯";
+          markup = "pango";
+        };
+
+        "sway/window" = {
+          format = "{title}";
+          max-length = 333;
+          seperate-outputs = true;
+        };
 
         "ext/workspaces" = {
           format = "{icon}";
@@ -137,16 +159,16 @@ in
           max-length = 333;
           seperate-outputs = true;
         };
+        "wlr/window" = {
+          format = "{title}";
+          max-length = 333;
+          seperate-outputs = true;
+        };
        #"sway/workspaces" = {
        #  disable-scroll = true;
        #  all-outputs = true;
        #};
         "niri/window" = {
-          format = "{title}";
-          max-length = 333;
-          seperate-outputs = true;
-        };
-        "sway/window" = {
           format = "{title}";
           max-length = 333;
           seperate-outputs = true;
@@ -201,14 +223,14 @@ in
         /*"format-alt": "<span foreground='#89dceb'> </span><span>{:%H:%M}</span>"*/
         };
         "custom/cpuicon" = {
-          format = "";
+          format = "";
           markup = "pango";
         };
         "cpu" = {
           format = "{usage}%";
         };
         "custom/memoryicon" = {
-          format = "󰍛";
+          format = "";
           markup = "pango";
         };
         "memory" = {
@@ -226,7 +248,7 @@ in
           interval = 1;
         };
         "custom/tempicon" = {
-          format = "";
+          format = "";
           markup = "pango";
         };
         "temperature" = {
@@ -282,12 +304,12 @@ in
         "idle_inhibitor" = {
           format = "{icon}";
           format-icons = {
-            activated = "󰅶";
-            deactivated = "󰛊";
+            activated = "";
+            deactivated = "";
           };
         };
         "custom/diskicon" = {
-          format = "";
+          format = "";
           markup = "pango";
         };
         "disk" = {
@@ -335,264 +357,281 @@ in
     };
 
     style = lib.mkAfter ''
-      tooltip {
-        background: @crust;
-        border: 2px solid @subtext0;
-      }
+tooltip {
+  background: @crust;
+  border: 2px solid @subtext0;
+}
 
-      #window {
-      	margin: 0px 5px 0px 5px;
-      	padding-left: 0px;
-      	padding-right: 0px;
-      	background-color: @base;
-      	color: @subtext1;
-      }
+#window {
+	margin: 0px 5px 0px 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: @base;
+	color: @text;
+}
 
-      window#waybar.empty #window {
-      	background-color: transparent;
-      	border-bottom: none;
-      	border-right: none;
-      }
+window#waybar.empty #window {
+	background-color: transparent;
+	border-bottom: none;
+	border-right: none;
+}
 
-      window#waybar {
-        background-color:@base;
-        color: @flamingo;
-      }
+window#waybar {
+  background-color:@base;
+  color: @text;
+}
 
-      /* Workspaces */
+/* Workspaces */
 
-      #workspaces {
-        margin: 0px 0px 0px 0px;
-        padding: 0px;
-        background-color: @base;
-        color: @rosewater;
+#workspaces {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  background-color: @base;
+  color: @rosewater;
 
-      }
+}
 
-      #workspaces button {
-        margin: 0px 0px 0px 0px;
-        padding-left: 3px;
-        padding-right: 3px;
-        background-color: @base;
-        color: @text;
-      }
+#workspaces button {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: @base;
+  color: @text;
+}
 
-      #workspaces button.active {
-      	padding: 0 3px 0 3px;
-          color: @sapphire;
-      }
+#workspaces button.active {
+    padding: 0 0px 0 0px;
+    color: @base;
+    background-color: @sapphire;
+}
 
-      #workspaces button.urgent {
-      	color: @red;
-      }
+#workspaces button.urgent {
+	color: @red;
+}
 
-      #custom-gpu-util {
-        margin: 0px 5px 0px 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: @base;
-        color: @text;
-      }
+#custom-gpu-util {
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: @base;
+  color: @text;
+}
 
-      #tray {
-        margin: 0px 0px 0px 0px;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: @base;
-        color: @text;
-      }
+#tray {
+  margin: 0px 0px 0px 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: @base;
+  color: @rosewater;
+}
 
-      #idle_inhibitor {
-        margin: 0px 0px 0px 0px;
-        padding-left: 10px;
-        padding-right: 12px;
-        background-color: @base;
-        color: @text;
-      }
+#idle_inhibitor {
+  margin: 1px 10px 0px 10px;
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: @base;
+  color: @red;
+}
 
-      #idle_inhibitor.activated {
-        color: @mauve;
-      }
+#idle_inhibitor.activated {
+  color: @green;
+}
 
-      #network {
-        margin: 0px 0px 0px 0px;
-        padding-left: 10px;
-        padding-right: 12px;
-        background-color: @base;
-        color: @rosewater;
-      }
+#network {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: @base;
+  color: @rosewater;
+}
 
-      #network.linked {
-        color: @green;
-      }
-      #network.disconnected,
-      #network.disabled {
-        color: @red;
-      }
+#network.linked {
+  color: @green;
+}
+#network.disconnected,
+#network.disabled {
+  color: @red;
+}
 
-      #custom-cliphist {
-      	color: @rosewater;
-      	margin: 0px 5px 0px 5px;
-          padding-left: 10px;
-          padding-right: 12px;
-          background-color: @base;
+#custom-cliphist {
+	color: @rosewater;
+	margin: 0px 0px 0px 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: @base;
 
-      }
+}
 
-      #custom-gpu-temp,
-      #custom-clipboard {
-        margin: 0px 5px 0px 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        color: @text;
-        background-color: @base;
-      }
+#custom-gpu-temp,
+#custom-clipboard {
+  margin: 0px 0px 0px 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  color: @text;
+  background-color: @base;
+}
 
-      #cpu {
-        margin: 0px 0px 0px 0px;
-        padding-left: 6px;
-        padding-right: 6px;
-        color: @text;
-        background-color: @base;
-      }
+#cpu {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 4px;
+  color: @text;
+  background-color: @base;
+}
 
-      #custom-cpuicon {
-        margin: 0px 0px 0px 0px;
-        padding: 0px 10px 0px 10px;
-        color: @sapphire;
-        background-color: @base;
-      }
+#custom-cpuicon {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 10px 0px 0px;
+  color: @maroon;
+  background-color: @base;
+}
 
-      #custom-diskicon {
-        margin: 0px 0px 0px 0px;
-        padding: 0 10px 0 10px;
-        color: @flamingo;
-        background-color: @base;
-      }
+#custom-diskicon {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 6px 0px 10px;
+  color: @green;
+  background-color: @base;
+}
 
-      #disk {
-        margin: 0px 0px 0px 0;
-        padding-left: 0px;
-        padding-right: 0px;
-        color: @test;
-        background-color: @base;
-      }
+#disk {
+  margin: 0px 0px 0px 0;
+  padding-left: 2px;
+  padding-right: 0px;
+  color: @text;
+  background-color: @base;
+}
 
-      #custom-notification {
+#custom-notification {
+background-color: @base;
+color: @yellow;
+padding: 3px 4px 0px 4px;
+margin-right: 0px;
+font-size: 14px;
+font-family: "JetBrainsMono Nerd Font";
+}
+
+#custom-memoryicon {
+  margin: 0px 4px 0px 2px;
+  color: @mauve;
+  padding: 0 0px 0 0px;
+  background-color: @base;
+}
+
+#memory {
+  margin: 0px 0px 0px 0px;
+  padding-left: 5px;
+  padding-right: 10px;
+  color: @text;
+  background-color: @base;
+}
+
+#custom-tempicon {
+  margin: 0px 0px 0px 0px;
+  color: @red;
+  padding: 0px 4px 0px 2px;
+  background-color: @base;
+}
+
+#temperature {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  color: @text;
+  background-color: @base;
+}
+
+
+#custom-playerctl {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  color: @text;
+  background-color: @base;
+}
+
+#battery,
+#backlight,
+#bluetooth,
+#pulseaudio {
+	margin-right: 0px;
+	margin-left: 0px;
+	padding-left: 4px;
+  	padding-right: 4px;
+      color: @flamingo;
       background-color: @base;
-      color: @overlay2;
-      padding: 0 12px;
-      margin-right: 0px;
-      font-size: 14px;
-      font-family: "JetBrainsMono Nerd Font";
-      }
+}
 
-      #custom-memoryicon {
-        margin: 0px 0px 0px 0px;
-        color: @mauve;
-        padding: 0 11px 0 7px;
-        background-color: @base;
-      }
+#battery,
+#bluetooth {
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+      color: @blue;
+      background-color: @base;
+}
 
-      #memory {
-        margin: 0px 0px 0px 0px;
-        padding-left: 5px;
-        padding-right: 10px;
-        color: @text;
-        background-color: @base;
-      }
+#clock {
+  margin: 0px 0px 0px 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: @peach;
+  background-color: @base;
+}
 
-      #custom-tempicon {
-        margin: 0px 0px 0px 0px;
-        color: @peach;
-        padding: 0 11px 0 8px;
-        background-color: @base;
-      }
+#custom-clockicon {
+  margin: 0px 0px 0px 0px;
+  color: @maroon;
+  padding: 0px 4px 0px 4px;
+  background-color: @base;
+  color: @peach;
+}
 
-      #temperature {
-        margin: 0px 0px 0px 0px;
-        padding-left: 5px;
-        padding-right: 10px;
-        color: @lavender;
-        background-color: @base;
-      }
+#taskbar {
+    padding: 0px 0px 0px 0px;
+    margin: 0 0px;
+    padding-left: 4px;
+    padding-right: 0px;
+    color: @text;
+    background-color: @base;
+}
+#taskbar button {
+    padding: 0px 10px 0px 4px;
+    margin: 0px 0px;
+    padding-left: 0px;
+    padding-right: 4px;
+    color: @text;
+    background-color: @surface0;
+}
+#taskbar button.active {
+    padding-left: 10px;
+    padding-right: 0px;
+    background-color: @sapphire;
+    color: @base;
+}
 
+#mode {
+  margin: 0px 0px 0px 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: @base;
+  color: @green;
+}
 
-      #custom-playerctl {
-        margin: 0px 5px 0px 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        color: @text;
-        background-color: @base;
-      }
+#custom-apps {
+  margin: 0px 0px 0px 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: @base;
+  color: @text;
+}
 
-      #battery,
-      #backlight,
-      #bluetooth,
-      #pulseaudio {
-      	margin-right: 10px;
-      	margin-left: 10px;
-      	padding-left: 10px;
-        	padding-right: 7.5px;
-            color: @blue;
-            background-color: @base;
-      }
-
-      #battery,
-      #bluetooth {
-      	margin-left: 0px;
-      	margin-right: 0px;
-      	padding-left: 0px;
-      	padding-right: 2px;
-            color: @blue;
-            background-color: @base;
-      }
-
-      #clock {
-        margin: 0px 0px 0px 0px;
-        padding-left: 10px;
-        padding-right: 10px;
-        color: @maroon;
-        background-color: @base;
-      }
-
-      #custom-clockicon {
-        margin: 0px 0 0px 0px;
-        color: @maroon;
-        padding: 0 5px 0 10px;
-        background-color: @base;
-        color: @maroon;
-      }
-
-      #taskbar {
-          padding: 0 3px;
-          margin: 0 0px;
-          padding-left: 10px;
-          padding-right: 10px;
-          color: @subtext1;
-          background-color: rgba(120,118,117,0.3);
-      }
-      #taskbar button {
-          padding: 0 0 0 3px;
-          margin: 0px 0px;
-          padding-left: 10px;
-          padding-right: 10px;
-          color: @subtext0;
-          background-color: rgba(120,118,117,0.1);
-      }
-      #taskbar button.active {
-          padding-left: 10px;
-          padding-right: 10px;
-          background-color: rgba(120,118,117,0.8);
-      }
-
-      #mode {
-        margin: 0px 5px 0px 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: @base;
-        color: @green;
-      }
+#custom-windowicon {
+margin: 0px 0px 0px 0px;
+padding: 3px 4px 0px 4px;
+background-color: @base;
+color: @sapphire;
+}
 
     '';
 

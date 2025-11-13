@@ -1,10 +1,10 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, admin, ... }:
 
 { config = lib.mkIf (builtins.elem "i3" config.my.window-managers) {
 
   services.xserver.windowManager.i3 = {
     enable = true;
-    package = pkgs.i3;
+    package = config.home-manager.users.${admin}.xsession.windowManager.i3.package;
     updateSessionEnvironment = true;
    #extraSessionCommands = "export XDG_MENU_PREFIX=plasma-";
     extraPackages = with pkgs; [
