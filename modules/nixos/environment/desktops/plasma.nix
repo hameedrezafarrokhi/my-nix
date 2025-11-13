@@ -48,6 +48,9 @@
       kara
       kdePackages.kwayland-integration
      #kdePackages.kded
+
+      kdePackages.plasma-keyboard
+
     ];
    #plasma6.excludePackages = [             # Excluding Packages (Not Working)
    #  pkgs.kdePackages.kwallet

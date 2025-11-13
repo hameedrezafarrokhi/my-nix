@@ -21,10 +21,10 @@ in
       plugins = with pkgs.wayfirePlugins; [
         wcm
         wf-shell
-        windecor
-        wwp-switcher
-        focus-request
-        wayfire-shadows
+       #windecor            # WARNING REMOVED
+       #wwp-switcher        # WARNING REMOVED
+       #focus-request       # WARNING REMOVED merged with plugins extra
+       #wayfire-shadows     # WARNING REMOVED merged with plugins extra
         wayfire-plugins-extra
       ];
 
