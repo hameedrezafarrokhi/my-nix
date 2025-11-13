@@ -57,7 +57,7 @@
       "module/filesystem" = {
         format-mounted = "<label-mounted>%{O-8pt}";
         type = "internal/fs";
-        interval = 25;
+        interval = 120;
         mount-0 = "/";
         format-mounted-prefix = '' %{O-2pt}'';
         label-mounted = "%percentage_free%%";
@@ -105,22 +105,22 @@
         label = "%percentage:2%%";
       };
 
-      "network-base" = {
-        type = "internal/network";
-        interval = 5;
-        format-connected = "<label-connected>";
-        format-disconnected = "<label-disconnected>";
-      };
+     #"network-base" = {
+     #  type = "internal/network";
+     #  interval = 5;
+     #  format-connected = "<label-connected>";
+     #  format-disconnected = "<label-disconnected>";
+     #};
 
-      "module/wlan" = {
-        "inherit" = "network-base";
-        interface-type = "wireless";
-      };
+     #"module/wlan" = {
+     #  "inherit" = "network-base";
+     #  interface-type = "wireless";
+     #};
 
-      "module/eth" = {
-        "inherit" = "network-base";
-        interface-type = "wired";
-      };
+     #"module/eth" = {
+     #  "inherit" = "network-base";
+     #  interface-type = "wired";
+     #};
 
       "module/hour" = {
         type = "internal/date";
@@ -134,7 +134,7 @@
 
       "module/date" = {
         type = "custom/script";
-        interval = 5;
+        interval = 60;
         format = "<label>";
         exec = ''"LC_TIME="en_us_utf8" date +"%a, %b %-d""'';
         label-padding = 0;
@@ -154,7 +154,7 @@
       "module/apps" = {
         type = "custom/script";
         exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
-        interval = 999999999999;
+       #interval = 60;
         click-left = "rofi -show drun -modi drun -show-icons -location 1 -yoffset 40 -xoffset 10  ";
         click-right = "dolphin";
         double-click-left = "kate";
@@ -163,8 +163,8 @@
       };
 
       "settings" = {
-        screenchange-reload = true;
-        pseudo-transparency = true ;
+       #screenchange-reload = true;
+       #pseudo-transparency = true ;
       };
 
     };

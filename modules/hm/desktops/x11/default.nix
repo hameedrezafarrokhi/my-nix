@@ -61,6 +61,16 @@ in
       windowManager.command = lib.mkForce "test -n \"$1\" && eval \"$@\"";
     };
 
+    systemd.user.services.xautolock-session.Service.ExecStart = lib.mkForce (lib.concatStringsSep " " (
+      [
+        "${config.services.screen-locker.xautolock.package}/bin/xautolock"
+        "-time ${toString config.services.screen-locker.inactiveInterval}"
+        "-locker '${config.services.screen-locker.lockCmd}'"
+      ]
+      ++ lib.optional config.services.screen-locker.xautolock.detectSleep "-detectsleep"
+      ++ config.services.screen-locker.xautolock.extraOptions
+    ));
+
     services = {
 
       xsettingsd = {
@@ -83,7 +93,7 @@ in
 
       screen-locker = {
         enable = true;
-        inactiveInterval = 1;
+        inactiveInterval = 60; # min 1 max 60 (minutes)
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
@@ -94,7 +104,34 @@ in
           enable = true;
           package = pkgs.xautolock; # pkgs.xidlehook
           detectSleep = true;
-          extraOptions = [ ];
+          extraOptions = [
+           #"-time mins         " # time before locking the screen [1 <= mins <= 60]. # IS DEFINED WITH inactiveInterval
+           #"-locker locker     " # program used to lock.                             # IS DEFINED WITH lockCmd
+           #"-nowlocker locker  " # program used to lock immediately.
+           #"-killtime killmins " # time after locking at which to run the killer [10 <= killmins <= 120].
+           #"-killer killer     " # program used to kill.
+           #"-notify margin     " # notify this many seconds before locking.
+           #"-notifier notifier " # program used to notify.
+           #"-bell percent      " # loudness of notification beeps.
+           #"-corners xxxx      " # corner actions (0, +, -) in this order topleft topright bottomleft bottomright
+           #"-cornerdelay secs  " # time to lock screen in a `+' corner.
+           #"-cornerredelay secs" # time to relock screen in a `+' corner.
+           #"-cornersize pixels " # size of corner areas.
+           #"-nocloseout        " # do not close stdout.
+           #"-nocloseerr        " # do not close stderr.
+           #"-noclose           " # close neither stdout nor stderr.
+           #"-enable            " # enable a running xautolock.
+           #"-disable           " # disable a running xautolock.
+           #"-toggle            " # toggle a running xautolock.
+           #"-locknow           " # tell a running xautolock to lock.
+           #"-unlocknow         " # tell a running xautolock to unlock.
+           #"-restart           " # tell a running xautolock to restart.
+           #"-exit              " # kill a running xautolock.
+           #"-secure            " # ignore enable, disable, toggle, locknow unlocknow, and restart messages.
+           #"-resetsaver        " # reset the screensaver when starting the locker.
+           #"-detectsleep       " # reset timers when awaking from sleep.             # IS DEFINED WITH detectSleep
+           #"-lockaftersleep    " # lock immediately after waking up from sleep.
+          ];
         };
         xss-lock = {
           package = pkgs.xss-lock;
@@ -106,7 +143,7 @@ in
      #  enable = true;
      # #package = ;
      #  arguments = [ ];
-     #  inactiveInterval = 10;
+     #  inactiveInterval = 60;
      #};
 
       xscreensaver = {

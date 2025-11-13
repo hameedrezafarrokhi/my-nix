@@ -20,6 +20,26 @@ let
     pkill .xscreensaver-s
   '';
 
+  lock-kill = pkgs.writeShellScriptBin "lock-kill" ''
+    systemctl --user stop xautolock-session.service
+    systemctl --user stop xss-lock.service
+    systemctl --user stop swayidle-mango.service
+    systemctl --user stop swayidle-niri.service
+    systemctl --user stop swayidle-sway.service
+    systemctl --user stop swayidle.service
+    systemctl --user stop hypridle.service
+  '';
+
+  lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
+    systemctl --user restart xautolock-session.service
+    systemctl --user restart xss-lock.service
+    systemctl --user restart swayidle-mango.service
+    systemctl --user restart swayidle-niri.service
+    systemctl --user restart swayidle-sway.service
+    systemctl --user restart swayidle.service
+    systemctl --user restart hypridle.service
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -36,6 +56,8 @@ in
     grim-slurp
     xlock
     xss-kill
+    lock-kill
+    lock-restart
    #vlc-env
   ];
 
@@ -303,6 +325,12 @@ in
                       launch: [ "systemctl", "suspend-then-hibernate" ]
                     x:
                       launch: [ "xscreensaver", "-no-splash" ]
+                    k:
+                      launch: [ "lock-kill" ]
+                    KEY_SEMICOLON:
+                      launch: [ "swaylock", "-fF" ]
+                    j:
+                      launch: [ "lock-restart" ]
 
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]

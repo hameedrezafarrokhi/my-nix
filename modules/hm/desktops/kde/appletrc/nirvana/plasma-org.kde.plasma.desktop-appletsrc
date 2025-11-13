@@ -267,7 +267,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][527][Applets][538][Applets][539][Configuration]
-PreloadWeight=65
+PreloadWeight=70
 
 [Containments][527][Applets][538][Applets][540]
 immutability=1
@@ -343,7 +343,7 @@ immutability=1
 plugin=org.kde.kscreen
 
 [Containments][527][Applets][538][Applets][551][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][527][Applets][538][Applets][552]
 immutability=1
