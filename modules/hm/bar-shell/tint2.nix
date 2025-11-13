@@ -1,4 +1,4 @@
-{ config, pkgs, lib, mypkgs, ... }:
+{ config, pkgs, lib, mypkgs, inputs, ... }:
 
 { config = lib.mkIf (builtins.elem "tint2" config.my.bar-shell.shells) {
 
@@ -8,6 +8,8 @@
     package = mypkgs.stable.tint2;
    #extraConfig = '' '';
   };
+
+  home.packages = [ pkgs.jgmenu ];
 
  #systemd.user.services.polybar = {
  # #enable = {
@@ -34,5 +36,14 @@
  # #  WantedBy = [ "tray.target" ];
  # #};
  #};
+
+  xdg.configFile = {
+
+    tint2-collection = {
+      source = "${inputs.tint2-collection}/";
+      target = "tint2/";
+    };
+
+  };
 
 };}

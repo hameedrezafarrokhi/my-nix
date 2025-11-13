@@ -100,6 +100,8 @@ in
        #  remap:
        #    Super-CapsLock: CapsLock
 
+       # launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
+
     yamlConfig = ''
 
       modmap:
@@ -136,7 +138,7 @@ in
                     b:
                       launch: [ "brave" ]
                     e:
-                      launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
+                      launch: [ "dolphin" ]
                     t:
                       launch: [ "kate" ]
                     Space:

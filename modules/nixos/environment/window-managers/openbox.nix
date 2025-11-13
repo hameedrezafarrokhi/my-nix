@@ -4,6 +4,6 @@
 
   services.xserver.windowManager.openbox.enable = true;
 
-  environment.systemPackages = [ pkgs.obconf ];
+  environment.systemPackages = [ pkgs.obconf pkgs.jgmenu ];
 
 };}

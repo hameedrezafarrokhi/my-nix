@@ -5,13 +5,21 @@
   # NIXPKGS
 
          nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-          master.url = "github:NixOS/nixpkgs/master";
-        unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-          stable.url = "github:NixOS/nixpkgs/nixos-25.05";
-      old-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+  #      nixpkgs.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-     #    kernel.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
-     #  fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+          master.url = "github:NixOS/nixpkgs/master";
+  #       master.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+
+        unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+  #     unstable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+
+          stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+  #       stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+
+      old-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+  #   old-stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+
+  #     fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
   # NIX_COMMUNITY
 
@@ -34,6 +42,16 @@
 
         xremap-flake = { url = "github:xremap/nix-flake";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
+
+         nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
+
+             chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; };
+
+         flake-utils = { url = "github:numtide/flake-utils";};
+
+      cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
+                                inputs.nixpkgs.follows = "nixpkgs";
+                                inputs.home-manager.follows = "home-manager"; };
 
               stylix = { url = "github:danth/stylix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -96,15 +114,13 @@
                                 flake = false; };
   polybar-collection = { url = "github:Murzchnvok/polybar-collection";
                                 flake = false; };
+    tint2-collection = { url = "github:addy-dclxvi/tint2-theme-collections";
+                                flake = false; };
 
         picom-ftlabs = { url = "github:r0-zero/picom"; };
       git-ignore-nix = { url = "github:hercules-ci/gitignore.nix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
-
-         nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest";};
-             chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable";};
-         flake-utils = { url = "github:numtide/flake-utils";};
          #windscribe = { url = "github:ParkerrDev/nixpkgs-windscribe";};
 
   };
@@ -185,6 +201,7 @@
               inputs.chaotic.homeManagerModules.default
               inputs.nix-flatpak.homeManagerModules.nix-flatpak
               inputs.plasma-manager.homeModules.plasma-manager
+              inputs.cosmic-manager.homeManagerModules.cosmic-manager
               inputs.nix-index-database.homeModules.nix-index
               inputs.xremap-flake.homeManagerModules.default
               inputs.catppuccin.homeModules.catppuccin
@@ -247,6 +264,7 @@
             inputs.chaotic.homeManagerModules.default
             inputs.nix-flatpak.homeManagerModules.nix-flatpak
             inputs.plasma-manager.homeModules.plasma-manager
+            inputs.cosmic-manager.homeManagerModules.cosmic-manager
             inputs.nix-index-database.homeModules.nix-index
             inputs.xremap-flake.homeManagerModules.default
             inputs.catppuccin.homeModules.catppuccin
@@ -261,17 +279,19 @@
 
   # NIX_ON_DROID
 
-    mkDroid = pkg: droid-state: hm-state: system: hostname: admin: type: nix-path: nix-path-alt:
+    mkDroid = pkg: droid-state: hm-state: hostname: admin: type:
     inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
                           extraSpecialArgs = { inputs = inputs; self = self; admin = admin;
-                                               nix-path = nix-path; nix-path-alt = nix-path-alt;
-                                               system = system; mypkgs = myPKGS system; };
+                                               nix-path = "/data/data/com.termux.nix/files/home/nixos";
+                                               nix-path-alt = "~/nixos";
+                                               system = "aarch64-linux"; mypkgs = myPKGS "aarch64-linux"; };
       modules = [
 
         {home-manager = { extraSpecialArgs = { inputs = inputs; self = self; admin = admin;
-                                               nix-path = nix-path; nix-path-alt = nix-path-alt;
-                                               system = system; mypkgs = myPKGS system; };
+                                               nix-path = "/data/data/com.termux.nix/files/home/nixos";
+                                               nix-path-alt = "~/nixos";
+                                               system = "aarch64-linux"; mypkgs = myPKGS "aarch64-linux"; };
 
             sharedModules = [
               { home.stateVersion = hm-state;          }
@@ -314,15 +334,16 @@
           red = mkSystem inputs.nixpkgs "25.05" "x86_64-linux" "red"     "hrf" "portable"  "$HOME/nixos"    "~/nixos";
     };
 
+    nixOnDroidConfigurations = {
+
+        black = mkDroid inputs.nixpkgs  "24.05" "25.05"        "black"   "hrf" "phone";
+    };
+
     homeConfigurations = {
 
           hrf =   mkHome inputs.nixpkgs "25.05" "x86_64-linux" "hrf"     "personal-home"   "$HOME/nixos"    "~/nixos";
     };
 
-    nixOnDroidConfigurations = {
-
-        black = mkDroid inputs.nixpkgs "24.05" "25.05" "aarch64-linux" "black" "hrf" "phone" "/data/data/com.termux.nix/files/home/nixos" "~/nixos";
-    };
-
   };
+
 }

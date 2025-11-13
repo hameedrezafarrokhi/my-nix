@@ -16,6 +16,7 @@
   imports = [
 
     ./kde
+    ./cosmic
     ./cinnamon
     ./mate
     ./gnome

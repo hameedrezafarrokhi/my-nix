@@ -283,6 +283,30 @@
         "type": "github"
       }
     },
+    "cosmic-manager": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762776565,
+        "narHash": "sha256-Trd4uVhg9OggkxBMn3qUv74z9rNZE/s7iT7llTYQ0ZU=",
+        "owner": "HeitorAugustoLN",
+        "repo": "cosmic-manager",
+        "rev": "f26cdfef90b8db37db913f7c72a609c997700e59",
+        "type": "github"
+      },
+      "original": {
+        "owner": "HeitorAugustoLN",
+        "repo": "cosmic-manager",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1751562746,
@@ -527,6 +551,27 @@
     },
     "flake-parts": {
       "inputs": {
+        "nixpkgs-lib": [
+          "cosmic-manager",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1759362264,
+        "narHash": "sha256-wfG0S7pltlYyZTM+qqlhJ7GMw2fTF4mLKCIVhLii/4M=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "758cf7296bee11f1706a574c77d072b8a7baa881",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_2": {
+      "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
@@ -543,7 +588,7 @@
         "type": "github"
       }
     },
-    "flake-parts_2": {
+    "flake-parts_3": {
       "inputs": {
         "nixpkgs-lib": [
           "nur",
@@ -564,7 +609,7 @@
         "type": "github"
       }
     },
-    "flake-parts_3": {
+    "flake-parts_4": {
       "inputs": {
         "nixpkgs-lib": [
           "stylix",
@@ -585,7 +630,7 @@
         "type": "github"
       }
     },
-    "flake-parts_4": {
+    "flake-parts_5": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
@@ -1236,7 +1281,7 @@
     },
     "mango": {
       "inputs": {
-        "flake-parts": "flake-parts",
+        "flake-parts": "flake-parts_2",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -1666,7 +1711,7 @@
     },
     "nur": {
       "inputs": {
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -1872,6 +1917,7 @@
         "catppuccin-openbox": "catppuccin-openbox",
         "chadwm": "chadwm",
         "chaotic": "chaotic",
+        "cosmic-manager": "cosmic-manager",
         "dankMaterialShell": "dankMaterialShell",
         "disko": "disko",
         "dot-collection": "dot-collection",
@@ -1899,6 +1945,7 @@
         "quickshell": "quickshell",
         "stable": "stable",
         "stylix": "stylix",
+        "tint2-collection": "tint2-collection",
         "unstable": "unstable",
         "xremap-flake": "xremap-flake"
       }
@@ -1986,7 +2033,7 @@
         "base16-helix": "base16-helix",
         "base16-vim": "base16-vim",
         "firefox-gnome-theme": "firefox-gnome-theme",
-        "flake-parts": "flake-parts_3",
+        "flake-parts": "flake-parts_4",
         "gnome-shell": "gnome-shell",
         "nixpkgs": [
           "nixpkgs"
@@ -2145,6 +2192,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "tint2-collection": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1691359263,
+        "narHash": "sha256-ydK5tT5PaHafFU+v/9P1YGsnwxzK/B1Q83l8OU+Aqyc=",
+        "owner": "addy-dclxvi",
+        "repo": "tint2-theme-collections",
+        "rev": "5d7b2395e72c6b2dd2e1e95b8e706224eeb2bfca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "addy-dclxvi",
+        "repo": "tint2-theme-collections",
         "type": "github"
       }
     },
@@ -2349,7 +2412,7 @@
       "inputs": {
         "crane": "crane",
         "devshell": "devshell",
-        "flake-parts": "flake-parts_4",
+        "flake-parts": "flake-parts_5",
         "home-manager": "home-manager_3",
         "hyprland": "hyprland",
         "nixpkgs": [

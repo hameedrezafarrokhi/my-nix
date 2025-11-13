@@ -24,13 +24,13 @@ in
 
     home.file = {
 
-      wallpapers = {
+      wallpapers = lib.mkDefault {
         source = "${inputs.assets}/wallpapers/";
         target = "Pictures/Wallpapers/";
         recursive = true;
       };
 
-      face-icons = {
+      face-icons = lib.mkDefault {
         source = "${inputs.assets}/icons/";
         target = "Pictures/icons/";
         recursive = true;

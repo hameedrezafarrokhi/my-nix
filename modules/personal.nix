@@ -332,6 +332,7 @@
             okular.enable = true;
             wallpaper-engine.enable = false;
           };
+          cosmic.enable = true;
           gnome.enable = true;
           cinnamon.enable = true;
           mate.enable = true;

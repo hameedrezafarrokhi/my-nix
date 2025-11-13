@@ -1062,6 +1062,25 @@
       target = ".local/share/themes/${gtk-theme}";
       recursive = true;
     };
+
+    wallpapers = {
+      source = "${inputs.assets}/wallpapers/";
+      target = "Pictures/Wallpapers/";
+      recursive = true;
+    };
+
+    face-icons = {
+      source = "${inputs.assets}/icons/";
+      target = "Pictures/icons/";
+      recursive = true;
+    };
+
+   #faces = {
+   #  source = "${inputs.assets}/icons/faces/";
+   #  target = ".face/";
+   #  recursive = true;
+   #};
+
    #icons = {
    #  target = ".icons/${gtk-icon}/";
    #  source = "${pkgs.papirus-icon-theme}/share/icons/${gtk-icon}/";
