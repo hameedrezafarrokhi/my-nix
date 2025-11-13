@@ -280,6 +280,9 @@ PreloadWeight=80
 immutability=1
 plugin=org.kde.plasma.manage-inputmethod
 
+[Containments][527][Applets][538][Applets][541][Configuration]
+PreloadWeight=65
+
 [Containments][527][Applets][538][Applets][542]
 immutability=1
 plugin=org.kde.plasma.clipboard
@@ -364,7 +367,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][527][Applets][538][Applets][554][Configuration]
-PreloadWeight=0
+PreloadWeight=10
 
 [Containments][527][Applets][538][Applets][555]
 immutability=1
