@@ -138,7 +138,7 @@ in
                     b:
                       launch: [ "brave" ]
                     e:
-                      launch: [ "dolphin" ]
+                      launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
                     t:
                       launch: [ "kate" ]
                     Space:
