@@ -25,7 +25,7 @@ in
 
       awesome-conf = {
         target = "awesome/";
-        source = "${inputs.dot-collection}/awesome/drew-fork/";
+        source = ./awesome;
       };
 
     };
