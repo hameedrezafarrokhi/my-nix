@@ -1,6 +1,47 @@
 { config, pkgs, lib, inputs, ... }:
 
+let
+
+  poly-idle-inhibit = pkgs.writeShellScriptBin "poly-idle-inhibit" ''
+    CURRENT_TIMEOUT=$(xset q | awk '/timeout:/ {print $2}')
+
+    if [ "$1" = "--status" ]; then
+        if [ "$CURRENT_TIMEOUT" -eq 0 ]; then
+            echo ""
+        else
+            echo ""
+        fi
+        exit 0
+    fi
+
+    # Toggle based on state
+    if [ "$CURRENT_TIMEOUT" -eq 0 ]; then
+        # Re-enable idle (default X timeout)
+        xset s on
+        xset s blank
+        xset s 600 600
+        xset +dpms
+        systemctl --user restart xautolock-session.service
+        systemctl --user restart xss-lock.service
+    else
+        # Disable idle
+        xset s off
+        xset s noblank
+        xset s 0 0
+        xset -dpms
+        pkill .xscreensaver-w
+        pkill xscreensaver-sy
+        pkill .xscreensaver-s
+        systemctl --user stop xautolock-session.service
+        systemctl --user stop xss-lock.service
+    fi
+  '';
+
+in
+
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
+
+  home.packages = [ poly-idle-inhibit ];
 
   services.polybar = {
 
@@ -22,7 +63,7 @@
         modules = {
           left = "apps memory cpu filesystem xwindow";
           center = "xworkspaces";
-          right = "lock tray pulseaudio date hour";
+          right = "lock tray idle pulseaudio date hour";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -151,6 +192,7 @@
         type = "internal/tray";
         tray-spacing = "4px";
       };
+
       "module/apps" = {
         type = "custom/script";
         exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
@@ -160,6 +202,17 @@
         double-click-left = "kate";
        #double-click-middle = ;
         double-click-right = "kitty";
+      };
+
+      "module/idle" = {
+        type = "custom/script";
+        exec = "poly-idle-inhibit --status";
+        interval = 2;
+        click-left = "poly-idle-inhibit";
+        format = "<label>";
+       #lable = "%output%";
+       #label-on = "";
+       #label-off = "";
       };
 
       "settings" = {

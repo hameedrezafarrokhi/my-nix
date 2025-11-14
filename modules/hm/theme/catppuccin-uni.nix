@@ -959,6 +959,7 @@
 
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
   };
+
   services = {
     polybar = lib.mkIf config.services.polybar.enable {
       settings = {
@@ -1046,6 +1047,9 @@
         };
         "module/tray" = {
           tray-foreground = Rosewater;
+        };
+        "module/idle" = {
+          label-foreground = Green;
         };
       };
     };

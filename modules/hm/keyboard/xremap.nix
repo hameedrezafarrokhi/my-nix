@@ -20,6 +20,14 @@ let
     pkill .xscreensaver-s
   '';
 
+    # Usefull Commands to debug sleep/lock
+  # xset q | grep -E "timeout|standby|suspend|off"
+  # loginctl show-session $XDG_SESSION_ID | grep IdleAction
+  # ps aux | grep -E "locker|lock|screensaver|powerdevil|gnome-screensaver|xscreensaver"
+
+   # is this useful ?
+  # systemd-inhibit --what=idle --why="Disable idle" sleep infinity &
+
   lock-kill = pkgs.writeShellScriptBin "lock-kill" ''
     systemctl --user stop xautolock-session.service
     systemctl --user stop xss-lock.service
@@ -28,6 +36,11 @@ let
     systemctl --user stop swayidle-sway.service
     systemctl --user stop swayidle.service
     systemctl --user stop hypridle.service
+    xset s off
+    xset s noblank
+    xset s 0 0
+    xset -dpms
+
   '';
 
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
@@ -38,6 +51,10 @@ let
     systemctl --user restart swayidle-sway.service
     systemctl --user restart swayidle.service
     systemctl --user restart hypridle.service
+    xset s on
+    xset s blank
+    xset s 600 600
+    xset +dpms
   '';
 
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
