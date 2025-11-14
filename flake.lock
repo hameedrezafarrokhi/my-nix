@@ -428,11 +428,11 @@
     "dot-collection": {
       "flake": false,
       "locked": {
-        "lastModified": 1763114775,
-        "narHash": "sha256-b8567WXbiRe+wLxrg3AzAqOvlmRXLKZfy9gzjL1sdnU=",
+        "lastModified": 1763122720,
+        "narHash": "sha256-9E71VvVsABFL+0I5G/335O+n7b8/1NdX/yvFlY9Mw7w=",
         "owner": "hameedrezafarrokhi",
         "repo": "dot-collection",
-        "rev": "a4ee0c1119d3c4a885c32727ed7894483937fcc6",
+        "rev": "51f25ee17b7741d274f7b0ffbdb1f00f18e4e533",
         "type": "github"
       },
       "original": {
