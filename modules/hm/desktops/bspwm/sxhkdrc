@@ -1,6 +1,7 @@
 # Launch Rofi Application Menu
 super + space
-   	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons
+   	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi
+   	#rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons
 
 # Set Window State: Floating Mode
 super + f
