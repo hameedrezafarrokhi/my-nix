@@ -1074,6 +1074,9 @@
         "module/apps" = {
           label-foreground = Sapphire;
         };
+        "module/picom" = {
+          label-foreground = Mauve;
+        };
       };
     };
   };

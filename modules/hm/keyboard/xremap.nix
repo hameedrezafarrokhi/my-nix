@@ -71,6 +71,16 @@ let
     i3-msg exit
   '';
 
+  xremap-picom-toggle = pkgs.writeShellScriptBin "xremap-picom-toggle" ''
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        notify-send "Picom Stopped"
+    else
+        systemctl --user restart picom.service
+        notify-send "Picom Activated"
+    fi
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -91,6 +101,7 @@ in
     lock-restart
     xremap-x-lock-sleep
     x-logout
+    xremap-picom-toggle
    #vlc-env
   ];
 
@@ -376,6 +387,8 @@ in
                       launch: [ "xremap-x-lock-sleep" ]
             Super-Shift-Ctrl-x:
                       launch: [ "xss-kill" ]
+            Super-Shift-Ctrl-p:
+              launch: [ "xremap-picom-toggle" ]
 
 
 

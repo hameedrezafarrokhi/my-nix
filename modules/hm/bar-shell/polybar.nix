@@ -113,6 +113,21 @@ let
     notify-send "$(poly-xkb-layout)"
   '';
 
+  poly-picom-status = pkgs.writeShellScriptBin "poly-picom-status" ''
+    if systemctl --user is-active --quiet picom.service; then
+        echo "󰏣"
+    else
+        echo ""
+    fi
+  '';
+  poly-picom-toggle = pkgs.writeShellScriptBin "poly-picom-toggle" ''
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+    else
+        systemctl --user restart picom.service
+    fi
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
@@ -128,6 +143,8 @@ in
     bsp-og
     poly-xkb-layout
     poly-xkb-change
+    poly-picom-status
+    poly-picom-toggle
   ];
 
   services.polybar = {
@@ -150,7 +167,7 @@ in
         modules = {
           left = "apps memory cpu filesystem networkspeeddown networkspeedup xwindow";
           center = "xworkspaces";
-          right = "lock tray bspwm notif idle keyboard-layout pulseaudio hour power"; # date
+          right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio hour power"; # date
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -214,7 +231,8 @@ in
         label-indicator-padding = 1;
         indicator-icon-0 = "caps lock;-CL;+CL";
         label-indicator-off = "";
-        label-indicator-on = ''" Caps "'';
+       #label-indicator-on = ''" Caps "'';
+        label-indicator-on = ''"󰘲"'';
       };
 
       "module/xkb" = {
@@ -384,6 +402,15 @@ in
         format-connected = "<label-connected>%{O-2pt}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
+      };
+
+      "module/picom" = {
+        type = "custom/script";
+        exec = "poly-picom-status";
+        interval = 2;
+        click-left = "poly-picom-toggle";
+        format = "<label>%{O-5pt}";
+        label = "%output%";
       };
 
       "settings" = {
