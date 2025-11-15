@@ -15,6 +15,35 @@ let
     '';
   };
 
+  x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
+    # Time before sleep (in seconds)
+    DELAY0=120  # 2 minutes
+    DELAY=180   # 3 minutes
+
+    # Start i3lock
+    ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
+    LOCK_PID=$!
+
+    # Wait for delay
+    sleep "$DELAY0"
+
+    # If i3lock is still running, system is still locked
+    if kill -0 "$LOCK_PID" 2>/dev/null; then
+        xset dpms force standby
+    fi
+
+    # Wait for delay
+    sleep "$DELAY"
+
+    # If i3lock is still running, system is still locked
+    if kill -0 "$LOCK_PID" 2>/dev/null; then
+        systemctl suspend
+    fi
+
+    # Just in case: when i3lock exits, kill this script
+    wait "$LOCK_PID"
+  '';
+
 in
 
 {
@@ -42,7 +71,13 @@ in
       };
     };
 
-    home.packages = [ pkgs.wayback-x11 x-cursor pkgs.xbacklight ];
+    home.packages = [
+      pkgs.wayback-x11
+      x-cursor
+      pkgs.xbacklight
+      x-lock-sleep
+      pkgs.xkblayout-state
+    ];
 
     xsession = {
       enable = true;
@@ -98,9 +133,12 @@ in
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
-        lockCmd = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
+        lockCmd = "${x-lock-sleep}/bin/x-lock-sleep";
+        # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
+        # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default"
         #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";
         # "${pkgs.betterlockscreen}/bin/betterlockscreen --lock"
+        # betterlockscreen -l --wallpaper-cmd "feh --bg-fill /home/hrf/Pictures/Wallpapers/astronaut-macchiato.png" -u "/home/hrf/Pictures/Wallpapers/astronaut-macchiato.png"
         xautolock = {
           enable = true;
           package = pkgs.xautolock; # pkgs.xidlehook

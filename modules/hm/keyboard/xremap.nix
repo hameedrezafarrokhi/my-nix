@@ -18,6 +18,7 @@ let
     pkill .xscreensaver-w
     pkill xscreensaver-sy
     pkill .xscreensaver-s
+    notify-send "XScreenSaver Disabled"
   '';
 
     # Usefull Commands to debug sleep/lock
@@ -40,7 +41,7 @@ let
     xset s noblank
     xset s 0 0
     xset -dpms
-
+    notify-send "Idle Inhibited "
   '';
 
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
@@ -55,6 +56,19 @@ let
     xset s blank
     xset s 6000 6000
     xset +dpms
+    notify-send "Lock Activated "
+  '';
+
+  xremap-x-lock-sleep = pkgs.writeShellScriptBin "xremap-x-lock-sleep" ''
+    ${config.services.screen-locker.lockCmd} &
+  '';
+
+  x-logout = pkgs.writeShellScriptBin "x-logout" ''
+    bspc quit
+    pkill dwm
+    pkill dwm
+    openbox --exit
+    i3-msg exit
   '';
 
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
@@ -75,6 +89,8 @@ in
     xss-kill
     lock-kill
     lock-restart
+    xremap-x-lock-sleep
+    x-logout
    #vlc-env
   ];
 
@@ -335,8 +351,8 @@ in
                       launch: [ "shutdown", "now" ]
                     w:
                       launch: [ "wayland-logout" ]
-                    o:
-                      launch: [ "loginctl", "terminate-user", "${admin}" ]
+                    q:
+                      launch: [ "x-logout" ]
                     l:
                       launch: [ "loginctl", "lock-session" ]
                     s:
@@ -356,6 +372,8 @@ in
 
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]
+            Super-Shift-Ctrl-KEY_SEMICOLON:
+                      launch: [ "xremap-x-lock-sleep" ]
             Super-Shift-Ctrl-x:
                       launch: [ "xss-kill" ]
 
@@ -377,6 +395,16 @@ in
                                   launch: [ "bash", "warp-cli", "connect" ]
                                 d:
                                   launch: [ "bash", "warp-cli", "disconnect" ]
+
+
+
+
+
+        - name: Actions
+          remap:
+            Super-Shift-v:
+              launch: [ "copyq", "menu" ]
+
 
 
 

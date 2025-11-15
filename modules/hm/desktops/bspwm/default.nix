@@ -4,13 +4,6 @@ let
 
   cfg = config.my.bspwm;
 
- #bsp-plank = pkgs.writeShellScriptBin "bsp-plank" ''
- #  sleep 10
- #  if pgrep -u $USER bspwm >/dev/null; then
- #     ${pkgs.plank}/bin/plank
- #  fi
- #'';
-
   bsp-plank-reset = pkgs.writeShellScriptBin "bsp-plank-reset" ''
     pkill plank
     plank &
@@ -93,6 +86,10 @@ let
         *)       echo ''
              exit 1 ;;
     esac
+  '';
+
+  bsp-xkb-layout = pkgs.writeShellScriptBin "bsp-xkb-layout" ''
+    xkblayout-state print "%s"
   '';
 
 in
@@ -214,7 +211,7 @@ in
       bsp-help
       bsp-volume
       bsp-layout-manager
-      /*bsp-plank*/
+      bsp-xkb-layout
     ];
 
    #systemd.user.services.plank-bspwm = {

@@ -88,11 +88,47 @@ let
     i3-msg restart
   '';
 
+  bsp-next = pkgs.writeShellScriptBin "bsp-next" ''
+    bsp-layout next
+    notify-send "$(bsp-layout get)"
+  '';
+  bsp-prev = pkgs.writeShellScriptBin "bsp-prev" ''
+    bsp-layout previous
+    notify-send "$(bsp-layout get)"
+  '';
+  bsp-reload = pkgs.writeShellScriptBin "bsp-reload" ''
+    bsp-layout reload
+    notify-send "$(bsp-layout get)"
+  '';
+  bsp-og = pkgs.writeShellScriptBin "bsp-og" ''
+    bsp-layout remove
+    notify-send "BSPWM Layout"
+  '';
+
+  poly-xkb-layout = pkgs.writeShellScriptBin "poly-xkb-layout" ''
+    xkblayout-state print "%s"
+  '';
+  poly-xkb-change = pkgs.writeShellScriptBin "poly-xkb-change" ''
+    xkb-switch -n
+    notify-send "$(poly-xkb-layout)"
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
-  home.packages = [ poly-idle-inhibit poly-notif poly-power poly-reset ];
+  home.packages = [
+    poly-idle-inhibit
+    poly-notif
+    poly-power
+    poly-reset
+    bsp-next
+    bsp-prev
+    bsp-reload
+    bsp-og
+    poly-xkb-layout
+    poly-xkb-change
+  ];
 
   services.polybar = {
 
@@ -201,7 +237,7 @@ in
         type = "custom/script";
         exec = "xkb-switch -p";
        #interval = 2;
-        click-left = "xkb-switch -n";
+        click-left = "poly-xkb-change";
         double-click-left = "iotas";
         click-right = "onboard";
         double-click-right = "pkill onboard";
@@ -245,7 +281,7 @@ in
        #format = "<lable>%{O-4pt}";
         type = "internal/date";
         interval = 5;
-        date = "%a-%d%l:%M %p";
+        date = "%a-%d %l:%M %p";
         label = "%date%";
         label-padding = 1;
         label-font = 1;
@@ -322,10 +358,10 @@ in
         type = "custom/script";
         exec = "bsp-layout-manager";
         format = "<label>%{O-5pt}";
-        click-left = "bsp-layout next";
-        click-right = "bsp-layout previous";
-        double-click-left = "bsp-layout reload";
-        double-click-right = "bsp-layout remove";
+        click-left = "bsp-next";
+        click-right = "bsp-prev";
+        double-click-left = "bsp-reload";
+        double-click-right = "bsp-og";
       };
 
       "module/networkspeedup" = {

@@ -124,59 +124,59 @@ XF86MonBrightnessDown
 
 # Take a Screenshot (Region Select)
 super + Print
-	flameshot gui --path ~/Screenshots/
+	flameshot gui --path ~/Pictures/Screenshots/
 
 # Take a Fullscreen Screenshot
 Print
-	flameshot full --path ~/Screenshots/
+	flameshot full --path ~/Pictures/Screenshots/
 
 # Resize All Windows Equally
 super + equal
-	bspc query -N -d | xargs -I % bspc node % -B
+	bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
 
 # Master Stack Layout
 super + t
-      bsp-layout set tall
+      bsp-layout set tall; notify-send "Master-Stack Layout"
 
 # Reverse Master Stack
 super + alt + t
-      bsp-layout set rtall
+      bsp-layout set rtall; notify-send "Master-Stack Layout (Reverse)"
 
 # Wide Layout
 super + w
-      bsp-layout set wide
+      bsp-layout set wide; notify-send "Master-Stack Layout (Horizontal)"
 
 # Reverse Wide
 super + alt + w
-      bsp-layout set rwide
+      bsp-layout set rwide; notify-send "Master-Stack Layout (Reverse Horizontal)"
 
 # Monocle Layout
 super + m
-      bsp-layout set monocle
+      bsp-layout set monocle; notify-send "Monocle Layout"
 
 # Tiled Layout
 super + BackSpace
-      bsp-layout set tiled
+      bsp-layout set tiled; notify-send "Tiled Layout"
 
 # Grid Layout
 super + g
-      bsp-layout set grid
+      bsp-layout set grid; notify-send "Grid Layout"
 
 # Reverse Grid
 super + alt + g
-      bsp-layout set rgrid
+      bsp-layout set rgrid; notify-send "Grid Layout (Reverse)"
 
 # Even Layout
 super + e
-      bsp-layout set even
+      bsp-layout set even; notify-send "Even Layout"
 
 # Keyboard layout change
 alt + Caps_Lock
-      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"
+      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"; notify-send "$(bsp-xkb-layout)"
 
 # Reset Plank
 alt + shift + p
-      pkill plank && plank
+      pkill plank && plank; notify-send 'Plank Reloaded'
 
 # Keybind Help
 super + h
