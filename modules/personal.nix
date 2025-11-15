@@ -379,6 +379,7 @@
             borg.enable = true;
             btop.enable = true;
             cava.enable = true;
+            copyq.enable = true;
             crystal-dock.enable = true;
             direnv.enable = true;
             dunst.enable = true;

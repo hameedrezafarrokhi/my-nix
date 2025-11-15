@@ -238,6 +238,7 @@
             borg.enable = true;
             btop.enable = true;
             cava.enable = true;
+            copyq.enable = true;
             direnv.enable = true;
             dunst.enable = true;
             fastfetch.enable = true;

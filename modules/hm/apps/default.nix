@@ -16,6 +16,7 @@ in
     borg.enable = lib.mkEnableOption "borg";
     btop.enable = lib.mkEnableOption "btop";
     cava.enable = lib.mkEnableOption "cava";
+    copyq.enable = lib.mkEnableOption "copyq";
     crystal-dock.enable = lib.mkEnableOption "crystal dock";
     direnv.enable = lib.mkEnableOption "direnv";
     dunst.enable = lib.mkEnableOption "dunst";
@@ -71,6 +72,7 @@ in
       ./borg.nix
       ./btop.nix
       ./cava.nix
+      ./copyq.nix
       ./crystal-dock.nix
       ./direnv.nix
       ./dunst.nix
