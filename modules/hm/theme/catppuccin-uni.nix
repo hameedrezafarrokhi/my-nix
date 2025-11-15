@@ -1116,6 +1116,11 @@
         ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
         ${config.services.polybar.package}/bin/polybar example &
         ${pkgs.plank}/bin/plank &
+        if hash conky >/dev/null 2>&1; then
+        	  pkill conky
+        	  sleep 1.5
+        	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        fi
       '';
     };
 
