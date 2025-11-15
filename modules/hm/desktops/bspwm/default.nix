@@ -73,7 +73,12 @@ let
   '';
 
   bsp-layout-manager = pkgs.writeShellScriptBin "bsp-layout-manager" ''
-    current=$(bsp-layout get)
+    current=$(bsp-layout get 2>/dev/null)
+
+    if [ $? -ne 0 ]; then
+        echo ""
+        exit 0
+    fi
 
     case "$current" in
         tiled)   echo '' ;;
@@ -85,7 +90,8 @@ let
         rwide)   echo '' ;;
         tall)    echo '' ;;
         wide)    echo '' ;;
-        *)       echo '' >&2; exit 1 ;;
+        *)       echo ''
+             exit 1 ;;
     esac
   '';
 
