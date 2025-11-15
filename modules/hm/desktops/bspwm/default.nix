@@ -47,6 +47,12 @@ in
         	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
         fi
 
+        if hash conky >/dev/null 2>&1; then
+        	  pkill conky
+        	  sleep 1.5
+        	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        fi
+
       '';
 
       startupPrograms = [
@@ -106,7 +112,14 @@ in
 
     };
 
-    home.packages = [ pkgs.sxhkd pkgs.bc pkgs.bsp-layout bsp-plank-reset /*bsp-plank*/ ];
+    home.packages = [
+      pkgs.sxhkd
+      pkgs.bc
+      pkgs.bsp-layout
+      pkgs.conky
+      bsp-plank-reset
+      /*bsp-plank*/
+    ];
 
    #systemd.user.services.plank-bspwm = {
    #  Unit = {
