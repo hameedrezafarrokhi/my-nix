@@ -60,11 +60,37 @@ let
     dunstctl history-pop
   '';
 
+  poly-power = pkgs.writeShellScriptBin "poly-power" ''
+    ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
+
+    chosen=$(echo -e "[Cancel]\nLock\nLogout\nShutdown\nReboot" | \
+        rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
+
+    case "$chosen" in
+        "Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
+        "Logout")
+          bspc quit
+          pkill dwm
+          pkill dwm
+          openbox --exit
+          i3-msg exit  ;;
+        "Shutdown") systemctl poweroff ;;
+        "Reboot") systemctl reboot ;;
+        *) exit 0 ;; # Exit on cancel or invalid input
+    esac
+  '';
+
+  poly-reset = pkgs.writeShellScriptBin "poly-reset" ''
+    bspc wm -r
+    openbox --restart
+    i3-msg restart
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
-  home.packages = [ poly-idle-inhibit poly-notif ];
+  home.packages = [ poly-idle-inhibit poly-notif poly-power poly-reset ];
 
   services.polybar = {
 
@@ -86,7 +112,7 @@ in
         modules = {
           left = "apps memory cpu filesystem networkspeeddown networkspeedup xwindow";
           center = "xworkspaces";
-          right = "lock tray bspwm notif idle pulseaudio date hour";
+          right = "lock tray bspwm notif idle keyboard-layout pulseaudio date hour power";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -135,7 +161,7 @@ in
         label-volume = "%percentage%%";
         label-muted = "muted";
         click-right = "pavucontrol";
-        double-click-left = "resources";
+       #double-click-left = "resources";
        #double-click-middle = ;
         double-click-right = "baobab";
       };
@@ -143,14 +169,41 @@ in
       "module/lock" = {
         type = "internal/xkeyboard";
        #ignore = ;
-        format-margin = 2;
-        blacklist-0 = "num lock";
-        blacklist-1 = "scroll lock";
+        format-margin = 1;
+        blacklist-1 = "num lock";
+        blacklist-0 = "scroll lock";
         format = "<label-indicator>";
         label-indicator-padding = 1;
         indicator-icon-0 = "caps lock;-CL;+CL";
         label-indicator-off = "";
-        label-indicator-on = ''"  Caps "'';
+        label-indicator-on = ''" Caps "'';
+      };
+
+      "module/xkb" = {
+        type = "internal/xkeyboard";
+        blacklist-0 = "num lock";
+        blacklist-1 = "scroll lock";
+        blacklist-2 = "caps lock";
+        format = "<label-layout>";
+        format-spacing = 0;
+        label-layout = "%name%";
+       #label-layout-padding = 0;
+       #label-layout-background = ;
+       #label-layout-foreground = ;
+       #label-indicator = "%name%";
+        layout-icon-0 = "us";
+        layout-icon-1 = "ir";
+      };
+
+      "module/keyboard-layout" = {
+        type = "custom/script";
+        exec = "xkb-switch -p";
+       #interval = 2;
+        click-left = "xkb-switch -n";
+        double-click-left = "iotas";
+        click-right = "onboard";
+        double-click-right = "pkill onboard";
+        format = "<label>%{O-8pt}";
       };
 
       "module/memory" = {
@@ -187,6 +240,7 @@ in
      #};
 
       "module/hour" = {
+       #format = "<lable>%{O-4pt}";
         type = "internal/date";
         interval = 5;
         date = "%l:%M %p";
@@ -247,6 +301,16 @@ in
         click-right = "poly-notif";
         double-click-left = "dunstctl close-all";
         double-click-right = "dunstctl history-clear";
+      };
+
+      "module/power" = {
+        type = "custom/script";
+        exec = "echo '⏻'";
+        format = "%{O-11pt}<label>%{O-2pt}";
+        click-left = "poly-power";
+        click-right = "poly-reset";
+        double-click-left = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10  -n -c 24273a -p default";
+        double-click-right = "resources";
       };
 
       "module/bspwm" = {

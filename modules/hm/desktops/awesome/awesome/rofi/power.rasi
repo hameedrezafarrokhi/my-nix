@@ -1,5 +1,5 @@
 * {
-    bg: #161616;
+    bg: #1e2030;
     background-color: @bg;
     font: "JetBrainsMono Nerd Font 12";  /* Monospace font for alignment */
 }
@@ -28,14 +28,14 @@ mainbox {
 
 element {
     padding: 4 8;
-    text-color: #F2F4F8;
+    text-color: #7dc4e4;
     background-color: #161616;
     border-radius: 5px;
 }
 
 element.selected {
     text-color: #ffffff;
-    background-color: #ff8f40;
+    background-color: #1e2030;
 }
 
 element-text {
@@ -51,32 +51,32 @@ element-icon {
 }
 
 element.selected.active {
-    background-color: #161616;
+    background-color: #1e2030;
     text-color: #F2F4F8;
 }
 
 element.alternate.normal {
-    background-color: #161616;
+    background-color: #1e2030;
     text-color: #F2F4F8;
 }
 
 element.alternate.active {
-    background-color: #ff8f40;
+    background-color: #1e2030;
     text-color: #F2F4F8;
 }
 
 element.selected.normal {
-    background-color: #ff8f40;
+    background-color: #ed8796;
     text-color: #161616;
 }
 
 element.normal.active {
-    background-color: #161616;
+    background-color: #1e2030;
     text-color: #F2F4F8;
 }
 
 element.normal.normal {
-    background-color: #161616;
+    background-color: #1e2030;
     text-color: #F2F4F8;
 }
 
@@ -87,7 +87,7 @@ element.normal.urgent {
 
 listview {
     columns: 1;  /* Show in a single column for better alignment */
-    lines: 8;
+    lines: 5;
     padding: 8 0;
     fixed-height: true;
     fixed-columns: true;

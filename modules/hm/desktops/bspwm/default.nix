@@ -77,7 +77,7 @@ let
 
     case "$current" in
         tiled)   echo '' ;;
-        monocle) echo '' ;;
+        monocle) echo '󱂬' ;;
         even)    echo '' ;;
         grid)    echo '󱗼' ;;
         rgrid)   echo '󰋁' ;;
@@ -85,7 +85,7 @@ let
         rwide)   echo '' ;;
         tall)    echo '' ;;
         wide)    echo '' ;;
-        *)       echo "" >&2; exit 1 ;;
+        *)       echo '' >&2; exit 1 ;;
     esac
   '';
 

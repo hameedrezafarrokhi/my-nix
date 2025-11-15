@@ -1046,7 +1046,7 @@
           format-prefix-foreground = Rosewater;
         };
         "module/tray" = {
-          tray-foreground = Rosewater;
+          tray-foreground = Text;
         };
         "module/idle" = {
           label-foreground = Green;
@@ -1064,6 +1064,12 @@
         };
         "module/bspwm" = {
           label-foreground = Sky;
+        };
+        "module/keyboard-layout" = {
+          label-foreground = Teal;
+        };
+        "module/power" = {
+          label-foreground = Red;
         };
       };
     };
