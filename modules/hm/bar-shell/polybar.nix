@@ -19,7 +19,7 @@ let
         # Re-enable idle (default X timeout)
         xset s on
         xset s blank
-        xset s 600 600
+        xset s 6000 6000
         xset +dpms
         systemctl --user restart xautolock-session.service
         systemctl --user restart xss-lock.service
@@ -63,17 +63,19 @@ let
   poly-power = pkgs.writeShellScriptBin "poly-power" ''
     ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
 
-    chosen=$(echo -e "[Cancel]\nLock\nLogout\nShutdown\nReboot" | \
+    chosen=$(echo -e "[Cancel]\nReload\nLock\nLogout\nSleep\nShutdown\nReboot" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
 
     case "$chosen" in
         "Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
+        "Reload") poly-reset  ;;
         "Logout")
           bspc quit
           pkill dwm
           pkill dwm
           openbox --exit
           i3-msg exit  ;;
+        "Sleep") systemctl suspend  ;;
         "Shutdown") systemctl poweroff ;;
         "Reboot") systemctl reboot ;;
         *) exit 0 ;; # Exit on cancel or invalid input
@@ -112,7 +114,7 @@ in
         modules = {
           left = "apps memory cpu filesystem networkspeeddown networkspeedup xwindow";
           center = "xworkspaces";
-          right = "lock tray bspwm notif idle keyboard-layout pulseaudio date hour power";
+          right = "lock tray bspwm notif idle keyboard-layout pulseaudio hour power"; # date
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -243,7 +245,7 @@ in
        #format = "<lable>%{O-4pt}";
         type = "internal/date";
         interval = 5;
-        date = "%l:%M %p";
+        date = "%a-%d%l:%M %p";
         label = "%date%";
         label-padding = 1;
         label-font = 1;
@@ -254,14 +256,14 @@ in
         type = "custom/script";
         interval = 60;
         format = "<label>%{O-8pt}";
-        exec = ''"LC_TIME="en_us_utf8" date +"%a-%-d""'';
+        exec = ''"LC_TIME="en_us_utf8" date +"%a-%d""'';
         label-padding = 0;
         label-font = 1;
         format-prefix = ''" "'';
         click-left = "gnome-calendar";
         click-right = "gnome-clocks";
-        double-click-left = "timeswitch";
        #double-click-middle = ;
+       #double-click-left = "timeswitch";
         double-click-right = "kalarm";
       };
 
@@ -270,10 +272,11 @@ in
         tray-spacing = "4px";
       };
 
+      # ''"echo ' ' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"''
       "module/apps" = {
         type = "custom/script";
-        format = "<label>%{O-8pt}";
-        exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
+        format = "<label>%{O-10pt}";
+        exec = ''"echo ' '"'';
        #interval = 60;
         click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ${nix-path}/modules/hm/desktops/awesome/awesome/rofi/config.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "dolphin";
@@ -308,9 +311,11 @@ in
         exec = "echo '⏻'";
         format = "%{O-11pt}<label>%{O-2pt}";
         click-left = "poly-power";
-        click-right = "poly-reset";
-        double-click-left = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10  -n -c 24273a -p default";
+        click-right = "gnome-clocks";
+        double-click-left = "timeswitch";
         double-click-right = "resources";
+        double-click-middle = "kalarm";
+        click-middle = "gnome-calendar";
       };
 
       "module/bspwm" = {

@@ -53,7 +53,7 @@ let
     systemctl --user restart hypridle.service
     xset s on
     xset s blank
-    xset s 600 600
+    xset s 6000 6000
     xset +dpms
   '';
 

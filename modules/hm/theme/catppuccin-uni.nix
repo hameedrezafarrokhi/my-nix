@@ -1038,11 +1038,11 @@
          #label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%;
         };
         "module/hour" = {
-          label-foreground = Flamingo;
+          label-foreground = Peach; # Flamingo;
           format-prefix-foreground = Rosewater;
         };
         "module/date" = {
-          label-foreground = Peach;
+          label-foreground = Flamingo; # Peach;
           format-prefix-foreground = Rosewater;
         };
         "module/tray" = {
@@ -1070,6 +1070,9 @@
         };
         "module/power" = {
           label-foreground = Red;
+        };
+        "module/apps" = {
+          label-foreground = Sapphire;
         };
       };
     };

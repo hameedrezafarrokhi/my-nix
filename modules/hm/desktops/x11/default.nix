@@ -51,6 +51,7 @@ in
       profilePath = ".xprofile";
       scriptPath = ".xsession";
       initExtra = ''
+        xset s 6000 6000 &
         export GDK_BACKEND=x11 &
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
       '';
@@ -93,11 +94,11 @@ in
 
       screen-locker = {
         enable = true;
-        inactiveInterval = 60; # min 1 max 60 (minutes)
+        inactiveInterval = 15; # min 1 max 60 (minutes)
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
-        lockCmd = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10  -n -c 24273a -p default";
+        lockCmd = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
         #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";
         # "${pkgs.betterlockscreen}/bin/betterlockscreen --lock"
         xautolock = {

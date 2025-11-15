@@ -128,10 +128,22 @@ in
         	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
         fi
 
+        if hash polybar >/dev/null 2>&1; then
+        	  pkill polybar
+        	  sleep 1.5
+        	  polybar example &
+        fi
+
         if hash conky >/dev/null 2>&1; then
         	  pkill conky
         	  sleep 1.5
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        fi
+
+        if hash plank >/dev/null 2>&1; then
+        	  pkill plank
+        	  sleep 1.5
+        	  plank &
         fi
 
       '';
@@ -140,8 +152,8 @@ in
        #"numlockx on"
        #"tilda"
        #"feh --bg-fill /home/hrf/Pictures/Wallpapers/catppuccin-astro-macchiato/background.png"
-        "polybar example"
-        "plank"
+       #"polybar example"
+       #"plank"
       ];
 
       settings = {
