@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, nix-path, ... }:
 
 let
 
@@ -37,11 +37,34 @@ let
     fi
   '';
 
+  poly-notif = pkgs.writeShellScriptBin "poly-notif" ''
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+    dunstctl history-pop
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
-  home.packages = [ poly-idle-inhibit ];
+  home.packages = [ poly-idle-inhibit poly-notif ];
 
   services.polybar = {
 
@@ -61,9 +84,9 @@ in
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps memory cpu filesystem xwindow";
+          left = "apps memory cpu filesystem networkspeeddown networkspeedup xwindow";
           center = "xworkspaces";
-          right = "lock tray idle pulseaudio date hour";
+          right = "lock tray bspwm notif idle pulseaudio date hour";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -100,7 +123,7 @@ in
         type = "internal/fs";
         interval = 120;
         mount-0 = "/";
-        format-mounted-prefix = '' %{O-2pt}'';
+        format-mounted-prefix = '' %{O-4pt}'';
         label-mounted = "%percentage_free%%";
         label-unmounted = "%mountpoint% not mounted";
       };
@@ -108,7 +131,7 @@ in
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
         format-volume-prefix = ''"󰜟 "'';
-        format-volume = "<label-volume>";
+        format-volume = "<label-volume>%{O-5pt}";
         label-volume = "%percentage%%";
         label-muted = "muted";
         click-right = "pavucontrol";
@@ -131,7 +154,7 @@ in
       };
 
       "module/memory" = {
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-8pt}";
         type = "internal/memory";
         interval = 2;
         format-prefix = '' %{O-5pt}'';
@@ -139,10 +162,10 @@ in
       };
 
       "module/cpu" = {
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-7pt}";
         type = "internal/cpu";
         interval = 02;
-        format-prefix = '' %{O-5pt}'';
+        format-prefix = '' %{O-6pt}'';
         label = "%percentage:2%%";
       };
 
@@ -168,16 +191,16 @@ in
         interval = 5;
         date = "%l:%M %p";
         label = "%date%";
-        label-padding = 0;
+        label-padding = 1;
         label-font = 1;
-        format-prefix = ''"󰥔 "'';
+        format-prefix = ''"󰥔"'';
       };
 
       "module/date" = {
         type = "custom/script";
         interval = 60;
-        format = "<label>";
-        exec = ''"LC_TIME="en_us_utf8" date +"%a, %b %-d""'';
+        format = "<label>%{O-8pt}";
+        exec = ''"LC_TIME="en_us_utf8" date +"%a-%-d""'';
         label-padding = 0;
         label-font = 1;
         format-prefix = ''" "'';
@@ -195,9 +218,10 @@ in
 
       "module/apps" = {
         type = "custom/script";
+        format = "<label>%{O-8pt}";
         exec = ''"echo '' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"'';
        #interval = 60;
-        click-left = "rofi -show drun -modi drun -show-icons -location 1 -yoffset 40 -xoffset 10  ";
+        click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ${nix-path}/modules/hm/desktops/awesome/awesome/rofi/config.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "dolphin";
         double-click-left = "kate";
        #double-click-middle = ;
@@ -209,10 +233,52 @@ in
         exec = "poly-idle-inhibit --status";
         interval = 2;
         click-left = "poly-idle-inhibit";
-        format = "<label>";
+        format = "<label>%{O-8pt}";
        #lable = "%output%";
        #label-on = "";
        #label-off = "";
+      };
+
+      "module/notif" = {
+        type = "custom/script";
+        exec = "echo ''";
+        format = "<label>%{O-5pt}";
+        click-left = "dunstctl history-pop";
+        click-right = "poly-notif";
+        double-click-left = "dunstctl close-all";
+        double-click-right = "dunstctl history-clear";
+      };
+
+      "module/bspwm" = {
+        type = "custom/script";
+        exec = "bsp-layout-manager";
+        format = "<label>%{O-5pt}";
+        click-left = "bsp-layout next";
+        click-right = "bsp-layout previous";
+        double-click-left = "bsp-layout reload";
+        double-click-right = "bsp-layout remove";
+      };
+
+      "module/networkspeedup" = {
+        type = "internal/network";
+        interface = "wlp3s0";
+        unknown-as-up = true;
+        interval = 2.0;
+        label-connected = ''"%upspeed:4%%{O-5pt}"'';
+        format-connected = "<label-connected>%{O-5pt}";
+        format-connected-prefix = ''""'';
+        speed-unit = '''';
+      };
+
+      "module/networkspeeddown" = {
+        type = "internal/network";
+        interface = "wlp3s0";
+        unknown-as-up = true;
+        interval = 2.0;
+        label-connected = ''"%downspeed:4%%{O-8pt}"'';
+        format-connected = "<label-connected>%{O-2pt}";
+        format-connected-prefix = ''""'';
+        speed-unit = '''';
       };
 
       "settings" = {

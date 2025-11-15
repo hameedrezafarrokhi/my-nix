@@ -1,7 +1,6 @@
 # Launch Rofi Application Menu
 super + space
    	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi
-   	#rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons
 
 # Set Window State: Floating Mode
 super + f
@@ -101,7 +100,19 @@ XF86AudioRaiseVolume
 
 # Decrease Volume
 XF86AudioLowerVolume
-    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+
+# Increase Volume (notify)
+super + Insert
+      bsp-volume up
+
+# Decrease Volume (notify)
+super + Delete
+	bsp-volume down
+
+# Mute Volume (notify)
+super + Home
+	bsp-volume mute
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
@@ -123,30 +134,52 @@ Print
 super + equal
 	bspc query -N -d | xargs -I % bspc node % -B
 
-
-
-
+# Master Stack Layout
 super + t
       bsp-layout set tall
+
+# Reverse Master Stack
 super + alt + t
       bsp-layout set rtall
+
+# Wide Layout
 super + w
       bsp-layout set wide
+
+# Reverse Wide
 super + alt + w
       bsp-layout set rwide
+
+# Monocle Layout
 super + m
       bsp-layout set monocle
+
+# Tiled Layout
 super + BackSpace
       bsp-layout set tiled
+
+# Grid Layout
 super + g
       bsp-layout set grid
+
+# Reverse Grid
 super + alt + g
-      bsp-layput set rgrid
+      bsp-layout set rgrid
+
+# Even Layout
 super + e
       bsp-layout set even
 
+# Keyboard layout change
 alt + Caps_Lock
-    setxkbmap -layout us,ir -option "grp:alt_caps_toggle"
+      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"
 
+# Reset Plank
 alt + shift + p
-    pkill plank && plank
+      pkill plank && plank
+
+# Keybind Help
+super + h
+      bsp-help
+
+

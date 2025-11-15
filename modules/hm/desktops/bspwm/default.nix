@@ -1,17 +1,92 @@
-{ config, pkgs, lib, nix-path, ... }:
+{ config, pkgs, lib, nix-path, nix-path-alt, ... }:
 
 let
 
   cfg = config.my.bspwm;
+
  #bsp-plank = pkgs.writeShellScriptBin "bsp-plank" ''
  #  sleep 10
  #  if pgrep -u $USER bspwm >/dev/null; then
  #     ${pkgs.plank}/bin/plank
  #  fi
  #'';
+
   bsp-plank-reset = pkgs.writeShellScriptBin "bsp-plank-reset" ''
     pkill plank
     plank &
+  '';
+
+  bsp-help = pkgs.writeShellScriptBin "bsp-help" ''
+    # Extract keybindings and descriptions and format into fixed-width columns
+    keybindings=$(awk '
+        /^[a-z]/ && last {
+            # Use printf for consistent column widths and padding
+            printf "%-30s | %-40s\n", $0, last
+        }
+        { last="" }
+        /^#/ { last=substr($0, 3) }' ${nix-path-alt}/modules/hm/desktops/bspwm/sxhkdrc)
+
+    # Pad the content with a fixed-width column approach
+    formatted_keybindings=$(echo "$keybindings" | column -t -s '|')
+
+    # Show in rofi and capture the selected line
+    selected=$(echo "$formatted_keybindings" | rofi -dmenu -i -p "Keybindings" -line-padding 4 -hide-scrollbar -theme ${nix-path}/modules/hm/desktops/bspwm/keybinds.rasi)
+
+    # Execute the selected keybinding's command (if needed)
+    if [ -n "$selected" ]; then
+        command=$(echo "$selected" | awk -F'|' '{print $1}' | xargs)
+        nohup $command &>/dev/null &
+    fi
+  '';
+
+  volume= "$(pamixer --get-volume)";
+  bsp-volume = pkgs.writeShellScriptBin "bsp-volume" ''
+      #!/bin/bash
+
+      function send_notification() {
+      	volume=$(pamixer --get-volume)
+      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 2000
+      }
+
+      case $1 in
+      up)
+      	# Set the volume on (if it was muted)
+      	pamixer -u
+      	pamixer -i 2 --allow-boost
+      	send_notification $1
+      	;;
+      down)
+      	pamixer -u
+      	pamixer -d 2 --allow-boost
+      	send_notification $1
+      	;;
+      mute)
+      	pamixer -t
+      	if $(pamixer --get-mute); then
+      		dunstify -i volume-mute -a "changevolume" -t 2000 -r 9993 -u low "Muted"
+      	else
+      		send_notification up
+      	fi
+      	;;
+      esac
+
+  '';
+
+  bsp-layout-manager = pkgs.writeShellScriptBin "bsp-layout-manager" ''
+    current=$(bsp-layout get)
+
+    case "$current" in
+        tiled)   echo '' ;;
+        monocle) echo '' ;;
+        even)    echo '' ;;
+        grid)    echo '󱗼' ;;
+        rgrid)   echo '󰋁' ;;
+        rtall)   echo '󱇜' ;;
+        rwide)   echo '' ;;
+        tall)    echo '' ;;
+        wide)    echo '' ;;
+        *)       echo "" >&2; exit 1 ;;
+    esac
   '';
 
 in
@@ -118,6 +193,9 @@ in
       pkgs.bsp-layout
       pkgs.conky
       bsp-plank-reset
+      bsp-help
+      bsp-volume
+      bsp-layout-manager
       /*bsp-plank*/
     ];
 

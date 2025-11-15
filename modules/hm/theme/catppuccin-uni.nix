@@ -1051,6 +1051,20 @@
         "module/idle" = {
           label-foreground = Green;
         };
+        "module/networkspeedup" = {
+          format-connected-prefix-foreground = Red;
+         #label-connected-background = #FF0000
+        };
+        "module/networkspeeddown" = {
+          format-connected-prefix-foreground = Blue;
+         #label-connected-background = #FF0000
+        };
+        "module/notif" = {
+          label-foreground = Yellow;
+        };
+        "module/bspwm" = {
+          label-foreground = Sky;
+        };
       };
     };
   };

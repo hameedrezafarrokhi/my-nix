@@ -1,8 +1,8 @@
   * {
         /* GitHub Dark theme colors */
-        bg: #0d1117;              /* GitHub background */
-        fg: #d0d7de;              /* GitHub foreground */
-        selection: #539bf5;       /* GitHub blue for selection */
+        bg: #1e2030;              /* GitHub background */
+        fg: #cad3f5;              /* GitHub foreground */
+        selection: #7dc4e4;       /* GitHub blue for selection */
         border: #539bf5;          /* GitHub blue for borders */
         urgent: #ff7b72;          /* GitHub red for urgent */
         text-dark: #0d1117;       /* Dark text on light bg */

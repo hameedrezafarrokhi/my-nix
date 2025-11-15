@@ -11,6 +11,11 @@
       global = {
        #icon_path = '' '';
         offset = "(27,60)";
+        history_length = 50;
+       #close = ctrl+space
+       #close_all = ctrl+shift+space
+       #history = "ctrl+grave";
+       #context = "ctrl+alt+period";
       };
     };
    #iconTheme = {
