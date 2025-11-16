@@ -147,6 +147,10 @@ let
     fi
   '';
 
+  xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
+    notify-send "$(date +%c)"
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -170,6 +174,7 @@ in
     xremap-picom-toggle
     xremap-volume
     xremap-pp
+    xremap-time
    #vlc-env
   ];
 
@@ -487,6 +492,8 @@ in
           remap:
             Super-Shift-v:
               launch: [ "copyq", "menu" ]
+            Super-Ctrl-t:
+              launch: [ "xremap-time" ]
 
 
 

@@ -120,6 +120,55 @@ let
     esac
   '';
 
+  bsp-bar-hide = pkgs.writeShellScriptBin "bsp-bar-hide" ''
+    TOP_HEIGHT=${config.my.poly-height}
+    BOTTOM_HEIGHT=15
+    BAR_NAME="${config.my.poly-name}"
+
+    if pgrep polybar > /dev/null; then
+        pkill polybar
+        pkill tint2
+        pkill plank
+        pkill conky
+        bspc config top_padding 0
+        bspc config bottom_padding 0
+    else
+        bspc config top_padding $TOP_HEIGHT
+        bspc config top_padding $BOTTOM_HEIGHT
+        polybar $BAR_NAME &
+        tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+        conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        plank &
+    fi
+  '';
+
+  bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
+    if hash tint2 >/dev/null 2>&1; then
+        pkill .tint2-wrapped
+        bspc config bottom_padding 0
+    else
+        bspc config bottom_padding 15
+        tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+    fi
+  '';
+
+  bsp-poly-hide = pkgs.writeShellScriptBin "bsp-poly-hide" ''
+    TOP_HEIGHT=${config.my.poly-height}
+    BAR_NAME="${config.my.poly-name}"
+
+    if pgrep polybar > /dev/null; then
+        pkill polybar
+        bspc config top_padding 0
+    else
+        bspc config top_padding $TOP_HEIGHT
+        polybar $BAR_NAME &
+    fi
+  '';
+
+  scratchpad = pkgs.writeShellScriptBin "scratchpad" ''
+    ${builtins.readFile ./scratchpad}
+  '';
+
 in
 
 {
@@ -157,6 +206,8 @@ in
             fi
         done &
 
+        bspc rule -a scratchpad state=floating layer=normal
+
         if hash sxhkd >/dev/null 2>&1; then
         	  pkill sxhkd
         	  sleep 0.5
@@ -166,7 +217,7 @@ in
         if hash polybar >/dev/null 2>&1; then
         	  pkill polybar
         	  sleep 1.5
-        	  polybar example &
+        	  polybar ${config.my.poly-name} &
         fi
 
         if hash conky >/dev/null 2>&1; then
@@ -260,6 +311,10 @@ in
       bsp-xkb-layout
       bsp-float
       bsp-power
+      bsp-bar-hide
+      bsp-tint2-hide
+      bsp-poly-hide
+      scratchpad
     ];
 
    #systemd.user.services.plank-bspwm = {

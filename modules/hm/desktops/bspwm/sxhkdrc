@@ -218,4 +218,23 @@ super + h
 ctrl + alt + Delete
       bsp-power
 
+# Hide Bars
+super + g
+      bsp-bar-hide
+
+# Hide Tint2
+super + alt + g
+      bsp-tint2-hide
+
+# Hide Polybar
+super + shift + g
+      bsp-poly-hide
+
+# Scratchpad Terminal
+super + ctrl + Return
+      {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && kitty}
+
+# Scratchpad
+super + ctrl + space
+      scratchpad
 

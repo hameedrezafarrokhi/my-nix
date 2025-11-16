@@ -180,7 +180,10 @@ let
 
 in
 
-{ config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
+{ options.my.poly-height = lib.mkOption { type = lib.types.str; };
+  options.my.poly-name   = lib.mkOption { type = lib.types.str; };
+
+  config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
   home.packages = [
     poly-idle-inhibit
@@ -200,6 +203,9 @@ in
     poly-pp
   ];
 
+  my.poly-height = "18";
+  my.poly-name = "example";
+
   services.polybar = {
 
     enable = true;
@@ -212,9 +218,9 @@ in
 
     settings = {
 
-      "bar/example" = {
+      "bar/${config.my.poly-name}" = {
         width = "100%";
-        height = "18pt";
+        height = "${config.my.poly-height}pt";
         radius = 6;
        #dpi = 96;
         modules = {
@@ -265,7 +271,7 @@ in
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
         format-volume-prefix = ''"󰜟 "'';
-        format-volume = "<label-volume>%{O-5pt}";
+        format-volume = "<label-volume>%{O-8pt}";
         label-volume = "%percentage%%";
         label-muted = "muted";
         click-right = "pavucontrol";
@@ -352,11 +358,12 @@ in
        #format = "<lable>%{O-4pt}";
         type = "internal/date";
         interval = 5;
-        date = "%a-%d %l:%M %p";
+        date = "%l:%M %p";
+       #date = "%a-%d %l:%M %p";
         label = "%date%";
         label-padding = 1;
         label-font = 1;
-        format-prefix = ''"󰥔"'';
+        format-prefix = ''"󰥔%{O-8pt}"'';
       };
 
       "module/date" = {
@@ -376,7 +383,9 @@ in
 
       "module/tray" = {
         type = "internal/tray";
-        tray-spacing = "4px";
+        tray-spacing = "5px";
+        format = "<tray>%{O-6pt}";
+        tray-size = "66%";
       };
 
       # ''"echo ' ' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"''
@@ -406,7 +415,7 @@ in
       "module/notif" = {
         type = "custom/script";
         exec = "echo ''";
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-8pt}";
         click-left = "dunstctl history-pop";
         click-right = "poly-notif";
         double-click-left = "dunstctl close-all";
@@ -428,7 +437,7 @@ in
       "module/bspwm" = {
         type = "custom/script";
         exec = "bsp-layout-manager";
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-8pt}";
         click-left = "bsp-next";
         click-right = "bsp-prev";
         click-middle = "poly-bsp-float";
@@ -463,7 +472,7 @@ in
         exec = "poly-picom-status";
         interval = 2;
         click-left = "poly-picom-toggle";
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-8pt}";
         label = "%output%";
       };
 
@@ -496,7 +505,7 @@ in
         exec = "poly-pp --status";
         interval = 2;
         click-left = "poly-pp";
-        format = "<label>%{O-5pt}";
+        format = "<label>%{O-6pt}";
        #lable = "%output%";
        #label-on = "";
        #label-off = "";
