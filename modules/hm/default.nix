@@ -22,6 +22,7 @@
     ./gaming
     ./inputs-readme-files
     ./secrets
+    ./audio
 
   ];
 

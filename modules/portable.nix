@@ -206,6 +206,7 @@
 
           ssh.enable = true;
 
+          audio.enable = true;
           keyboard = {
             xremap.enable = true;
           };

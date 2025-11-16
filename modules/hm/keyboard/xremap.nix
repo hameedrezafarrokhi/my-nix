@@ -81,6 +81,72 @@ let
     fi
   '';
 
+  volume= "$(pamixer --get-volume)";
+  xremap-volume = pkgs.writeShellScriptBin "xremap-volume" ''
+      #!/bin/bash
+
+      function send_notification() {
+      	volume=$(pamixer --get-volume)
+      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 2000
+      }
+
+      case $1 in
+      up)
+      	# Set the volume on (if it was muted)
+      	pamixer -u
+      	pamixer -i 2 --allow-boost
+      	send_notification $1
+      	;;
+      down)
+      	pamixer -u
+      	pamixer -d 2 --allow-boost
+      	send_notification $1
+      	;;
+      mute)
+      	pamixer -t
+      	if $(pamixer --get-mute); then
+      		dunstify -i volume-mute -a "changevolume" -t 2000 -r 9993 -u low "Muted"
+      	else
+      		send_notification up
+      	fi
+      	;;
+      esac
+
+  '';
+
+  xremap-pp = pkgs.writeShellScriptBin "xremap-pp" ''
+    CURRENT_PROFILE=$(powerprofilesctl get)
+
+    if [ "$1" = "--status" ]; then
+        if [ "$CURRENT_PROFILE" = "performance" ]; then
+            echo ""  # Performance icon
+        elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
+            echo ""  # Power Saver icon
+        else
+            echo ""  # Balanced icon
+        fi
+        exit 0
+    fi
+
+    # Toggle between the profiles on click
+    if [ "$CURRENT_PROFILE" = "performance" ]; then
+        # Switch to Power Saver mode
+        powerprofilesctl set power-saver
+        echo "Switched to Power Saver mode."
+        notify-send "Power-Saver Mode"
+    elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
+        # Switch to Balanced mode
+        powerprofilesctl set balanced
+        echo "Switched to Balanced mode."
+        notify-send "Balanced Mode"
+    else
+        # Switch to Performance mode
+        powerprofilesctl set performance
+        echo "Switched to Performance mode."
+        notify-send "Performance Mode"
+    fi
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -102,6 +168,8 @@ in
     xremap-x-lock-sleep
     x-logout
     xremap-picom-toggle
+    xremap-volume
+    xremap-pp
    #vlc-env
   ];
 
@@ -380,6 +448,8 @@ in
                       launch: [ "swaylock", "-fF" ]
                     j:
                       launch: [ "lock-restart" ]
+                    c:
+                      launch: [ "xremap-pp" ]
 
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]
@@ -417,6 +487,51 @@ in
           remap:
             Super-Shift-v:
               launch: [ "copyq", "menu" ]
+
+
+
+
+
+        - name: Media-Control
+          remap:
+            Super-Ctrl-p:
+              launch: [ "xremap-volume", "up" ]
+            Super-Ctrl-o:
+              launch: [ "xremap-volume", "down" ]
+            Super-Ctrl-i:
+              launch: [ "xremap-volume", "mute" ]
+            Super-Ctrl-l:
+              launch: [ "playerctl", "play-pause" ]
+            Super-Ctrl-k:
+              launch: [ "playerctl", "stop" ]
+            Super-Ctrl-j:
+              launch: [ "playerctl", "loop" ]
+            Super-Ctrl-KEY_SEMICOLON:
+              launch: [ "playerctl", "previous" ]
+            Super-Ctrl-KEY_APOSTROPHE:
+              launch: [ "playerctl", "next" ]
+            Super-Ctrl-f:
+              launch: [ "playerctl", "position", "1+" ]
+            Super-Ctrl-g:
+              launch: [ "playerctl", "position", "5+" ]
+            Super-Ctrl-h:
+              launch: [ "playerctl", "position", "30+" ]
+            Super-Ctrl-d:
+              launch: [ "playerctl", "position", "1-" ]
+            Super-Ctrl-s:
+              launch: [ "playerctl", "position", "5-" ]
+            Super-Ctrl-a:
+              launch: [ "playerctl", "position", "30-" ]
+            KEY_PLAYPAUSE:
+              launch: [ "playerctl", "play-pause" ]
+            KEY_STOP:
+              launch: [ "playerctl", "stop" ]
+            KEY_PREVIOUS:
+              launch: [ "playerctl", "previous" ]
+            KEY_NEXT:
+              launch: [ "playerctl", "next" ]
+            KEY_MUTE:
+              launch: [ "xremap-volume", "mute" ]
 
 
 

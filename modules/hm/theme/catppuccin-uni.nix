@@ -1077,6 +1077,13 @@
         "module/picom" = {
           label-foreground = Mauve;
         };
+        "module/player" = {
+          label-foreground = Overlay2;
+          format-prefix-foreground = Mauve;
+        };
+        "module/pp" = {
+          label-foreground = Rosewater;
+        };
       };
     };
   };

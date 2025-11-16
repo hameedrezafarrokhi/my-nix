@@ -133,6 +133,51 @@ let
     notify-send "Floating Toggle"
   '';
 
+  poly-player = pkgs.writeShellScriptBin "poly-player" ''
+    echo ""
+    playerctl metadata -f '{{status}} {{title}}' -F 2>/dev/null | while read event; do
+    out=$(playerctl metadata -f '{{status}} {{title}}' 2>/dev/null)
+      if [[ -z $out ]]; then
+        echo ""
+      else
+        echo $out | sed 's/Paused//; s/Playing//; s/Stopped//;'
+      fi
+    done
+  '';
+
+  poly-pp = pkgs.writeShellScriptBin "poly-pp" ''
+    CURRENT_PROFILE=$(powerprofilesctl get)
+
+    if [ "$1" = "--status" ]; then
+        if [ "$CURRENT_PROFILE" = "performance" ]; then
+            echo ""  # Performance icon
+        elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
+            echo ""  # Power Saver icon
+        else
+            echo ""  # Balanced icon
+        fi
+        exit 0
+    fi
+
+    # Toggle between the profiles on click
+    if [ "$CURRENT_PROFILE" = "performance" ]; then
+        # Switch to Power Saver mode
+        powerprofilesctl set power-saver
+        echo "Switched to Power Saver mode."
+        notify-send "Power-Saver Mode"
+    elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
+        # Switch to Balanced mode
+        powerprofilesctl set balanced
+        echo "Switched to Balanced mode."
+        notify-send "Balanced Mode"
+    else
+        # Switch to Performance mode
+        powerprofilesctl set performance
+        echo "Switched to Performance mode."
+        notify-send "Performance Mode"
+    fi
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
@@ -151,6 +196,8 @@ in
     poly-xkb-change
     poly-picom-status
     poly-picom-toggle
+    poly-player
+    poly-pp
   ];
 
   services.polybar = {
@@ -171,7 +218,7 @@ in
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps memory cpu filesystem networkspeeddown networkspeedup xwindow";
+          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup player"; # xwindow
           center = "xworkspaces";
           right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio hour power"; # date
         };
@@ -418,6 +465,41 @@ in
         click-left = "poly-picom-toggle";
         format = "<label>%{O-5pt}";
         label = "%output%";
+      };
+
+      "module/player" = {
+        type = "custom/script";
+        tail = true;
+        exec = "poly-player";
+        label = "%output:0:20:...%";
+       #label-padding = ${widths.large}
+        format = "<label>";
+       #format-font = 1;
+       #format-background = ${colors.shade1}
+       #format-prefix = ﱘ
+       #format-prefix-font = 2
+       #format-prefix-padding = ${widths.large}
+        click-left = "playerctl play-pause";
+        double-click-left = "playerctl next";
+        click-right = "playerctl loop";
+        double-click-right = "playerctl previous";
+        click-middle = "playerctl stop";
+       #double-click-middle = "playerctl ";
+        scroll-up = "playerctl position 5+";
+        scroll-down = "playerctl position 5-";
+        label-maxlen = 25;
+        format-prefix = ''"󰝚 "'';
+      };
+
+      "module/pp" = {
+        type = "custom/script";
+        exec = "poly-pp --status";
+        interval = 2;
+        click-left = "poly-pp";
+        format = "<label>%{O-5pt}";
+       #lable = "%output%";
+       #label-on = "";
+       #label-off = "";
       };
 
       "settings" = {
