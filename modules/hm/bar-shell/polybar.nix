@@ -63,21 +63,21 @@ let
   poly-power = pkgs.writeShellScriptBin "poly-power" ''
     ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
 
-    chosen=$(echo -e "[Cancel]\nReload\nLock\nLogout\nSleep\nShutdown\nReboot" | \
+    chosen=$(echo -e "[Cancel]\n󰑓 Reload\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
 
     case "$chosen" in
-        "Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
-        "Reload") poly-reset  ;;
-        "Logout")
+        " Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
+        "󰑓 Reload") poly-reset  ;;
+        "󰍃 Logout")
           bspc quit
           pkill dwm
           pkill dwm
           openbox --exit
           i3-msg exit  ;;
-        "Sleep") systemctl suspend  ;;
-        "Shutdown") systemctl poweroff ;;
-        "Reboot") systemctl reboot ;;
+        "󰒲 Sleep") systemctl suspend  ;;
+        "󰤆 Shutdown") systemctl poweroff ;;
+        "󱄋 Reboot") systemctl reboot ;;
         *) exit 0 ;; # Exit on cancel or invalid input
     esac
   '';

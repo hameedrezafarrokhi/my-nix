@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nix-path, nix-path-alt, ... }:
+{ config, pkgs, lib, nix-path, nix-path-alt, mypkgs, ... }:
 
 let
 
@@ -98,6 +98,28 @@ let
     bspc query -N -d focused | while read -r n; do s=$(bspc query -T -n "$n" | grep -q '"state":"floating"' && echo tiled || echo floating); bspc node "$n" -t "$s"; done
   '';
 
+  bsp-power = pkgs.writeShellScriptBin "bsp-power" ''
+    ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
+
+    chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM❤️\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot" | \
+        rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
+
+    case "$chosen" in
+        " Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
+        "󰑓 Reload BSPWM❤️") poly-reset  ;;
+        "󰍃 Logout")
+          bspc quit
+          pkill dwm
+          pkill dwm
+          openbox --exit
+          i3-msg exit  ;;
+        "󰒲 Sleep") systemctl suspend  ;;
+        "󰤆 Shutdown") systemctl poweroff ;;
+        "󱄋 Reboot") systemctl reboot ;;
+        *) exit 0 ;; # Exit on cancel or invalid input
+    esac
+  '';
+
 in
 
 {
@@ -137,7 +159,7 @@ in
 
         if hash sxhkd >/dev/null 2>&1; then
         	  pkill sxhkd
-        	  sleep 1.5
+        	  sleep 0.5
         	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
         fi
 
@@ -149,19 +171,19 @@ in
 
         if hash conky >/dev/null 2>&1; then
         	  pkill conky
-        	  sleep 1.5
+        	  sleep 0.5
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         fi
 
-        #if hash plank >/dev/null 2>&1; then
-        #	  pkill plank
-        #	  sleep 1.5
-        #	  plank &
-        #fi
+        if hash plank >/dev/null 2>&1; then
+        	  pkill plank
+        	  sleep 0.5
+        	  plank &
+        fi
 
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
-        	  sleep 1.5
+        	  sleep 0.5
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
         fi
 
@@ -226,6 +248,8 @@ in
 
     home.packages = [
       pkgs.sxhkd
+      pkgs.plank
+      mypkgs.stable.tint2
       pkgs.bc
       pkgs.bsp-layout
       pkgs.conky
@@ -235,6 +259,7 @@ in
       bsp-layout-manager
       bsp-xkb-layout
       bsp-float
+      bsp-power
     ];
 
    #systemd.user.services.plank-bspwm = {

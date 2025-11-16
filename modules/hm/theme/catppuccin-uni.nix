@@ -1140,17 +1140,25 @@
       target = "openbox/autostart";
       text = ''
         ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
-        ${config.services.polybar.package}/bin/polybar example &
-        #${pkgs.plank}/bin/plank &
+         if hash polybar >/dev/null 2>&1; then
+        	  pkill polybar
+        	  sleep 1
+        	  ${config.services.polybar.package}/bin/polybar example &
+        fi &
         if hash conky >/dev/null 2>&1; then
         	  pkill conky
-        	  sleep 1.5
+        	  sleep 0.5
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         fi &
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
-        	  sleep 1.5
+        	  sleep 0.5
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
+        fi &
+        if hash plank >/dev/null 2>&1; then
+        	  pkill plank
+        	  sleep 0.5
+        	  plank
         fi &
       '';
     };

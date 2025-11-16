@@ -131,44 +131,72 @@ Print
 	flameshot full --path ~/Pictures/Screenshots/
 
 # Resize All Windows Equally
-super + equal
+super + ctrl + equal
 	bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
 
 # Master Stack Layout
-super + t
-      bsp-layout set tall; notify-send "Master-Stack Layout"
-
-# Reverse Master Stack
-super + alt + t
-      bsp-layout set rtall; notify-send "Master-Stack Layout (Reverse)"
+super + ctrl + 1
+      bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
 
 # Wide Layout
-super + w
-      bsp-layout set wide; notify-send "Master-Stack Layout (Horizontal)"
-
-# Reverse Wide
-super + alt + w
-      bsp-layout set rwide; notify-send "Master-Stack Layout (Reverse Horizontal)"
+super + ctrl + 2
+      bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
 # Monocle Layout
-super + m
+super + ctrl + 3
       bsp-layout set monocle; notify-send "Monocle Layout"
 
 # Tiled Layout
-super + BackSpace
+super + ctrl + 4
       bsp-layout set tiled; notify-send "Tiled Layout"
 
 # Grid Layout
-super + g
-      bsp-layout set grid; notify-send "Grid Layout"
-
-# Reverse Grid
-super + alt + g
-      bsp-layout set rgrid; notify-send "Grid Layout (Reverse)"
+super + ctrl + 5
+      bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
 
 # Even Layout
-super + e
+super + ctrl + 6
       bsp-layout set even; notify-send "Even Layout"
+
+# Floating Layout
+super + ctrl + 7
+	bsp-float; notify-send "Floating Layout"
+
+# Master Stack Layout (OneShot)
+super + alt + 1
+      bsp-layout once tall; notify-send "(one-shot) Master-Stack Layout"
+
+# Master Stack Layout (OneShot)
+super + ctrl + alt + 1
+      bsp-layout once rtall; notify-send "(one-shot) Master-Stack Layout"
+
+# Master Stack Layout (Horizontal) (OneShot)
+super + alt + 2
+      bsp-layout once wide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+
+# Master Stack Layout (Horizontal) (OneShot)
+super + ctrl + alt + 2
+      bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+
+# Master Stack Layout (OneShot)
+super + alt + 5
+      bsp-layout once grid; notify-send "(one-shot) Grid Layout"
+
+# Master Stack Layout (OneShot)
+super + ctrl + alt + 5
+      bsp-layout once rgrid; notify-send "(one-shot) Grid Layout (Reverse)"
+
+# Master Stack Layout (OneShot)
+super + alt + 6
+      bsp-layout once even; notify-send "(one-shot) Even Layout"
+
+# Remove Current Layout
+super + ctrl + BackSpace
+	bsp-layout remove; notify-send "Layout Removed"
+
+# Remove Current Layout
+super + ctrl + grave
+	bsp-layout reload; notify-send "Reloaded Layouts"
 
 # Floating Layout
 super + shift + f
@@ -184,6 +212,10 @@ alt + shift + p
 
 # Keybind Help
 super + h
-      bsp-help
+      notify-send "I❤️BSPWM"; bsp-help
+
+# Power Menu
+ctrl + alt + Delete
+      bsp-power
 
 
