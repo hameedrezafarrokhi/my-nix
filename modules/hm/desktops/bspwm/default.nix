@@ -92,6 +92,12 @@ let
     xkblayout-state print "%s"
   '';
 
+  # bspc query -N -n .window | xargs -I {} bspc node {} -t floating
+  # bspc query -N -n .window | xargs -I {} bspc node {} -t tiled
+  bsp-float = pkgs.writeShellScriptBin "bsp-float" ''
+    bspc query -N -d focused | while read -r n; do s=$(bspc query -T -n "$n" | grep -q '"state":"floating"' && echo tiled || echo floating); bspc node "$n" -t "$s"; done
+  '';
+
 in
 
 {
@@ -119,6 +125,16 @@ in
       # polybar -c ~/.config/bspwm/polybar/config.ini &
       extraConfig = ''
 
+        #bspc rule -a '*' desktop='^10$' state=floating
+
+        bspc subscribe node_add | while read -r event; do
+            node_id=$(echo "$event" | cut -d' ' -f5)
+            desktop=$(bspc query -D -d focused --names)
+            if [ "$desktop" = "10" ]; then
+                bspc node "$node_id" -t floating
+            fi
+        done &
+
         if hash sxhkd >/dev/null 2>&1; then
         	  pkill sxhkd
         	  sleep 1.5
@@ -137,10 +153,16 @@ in
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         fi
 
-        if hash plank >/dev/null 2>&1; then
-        	  pkill plank
+        #if hash plank >/dev/null 2>&1; then
+        #	  pkill plank
+        #	  sleep 1.5
+        #	  plank &
+        #fi
+
+        if hash tint2 >/dev/null 2>&1; then
+        	  pkill tint2
         	  sleep 1.5
-        	  plank &
+        	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
         fi
 
       '';
@@ -212,6 +234,7 @@ in
       bsp-volume
       bsp-layout-manager
       bsp-xkb-layout
+      bsp-float
     ];
 
    #systemd.user.services.plank-bspwm = {

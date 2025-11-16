@@ -128,6 +128,11 @@ let
     fi
   '';
 
+  poly-bsp-float = pkgs.writeShellScriptBin "poly-bsp-float" ''
+    bspc query -N -d focused | while read -r n; do s=$(bspc query -T -n "$n" | grep -q '"state":"floating"' && echo tiled || echo floating); bspc node "$n" -t "$s"; done
+    notify-send "Floating Toggle"
+  '';
+
 in
 
 { config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
@@ -141,6 +146,7 @@ in
     bsp-prev
     bsp-reload
     bsp-og
+    poly-bsp-float
     poly-xkb-layout
     poly-xkb-change
     poly-picom-status
@@ -378,6 +384,7 @@ in
         format = "<label>%{O-5pt}";
         click-left = "bsp-next";
         click-right = "bsp-prev";
+        click-middle = "poly-bsp-float";
         double-click-left = "bsp-reload";
         double-click-right = "bsp-og";
       };

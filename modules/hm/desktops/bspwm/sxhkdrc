@@ -170,6 +170,10 @@ super + alt + g
 super + e
       bsp-layout set even; notify-send "Even Layout"
 
+# Floating Layout
+super + shift + f
+	bsp-float
+
 # Keyboard layout change
 alt + Caps_Lock
       setxkbmap -layout us,ir -option "grp:alt_caps_toggle"; notify-send "$(bsp-xkb-layout)"
