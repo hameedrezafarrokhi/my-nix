@@ -19,6 +19,7 @@ in
     copyq.enable = lib.mkEnableOption "copyq";
     crystal-dock.enable = lib.mkEnableOption "crystal dock";
     direnv.enable = lib.mkEnableOption "direnv";
+    dockbarx.enable = lib.mkEnableOption "dockbarx";
     dunst.enable = lib.mkEnableOption "dunst";
     fastfetch.enable = lib.mkEnableOption "fastfetch";
     fd.enable = lib.mkEnableOption "fd";
@@ -75,6 +76,7 @@ in
       ./copyq.nix
       ./crystal-dock.nix
       ./direnv.nix
+      ./dockbarx.nix
       ./dunst.nix
       ./fastfetch.nix
       ./fd.nix

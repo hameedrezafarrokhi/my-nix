@@ -241,6 +241,7 @@
             cava.enable = true;
             copyq.enable = true;
             direnv.enable = true;
+            dockbarx.enable = true;
             dunst.enable = true;
             fastfetch.enable = true;
             fd.enable = true;

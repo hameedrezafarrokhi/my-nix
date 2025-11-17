@@ -357,8 +357,10 @@ in
       "module/hour" = {
        #format = "<lable>%{O-4pt}";
         type = "internal/date";
-        interval = 5;
-        date = "%l:%M %p";
+       #interval = 5;
+        interval = 1.0;
+        date = "%l:%M:%S";
+       #date = "%l:%M %p";
        #date = "%a-%d %l:%M %p";
         label = "%date%";
         label-padding = 1;

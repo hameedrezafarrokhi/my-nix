@@ -128,7 +128,8 @@ let
     if pgrep polybar > /dev/null; then
         pkill polybar
         pkill tint2
-        pkill plank
+        #pkill plank
+        pkill dockx
         pkill conky
         bspc config top_padding 0
         bspc config bottom_padding 0
@@ -138,7 +139,8 @@ let
         polybar $BAR_NAME &
         tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
-        plank &
+        #plank &
+        dockx &
     fi
   '';
 
@@ -207,6 +209,10 @@ in
         done &
 
         bspc rule -a scratchpad state=floating layer=normal
+        bspc rule -a plank layer=top
+        bspc rule -a Plank layer=top
+        bspc rule -a dockx layer=top
+        bspc rule -a Dockx layer=top
 
         if hash sxhkd >/dev/null 2>&1; then
         	  pkill sxhkd
@@ -226,16 +232,22 @@ in
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         fi
 
-        if hash plank >/dev/null 2>&1; then
-        	  pkill plank
+        #if hash plank >/dev/null 2>&1; then
+        #	  pkill plank
+        #	  sleep 0.5
+        #	  plank &
+        #fi
+
+        if hash dockx >/dev/null 2>&1; then
+        	  pkill dockx
         	  sleep 0.5
-        	  plank &
+        	  dockx &
         fi
 
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
         	  sleep 0.5
-        	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
+        	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         fi
 
       '';
@@ -261,11 +273,11 @@ in
 
       };
 
-      rules = {
-        Plank = {
-          layer = "above";
-        };
-      };
+     #rules = {
+     #  Plank = {
+     #    layer = "above";
+     #  };
+     #};
 
      #rules = {
      #  "<name>" = {
@@ -300,6 +312,7 @@ in
     home.packages = [
       pkgs.sxhkd
       pkgs.plank
+      pkgs.dockbarx
       mypkgs.stable.tint2
       pkgs.bc
       pkgs.bsp-layout
