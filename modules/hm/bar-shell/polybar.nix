@@ -365,7 +365,7 @@ in
         label = "%date%";
         label-padding = 1;
         label-font = 1;
-        format-prefix = ''"󰥔%{O-8pt}"'';
+        format-prefix = ''"󰥔%{O-6pt}"'';
       };
 
       "module/date" = {
@@ -399,6 +399,7 @@ in
         click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ${nix-path}/modules/hm/desktops/awesome/awesome/rofi/config.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "dolphin";
         double-click-left = "kate";
+        click-middle = "ulauncher";
        #double-click-middle = ;
         double-click-right = "kitty";
       };

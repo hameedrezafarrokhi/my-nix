@@ -131,7 +131,7 @@ Print
 	flameshot full --path ~/Pictures/Screenshots/
 
 # Resize All Windows Equally
-super + ctrl + equal
+super + ctrl + 8
 	bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
 
 # Master Stack Layout
@@ -237,4 +237,20 @@ super + ctrl + Return
 # Scratchpad
 super + ctrl + space
       scratchpad
+
+# Gaps Increase
+super + ctrl + equal
+    bsp-gaps +
+
+# Gaps Decrease
+super + ctrl + minus
+    bsp-gaps -
+
+# Multiple Workspaces View
+super + shift + grave
+    rofi -dmenu -p "Desktops to toggle:" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi | xargs bsp-tag-view
+
+# Multiple Workspaces View Revert
+super + shift + Escape
+    bsp-tag-view-revert
 

@@ -130,7 +130,7 @@ let
         pkill tint2
         #pkill plank
         pkill dockx
-        pkill conky
+        #pkill conky
         bspc config top_padding 0
         bspc config bottom_padding 0
     else
@@ -171,6 +171,79 @@ let
     ${builtins.readFile ./scratchpad}
   '';
 
+  bsp-gaps = pkgs.writeShellScriptBin "bsp-gaps" ''
+    case "$1" in
+        +|-) op="$1";;
+        *) echo "Usage: $0 [+|-]"; exit 1;;
+    esac
+
+    # Read current values
+    lp=$(bspc config left_padding)
+    rp=$(bspc config right_padding)
+    wg=$(bspc config window_gap)
+
+    # Increment/decrement helper
+    adj() { [ "$op" = "+" ] && echo $(( $1 + 1 )) || echo $(( $1 - 1 )); }
+
+    # Apply new values
+    bspc config left_padding  $(adj $lp)
+    bspc config right_padding $(adj $rp)
+    bspc config window_gap   $(adj $wg)
+  '';
+
+  bsp-tag-view = pkgs.writeShellScriptBin "bsp-tag-view" ''
+    # Accepts any number of desktops: ./toggle-multiple-desktops.sh 1 2 3 ...
+    CACHE="$HOME/.bspwm_desktops_cache"
+
+    if [ -f "$CACHE" ]; then
+        echo "Already toggled. Use restore script."
+        exit 0
+    fi
+
+    if [ $# -lt 1 ]; then
+        echo "Usage: $0 <desktop1> [desktop2 ...]"
+        exit 1
+    fi
+
+    > "$CACHE"
+
+    for desk in "$@"; do
+        for wid in $(bspc query -N -d "$desk"); do
+            echo "$wid $desk" >> "$CACHE"
+            bspc node "$wid" --flag sticky 1
+        done
+    done
+  '';
+
+  bsp-tag-view-revert = pkgs.writeShellScriptBin "bsp-tag-view-revert" ''
+    CACHE="$HOME/.bspwm_desktops_cache"
+
+    if [ ! -f "$CACHE" ]; then
+        echo "No cached toggle found."
+        exit 0
+    fi
+
+    while read wid desk; do
+        bspc node "$wid" --flag sticky 0
+        bspc node "$wid" --to-desktop "$desk"
+    done < "$CACHE"
+
+    rm "$CACHE"
+  '';
+
+  bsp-tag-view-rofi = pkgs.writeShellScriptBin "bsp-tag-view-rofi" ''
+    # Get list of current desktops
+    DESKTOPS=$(bspc query -D --names)
+
+    # Prompt with Rofi, no window below, single line input
+    CHOICE=$(echo "$DESKTOPS" | rofi -dmenu -p "Desktops to toggle (space-separated):" -lines 0 -no-custom)
+
+    # If user entered something, call the toggle script
+    if [ -n "$CHOICE" ]; then
+        bsp-tag-view $CHOICE
+    fi
+  '';
+
 in
 
 {
@@ -208,6 +281,8 @@ in
             fi
         done &
 
+        bspc rule -a ulauncher border=off
+        bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
 
         bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
@@ -281,6 +356,10 @@ in
 
         border_width = 4;
         window_gap = 8;
+        left_padding = 0;
+        right_padding = 0;
+        top_padding = 0;
+        bottom_padding = 0;
 
         split_ratio = 0.5;
         single_monocle = false;
@@ -330,6 +409,7 @@ in
       pkgs.sxhkd
       pkgs.plank
       pkgs.dockbarx
+      pkgs.xorg.xdpyinfo
       mypkgs.stable.tint2
       pkgs.bc
       pkgs.bsp-layout
@@ -344,6 +424,10 @@ in
       bsp-bar-hide
       bsp-tint2-hide
       bsp-poly-hide
+      bsp-gaps
+      bsp-tag-view
+      bsp-tag-view-revert
+      bsp-tag-view-rofi
       scratchpad
     ];
 
