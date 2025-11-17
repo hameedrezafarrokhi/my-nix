@@ -209,10 +209,17 @@ in
         done &
 
         bspc rule -a scratchpad state=floating layer=normal
-        bspc rule -a plank layer=top
-        bspc rule -a Plank layer=top
-        bspc rule -a dockx layer=top
-        bspc rule -a Dockx layer=top
+
+        bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        bspc rule -a Dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        bspc rule -a dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+        bspc rule -a Dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N dockbarx &
+        #done
 
         if hash sxhkd >/dev/null 2>&1; then
         	  pkill sxhkd
@@ -249,6 +256,16 @@ in
         	  sleep 0.5
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         fi
+
+       #bspc subscribe node_add | while read -r _; do
+       #   xdo raise -N Plank &
+       #done
+       #bspc subscribe node_add | while read -r _; do
+       #   xdo raise -N dockx &
+       #done &
+       #bspc subscribe node_add | while read -r _; do
+       #   xdo raise -N Dockx &
+       #done &
 
       '';
 

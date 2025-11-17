@@ -150,7 +150,7 @@ let
 
     if [ "$1" = "--status" ]; then
         if [ "$CURRENT_PROFILE" = "performance" ]; then
-            echo ""  # Performance icon
+            echo "󰑣"  # Performance icon
         elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
             echo ""  # Power Saver icon
         else

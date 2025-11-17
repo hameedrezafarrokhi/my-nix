@@ -1162,11 +1162,16 @@
         	  sleep 0.5
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
         fi &
-        if hash plank >/dev/null 2>&1; then
-        	  pkill plank
+        if hash dockx >/dev/null 2>&1; then
+        	  pkill dockx
         	  sleep 0.5
-        	  plank
-        fi &
+        	  dockx &
+        fi
+        #if hash plank >/dev/null 2>&1; then
+        #	  pkill plank
+        #	  sleep 0.5
+        #	  plank
+        #fi &
       '';
     };
 

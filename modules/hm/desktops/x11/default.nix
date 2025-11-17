@@ -73,6 +73,7 @@ in
 
     home.packages = [
       pkgs.wayback-x11
+      pkgs.xdo
       x-cursor
       pkgs.xbacklight
       x-lock-sleep

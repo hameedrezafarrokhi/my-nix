@@ -9,6 +9,9 @@
     "org/dockbarx/dockbarx" = {
       badge-custom-bg-color = false;
       badge-custom-fg-color = false;
+      delay-on-select-all = true;
+     #show-only-current-desktop = true;
+     #show-only-current-monitor = true;
       badge-fg-color = "#bf4040";
       launchers = [
         "dolphin;/etc/profiles/per-user/hrf/share/applications/org.kde.dolphin.desktop"
@@ -161,9 +164,11 @@
     };
 
     "org/dockbarx/dockx" = {
-      behavior = "dodge active window"; # "dodge windows"; # "dodge active window";
+      behavior = "always autohide"; # "dodge windows"; # "dodge active window";
       position = "left";
       theme-file = "invisible.tar.gz";
+      layer = "above other windows";
+      size = 42;
       type = "dock";
     };
 
