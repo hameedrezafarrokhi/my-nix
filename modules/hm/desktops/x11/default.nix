@@ -209,6 +209,10 @@ in
           "name = 'Notification'"
           "class_g ?= 'Notify-osd'"
           "_GTK_FRAME_EXTENTS@:c"
+          "class_g = 'ulauncher'"
+          "class_g = 'Ulauncher'"
+          "class_g = 'dockx'"
+          "class_g = 'Dockx'"
         ];
 
         fade = true;
@@ -241,12 +245,26 @@ in
               "window_type = 'Polybar'"
               "window_type = 'desktop'"
               "window_type = 'dock'"
+             #"window_type = 'tooltip'"
+             #"window_type = 'popup_menu'"
+             #"window_type = 'toolbar'"
+             #"window_type = 'menu'"
+             #"window_type = 'dialog'"
+             #"window_type = 'dropdown_menu'"
+             #"window_type = 'unknown'"
+             #"window_type = 'utility'"
              #"role = 'xborder'"
-             #"class_g = 'Conky'"
+              "class_g = 'Conky'"
+              "class_g = 'conky'"
              #"name = 'Notification'"
               "class_g = 'Dunst'"
-             #"_GTK_FRAME_EXTENTS"
+              "_GTK_FRAME_EXTENTS"
               "_GTK_FRAME_EXTENTS@:c"
+              "class_g = 'GtkFrame'"
+              "class_g = 'ulauncher'"
+              "class_g = 'Ulauncher'"
+              "class_g = 'dockx'"
+              "class_g = 'Dockx'"
             ];
           };
          #blur-kern = "3x3box";
@@ -274,6 +292,8 @@ in
             "class_g = 'dunst'"
             "class_g = 'Dunst'"
            #"class_name = 'dunst'"
+            "class_g = 'dockx'"
+            "class_g = 'Dockx'"
           ];
           vsync = true;
           mark-wmwin-focused = true;
@@ -358,6 +378,11 @@ animation-for-next-tag = "slide-in-center";
 #"slide-in-center";
 #enables fading for windows being transitioned in while changings tags
 enable-fading-next-tag = false;
+
+animation-exclude = [
+  "class_g *= 'conky'",
+  "class_g *= 'Conky'"
+];
 
         '';
 
