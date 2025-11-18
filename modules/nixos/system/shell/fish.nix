@@ -6,7 +6,7 @@
 
     enable = true;
     package = pkgs.fish;
-    generateCompletions = true;
+    generateCompletions = false;
 
     vendor = {
       completions.enable = true;

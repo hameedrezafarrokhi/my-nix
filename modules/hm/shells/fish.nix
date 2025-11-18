@@ -9,7 +9,7 @@
 
   programs.fish = {
     enable = true;
-    generateCompletions = true;
+    generateCompletions = false;
     package = pkgs.fish;
     preferAbbrs = true;
 

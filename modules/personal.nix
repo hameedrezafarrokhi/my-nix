@@ -59,22 +59,22 @@
       vnc.enable =  false;
     };
     display-manager = "sddm";
-    defaultSession = "plasma";
+    defaultSession = "none+bspwm"; # "plasma";
     desktops = [
 
       # Wayland
       "plasma"
-      "cosmic"
+     #"cosmic"
 
       # Gnome-Based
-      "cinnamon"
-      "mate"
-      "budgie"
+     #"cinnamon"
+     #"mate"
+     #"budgie"
      #"gnome" "pantheon"  # WARNING THE DEVIL
 
       # X11
       "xfce"
-      "lumina"
+     #"lumina"
      #"lxqt"
      #"enlightenment"
 
@@ -87,22 +87,30 @@
     window-managers = [
 
       # Wayland
-      "hyprland" "niri"
-      "sway" "qtile" "dwl" "mango"
-      "labwc" "river" "wayfire"
+      "hyprland"
+     #"niri"
+     #"sway"
+     #"qtile"
+     #"dwl"
+      "mango"
+     #"labwc" "river" "wayfire"
 
       # Mir
-      "miracle-wm" "miriway"
+     #"miracle-wm" "miriway"
 
       # X11
-      "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
-      "i3" "spectrwm" "herbstluftwm" "dk"
-      "dwm" "chadwm" "drew-wm" "titus-wm" "bread-wm" #"pd-wm"
-      "bspwm" "awesome" "xmonad"
-      "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
-      "fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
-      "twm" "jwm" "ratpoison" "e16"
-      "hypr"
+     #"icewm" "fluxbox"
+      "openbox"
+     #"windowlab" "windowmaker"
+      "i3"
+     #"spectrwm" "herbstluftwm" "dk"
+      "drew-wm" "titus-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
+      "bspwm" "awesome"
+     #"xmonad"
+     #"exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
+     #"fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
+     #"twm" "jwm" "ratpoison" "e16"
+     #"hypr"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
@@ -333,33 +341,33 @@
             okular.enable = true;
             wallpaper-engine.enable = false;
           };
-          cosmic.enable = true;
+         #cosmic.enable = true;
           gnome.enable = true;
-          cinnamon.enable = true;
-          mate.enable = true;
+         #cinnamon.enable = true;
+         #mate.enable = true;
           xfce.enable = true;
           hypr = {
             hyprland.enable = true;
           };
-          niri.enable = true;
-          sway.enable = true;
-          river.enable = true;
-          wayfire.enable = true;
-          labwc.enable = true;
+         #niri.enable = true;
+         #sway.enable = true;
+         #river.enable = true;
+         #wayfire.enable = true;
+         #labwc.enable = true;
           dwm.enable = true;
           i3.enable = true;
-          xmonad.enable = true;
+         #xmonad.enable = true;
           awesome.enable = true;
-          qtile.enable = true;
+         #qtile.enable = true;
           bspwm.enable = true;
-          spectrwm.enable = true;
-          herbstluftwm.enable = true;
-          fluxbox.enable = true;
+         #spectrwm.enable = true;
+         #herbstluftwm.enable = true;
+         #fluxbox.enable = true;
           mango.enable = true;
           rices-shells = [
 
-            "niri-dms" "niri-noctalia"
-            "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax" "hyprland-ashell" "hyprland-exo"
+           #"niri-dms" "niri-noctalia"
+            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
 
           ];
 

@@ -30,14 +30,6 @@ alt + shift + e
 super + c
 	bspc node -c
 
-# Rotate Window 90° Clockwise
-alt + shift + i
-    bspc node -R 90
-
-# Rotate Window 90° Counterclockwise
-alt + shift + u
-    bspc node -R -90
-
 # Change Focus to Left Window
 super + Left
 	bspc node -f west
@@ -78,21 +70,55 @@ super + {1-9,0}
 super + shift + {1-9,0}
 	bspc node --to-desktop ^{1-9,10}
 
-# Expand window width both sides
+
+
+# Expand window width right
 super + ctrl + Right
+	bspc node -z right 40 0
+
+# Expand window width left
+super + ctrl + Left
+	bspc node -z left -40 0
+
+# Shrink window width right
+super + ctrl + alt + Right
+	bspc node -z left 40 0
+
+# Shrink window width left
+super + ctrl + alt + Left
+	bspc node -z right -40 0
+
+# Expand window height up
+super + ctrl + Up
+	bspc node -z top 0 -40
+
+# Expand window height down
+super + ctrl + Down
+	bspc node -z bottom 0 40
+
+# Shrink window height up
+super + ctrl + alt + Up
+	bspc node -z bottom 0 -40
+
+# Shrink window height down
+super + ctrl + alt + Down
+	bspc node -z top 0 40
+
+# Expand window width both sides
+super + ctrl + shift + Right
 	bspc node -z right 40 0; bspc node -z left 40 0
 
 # Shrink window width both sides
-super + ctrl + Left
+super + ctrl + shift + Left
 	bspc node -z right -40 0; bspc node -z left -40 0
 
 # Resize Window: Shrink Down
-super + ctrl + Down
-	bspc node -z top 0 40; bspc node -z bottom 40 0
+super + ctrl + shift + Down
+	bspc node -z top 0 40; bspc node -z bottom 0 40
 
 # Resize Window: Shrink Up
-super + ctrl + Up
-	bspc node -z top 0 -40; bspc node -z bottom -40 0
+super + ctrl + shift + Up
+	bspc node -z top 0 -40; bspc node -z bottom 0 -40
 
 # Increase Volume
 XF86AudioRaiseVolume
@@ -252,7 +278,7 @@ super + ctrl + minus
 
 # Multiple Workspaces View
 super + shift + grave
-    rofi -dmenu -p "Desktops to toggle:" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi | xargs bsp-tag-view
+    rofi -dmenu -p "Desktops to toggle:" -theme ~/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi | xargs bsp-tag-view
 
 # Multiple Workspaces View Revert
 super + shift + Escape
@@ -281,4 +307,12 @@ super + alt + minus
 # Rotate +90 Degree
 super + alt + equal
     bspc node @parent -R 90
+
+# Next Workspace
+super + alt + shift + Right
+    bspc desktop -f next
+
+# Next Workspace
+super + alt + shift + Left
+    bspc desktop -f prev
 
