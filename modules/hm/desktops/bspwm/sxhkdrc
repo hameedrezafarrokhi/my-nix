@@ -14,6 +14,22 @@ super + Return
 super + shift + Return
 	bspc node -t ~tiled
 
+# Cycle to next window (like next tab)
+alt + Tab
+      bspc node -f next.local.window
+
+# Cycle to previous window (like previous tab)
+alt + shift + Tab
+      bspc node -f prev.local.window
+
+# Shift to next window
+super + Tab
+      bspc node -s next.local.window
+
+# Shift to previous window
+super + shift + Tab
+      bspc node -s prev.local.window
+
 # Reload sxhkd (Hotkey Daemon)
 super + Escape
 	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
