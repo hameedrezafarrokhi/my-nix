@@ -585,6 +585,12 @@ in
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         fi
 
+        if hash skippy-xd >/dev/null 2>&1; then
+        	  skippy-xd --stop-daemon
+        	  sleep 0.5
+        	  skippy-xd --start-daemon &
+        fi
+
        #bspc subscribe node_add | while read -r _; do
        #   xdo raise -N Plank &
        #done
@@ -681,6 +687,7 @@ in
     };
 
     home.packages = [
+
       pkgs.sxhkd
       pkgs.plank
       pkgs.dockbarx
@@ -688,6 +695,12 @@ in
       mypkgs.stable.tint2
       pkgs.bc
       pkgs.conky
+
+      pkgs.xdo
+      pkgs.xbacklight
+      pkgs.xkblayout-state
+      pkgs.skippy-xd
+
       bsp-plank-reset
       bsp-help
       bsp-volume
@@ -714,6 +727,7 @@ in
       bsp-border-toggle
       bsp-gaps-toggle
       pkgs.bsp-layout
+
      #(pkgs.bsp-layout.overrideAttrs (old: {
      #  myLayouts = ./layouts;   # your extra *.sh files
      #  postInstall = old.postInstall or "" + ''

@@ -78,6 +78,7 @@ in
       pkgs.xbacklight
       x-lock-sleep
       pkgs.xkblayout-state
+      pkgs.skippy-xd
     ];
 
     xsession = {
@@ -90,6 +91,7 @@ in
         xset s 6000 6000 &
         export GDK_BACKEND=x11 &
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
+        #skippy-xd --start-daemon &
       '';
       profileExtra = ''
         export GDK_BACKEND=x11 &

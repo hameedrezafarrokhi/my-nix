@@ -30,6 +30,14 @@ super + Tab
 super + shift + Tab
       bspc node -s prev.local.window
 
+# Skippy-xd Expo
+super + ctrl + Tab
+      skippy-xd --expose
+
+# Skippy-xd Pager
+super + ctrl + shift + Tab
+      skippy-xd --paging
+
 # Reload sxhkd (Hotkey Daemon)
 super + Escape
 	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
@@ -368,6 +376,6 @@ super + shift + b
 
 # Border Color Cycle (Previous)
 super + shift + alt + b
-    bsp-border-size prev
+    bsp-border-color prev
 
 
