@@ -86,7 +86,9 @@ super + {1-9,0}
 super + shift + {1-9,0}
 	bspc node --to-desktop ^{1-9,10}
 
-
+# Move Focused Window to Workspace 1-10 AND Follow
+super + shift + ctrl + {1-9,0}
+      bsp-send-follow {1-9,10}
 
 # Expand window width right
 super + ctrl + Right
@@ -331,4 +333,17 @@ super + alt + shift + Right
 # Next Workspace
 super + alt + shift + Left
     bspc desktop -f prev
+
+# Swap Focus to The Largest Window and back (Zoom)
+super + s
+    bsp-zoom
+
+# Swap Focus to The Second Largest Window and back (Zoom)
+super + alt + s
+    bsp-zoom-second_biggest
+
+# Delete BSP Cache
+super + shift + ctrl + Escape
+    rm -f "$HOME/.cache/bsp"* 2>/dev/null
+
 

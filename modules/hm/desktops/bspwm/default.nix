@@ -328,6 +328,103 @@ let
     ${builtins.readFile ./layouts/ctall.sh}
   '';
 
+  bsp-zoom = pkgs.writeShellScriptBin "bsp-zoom" ''
+    DESKTOP=$(bspc query -D -d focused --names)
+    CACHE_FILE="$HOME/.cache/bspwm_zoom_last_$DESKTOP"
+
+    focused=$(bspc query -N -n focused)
+    biggest=$(bspc query -N -n biggest.local)
+
+    # If focused is NOT biggest → swap & remember previous master
+    if [ "$focused" != "$biggest" ]; then
+        # Save current biggest (master) to cache
+        echo "$biggest" > "$CACHE_FILE"
+        bspc node "$focused" -s "$biggest"
+        exit 0
+    fi
+
+    # Focused IS biggest:
+    # If no cache, nothing to do
+    [ ! -f "$CACHE_FILE" ] && exit 0
+
+    # Otherwise swap back with cached node
+    original=$(cat "$CACHE_FILE")
+
+    # Only swap if the node still exists
+    if bspc query -N -n "$original" >/dev/null 2>&1; then
+        bspc node "$focused" -s "$original"
+    fi
+
+    # Remove cache
+    rm -f "$CACHE_FILE"
+  '';
+
+  bsp-zoom-second_biggest = pkgs.writeShellScriptBin "bsp-zoom-second_biggest" ''
+    DESKTOP=$(bspc query -D -d focused --names)
+    CACHE_FILE="$HOME/.cache/bspwm_zoom_second_$DESKTOP"
+
+    focused=$(bspc query -N -n focused)
+
+    # Get ONLY tiled windows on this desktop
+    nodes=$(bspc query -N -n .local.tiled)
+
+    # If fewer than 2 tiled windows → nothing to do
+    [ "$(printf "%s\n" $nodes | wc -l)" -lt 2 ] && exit 0
+
+    # Build list: area node_id
+    areas=$(for n in $nodes; do
+        rect=$(bspc query -T -n "$n" | jq '.rectangle')
+        width=$(echo "$rect" | jq '.width')
+        height=$(echo "$rect" | jq '.height')
+        area=$((width * height))
+        echo "$area $n"
+    done)
+
+    # Sort largest → smallest
+    sorted=$(echo "$areas" | sort -nr -k1,1)
+
+    # Biggest and 2nd biggest
+    biggest=$(echo "$sorted" | sed -n '1p' | awk '{print $2}')
+    second_biggest=$(echo "$sorted" | sed -n '2p' | awk '{print $2}')
+
+    # SWAP LOGIC
+    # If focused is NOT 2nd biggest → swap to 2nd-biggest
+    if [ "$focused" != "$second_biggest" ]; then
+        echo "$second_biggest" > "$CACHE_FILE"
+        bspc node "$focused" -s "$second_biggest"
+        exit 0
+    fi
+
+    # Focused IS 2nd-biggest → restore
+    [ ! -f "$CACHE_FILE" ] && exit 0
+    original=$(cat "$CACHE_FILE")
+
+    # Restore only if still valid
+    if bspc query -N -n "$original" >/dev/null 2>&1; then
+        bspc node "$focused" -s "$original"
+    fi
+
+    rm -f "$CACHE_FILE"
+  '';
+
+  bsp-send-follow = pkgs.writeShellScriptBin "bsp-send-follow" ''
+    DEST=^$1  # e.g., 1-10
+
+    # move the focused node
+    NODE=$(bspc query -N -n focused)
+    bspc node "$NODE" --to-desktop "$DEST"
+
+    # get the monitor of that desktop
+    MONITOR=$(bspc query -M -d "$DEST")
+
+    # focus the monitor and desktop
+    bspc monitor "$MONITOR" --focus
+    bspc desktop "$DEST" --focus
+
+    # focus the node itself
+    bspc node "$NODE" --focus
+  '';
+
 in
 
 {
@@ -426,6 +523,28 @@ in
        #   xdo raise -N Dockx &
        #done &
 
+       rm -f ~/.cache/bspwm_zoom_last_1
+       rm -f ~/.cache/bspwm_zoom_last_2
+       rm -f ~/.cache/bspwm_zoom_last_3
+       rm -f ~/.cache/bspwm_zoom_last_4
+       rm -f ~/.cache/bspwm_zoom_last_5
+       rm -f ~/.cache/bspwm_zoom_last_6
+       rm -f ~/.cache/bspwm_zoom_last_7
+       rm -f ~/.cache/bspwm_zoom_last_8
+       rm -f ~/.cache/bspwm_zoom_last_9
+       rm -f ~/.cache/bspwm_zoom_last_10
+       rm -f ~/.cache/bspwm_zoom_last_12
+       rm -f ~/.cache/bspwm_zoom_last_13
+       rm -f ~/.cache/bspwm_zoom_last_14
+       rm -f ~/.cache/bspwm_zoom_last_15
+       rm -f ~/.cache/bspwm_zoom_last_16
+       rm -f ~/.cache/bspwm_zoom_last_17
+       rm -f ~/.cache/bspwm_zoom_last_18
+       rm -f ~/.cache/bspwm_zoom_last_19
+       rm -f ~/.cache/bspwm_zoom_last_20
+
+       rm -f "$HOME/.cache/bsp"* 2>/dev/null
+
       '';
 
       startupPrograms = [
@@ -513,8 +632,11 @@ in
       bsp-tag-view-rofi
       bsp-restore-cached-layout
       bsp-cache-layout
+      bsp-zoom
+      bsp-zoom-second_biggest
       scratchpad
       bsp-cmaster-layout
+      bsp-send-follow
       pkgs.bsp-layout
      #(pkgs.bsp-layout.overrideAttrs (old: {
      #  myLayouts = ./layouts;   # your extra *.sh files
