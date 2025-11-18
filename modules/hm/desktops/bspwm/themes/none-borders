@@ -1,0 +1,37 @@
+#!/bin/bash
+# Usage: cycle_border_color.sh next|prev
+
+direction=$1
+TMPFILE="/tmp/.bspwm_border_color_index"
+
+# Define base 8 colors (adjust to your preferred hex colors)
+COLORS=("#FF0000" "#00FF00" "#0000FF" "#FFFF00" "#FF00FF" "#00FFFF" "#FFFFFF" "#888888")
+NUM_COLORS=${#COLORS[@]}
+
+# Read current index
+if [ -f "$TMPFILE" ]; then
+    index=$(cat "$TMPFILE")
+else
+    index=0
+fi
+
+# Make sure index is valid integer
+if ! [[ "$index" =~ ^[0-9]+$ ]]; then
+    index=0
+fi
+
+# Cycle index
+if [ "$direction" == "next" ]; then
+    index=$(( (index + 1) % NUM_COLORS ))
+elif [ "$direction" == "prev" ]; then
+    index=$(( (index - 1 + NUM_COLORS) % NUM_COLORS ))
+else
+    echo "Usage: $0 next|prev"
+    exit 1
+fi
+
+# Apply the new border color
+bspc config focused_border_color "${COLORS[$index]}"
+
+# Save the index
+echo $index > "$TMPFILE"

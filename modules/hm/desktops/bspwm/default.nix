@@ -425,6 +425,78 @@ let
     bspc node "$NODE" --focus
   '';
 
+  bsp-gaps-toggle = pkgs.writeShellScriptBin "bsp-gaps-toggle" ''
+    # Get current window gap
+    gap=$(bspc config window_gap)
+
+    if [ "$gap" -eq 0 ]; then
+        # Restore default gap (adjust to your preference)
+        bspc config window_gap 10
+    else
+        # Turn off gaps
+        bspc config window_gap 0
+    fi
+  '';
+
+  bsp-border-toggle = pkgs.writeShellScriptBin "bsp-border-toggle" ''
+    # Temp file to store previous border width
+    TMPFILE="/tmp/.bspwm_border_width"
+
+    # Get current border width
+    current=$(bspc config border_width)
+
+    if [ "$current" -eq 0 ]; then
+        # If border is off, restore previous width
+        if [ -f "$TMPFILE" ]; then
+            prev=$(cat "$TMPFILE")
+            bspc config border_width "$prev"
+        else
+            # fallback default if no previous value
+            bspc config border_width 2
+        fi
+    else
+        # Save current border width and turn borders off
+        echo "$current" > "$TMPFILE"
+        bspc config border_width 0
+    fi
+  '';
+
+  bsp-border-size = pkgs.writeShellScriptBin "bsp-border-size" ''
+    # Argument: "inc" or "dec"
+    action=$1
+
+    # Default border width if currently zero
+    DEFAULT_BORDER=2
+    STEP=1  # change per press
+
+    # Get current border width
+    current=$(bspc config border_width)
+
+    # If empty or 0, start from default
+    if ! [[ "$current" =~ ^[0-9]+$ ]] || [ "$current" -eq 0 ]; then
+        current=$DEFAULT_BORDER
+    fi
+
+    # Increment or decrement
+    if [ "$action" == "inc" ]; then
+        new=$((current + STEP))
+    elif [ "$action" == "dec" ]; then
+        new=$((current - STEP))
+        if [ "$new" -lt 0 ]; then new=0; fi
+    else
+        echo "Usage: $0 inc|dec"
+        exit 1
+    fi
+
+    # Apply new border width
+    bspc config border_width "$new"
+  '';
+
+  bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
+    ${builtins.readFile ./themes/${config.my.theme}-borders}
+  '';
+
+
 in
 
 {
@@ -637,6 +709,10 @@ in
       scratchpad
       bsp-cmaster-layout
       bsp-send-follow
+      bsp-border-color
+      bsp-border-size
+      bsp-border-toggle
+      bsp-gaps-toggle
       pkgs.bsp-layout
      #(pkgs.bsp-layout.overrideAttrs (old: {
      #  myLayouts = ./layouts;   # your extra *.sh files

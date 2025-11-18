@@ -346,4 +346,28 @@ super + alt + s
 super + shift + ctrl + Escape
     rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
+# Toggle Gaps On/Off
+super + ctrl + shift + equal
+    bsp-gaps-toggle
+
+# Toggle Borders On/Off
+super + shift + ctrl + b
+    bsp-border-toggle
+
+# Border Size Increase
+super + ctrl + b
+    bsp-border-size inc
+
+# Border Size Decrease
+super + ctrl + alt + b
+    bsp-border-size dec
+
+# Border Color Cycle (Next)
+super + shift + b
+    bsp-border-color next
+
+# Border Color Cycle (Previous)
+super + shift + alt + b
+    bsp-border-size prev
+
 
