@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, dmsPkgs, ... }:
 
 let
 
@@ -32,13 +32,37 @@ in
 
   systemd.user.services.dms = {
     Unit = {
-      ConditionEnvironment = "DESKTOP_SESSION=Niri-DMS";
+      ConditionEnvironment = "DESKTOP_SESSION=none";
     };
     Service = {
       Environment = [
         "QT_QPA_PLATFORM=wayland"
         "QT_QPA_PLATFORMTHEME=qt6ct"
       ];
+    };
+  };
+
+  systemd.user.services.dms-niri = {
+    Unit = {
+      Description = "DankMaterialShell";
+      After = ["graphical-session.target"];
+      PartOf = ["graphical-session.target"];
+      ConditionEnvironment = "DESKTOP_SESSION=Niri-DMS";
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = lib.getExe dmsPkgs.dmsCli + " run";
+      Restart = "on-failure";
+      RestartSec = "5s";
+      TimeoutStopSec = "5s";
+      Environment = [
+        "QT_QPA_PLATFORM=wayland"
+        "QT_QPA_PLATFORMTHEME=qt6ct"
+      ];
+     Slice = "session.slice";
+    };
+    Install = {
+      WantedBy = ["graphical-session.target"];
     };
   };
 

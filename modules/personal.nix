@@ -367,7 +367,7 @@
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"
-            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
+            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
 
           ];
 

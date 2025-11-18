@@ -30,6 +30,18 @@ in
    #};
   };
 
+  systemd.user.services.dms = {
+    Unit = {
+      ConditionEnvironment = "DESKTOP_SESSION=none";
+    };
+    Service = {
+      Environment = [
+        "QT_QPA_PLATFORM=wayland"
+        "QT_QPA_PLATFORMTHEME=qt6ct"
+      ];
+    };
+  };
+
   systemd.user.services.dms-hyprland = {
     Unit = {
       Description = "DankMaterialShell";
