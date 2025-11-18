@@ -130,37 +130,41 @@ super + Print
 Print
 	flameshot full --path ~/Pictures/Screenshots/
 
-# Resize All Windows Equally
-super + ctrl + 8
-	bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
-
 # Master Stack Layout
 super + ctrl + 1
-      bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
+      bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
 
 # Wide Layout
 super + ctrl + 2
-      bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
+      bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
 # Monocle Layout
 super + ctrl + 3
-      bsp-layout set monocle; notify-send "Monocle Layout"
+      bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
 
 # Tiled Layout
 super + ctrl + 4
-      bsp-layout set tiled; notify-send "Tiled Layout"
+      bsp-cache-layout; bsp-layout set tiled; notify-send "Tiled Layout"
 
 # Grid Layout
 super + ctrl + 5
-      bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
+      bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
 
 # Even Layout
 super + ctrl + 6
-      bsp-layout set even; notify-send "Even Layout"
+      bsp-cache-layout; bsp-layout set even; notify-send "Even Layout"
 
 # Floating Layout
 super + ctrl + 7
-	bsp-float; notify-send "Floating Layout"
+	bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+
+# Resize All Windows Equally
+super + ctrl + 8
+	bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
+
+# Center Master Layout (Janky)
+super + ctrl + 9
+	bsp-cache-layout; bsp-cmaster-layout
 
 # Master Stack Layout (OneShot)
 super + alt + 1
@@ -192,7 +196,7 @@ super + alt + 6
 
 # Remove Current Layout
 super + ctrl + BackSpace
-	bsp-layout remove; notify-send "Layout Removed"
+	bsp-layout remove; bsp-restore-cached-layout; notify-send "Layout Removed"
 
 # Remove Current Layout
 super + ctrl + grave
@@ -253,4 +257,28 @@ super + shift + grave
 # Multiple Workspaces View Revert
 super + shift + Escape
     bsp-tag-view-revert
+
+# Spawn Point Up
+super + alt + Up
+    bspc node --presel-dir north
+
+# Spawn Point Down
+super + alt + Down
+    bspc node --presel-dir south
+
+# Spawn Point Right
+super + alt + Right
+    bspc node --presel-dir east
+
+# Spawn Point Left
+super + alt + Left
+    bspc node --presel-dir west
+
+# Rotate -90 Degree
+super + alt + minus
+    bspc node @parent -R -90
+
+# Rotate +90 Degree
+super + alt + equal
+    bspc node @parent -R 90
 

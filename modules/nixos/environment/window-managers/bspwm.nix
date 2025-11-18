@@ -12,6 +12,8 @@
     };
   };
 
-  environment.systemPackages = [ pkgs.bsp-layout ];
+  environment.systemPackages = [
+   #pkgs.bsp-layout
+  ];
 
 };}

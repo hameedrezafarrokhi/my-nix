@@ -244,6 +244,90 @@ let
     fi
   '';
 
+  bsp-cache-layout = pkgs.writeShellScriptBin "bsp-cache-layout" ''
+    DESKTOP=$(bspc query -D -d focused)
+    CACHE_FILE="$HOME/.cache/bsp-layout-$DESKTOP.json"
+
+    # Only cache if not exists
+    [ -f "$CACHE_FILE" ] && exit
+
+    # Save full desktop tree (including split ratios and window order)
+    bspc query -T -d "$DESKTOP" > "$CACHE_FILE"
+  '';
+
+  bsp-restore-cached-layout = pkgs.writeShellScriptBin "bsp-restore-cached-layout" ''
+    # Restore a cached desktop tree exactly, while keeping new windows intact
+
+    DESKTOP=$(bspc query -D -d focused)
+    CACHE_FILE="$HOME/.cache/bsp-layout-$DESKTOP.json"
+
+    [ ! -f "$CACHE_FILE" ] && exit
+
+    # Read cached JSON
+    TREE_JSON=$(cat "$CACHE_FILE")
+
+    # Get IDs of windows in cache
+    CACHED_WINDOWS=$(jq -r '.. | .id? // empty' <<< "$TREE_JSON")
+
+    # Get current windows
+    CURRENT_WINDOWS=$(bspc query -N -d "$DESKTOP")
+
+    # Identify new windows spawned after cache
+    NEW_WINDOWS=$(comm -23 <(echo "$CURRENT_WINDOWS" | sort) <(echo "$CACHED_WINDOWS" | sort))
+
+    # Remove new windows temporarily to restore layout
+    for win in $NEW_WINDOWS; do
+        bspc node "$win" -d hidden
+    done
+
+    # Restore layout
+    # Using bspc node to rebuild the tree recursively
+    restore_node() {
+        local node_json=$1
+        local parent=$2
+
+        local id=$(jq -r '.id' <<< "$node_json")
+        local split=$(jq -r '.split // empty' <<< "$node_json")
+        local ratio=$(jq -r '.splitRatio // empty' <<< "$node_json")
+        local state=$(jq -r '.state // empty' <<< "$node_json")
+
+        # Skip if it's a desktop node
+        [ "$split" == "null" ] && return
+
+        # Set split ratio
+        [ -n "$ratio" ] && bspc node "$id" -s "$ratio" 2>/dev/null
+
+        # Set state (tiled/floating)
+        if [ "$state" == "floating" ]; then
+            bspc node "$id" -t floating 2>/dev/null
+        else
+            bspc node "$id" -t tiled 2>/dev/null
+        fi
+
+        # Recurse into children
+        local children=$(jq -c '.nodes[]' <<< "$node_json")
+        for child in $children; do
+            restore_node "$child" "$id"
+        done
+    }
+
+    # Start restoring from root
+    ROOT=$(jq '.root' <<< "$TREE_JSON")
+    restore_node "$ROOT" "$DESKTOP"
+
+    # Unhide new windows so they appear, without affecting restored layout
+    for win in $NEW_WINDOWS; do
+        bspc node "$win" -d "$DESKTOP"
+    done
+
+    # Remove cache after restoration
+    rm "$CACHE_FILE"
+  '';
+
+  bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
+    ${builtins.readFile ./layouts/ctall.sh}
+  '';
+
 in
 
 {
@@ -412,7 +496,6 @@ in
       pkgs.xorg.xdpyinfo
       mypkgs.stable.tint2
       pkgs.bc
-      pkgs.bsp-layout
       pkgs.conky
       bsp-plank-reset
       bsp-help
@@ -428,7 +511,21 @@ in
       bsp-tag-view
       bsp-tag-view-revert
       bsp-tag-view-rofi
+      bsp-restore-cached-layout
+      bsp-cache-layout
       scratchpad
+      bsp-cmaster-layout
+      pkgs.bsp-layout
+     #(pkgs.bsp-layout.overrideAttrs (old: {
+     #  myLayouts = ./layouts;   # your extra *.sh files
+     #  postInstall = old.postInstall or "" + ''
+     #    cp -v $myLayouts/*.sh $out/lib/bsp-layout/layouts/
+     #    chmod 755 $out/lib/bsp-layout/layouts/*.sh
+     #    for f in $out/lib/bsp-layout/layouts/*.sh; do
+     #      substituteInPlace "$f" --replace 'bc ' '${pkgs.bc}/bin/bc '
+     #    done
+     #  '';
+     #}))
     ];
 
    #systemd.user.services.plank-bspwm = {
