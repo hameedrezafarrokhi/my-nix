@@ -493,7 +493,7 @@ in
       pkgs.sxhkd
       pkgs.plank
       pkgs.dockbarx
-      pkgs.xorg.xdpyinfo
+     #pkgs.xorg.xdpyinfo
       mypkgs.stable.tint2
       pkgs.bc
       pkgs.conky

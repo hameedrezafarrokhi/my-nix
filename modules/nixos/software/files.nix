@@ -20,7 +20,7 @@
       ];
     })
     krusader                      ##Complex filemanager
-   #pcmanfm                       ##LXQT filemanager
+    pcmanfm                       ##LXQT filemanager
     lf                            ##CLI filemanager
     fff                           ##CLI filemanager
 
