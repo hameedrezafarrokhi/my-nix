@@ -246,9 +246,13 @@ super + ctrl + alt + 5
 super + alt + 6
       bsp-layout once even; notify-send "(one-shot) Even Layout"
 
+# Remove Current Layout and Restore Original Layout
+super + ctrl + shift + BackSpace
+	bsp-layout remove; bsp-restore-cached-layout; notify-send "Layout Restored"
+
 # Remove Current Layout
 super + ctrl + BackSpace
-	bsp-layout remove; bsp-restore-cached-layout; notify-send "Layout Removed"
+	bsp-layout remove; notify-send "Layout Removed"
 
 # Remove Current Layout
 super + ctrl + grave
@@ -308,7 +312,7 @@ super + shift + grave
 
 # Multiple Workspaces View Revert
 super + shift + Escape
-    bsp-tag-view-revert
+    bsp-tag-view-revert; notify-send "Sticky Tag View Reverted"
 
 # Spawn Point Up
 super + alt + Up
@@ -325,6 +329,10 @@ super + alt + Right
 # Spawn Point Left
 super + alt + Left
     bspc node --presel-dir west
+
+# Spawn Point Left
+super + alt + Escape
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 # Rotate -90 Degree
 super + alt + minus
@@ -352,7 +360,7 @@ super + alt + s
 
 # Delete BSP Cache
 super + shift + ctrl + Escape
-    rm -f "$HOME/.cache/bsp"* 2>/dev/null
+    rm -f "$HOME/.cache/bsp"* 2>/dev/null; notify-send "BSP Cache Removed"
 
 # Toggle Gaps On/Off
 super + ctrl + shift + equal
