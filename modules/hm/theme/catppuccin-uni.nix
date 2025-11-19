@@ -1131,7 +1131,7 @@
     wallpapers = {
       source = "${inputs.assets}/wallpapers/";
       target = "Pictures/Wallpapers";
-      recursive = true;
+     #recursive = true;
     };
     themed-wallpapers = {
       source = "${inputs.assets}/wallpapers/${config.my.theme}/";
