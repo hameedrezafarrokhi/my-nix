@@ -1151,6 +1151,9 @@
         	  pkill polybar
         	  sleep 1
         	  ${config.services.polybar.package}/bin/polybar example &
+        fi &
+        if hash polybar >/dev/null 2>&1; then
+        	  sleep 2
         	  polybar-msg action bspwm module_hide &
         fi &
         if hash conky >/dev/null 2>&1; then
