@@ -502,6 +502,13 @@ let
     ${builtins.readFile ./themes/${config.my.theme}-borders}
   '';
 
+  bsp-empty-remove = pkgs.writeShellScriptBin "bsp-empty-remove" ''
+    for win in $(bspc query -N -n .leaf.\!window); do bspc node $win -k; done
+  '';
+
+  bspswallow = pkgs.writeShellScriptBin "bspswallow" ''
+    ${builtins.readFile ./bspswallow}
+  '';
 
 in
 
@@ -596,6 +603,8 @@ in
         	  sleep 0.5
         	  skippy-xd --start-daemon &
         fi
+
+        pgrep bspswallow || bspswallow &
 
        #bspc subscribe node_add | while read -r _; do
        #   xdo raise -N Plank &
@@ -706,6 +715,7 @@ in
       pkgs.xbacklight
       pkgs.xkblayout-state
       pkgs.skippy-xd
+      pkgs.xorg.xprop
 
       bsp-plank-reset
       bsp-help
@@ -732,6 +742,8 @@ in
       bsp-border-size
       bsp-border-toggle
       bsp-gaps-toggle
+      bsp-empty-remove
+      bspswallow
       pkgs.bsp-layout
 
      #(pkgs.bsp-layout.overrideAttrs (old: {
@@ -745,6 +757,29 @@ in
      #  '';
      #}))
     ];
+
+    xdg.configFile = {
+
+      noswallow = {
+        target = "bspwm/noswallow";
+        text = ''
+          Kitty
+          kity
+          Alacritty
+          alacritty
+        '';
+      };
+
+      terminals = {
+        target = "bspwm/terminals";
+        #${config.my.default.terminal}
+        text = ''
+          Kitty
+          Alacritty
+        '';
+      };
+
+    };
 
    #systemd.user.services.plank-bspwm = {
    #  Unit = {

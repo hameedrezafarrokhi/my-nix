@@ -40,11 +40,11 @@
     "assets": {
       "flake": false,
       "locked": {
-        "lastModified": 1760438093,
-        "narHash": "sha256-y/MX2azKk/+0E3SL7MfhSzw19Y4RFYkCFhPKFcgJIAM=",
+        "lastModified": 1763581730,
+        "narHash": "sha256-rWP6cpOJTDU2R9GXed17X3Nz4iBm/6gpVhBSH+Ni92U=",
         "owner": "hameedrezafarrokhi",
         "repo": "assets",
-        "rev": "e3f3dbe2f5b53515ded7d389b875f2d638f9e91e",
+        "rev": "7d920fb940a0eb2b0842dd9ca7225258d724f6c6",
         "type": "github"
       },
       "original": {

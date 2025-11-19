@@ -210,6 +210,28 @@
      #tweaks = [ "black" ];
     };
 
+    feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
+      DIR="$HOME/Pictures/Wallpapers/${config.my.theme}/"
+      CACHE="$HOME/.cache/last_wallpaper"
+      mkdir -p "$HOME/.cache"
+
+      # Build list
+      LIST=$(find "$DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print | sort)
+
+      # Get current (first run = empty)
+      CUR=""
+      [ -f "$CACHE" ] && CUR=$(cat "$CACHE")
+      [ -z "$CUR" ] && CUR=$(grep -o "'.*'" "$HOME/.fehbg" 2>/dev/null | tail -1 | tr -d "'")
+
+      # Next wallpaper
+      NEXT=$(printf '%s\n' "$LIST" | awk 'found {print; exit} $0 == "'"$CUR"'" {found=1}' | head -n 1)
+      [ -z "$NEXT" ] && NEXT=$(printf '%s\n' "$LIST" | head -n 1)
+
+      # Apply
+      feh --bg-fill "$NEXT"
+      printf '%s\n' "$NEXT" > "$CACHE"
+    '';
+
   in
 
 { config = lib.mkIf (config.my.theme == "catppuccin-uni") {
@@ -233,6 +255,8 @@
     x-cursor-package
     plasma-cursor-package
     hypr-cursor-package
+
+    feh-cycle
 
   ];
 
@@ -556,7 +580,7 @@
       normal_border_color = Overlay0;
     };
     startupPrograms = [
-      "feh --bg-fill ${wallpaper}"
+     #"feh --bg-fill ${wallpaper}"
     ];
   };
 
@@ -1102,9 +1126,14 @@
 
     wallpapers = {
       source = "${inputs.assets}/wallpapers/";
-      target = "Pictures/Wallpapers/";
+      target = "Pictures/Wallpapers";
       recursive = true;
     };
+   #"${config.my.theme}" = {
+   #  source = "${inputs.assets}/wallpapers/${config.my.theme}";
+   #  target = "Pictures/Wallpapers/${config.my.theme}";
+   #  recursive = true;
+   #};
 
     face-icons = {
       source = "${inputs.assets}/icons/";

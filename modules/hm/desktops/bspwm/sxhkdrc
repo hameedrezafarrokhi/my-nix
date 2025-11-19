@@ -212,7 +212,7 @@ super + ctrl + 7
 
 # Resize All Windows Equally
 super + ctrl + 8
-	bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Even Layout"
+	bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Equal Size Windows"
 
 # Center Master Layout (Janky)
 super + ctrl + 9
@@ -314,25 +314,49 @@ super + shift + grave
 super + shift + Escape
     bsp-tag-view-revert; notify-send "Sticky Tag View Reverted"
 
-# Spawn Point Up
+# Spawn Preselection Point Up
 super + alt + Up
-    bspc node --presel-dir north
+    bspc node --presel-dir \~north
 
-# Spawn Point Down
+# Spawn Preselection Point Down
 super + alt + Down
-    bspc node --presel-dir south
+    bspc node --presel-dir \~south
 
-# Spawn Point Right
+# Spawn Preselection Point Right
 super + alt + Right
-    bspc node --presel-dir east
+    bspc node --presel-dir \~east
 
-# Spawn Point Left
+# Spawn Preselection Point Left
 super + alt + Left
-    bspc node --presel-dir west
+    bspc node --presel-dir \~west
 
-# Spawn Point Left
+# Remove All Preselections
 super + alt + Escape
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+# Spawn Empty Point Up
+super + alt + shift + Up
+    bspc node --presel-dir \~north -i
+
+# Spawn Empty Point Down
+super + alt + shift + Down
+    bspc node --presel-dir \~south -i
+
+# Spawn Empty Point Right
+super + alt + shift + Right
+    bspc node --presel-dir \~east -i
+
+# Spawn Empty Point Left
+super + alt + shift + Left
+    bspc node --presel-dir \~west -i
+
+# Remove All Empty Points
+super + shift + a
+    bsp-empty-remove
+
+# Insert Focused Window in Empty Point
+super + a
+    bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
 
 # Rotate -90 Degree
 super + alt + minus
@@ -385,5 +409,9 @@ super + shift + b
 # Border Color Cycle (Previous)
 super + shift + alt + b
     bsp-border-color prev
+
+# Cycle Feh Wallpapers
+super + shift + w
+    feh-cycle
 
 
