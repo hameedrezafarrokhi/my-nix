@@ -42,28 +42,28 @@ in
     };
   };
 
-  systemd.user.services.dms-hyprland = {
-    Unit = {
-      Description = "DankMaterialShell";
-      After = ["graphical-session.target"];
-      PartOf = ["graphical-session.target"];
-      ConditionEnvironment = "DESKTOP_SESSION=Hyprland-DMS";
-    };
-    Service = {
-      Type = "exec";
-      ExecStart = "dms run";
-      Restart = "on-failure";
-      RestartSec = "5s";
-      TimeoutStopSec = "5s";
-      Environment = [
-        "QT_QPA_PLATFORM=wayland"
-        "QT_QPA_PLATFORMTHEME=qt6ct"
-      ];
-     Slice = "session.slice";
-    };
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-  };
+ #systemd.user.services.dms-hyprland = {        # WARNING Needs The Correct Exec Path
+ #  Unit = {
+ #    Description = "DankMaterialShell";
+ #    After = ["graphical-session.target"];
+ #    PartOf = ["graphical-session.target"];
+ #    ConditionEnvironment = "DESKTOP_SESSION=Hyprland-DMS";
+ #  };
+ #  Service = {
+ #    Type = "exec";
+ #    ExecStart = "dms run";
+ #    Restart = "on-failure";
+ #    RestartSec = "5s";
+ #    TimeoutStopSec = "5s";
+ #    Environment = [
+ #      "QT_QPA_PLATFORM=wayland"
+ #      "QT_QPA_PLATFORMTHEME=qt6ct"
+ #    ];
+ #   Slice = "session.slice";
+ #  };
+ #  Install = {
+ #    WantedBy = ["graphical-session.target"];
+ #  };
+ #};
 
 };}
