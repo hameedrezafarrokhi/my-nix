@@ -66,8 +66,8 @@
                                 inputs.nixpkgs.follows = "nixpkgs";
                                 inputs.caelestia-shell.follows = "caelestia-shell"; };
       noctalia-shell = { url = "github:noctalia-dev/noctalia-shell";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.quickshell.follows = "quickshell"; };
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+                               #inputs.quickshell.follows = "quickshell"; };
    dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
                                #inputs.quickshell.follows = "quickshell"; };

@@ -33,7 +33,7 @@
     metadata-cleaner              ##File metadata cleaner
 
     kdePackages.ark               ##KDE archive manager
-   #file-roller                   ##Archive manager Gnome
+    file-roller                   ##Archive manager Gnome
     peazip                        ##Archive manager (insecure in stable)
     rar                           ##RAR protocol
    #unrar                         ##RAR protocol extra
@@ -66,10 +66,10 @@
       terminal = config.my.default.terminal;
     };
 
-    file-roller = {
-      enable = true;
-      package = pkgs.file-roller;
-    };
+   #file-roller = {     # WARNING REMOVED OPTION
+   #  enable = true;
+   #  package = pkgs.file-roller;
+   #};
 
   };
 

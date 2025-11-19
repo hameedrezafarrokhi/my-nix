@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, dmsPkgs, ... }:
+{ inputs, config, pkgs, lib, /*dmsPkgs,*/ ... }:
 
 let
 
@@ -51,7 +51,7 @@ in
     };
     Service = {
       Type = "exec";
-      ExecStart = lib.getExe dmsPkgs.dmsCli + " run";
+      ExecStart = "dms run";
       Restart = "on-failure";
       RestartSec = "5s";
       TimeoutStopSec = "5s";
