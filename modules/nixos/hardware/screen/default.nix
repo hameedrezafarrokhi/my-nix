@@ -12,6 +12,14 @@ in
 
   config = lib.mkIf cfg.enable {
 
+    environment.systemPackages = [
+
+      pkgs.gnome-color-manager
+      pkgs.colord-gtk
+     #pkgs.kdePackages.colord-kde
+
+    ];
+
     services = {
 
       illum.enable = true;

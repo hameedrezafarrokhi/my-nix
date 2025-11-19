@@ -66,6 +66,12 @@ let
   '';
 
   bsp-layout-manager = pkgs.writeShellScriptBin "bsp-layout-manager" ''
+    # Check if there is a floating window on the current focused desktop
+    if bspc query -N -n .floating.local > /dev/null; then
+        echo '󱗆'
+        exit 0
+    fi
+
     current=$(bsp-layout get 2>/dev/null)
 
     if [ $? -ne 0 ]; then
