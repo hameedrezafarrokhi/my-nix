@@ -1,16 +1,20 @@
-#!/bin/bash
+#!/bin/sh
+DIR="$HOME/Pictures/themed-wallpapers"
+CACHE="$HOME/.cache/last_wallpaper"
+mkdir -p "$(dirname "$CACHE")"
 
-WALLPAPER_DIR="$HOME/Pictures/Wallpapers"  # Change to your folder
-WALLPAPERS=("$WALLPAPER_DIR"/*)  # Collect all image files in the folder
+FILES=("$DIR"/*.{jpg,jpeg,png,webp,gif})
+COUNT=${#FILES[@]}
+[ $COUNT -eq 0 ] && echo "No wallpapers!" && exit 1
 
-# Get the current wallpaper index (last used)
-CURRENT_INDEX=$(cat ~/.current_wallpaper_index 2>/dev/null || echo 0)
+CUR=$(cat "$CACHE" 2>/dev/null)
+INDEX=0
+for i in "${!FILES[@]}"; do [ "${FILES[i]}" = "$CUR" ] && INDEX=$i; done
 
-# Calculate the next wallpaper index
-NEXT_INDEX=$(( (CURRENT_INDEX + 1) % ${#WALLPAPERS[@]} ))
+case "$1" in
+  next) INDEX=$(( (INDEX + 1) % COUNT )) ;;
+  prev) INDEX=$(( (INDEX - 1 + COUNT) % COUNT )) ;;
+esac
 
-# Set the next wallpaper
-feh --bg-fill "${WALLPAPERS[$NEXT_INDEX]}"
-
-# Update the index for the next run
-echo $NEXT_INDEX > ~/.current_wallpaper_index
+feh --bg-fill "${FILES[INDEX]}"
+echo "${FILES[INDEX]}" > "$CACHE"

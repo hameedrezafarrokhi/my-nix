@@ -210,26 +210,30 @@
      #tweaks = [ "black" ];
     };
 
+   #feh-next = pkgs.writeShellScriptBin "feh-next" ''
+   #  DIR="$HOME/Pictures/Wallpapers/${config.my.theme}/"
+   #  CACHE="$HOME/.cache/last_wallpaper"
+   #  mkdir -p "$HOME/.cache"
+   #
+   #  # Build list
+   #  LIST=$(find "$DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print | sort)
+   #
+   #  # Get current (first run = empty)
+   #  CUR=""
+   #  [ -f "$CACHE" ] && CUR=$(cat "$CACHE")
+   #  [ -z "$CUR" ] && CUR=$(grep -o "'.*'" "$HOME/.fehbg" 2>/dev/null | tail -1 | tr -d "'")
+   #
+   #  # Next wallpaper
+   #  NEXT=$(printf '%s\n' "$LIST" | awk 'found {print; exit} $0 == "'"$CUR"'" {found=1}' | head -n 1)
+   #  [ -z "$NEXT" ] && NEXT=$(printf '%s\n' "$LIST" | head -n 1)
+   #
+   #  # Apply
+   #  feh --bg-fill "$NEXT"
+   #  printf '%s\n' "$NEXT" > "$CACHE"
+   #'';
+
     feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
-      DIR="$HOME/Pictures/Wallpapers/${config.my.theme}/"
-      CACHE="$HOME/.cache/last_wallpaper"
-      mkdir -p "$HOME/.cache"
-
-      # Build list
-      LIST=$(find "$DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print | sort)
-
-      # Get current (first run = empty)
-      CUR=""
-      [ -f "$CACHE" ] && CUR=$(cat "$CACHE")
-      [ -z "$CUR" ] && CUR=$(grep -o "'.*'" "$HOME/.fehbg" 2>/dev/null | tail -1 | tr -d "'")
-
-      # Next wallpaper
-      NEXT=$(printf '%s\n' "$LIST" | awk 'found {print; exit} $0 == "'"$CUR"'" {found=1}' | head -n 1)
-      [ -z "$NEXT" ] && NEXT=$(printf '%s\n' "$LIST" | head -n 1)
-
-      # Apply
-      feh --bg-fill "$NEXT"
-      printf '%s\n' "$NEXT" > "$CACHE"
+      ${builtins.readFile ./feh-cycle.sh}
     '';
 
   in
@@ -1129,11 +1133,11 @@
       target = "Pictures/Wallpapers";
       recursive = true;
     };
-   #"${config.my.theme}" = {
-   #  source = "${inputs.assets}/wallpapers/${config.my.theme}";
-   #  target = "Pictures/Wallpapers/${config.my.theme}";
-   #  recursive = true;
-   #};
+    themed-wallpapers = {
+      source = "${inputs.assets}/wallpapers/${config.my.theme}/";
+      target = "Pictures/themed-wallpapers";
+      recursive = true;
+    };
 
     face-icons = {
       source = "${inputs.assets}/icons/";

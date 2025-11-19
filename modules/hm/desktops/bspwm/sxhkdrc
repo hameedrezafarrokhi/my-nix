@@ -412,6 +412,10 @@ super + shift + alt + b
 
 # Cycle Feh Wallpapers
 super + shift + w
-    feh-cycle
+    feh-cycle next
+
+# Cycle Feh Wallpapers
+super + shift + alt + w
+    feh-cycle prev
 
 
