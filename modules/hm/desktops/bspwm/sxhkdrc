@@ -428,9 +428,9 @@ super + u
 
 # Full Zoom (xmagnify)
 super + alt + u
-    magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m16
+    magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m4 -r30
 
 # Full Zoom (xzoom)
 super + shift + u
-    xzoom
+    xzoom -mag 2
 

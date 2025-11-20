@@ -178,6 +178,14 @@ let
     fi
   '';
 
+  poly-color-picker = pkgs.writeShellScriptBin "poly-color-picker" ''
+    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
+  '';
+
+  poly-magnifier = pkgs.writeShellScriptBin "poly-magnifier" ''
+    magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m4 -r30
+  '';
+
 in
 
 { options.my.poly-height = lib.mkOption { type = lib.types.str; };
@@ -201,6 +209,8 @@ in
     poly-picom-toggle
     poly-player
     poly-pp
+    poly-color-picker
+    poly-magnifier
   ];
 
   my.poly-height = "18";
@@ -317,7 +327,9 @@ in
         click-left = "poly-xkb-change";
         double-click-left = "iotas";
         click-right = "onboard";
-        double-click-right = "pkill onboard";
+        double-click-right = "sxcs --mag-filters 'circle'";
+        click-middle = "poly-color-picker";
+        double-click-middle = "poly-magnifier";
         format = "<label>%{O-8pt}";
       };
 

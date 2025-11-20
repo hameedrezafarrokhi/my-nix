@@ -550,6 +550,10 @@ in
         bspc rule -a ulauncher border=off
         bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
+        bspc rule -a ".blueman-manager-wrapped" state=floating
+        bspc rule -a pavucontrol state=floating
+        bspc rule -a "copyq" state=floatin
+        bspc rule -a ".protonvpn-app-wrapped" state=floating
 
         # zoom apps float and size (xzoom and magnify)
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300
