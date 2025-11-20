@@ -79,6 +79,11 @@ in
       x-lock-sleep
       pkgs.xkblayout-state
       pkgs.skippy-xd
+      pkgs.xcolor
+
+      pkgs.xmagnify
+      pkgs.xzoom
+      pkgs.sxcs
     ];
 
     xsession = {

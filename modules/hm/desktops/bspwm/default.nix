@@ -551,6 +551,9 @@ in
         bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
 
+        # zoom apps float and size (xzoom and magnify)
+        bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300
+
         bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
         bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
         bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
@@ -767,6 +770,14 @@ in
           kity
           Alacritty
           alacritty
+          Magnify
+          magnify
+          XMagnify
+          Xmagnify
+          xmagnify
+          xzoom
+          Xzoom
+          XZoom
         '';
       };
 

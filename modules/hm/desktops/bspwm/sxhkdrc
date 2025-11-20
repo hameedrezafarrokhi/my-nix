@@ -418,4 +418,19 @@ super + shift + w
 super + shift + alt + w
     feh-cycle prev
 
+# Color Picker
+super + y
+    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
+
+# Circle Zoom (sxcs)
+super + u
+    sxcs --mag-filters "circle"
+
+# Full Zoom (xmagnify)
+super + alt + u
+    magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m16
+
+# Full Zoom (xzoom)
+super + shift + u
+    xzoom
 
