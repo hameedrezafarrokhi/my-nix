@@ -5,9 +5,15 @@ RightButton;NoModifier=org.kde.contextmenu
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
+[Containments][2][Applets][3][Configuration]
+popupHeight=550
+
 [Containments][2][Applets][7][Applets][25]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
+
+[Containments][2][Applets][7][Applets][25][Configuration]
+PreloadWeight=42
 
 [Containments][525]
 activityId=
