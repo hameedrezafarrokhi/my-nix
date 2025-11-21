@@ -510,6 +510,11 @@ let
     ${builtins.readFile ./bspswallow}
   '';
 
+  bsp-touchegg = pkgs.writeShellScriptBin "bsp-touchegg" ''
+    rm -f $HOME/.config/touchegg/touchegg.conf
+    ln -s ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
+  '';
+
 in
 
 {
@@ -543,6 +548,7 @@ in
       bsp-border-toggle
       bsp-gaps-toggle
       bsp-empty-remove
+      bsp-touchegg
       bspswallow
       scratchpad
 

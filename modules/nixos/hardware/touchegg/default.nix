@@ -10,7 +10,7 @@
 
   config = (lib.mkMerge [
 
-    (lib.mkIf (config.my.hardware.touchegg.enable) { services.touchegg.enable = true; services.touchegg.package = pkgs.touchegg;})
+    (lib.mkIf (config.my.hardware.touchegg.enable) { services.touchegg.enable = false; services.touchegg.package = pkgs.touchegg;})
     (lib.mkIf (!config.my.hardware.touchegg.enable) { services.touchegg.enable = lib.mkForce false;})
 
   ])

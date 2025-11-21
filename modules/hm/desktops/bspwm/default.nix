@@ -13,7 +13,6 @@ in
   imports = [
 
     ./bsp-scripts.nix
-    ./bsp-touchegg.nix
 
   ];
 
@@ -146,6 +145,8 @@ in
 
        rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
+       bsp-touchegg &
+
       '';
 
       startupPrograms = [
@@ -255,6 +256,21 @@ in
    #    WantedBy = [ "tray.target" ];
    #  };
    #};
+
+    systemd.user.services.touchegg-bsp = {
+      Unit = {
+       Description = "Touchegg BSPWM Daemon";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${pkgs.touchegg}/bin/touchegg --daemon";
+        Restart = "on-failure";
+	  ExecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER bspwm'";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+    };
 
   };
 
