@@ -578,7 +578,7 @@
   };
   xsession.windowManager.bspwm = lib.mkIf config.xsession.windowManager.bspwm.enable {
     extraConfig = ''
-      bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
+      #bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
       bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
   '';
     settings = {

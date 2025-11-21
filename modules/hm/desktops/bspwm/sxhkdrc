@@ -434,3 +434,14 @@ super + alt + u
 super + shift + u
     xzoom -mag 2
 
+# Creat Tab on Focused
+super + k
+    tabc create $(bspc query -N -n focused)
+
+# Join Focused Window to the Tab
+super + shift + k
+    tabc attach $(bspc query -N -n focused) $(bspc query -N -n pointed)
+
+# Creat Tab on Focused
+super + alt + k
+    tabc detach $(bspc query -N -n focused)

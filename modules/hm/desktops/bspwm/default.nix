@@ -4,6 +4,9 @@ let
 
   cfg = config.my.bspwm;
 
+  bsp-tabbed = pkgs.callPackage ./tabbed/bsp-tabbed.nix { };
+  bsptab = pkgs.callPackage ./tabbed/bsptab.nix { tabbed = bsp-tabbed; };
+
 in
 
 {
@@ -113,39 +116,47 @@ in
 
         pgrep bspswallow || bspswallow &
 
-       #bspc subscribe node_add | while read -r _; do
-       #   xdo raise -N Plank &
-       #done
-       #bspc subscribe node_add | while read -r _; do
-       #   xdo raise -N dockx &
-       #done &
-       #bspc subscribe node_add | while read -r _; do
-       #   xdo raise -N Dockx &
-       #done &
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N Plank &
+        #done
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N dockx &
+        #done &
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N Dockx &
+        #done &
 
-       rm -f ~/.cache/bspwm_zoom_last_1
-       rm -f ~/.cache/bspwm_zoom_last_2
-       rm -f ~/.cache/bspwm_zoom_last_3
-       rm -f ~/.cache/bspwm_zoom_last_4
-       rm -f ~/.cache/bspwm_zoom_last_5
-       rm -f ~/.cache/bspwm_zoom_last_6
-       rm -f ~/.cache/bspwm_zoom_last_7
-       rm -f ~/.cache/bspwm_zoom_last_8
-       rm -f ~/.cache/bspwm_zoom_last_9
-       rm -f ~/.cache/bspwm_zoom_last_10
-       rm -f ~/.cache/bspwm_zoom_last_12
-       rm -f ~/.cache/bspwm_zoom_last_13
-       rm -f ~/.cache/bspwm_zoom_last_14
-       rm -f ~/.cache/bspwm_zoom_last_15
-       rm -f ~/.cache/bspwm_zoom_last_16
-       rm -f ~/.cache/bspwm_zoom_last_17
-       rm -f ~/.cache/bspwm_zoom_last_18
-       rm -f ~/.cache/bspwm_zoom_last_19
-       rm -f ~/.cache/bspwm_zoom_last_20
+        bsp-touchegg &
 
-       rm -f "$HOME/.cache/bsp"* 2>/dev/null
+        #rm -f $HOME/.config/touchegg/touchegg.conf
+        #cp ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
+        #if hash touchegg >/dev/null 2>&1; then
+        #	  pkill touchegg
+        #	  sleep 0.5
+        #	  touchegg --daemon &
+        #fi
 
-       bsp-touchegg &
+        rm -f ~/.cache/bspwm_zoom_last_1
+        rm -f ~/.cache/bspwm_zoom_last_2
+        rm -f ~/.cache/bspwm_zoom_last_3
+        rm -f ~/.cache/bspwm_zoom_last_4
+        rm -f ~/.cache/bspwm_zoom_last_5
+        rm -f ~/.cache/bspwm_zoom_last_6
+        rm -f ~/.cache/bspwm_zoom_last_7
+        rm -f ~/.cache/bspwm_zoom_last_8
+        rm -f ~/.cache/bspwm_zoom_last_9
+        rm -f ~/.cache/bspwm_zoom_last_10
+        rm -f ~/.cache/bspwm_zoom_last_12
+        rm -f ~/.cache/bspwm_zoom_last_13
+        rm -f ~/.cache/bspwm_zoom_last_14
+        rm -f ~/.cache/bspwm_zoom_last_15
+        rm -f ~/.cache/bspwm_zoom_last_16
+        rm -f ~/.cache/bspwm_zoom_last_17
+        rm -f ~/.cache/bspwm_zoom_last_18
+        rm -f ~/.cache/bspwm_zoom_last_19
+        rm -f ~/.cache/bspwm_zoom_last_20
+
+        rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
       '';
 
@@ -216,6 +227,9 @@ in
       pkgs.plank
       pkgs.dockbarx
      #pkgs.xorg.xdpyinfo
+      pkgs.xorg.xwininfo
+      pkgs.xorg.xprop
+      pkgs.xdotool
       mypkgs.stable.tint2
       pkgs.bc
       pkgs.conky
@@ -225,6 +239,13 @@ in
       pkgs.skippy-xd
       pkgs.xorg.xprop
       pkgs.bsp-layout
+     #pkgs.touchegg
+     #pkgs.tabbed
+
+      bsp-tabbed
+      bsptab
+
+     #pkgs.tabbed
 
      #(pkgs.bsp-layout.overrideAttrs (old: {
      #  myLayouts = ./layouts;   # your extra *.sh files
@@ -257,20 +278,21 @@ in
    #  };
    #};
 
-    systemd.user.services.touchegg-bsp = {
-      Unit = {
-       Description = "Touchegg BSPWM Daemon";
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.touchegg}/bin/touchegg --daemon";
-        Restart = "on-failure";
-	  ExecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER bspwm'";
-      };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-    };
+   #systemd.user.services.touchegg-bsp = {
+   #  Unit = {
+   #   Description = "Touchegg BSPWM Daemon";
+   #   ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+   #  };
+   #  Service = {
+   #    Type = "simple";
+   #    ExecStart = "${pkgs.touchegg}/bin/touchegg --daemon";
+   #    Restart = "on-failure";
+	 ##xecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER bspwm'";
+   #  };
+   #  Install = {
+   #    WantedBy = [ "graphical-session.target" ];
+   #  };
+   #};
 
   };
 

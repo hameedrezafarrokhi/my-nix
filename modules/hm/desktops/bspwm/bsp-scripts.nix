@@ -512,7 +512,9 @@ let
 
   bsp-touchegg = pkgs.writeShellScriptBin "bsp-touchegg" ''
     rm -f $HOME/.config/touchegg/touchegg.conf
-    ln -s ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
+    cp ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
+    #systemctl --user stop touchegg-bsp.service
+    #systemctl --user start touchegg-bsp.service
   '';
 
 in

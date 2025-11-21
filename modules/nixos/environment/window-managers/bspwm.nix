@@ -14,6 +14,7 @@
 
   environment.systemPackages = [
    #pkgs.bsp-layout
+   #(pkgs.callPackage ./bsp-tabbed.nix { })
   ];
 
 };}
