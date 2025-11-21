@@ -577,6 +577,10 @@
     bars = config.xsession.windowManager.i3.config.bars;
   };
   xsession.windowManager.bspwm = lib.mkIf config.xsession.windowManager.bspwm.enable {
+    extraConfig = ''
+      bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
+      bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
+  '';
     settings = {
       presel_feedback_color = Overlay1;
       active_border_color = Lavender;
