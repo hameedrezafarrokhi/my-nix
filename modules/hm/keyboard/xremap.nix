@@ -1,4 +1,4 @@
-{ config, pkgs, lib, admin, ... }:
+{ config, pkgs, lib, admin, nix-path, ... }:
 
 let
 
@@ -151,6 +151,10 @@ let
     notify-send "$(date +%c)"
   '';
 
+  xremap-help = pkgs.writeShellScriptBin "xremap-help" ''
+    ${builtins.readFile ./xremap-help.sh}
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -163,6 +167,7 @@ in
 
   home.packages = [
     pkgs.xremap
+    pkgs.yq
     girm-full
     grim-slurp
     xlock
@@ -175,6 +180,7 @@ in
     xremap-volume
     xremap-pp
     xremap-time
+    xremap-help
    #vlc-env
   ];
 
@@ -284,6 +290,8 @@ in
                       launch: [ "flameshot", "full", "-p", "${config.home.homeDirectory}/Pictures/Screenshots" ]
                     KEY_SEMICOLON:
                       launch: [ "grim-full" ]
+                    h:
+                      launch: [ "xremap-help" ]
 
 
 

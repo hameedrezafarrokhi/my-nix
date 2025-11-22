@@ -445,3 +445,23 @@ super + shift + k
 # Creat Tab on Focused
 super + alt + k
     tabc detach $(bspc query -N -n focused)
+
+# Unhide Windows on Focused Desktop
+super + shift + alt + d
+    bash -c 'for n in $(bspc query -N -n .hidden.local); do bspc node "$n" -g hidden=off; done'
+
+# Hide Current Focused Window
+super + d
+    bspc node -g hidden=on
+
+# Unhide First Hidden Window to Last
+super + alt + d
+    bash -c 'n=$(bspc query -N -n .hidden.local | tail -n 1); [ -n "$n" ] && bspc node "$n" -g hidden=off'
+
+# Unhide Last Hidden Window to First
+super + shift + d
+    bsp-unhide-last-hidden
+
+# Show/Hide Conky
+super + shift + alt + g
+    bsp-conky

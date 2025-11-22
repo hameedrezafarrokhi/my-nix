@@ -84,11 +84,11 @@ in
         	  polybar ${config.my.poly-name} &
         fi
 
-        if hash conky >/dev/null 2>&1; then
-        	  pkill conky
-        	  sleep 0.5
-        	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
-        fi
+        #if hash conky >/dev/null 2>&1; then
+        #	  pkill conky
+        #	  sleep 0.5
+        #	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        #fi
 
         #if hash plank >/dev/null 2>&1; then
         #	  pkill plank

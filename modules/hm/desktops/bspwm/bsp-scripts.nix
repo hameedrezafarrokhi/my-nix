@@ -144,14 +144,14 @@ let
         bspc config top_padding $BOTTOM_HEIGHT
         polybar $BAR_NAME &
         tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
-        conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         #plank &
         dockx &
     fi
   '';
 
   bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
-    if hash tint2 >/dev/null 2>&1; then
+    if pgrep -x .tint2-wrapped  >/dev/null; then
         pkill .tint2-wrapped
         bspc config bottom_padding 0
     else
@@ -517,6 +517,18 @@ let
     #systemctl --user start touchegg-bsp.service
   '';
 
+  bsp-unhide-last-hidden = pkgs.writeShellScriptBin "bsp-unhide-last-hidden" ''
+    n=$(bspc query -N -n .hidden.local | head -n 1); [ -n "$n" ] && bspc node "$n" -g hidden=off
+  '';
+
+  bsp-conky = pkgs.writeShellScriptBin "bsp-conky" ''
+    if pgrep -x conky >/dev/null; then
+        pkill conky &
+    else
+        conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+    fi
+  '';
+
 in
 
 {
@@ -551,6 +563,8 @@ in
       bsp-gaps-toggle
       bsp-empty-remove
       bsp-touchegg
+      bsp-unhide-last-hidden
+      bsp-conky
       bspswallow
       scratchpad
 

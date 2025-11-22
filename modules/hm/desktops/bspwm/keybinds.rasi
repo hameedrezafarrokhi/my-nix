@@ -12,7 +12,7 @@ configuration {
 }
 
 window {
-    width: 60%;
+    width: 70%;
     transparency: "real";
     orientation: vertical;
     border-color: #4fc3f7;
