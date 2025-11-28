@@ -13,23 +13,23 @@ in
     primary = {
       name = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = null;
+        default = "DISPLAY";
       };
       x = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = null;
+        default = "1920";
       };
       y = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = null;
+        default = "1080";
       };
       rate = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = null;
+        default = "60.00";
       };
       dpi = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = null;
+        default = "";
       };
     };
 
