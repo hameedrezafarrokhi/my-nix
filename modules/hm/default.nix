@@ -23,6 +23,7 @@
     ./inputs-readme-files
     ./secrets
     ./audio
+    ./display
 
   ];
 

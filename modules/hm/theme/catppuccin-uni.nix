@@ -580,6 +580,7 @@
     extraConfig = ''
       #bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
       bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
+      ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
   '';
     settings = {
       presel_feedback_color = Overlay1;

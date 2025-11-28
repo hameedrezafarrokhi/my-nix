@@ -17,4 +17,8 @@
    #(pkgs.callPackage ./bsp-tabbed.nix { })
   ];
 
+  services.udev.extraRules = ''
+    ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.su}/bin/su m --command='systemctl --user start bspwm-reload.service'"
+  '';
+
 };}

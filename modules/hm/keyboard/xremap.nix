@@ -159,6 +159,10 @@ let
     ${builtins.readFile ./xremap-help.sh}
   '';
 
+  xremap-weather = pkgs.writeShellScriptBin "xremap-weather" ''
+    notify-send "$(curl -s "wttr.in/Tehran?format=%c+%C+%t+%f+%h+%w+%m+%l+%S+%s")"
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -186,6 +190,7 @@ in
     xremap-time
     xremap-help
     xremap-motd
+    xremap-weather
    #vlc-env
   ];
 
@@ -509,7 +514,8 @@ in
               launch: [ "xremap-time" ]
             Super-Ctrl-q:
               launch: [ "xremap-motd" ]
-
+            Super-Ctrl-w:
+              launch: [ "xremap-weather" ]
 
 
 
