@@ -11,6 +11,23 @@
           kde = {
             appletrc = "red";
           };
+          display = {
+            primary = {
+              name = "LVDS-1";
+              x = "1366";
+              y = "768";
+              rate = "60.00";
+              dpi = "";
+            };
+            external = {
+              name = "HDMI-1";
+              x = "1920";
+              y = "1080";
+              rate = "60.00";
+              dpi = "";
+              position = "right";
+            };
+          };
         };
       };
     };
