@@ -97,6 +97,9 @@ if [[ ! -d /home/$USERNAME/nixos ]]; then
     sudo -u $USERNAME git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/$USERNAME/nixos
 fi
 
+rm -rf /home/$USERNAME/nixos/.git
+rm -f /home/$USERNAME/nixos/.gitignore
+
 # Rebuild system (might show errors — allowed)
 cd /home/$USERNAME/nixos
 echo "Running nixos-rebuild boot..."
