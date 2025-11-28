@@ -94,6 +94,8 @@
     feishin
    #CuboCore.coretime
 
+    bullshit
+
   ] ) config.my.software.tools.exclude)
 
    ++

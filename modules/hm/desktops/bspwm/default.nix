@@ -170,7 +170,7 @@ in
 
       settings = {
 
-        border_width = 4;
+        border_width = 8;
         window_gap = 8;
         left_padding = 0;
         right_padding = 0;

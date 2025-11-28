@@ -148,7 +148,11 @@ let
   '';
 
   xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
-    notify-send "$(date +%c)"
+    ${builtins.readFile ./time.sh}
+  '';
+
+  xremap-motd = pkgs.writeShellScriptBin "xremap-motd" ''
+    notify-send "$(bullshit)"
   '';
 
   xremap-help = pkgs.writeShellScriptBin "xremap-help" ''
@@ -181,6 +185,7 @@ in
     xremap-pp
     xremap-time
     xremap-help
+    xremap-motd
    #vlc-env
   ];
 
@@ -502,6 +507,8 @@ in
               launch: [ "copyq", "menu" ]
             Super-Ctrl-t:
               launch: [ "xremap-time" ]
+            Super-Ctrl-q:
+              launch: [ "xremap-motd" ]
 
 
 

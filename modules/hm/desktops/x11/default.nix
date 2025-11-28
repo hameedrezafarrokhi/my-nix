@@ -15,13 +15,14 @@ let
     '';
   };
 
+  # ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
   x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
     # Time before sleep (in seconds)
     DELAY0=120  # 2 minutes
     DELAY=180   # 3 minutes
 
     # Start i3lock
-    ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
+    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 30 --show-layout &
     LOCK_PID=$!
 
     # Wait for delay
@@ -84,6 +85,8 @@ in
       pkgs.xmagnify
       pkgs.xzoom
       pkgs.sxcs
+
+      pkgs.betterlockscreen
     ];
 
     xsession = {
@@ -96,6 +99,7 @@ in
         xset s 6000 6000 &
         export GDK_BACKEND=x11 &
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
+        blueman-applet &
         #skippy-xd --start-daemon &
       '';
       profileExtra = ''

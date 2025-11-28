@@ -343,8 +343,8 @@
     xrdb -merge ${config.xresources.path} &
     xsetroot -cursor_name left_ptr &
     ${config.services.dunst.package}/bin/dunst &
-    blueman-applet &
     ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
+    ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
   '';
   xsession.profileExtra = lib.mkIf config.xsession.enable ''
     xsetroot -cursor_name left_ptr &

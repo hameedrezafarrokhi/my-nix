@@ -440,6 +440,8 @@ let
         bspc config window_gap 10
     else
         # Turn off gaps
+        bspc config left_padding 0
+        bspc config right_padding 0
         bspc config window_gap 0
     fi
   '';
