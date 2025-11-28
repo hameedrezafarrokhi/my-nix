@@ -148,7 +148,7 @@ let
   '';
 
   xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
-    ${builtins.readFile ./time.sh}
+    notify-send "⏲️ "$(date "+%I:%M:%S-%p" )" "$(date "+%p" ) "📅 "$(date "+%a")" "$(date "+%d-%b-%y")
   '';
 
   xremap-motd = pkgs.writeShellScriptBin "xremap-motd" ''
@@ -738,6 +738,13 @@ in
       text = config.services.xremap.yamlConfig;
     };
   };
+
+ #home.activation = {
+ #
+ #  xremap-time-chmod = lib.hm.dag.entryAfter ["writeBoundary"] ''
+ #    [ -f ${nix-path}/modules/hm/keyboard/time.sh ] && chmod +x ${nix-path}/modules/hm/keyboard/time.sh
+ #  '';
+ #};
 
   #systemd.user.services.xremap = {
   #  Unit = {
