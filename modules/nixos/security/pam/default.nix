@@ -13,6 +13,7 @@ in
   config = lib.mkIf cfg.enable {
 
     security.pam.services = {
+
       login = {
         enable = true;
         name = "login";
@@ -24,8 +25,10 @@ in
         gnupg.enable = true;
         enableGnomeKeyring = true;
       };
+
      #greetd = { };
      #su = { };
+
       sshd = {
         enable = true;
         name = "sshd";
@@ -37,6 +40,13 @@ in
         gnupg.enable = true;
         enableGnomeKeyring = true;
       };
+
+      i3lock.enable = true;
+      i3lock-color.enable = true;
+      xlock.enable = true;
+      xscreensaver.enable = true;
+      betterlockscreen.enable = true;
+
     };
 
   };

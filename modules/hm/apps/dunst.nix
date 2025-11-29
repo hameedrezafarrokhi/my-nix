@@ -3,26 +3,35 @@
 { config = lib.mkIf (config.my.apps.dunst.enable) {
 
   services.dunst = {
+
     enable = true;
     package = pkgs.dunst;
+
    #waylandDisplay = "";
    #configFile = ;
+
     settings = {
+
       global = {
-       #icon_path = '' '';
-        offset = "(27,60)";
         history_length = 50;
+        follow = "keyboard";
        #close = ctrl+space
        #close_all = ctrl+shift+space
        #history = "ctrl+grave";
        #context = "ctrl+alt+period";
       };
+      urgency_low = {
+        timeout = 10;
+      };
+      urgency_normal = {
+        timeout = 20;
+      };
+      urgency_critical = {
+        timeout = 30;
+      };
+
     };
-   #iconTheme = {
-   #  package = ;
-   #  name = ;
-   #  size = ;
-   #};
+
   };
 
   systemd.user.services.dunst = {

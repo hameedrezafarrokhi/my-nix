@@ -423,6 +423,8 @@ in
                               launch: [ "rofi", "-show", "games", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons" ]
                             Space:
                               launch: [ "jgmenu_run" ]
+                            f:
+                              launch: [ "feh-rofi" ]
 
                     p:
                       remap:

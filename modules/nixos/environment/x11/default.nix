@@ -40,7 +40,7 @@ in
       i3lock = {
         enable = true;
         u2fSupport = true;
-        package = pkgs.i3lock-fancy-rapid; # pkgs.i3lock;
+        package = pkgs.i3lock-color; # pkgs.i3lock-fancy-rapid; # pkgs.i3lock;
       };
     };
 
@@ -49,6 +49,20 @@ in
       owner = "root";
       group = "root";
       source = "${pkgs.xscreensaver}/libexec/xscreensaver/xscreensaver-auth";
+    };
+
+    security.wrappers.i3lock-color = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${pkgs.i3lock-color}/bin/i3lock-color";
+    };
+
+    security.wrappers.betterlockscreen = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${pkgs.betterlockscreen}/bin/betterlockscreen";
     };
 
   };

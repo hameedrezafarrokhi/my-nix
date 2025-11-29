@@ -98,6 +98,22 @@ super + shift + {1-9,0}
 super + shift + ctrl + {1-9,0}
       bsp-send-follow {1-9,10}
 
+# Move Focused Desktop to Desktop 1-10
+super + shift + alt + {1-9,0}
+	bspc node @/ -d ^{1-9,10}
+
+# Move Focused Desktop to Desktop 1-10 AND Follow
+super + shift + ctrl + alt + {1-9,0}
+      bspc node @/ -d ^{1-9,10} --follow
+
+# Send Focused Desktop to Next or Previous Monitor
+super + alt + shift + ctrl + Tab
+	bspc desktop focused -m next --follow
+
+# Send Focused Window to Next or Previous Monitor
+super + alt + shift + Tab
+	bspc node focused -m next --follow
+
 # Expand window width right
 super + ctrl + Right
 	bspc node -z right 40 0

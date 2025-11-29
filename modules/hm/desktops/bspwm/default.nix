@@ -32,10 +32,13 @@ in
       # bspc monitor -d 1 2 3 4 5 6 7 8 9 10
       extraConfigEarly = ''
 
-        #bspc monitor -d 1 2 3 4 5 6 7 8 9 10
-
         #export XDG_CURRENT_DESKTOP=BSPWM &
         #export desktop=BSPWM &
+        #dbus-update-activation-environment --systemd --all
+        #dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=bspwm
+        #systemctl --user import-environment
+
+        #bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
         INTERNAL_MONITOR="${config.my.display.primary.name}"
         EXTERNAL_MONITOR="${config.my.display.external.name}"
@@ -43,14 +46,13 @@ in
         # on first load setup default workspaces
         if [[ "$1" = 0 ]]; then
           if [[ $(xrandr -q | grep "${config.my.display.external.name} connected") ]]; then
-            bspc monitor "$EXTERNAL_MONITOR" -d 6 7 8 9 10
             bspc monitor "$INTERNAL_MONITOR" -d 1 2 3 4 5
-            bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+            bspc monitor "$EXTERNAL_MONITOR" -d 6 7 8 9 10
+            bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"
           else
             bspc monitor -d 1 2 3 4 5 6 7 8 9 10
           fi
         fi
-
 
         monitor_add() {
           # Move first 5 desktops to external monitor
@@ -62,7 +64,7 @@ in
           bspc desktop Desktop --remove
 
           # reorder monitors
-          bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+          bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"
         }
 
         monitor_remove() {
@@ -80,7 +82,6 @@ in
           # reorder desktops
           bspc monitor "$INTERNAL_MONITOR" -o 1 2 3 4 5 6 7 8 9 10
         }
-
 
         if [[ $(xrandr -q | grep "${config.my.display.external.name} connected") ]]; then
           # set xrandr rules for docked setup

@@ -105,6 +105,8 @@
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
 
+    dunstFont = "Comic Sans 11";
+
     MonoSize = 10;
     MonoSizeKitty = 9;
     MonoSizeAlacritty = 9.5;
@@ -210,30 +212,61 @@
      #tweaks = [ "black" ];
     };
 
-   #feh-next = pkgs.writeShellScriptBin "feh-next" ''
-   #  DIR="$HOME/Pictures/Wallpapers/${config.my.theme}/"
-   #  CACHE="$HOME/.cache/last_wallpaper"
-   #  mkdir -p "$HOME/.cache"
-   #
-   #  # Build list
-   #  LIST=$(find "$DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" -o -iname "*.gif" \) -print | sort)
-   #
-   #  # Get current (first run = empty)
-   #  CUR=""
-   #  [ -f "$CACHE" ] && CUR=$(cat "$CACHE")
-   #  [ -z "$CUR" ] && CUR=$(grep -o "'.*'" "$HOME/.fehbg" 2>/dev/null | tail -1 | tr -d "'")
-   #
-   #  # Next wallpaper
-   #  NEXT=$(printf '%s\n' "$LIST" | awk 'found {print; exit} $0 == "'"$CUR"'" {found=1}' | head -n 1)
-   #  [ -z "$NEXT" ] && NEXT=$(printf '%s\n' "$LIST" | head -n 1)
-   #
-   #  # Apply
-   #  feh --bg-fill "$NEXT"
-   #  printf '%s\n' "$NEXT" > "$CACHE"
-   #'';
-
     feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
       ${builtins.readFile ./feh-cycle.sh}
+    '';
+
+    feh-rofi = pkgs.writeShellScriptBin "feh-rofi" ''
+      dir="${config.home.homeDirectory}/Pictures/Wallpapers/${config.my.theme}/" # ends with a /
+      cd $dir
+      wallpaper="none is selected"
+      set="feh --bg-fill"
+      view="feh"
+      startup_config_file="${config.home.homeDirectory}/.config/bspwm/bspwmrc"
+      selectpic(){
+          wallpaper=$(ls $dir | rofi -dmenu -p "select a wallpaper: ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+
+          if [[ $wallpaper == "q" || $wallpaper == "" ]]; then
+              pkill feh && exit
+          else
+              action
+          fi
+      }
+      action(){
+        whattodo=$(echo -e "view\nset\nset (permanant)" | rofi -dmenu -p "whatcha wanna do with it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+          if [[ $whattodo == "set" ]]; then
+              set_wall
+          elif [[ $whattodo == "set (permanant)" ]]; then
+            set_permanant
+          else
+              view_wall
+          fi
+      }
+      set_wall(){
+          $set $wallpaper && pkill feh &
+      }
+      view_wall(){
+          $view $wallpaper &
+          set_after_view
+      }
+      set_after_view(){
+        setorno=$(echo -e "set\nset (permanant)\ngo back" | rofi -dmenu -p "wanna set it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+
+        if [[ $setorno == "set" ]]; then
+            set_wall
+          else
+            if [[ $setorno == "set (permanant)" ]]; then
+              set_permanant
+            fi
+            pkill feh && feh-rofi
+          fi
+      }
+      set_permanant(){
+        set_wall
+        sed -i '/feh/d' $startup_config_file
+        echo "$set $dir$wallpaper &" >> $startup_config_file
+      }
+      selectpic
     '';
 
   in
@@ -261,6 +294,7 @@
     hypr-cursor-package
 
     feh-cycle
+    feh-rofi
 
   ];
 
@@ -1119,6 +1153,49 @@
         };
       };
     };
+
+    dunst = lib.mkIf (config.services.dunst.enable) {
+      settings = {
+        global = {
+         #icon_path = '' '';
+          offset = "(27,60)";
+          width = "(180, 600)";
+          height = "(0, 750)";
+          padding = 7;
+          horizontal_padding = 7;
+          gap_size = 5;
+          transparency = 15;
+         #frame_width = 1;
+         #frame_color = "#607566";
+          font = dunstFont;
+          corner_radius = 5;
+          min_icon_size = 32;
+          max_icon_size = 32;
+          format = ''<b>%s</b>\n%b'';
+        };
+        urgency_low = {
+         #foreground = Text;
+         #background = Base;
+         #frame_color = Green;
+        };
+        urgency_normal = {
+         #foreground = Text;
+         #background = Base;
+         #frame_color = Sapphire;
+        };
+        urgency_critical = {
+         #background = Red;
+         #foreground = Crust;
+         #frame_color = Yellow;
+        };
+      };
+     #iconTheme = {
+     #  package = ;
+     #  name = ;
+     #  size = ;
+     #};
+    };
+
   };
 
   home.file = {
@@ -1191,7 +1268,6 @@
         	  ${config.services.polybar.package}/bin/polybar example &
         fi &
         if hash polybar >/dev/null 2>&1; then
-        	  sleep 2
         	  polybar-msg action bspwm module_hide &
         fi &
         if hash conky >/dev/null 2>&1; then
@@ -1208,6 +1284,11 @@
         	  pkill dockx
         	  sleep 0.5
         	  dockx &
+        fi
+        if hash skippy-xd >/dev/null 2>&1; then
+        	  pkill skippy-xd
+        	  sleep 0.5
+        	  skippy-xd --start-daemon &
         fi
         #if hash plank >/dev/null 2>&1; then
         #	  pkill plank
