@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.sioyek.enable) {
+{ config = lib.mkIf (config.my.apps.sioyek.enable) {
 
   # documentation:
   # https://sioyek-documentation.readthedocs.io/en/latest/configuration.html#dark-mode-background-color
@@ -18,18 +17,18 @@ config = lib.mkIf (config.my.apps.sioyek.enable) {
       "screen_up" = [ "u" "" ];
     };
     config = {
-      "background_color" = "1.0 1.0 1.0";
+     #"background_color" = "1.0 1.0 1.0";
 
-      "dark_mode_background_color" = "1.0 1.0 1.0";
-      "dark_mode_contrast" = "0.5";
+     #"dark_mode_background_color" = "1.0 1.0 1.0";
+     #"dark_mode_contrast" = "0.5";
       "ruler_mode" = "1";
 
-      "link_highlight_color" = "0.4 0.5 0.7";
-      "search_highlight_color" = "0.4 0.5 0.7";
-      "text_highlight_color" = "1.0 0.0 0.0";
-      "synctex_highlight_color" = "0.4 0.5 0.7";
+     #"link_highlight_color" = "0.4 0.5 0.7";
+     #"search_highlight_color" = "0.4 0.5 0.7";
+     #"text_highlight_color" = "1.0 0.0 0.0";
+     #"synctex_highlight_color" = "0.4 0.5 0.7";
 
-      "visual_mark_color" = "1.0  0.0  0.0  0.1";
+     #"visual_mark_color" = "1.0  0.0  0.0  0.1";
       "visual_mark_next_page_fraction" = "0.5";
       "visual_mark_next_page_threshold" = "0.3";
 
@@ -40,5 +39,4 @@ config = lib.mkIf (config.my.apps.sioyek.enable) {
     };
   };
 
-};
-}
+};}

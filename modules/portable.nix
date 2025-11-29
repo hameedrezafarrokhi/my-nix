@@ -264,6 +264,7 @@
             onlyoffice.enable = true;
             pay-respects.enable = true;
             plank.enable = true;
+            qutebrowser.enable = true;
             resources.enable = true;
             rofi.enable = true;
             sioyek.enable = true;
