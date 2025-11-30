@@ -96,6 +96,8 @@
 
     bullshit
 
+    ueberzug
+
   ] ) config.my.software.tools.exclude)
 
    ++

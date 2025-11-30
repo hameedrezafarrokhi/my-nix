@@ -221,23 +221,20 @@
       cd $dir
       wallpaper="none is selected"
       set="feh --bg-fill"
-      view="feh"
-      startup_config_file="${config.home.homeDirectory}/.config/bspwm/bspwmrc"
+      view="feh -F"
       selectpic(){
-          wallpaper=$(ls $dir | rofi -dmenu -p "select a wallpaper: ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+          wallpaper=$(ls $dir | rofi -dmenu -p "select: ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
 
-          if [[ $wallpaper == "q" || $wallpaper == "" ]]; then
-              pkill feh && exit
+          if [[ $wallpaper == "qq" ]]; then
+              exit
           else
               action
           fi
       }
       action(){
-        whattodo=$(echo -e "view\nset\nset (permanant)" | rofi -dmenu -p "whatcha wanna do with it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+        whattodo=$(echo -e "view\nset" | rofi -dmenu -p "action ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
           if [[ $whattodo == "set" ]]; then
               set_wall
-          elif [[ $whattodo == "set (permanant)" ]]; then
-            set_permanant
           else
               view_wall
           fi
@@ -250,21 +247,15 @@
           set_after_view
       }
       set_after_view(){
-        setorno=$(echo -e "set\nset (permanant)\ngo back" | rofi -dmenu -p "wanna set it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+        setorno=$(echo -e "set\nback" | rofi -dmenu -p "set it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
 
         if [[ $setorno == "set" ]]; then
             set_wall
-          else
-            if [[ $setorno == "set (permanant)" ]]; then
-              set_permanant
-            fi
-            pkill feh && feh-rofi
-          fi
-      }
-      set_permanant(){
-        set_wall
-        sed -i '/feh/d' $startup_config_file
-        echo "$set $dir$wallpaper &" >> $startup_config_file
+        else
+            pkill feh &
+            sleep 1 &
+            feh-rofi &
+        fi
       }
       selectpic
     '';
