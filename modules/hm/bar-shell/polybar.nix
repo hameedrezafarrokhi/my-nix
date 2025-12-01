@@ -311,6 +311,7 @@ in
         blacklist-2 = "caps lock";
         format = "<label-layout>";
         format-spacing = 0;
+       #tail = true;
         label-layout = "%name%";
        #label-layout-padding = 0;
        #label-layout-background = ;
@@ -323,7 +324,7 @@ in
       "module/keyboard-layout" = {
         type = "custom/script";
         exec = "xkb-switch -p";
-       #interval = 2;
+        interval = 2;
         click-left = "poly-xkb-change";
         double-click-left = "iotas";
         click-right = "onboard";
@@ -454,6 +455,8 @@ in
         type = "custom/script";
         exec = "bsp-layout-manager";
         format = "<label>%{O-8pt}";
+       #tail = true;
+        interval = 2;
         click-left = "bsp-next";
         click-right = "bsp-prev";
         click-middle = "poly-bsp-float";
@@ -487,6 +490,7 @@ in
         type = "custom/script";
         exec = "poly-picom-status";
         interval = 2;
+       #tail = true;
         click-left = "poly-picom-toggle";
         format = "<label>%{O-8pt}";
         label = "%output%";
@@ -520,6 +524,7 @@ in
         type = "custom/script";
         exec = "poly-pp --status";
         interval = 2;
+       #tail = true;
         click-left = "poly-pp";
         format = "<label>%{O-6pt}";
        #lable = "%output%";
