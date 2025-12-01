@@ -408,7 +408,7 @@ in
         format = "<label>%{O-10pt}";
         exec = ''"echo ' '"'';
        #interval = 60;
-        click-left = "jgmenu --at-pointer";
+        click-left = "jgmenu_run";
        #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ${nix-path}/modules/hm/desktops/awesome/awesome/rofi/config.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "dolphin";
         double-click-left = "skippy-xd --paging";
