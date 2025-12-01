@@ -4,8 +4,7 @@
   # https://github.com/LierB/fastfetch/tree/master/presets
   # https://github.com/harilvfs/fastfetch/blob/old-days/fastfetch/config.jsonc
 
-{
-config = lib.mkIf (config.my.apps.fastfetch.enable) {
+{ config = lib.mkIf (config.my.apps.fastfetch.enable) {
 
   xdg.configFile."./fastfetch/config.jsonc".text = ''
 
@@ -114,5 +113,4 @@ config = lib.mkIf (config.my.apps.fastfetch.enable) {
   '';
 
 
-};
-}
+};}

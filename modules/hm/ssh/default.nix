@@ -44,7 +44,7 @@ in
         package = pkgs.openssh;
       };
       ssh-tpm-agent = {
-        enable = true;
+        enable = false;
         package = pkgs.ssh-tpm-agent;
         keyDir = null;
       };

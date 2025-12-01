@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.kde.elisa.enable) {
+{ config = lib.mkIf (config.my.kde.elisa.enable) {
 
   programs.elisa = {
     enable = true;
@@ -29,5 +28,4 @@ config = lib.mkIf (config.my.kde.elisa.enable) {
     };
   };
 
-};
-}
+};}

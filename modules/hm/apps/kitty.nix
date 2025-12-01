@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.apps.kitty.enable) {
+{ config = lib.mkIf (config.my.apps.kitty.enable) {
 
   programs.kitty = {
     enable = true;
@@ -53,5 +52,4 @@ config = lib.mkIf (config.my.apps.kitty.enable) {
     };
   };
 
-};
-}
+};}

@@ -29,7 +29,7 @@ in
   "caelestia-shell-readme".source = "${inputs.caelestia-shell}/README.md";
     "caelestia-cli-readme".source = "${inputs.caelestia-cli}/README.md";
           "noctalia-shell".source = "${inputs.noctalia-shell}/README.md";
-      "nix-artwork-readme".source = "${inputs.nix-artwork}/README.md";
+#     "nix-artwork-readme".source = "${inputs.nix-artwork}/README.md";
        "catppuccin-readme".source = "${inputs.catppuccin}/README.md";
       "nix-flatpak-readme".source = "${inputs.nix-flatpak}/README.md";
           "chaotic-readme".source = "${inputs.chaotic}/README.md";

@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.btop.enable) {
+{ config = lib.mkIf (config.my.apps.btop.enable) {
 
   programs.btop = {
     enable = true;
@@ -11,5 +10,4 @@ config = lib.mkIf (config.my.apps.btop.enable) {
    #themes = {};
   };
 
-};
-}
+};}

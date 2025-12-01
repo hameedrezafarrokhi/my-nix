@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.gpg.enable) {
+{ config = lib.mkIf (config.my.apps.gpg.enable) {
 
   programs.gpg = {
     enable = true;
@@ -40,5 +39,4 @@ config = lib.mkIf (config.my.apps.gpg.enable) {
 
   home.packages = [ pkgs.gcr ];
 
-};
-}
+};}

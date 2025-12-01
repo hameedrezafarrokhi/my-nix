@@ -288,7 +288,7 @@ in
     home.packages = [
 
       pkgs.sxhkd
-      pkgs.plank
+     #pkgs.plank
       pkgs.dockbarx
      #pkgs.xorg.xdpyinfo
       pkgs.xorg.xwininfo

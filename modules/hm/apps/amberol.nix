@@ -1,7 +1,6 @@
 {config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.vim.enable) {
+{ config = lib.mkIf (config.my.apps.vim.enable) {
 
   services.amberol = {
     enable = true;
@@ -10,5 +9,4 @@ config = lib.mkIf (config.my.apps.vim.enable) {
     replaygain = "track"; # "album", "track", "off"
   };
 
-};
-}
+};}

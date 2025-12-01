@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.kde.okular.enable) {
+{ config = lib.mkIf (config.my.kde.okular.enable) {
 
   programs.okular = {
     enable = true;
@@ -34,5 +33,4 @@ config = lib.mkIf (config.my.kde.okular.enable) {
     };
   };
 
-};
-}
+};}

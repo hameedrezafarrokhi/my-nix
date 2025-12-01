@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.onlyoffice.enable) {
+{ config = lib.mkIf (config.my.apps.onlyoffice.enable) {
 
   programs.onlyoffice = {
     enable = true;
@@ -9,5 +8,4 @@ config = lib.mkIf (config.my.apps.onlyoffice.enable) {
    #settings = '' '';
   };
 
-};
-}
+};}

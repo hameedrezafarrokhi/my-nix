@@ -18,7 +18,7 @@
    #sftpServerExecutable = "internal-sftp";
    #sftpFlags = [ ];
     settings = {
-      X11Forwarding = true;
+      X11Forwarding = false;
       UsePAM = true;
       UseDns = false;
       StrictModes = true;

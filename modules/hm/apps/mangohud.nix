@@ -1,7 +1,6 @@
 { config, pkgs, lib,  ... }:
 
-{
-config = lib.mkIf (config.my.apps.mangohud.enable) {
+{ config = lib.mkIf (config.my.apps.mangohud.enable) {
 
   programs.mangohud = {
     enable = true;
@@ -11,5 +10,4 @@ config = lib.mkIf (config.my.apps.mangohud.enable) {
    #settingsPerApplication = {};
   };
 
-};
-}
+};}

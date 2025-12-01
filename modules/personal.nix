@@ -396,7 +396,7 @@
             fastfetch.enable = true;
             fd.enable = true;
             flameshot.enable = true;
-            foliate.enable = true;
+            foliate.enable = false;
             freetube.enable = true;
             fzf.enable = true;
             git.enable = true;
@@ -412,13 +412,13 @@
             lutris.enable = true;
             mangohud.enable = true;
             neovim.enable = true;
-            nautilus.enable = true;
+            nautilus.enable = false;
             obs.enable = true;
             obsidian.enable = false;
             onboard.enable = true;
             onlyoffice.enable = true;
             pay-respects.enable = true;
-            plank.enable = true;
+            plank.enable = false;
             qutebrowser.enable = true;
             resources.enable = true;
             rofi.enable = true;

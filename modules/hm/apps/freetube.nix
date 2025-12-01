@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.freetube.enable) {
+{ config = lib.mkIf (config.my.apps.freetube.enable) {
 
   programs.freetube = {
     enable = true;
@@ -13,5 +12,4 @@ config = lib.mkIf (config.my.apps.freetube.enable) {
     };
   };
 
-};
-}
+};}

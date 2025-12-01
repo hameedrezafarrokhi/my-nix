@@ -148,7 +148,7 @@ let
   '';
 
   xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
-    notify-send "⏲️ "$(date "+%I:%M:%S-%p" )" "$(date "+%p" ) "📅 "$(date "+%a")" "$(date "+%d-%b-%y")
+    notify-send "⏲️ "$(date "+%I:%M:%S" )" "$(date "+%p" ) "📅 "$(date "+%a")" "$(date "+%d-%b-%y")
   '';
 
   xremap-motd = pkgs.writeShellScriptBin "xremap-motd" ''

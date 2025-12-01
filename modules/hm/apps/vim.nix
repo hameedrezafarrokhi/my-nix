@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.vim.enable) {
+{ config = lib.mkIf (config.my.apps.vim.enable) {
 
   programs.vim = {
     enable = true;
@@ -12,5 +11,4 @@ config = lib.mkIf (config.my.apps.vim.enable) {
    #settings = { };
   };
 
-};
-}
+};}

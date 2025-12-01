@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-{
-config = lib.mkIf (config.my.kde.kate.enable) {
+{ config = lib.mkIf (config.my.kde.kate.enable) {
 
   programs.kate = {
     enable = true;
@@ -30,5 +29,4 @@ config = lib.mkIf (config.my.kde.kate.enable) {
     };
   };
 
-};
-}
+};}

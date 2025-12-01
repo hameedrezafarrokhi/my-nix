@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.joplin.enable) {
+{ config = lib.mkIf (config.my.apps.joplin.enable) {
 
   programs.joplin-desktop = {
     enable = true;
@@ -17,5 +16,4 @@ config = lib.mkIf (config.my.apps.joplin.enable) {
     };
   };
 
-};
-}
+};}

@@ -200,6 +200,13 @@ in
           WantedBy = [ config.wayland.systemd.target ];
         };
       };
+
+      hyprpolkitagent = {
+        Unit = {
+          ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
+        };
+      };
+
     };
 
    #home.file.".local/share/fonts/tabler-icons.ttf" = {

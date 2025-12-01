@@ -106,8 +106,8 @@
 #            omarchy = { url = "github:basecamp/omarchy";
 #                               flake = false; };
 
-         nix-artwork = { url = "github:NixOS/nixos-artwork";
-                                flake = false; };
+#        nix-artwork = { url = "github:NixOS/nixos-artwork";
+#                               flake = false; };
               assets = { url = "github:hameedrezafarrokhi/assets";
                                 flake = false; };
 

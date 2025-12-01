@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.tldr.enable) {
+{ config = lib.mkIf (config.my.apps.tldr.enable) {
 
  #services.tldr-update = {
  #  enable = true;
@@ -36,5 +35,4 @@ config = lib.mkIf (config.my.apps.tldr.enable) {
     };
   };
 
-};
-}
+};}

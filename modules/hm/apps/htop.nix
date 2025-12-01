@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.htop.enable) {
+{ config = lib.mkIf (config.my.apps.htop.enable) {
 
   programs.htop = {
     enable = true;
@@ -9,5 +8,4 @@ config = lib.mkIf (config.my.apps.htop.enable) {
    #settings = {};
   };
 
-};
-}
+};}

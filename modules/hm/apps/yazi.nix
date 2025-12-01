@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.yazi.enable) {
+{ config = lib.mkIf (config.my.apps.yazi.enable) {
 
   programs.yazi = {
     enable = true;
@@ -19,5 +18,4 @@ config = lib.mkIf (config.my.apps.yazi.enable) {
    #shellWrapperName = "yy";
   };
 
-};
-}
+};}

@@ -1,7 +1,6 @@
 { config, pkgs, lib,  ... }:
 
-{
-config = lib.mkIf (config.my.apps.neovim.enable) {
+{ config = lib.mkIf (config.my.apps.neovim.enable) {
 
   programs.neovim = {
     enable = true;
@@ -25,5 +24,4 @@ config = lib.mkIf (config.my.apps.neovim.enable) {
 
   };
 
-};
-}
+};}

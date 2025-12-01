@@ -1,7 +1,6 @@
-{config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.apps.yt-dlp.enable) {
+{ config = lib.mkIf (config.my.apps.yt-dlp.enable) {
 
   programs.yt-dlp = {
     enable = true;
@@ -16,5 +15,4 @@ config = lib.mkIf (config.my.apps.yt-dlp.enable) {
    #extraConfig = "";
   };
 
-};
-}
+};}

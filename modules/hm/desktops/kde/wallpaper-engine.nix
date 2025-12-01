@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-{
-config = lib.mkIf (config.my.kde.wallpaper-engine.enable) {
+{ config = lib.mkIf (config.my.kde.wallpaper-engine.enable) {
 
   home.packages = [ pkgs.kdePackages.wallpaper-engine-plugin ];
 
@@ -15,5 +14,4 @@ config = lib.mkIf (config.my.kde.wallpaper-engine.enable) {
    #];
   };
 
-};
-}
+};}

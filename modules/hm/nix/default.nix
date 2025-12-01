@@ -161,21 +161,23 @@ in
     home.packages = with pkgs; [
 
       nh nvd nix-output-monitor
-      nix-fast-build
-      nurl
-      nix-init nix-info nix-inspect
-      nix-du
-      nix-web # after running nix-web: http://localhost:8649/
-      nix-top nix-doc
-      nix-tree nix-melt nix-diff
+     #nix-fast-build
+     #nurl
+     #nix-init nix-info nix-inspect
+     #nix-du
+     #nix-web # after running nix-web: http://localhost:8649/
+     #nix-top nix-doc
+     #nix-tree
+      nix-melt nix-diff
       nix-search nix-health
-      nix-weather nix-plugins
-      nix-janitor nix-template
-      nix-visualize
-      nix-converter #nix-search-cli
-      nix-playground nix-check-deps
-      nix-forecast
-      nix-query-tree-viewer
+     #nix-weather nix-plugins
+     #nix-janitor nix-template
+     #nix-visualize
+      nix-search-tv
+     #nix-converter nix-search-cli
+     #nix-playground nix-check-deps
+     #nix-forecast
+     #nix-query-tree-viewer
       nil nixd
      #comma
 

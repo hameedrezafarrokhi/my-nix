@@ -30,7 +30,7 @@ in
         genericName = "File Manager";
         exec="env XDG_MENU_PREFIX=plasma- dolphin"; # QT_QPA_PLATFORMTHEME=kde
         categories=["Qt" "KDE" "System" "FileTools" "FileManager"];
-        mimeType= ["inode" "directory"];
+        mimeType= ["inode/directory"];
        #noDisplay=;
        #prefersNonDefaultGPU=;
        #startupNotify=;
@@ -114,7 +114,7 @@ in
         Terminal=false
         Type=Application
         NoDisplay=true
-        NotShowIn=KDE;GNOME;Hyprland;niri;
+        NotShowIn=KDE;GNOME;Hyprland;niri;Cosmic;cosmic;COSMIC;
         X-GNOME-UsesNotifications=true
 
       '';
@@ -138,7 +138,7 @@ in
       configFile."./autostart/blueman.desktop".text = ''
 
         [Desktop Entry]
-        NotShowIn=KDE;GNOME;Hyprland;niri;
+        NotShowIn=KDE;GNOME;Hyprland;niri;Cosmic;cosmic;COSMIC;
         Name=Blueman Applet
         Comment=Blueman Bluetooth Manager
         Icon=blueman
