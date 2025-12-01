@@ -105,7 +105,7 @@
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
 
-    dunstFont = "Comic Sans 11";
+    dunstFont = "Comic Sans 10";
 
     MonoSize = 10;
     MonoSizeKitty = 9;
@@ -1129,6 +1129,14 @@
           format-connected-prefix-foreground = Blue;
          #label-connected-background = #FF0000
         };
+        "module/networkspeedup-wired" = {
+          format-connected-prefix-foreground = Red;
+         #label-connected-background = #FF0000
+        };
+        "module/networkspeeddown-wired" = {
+          format-connected-prefix-foreground = Blue;
+         #label-connected-background = #FF0000
+        };
         "module/notif" = {
           label-foreground = Yellow;
         };
@@ -1167,7 +1175,7 @@
           padding = 7;
           horizontal_padding = 7;
           gap_size = 5;
-          transparency = 15;
+         #transparency = 15;
          #frame_width = 1;
          #frame_color = "#607566";
           font = dunstFont;
@@ -1265,40 +1273,47 @@
       target = "openbox/autostart";
       text = ''
         fehw &
+
         if hash polybar >/dev/null 2>&1; then
         	  pkill polybar
         	  sleep 1
         	  ${config.services.polybar.package}/bin/polybar example &
+        	  polybar-msg action bspwm module_hide
         fi &
-        if hash polybar >/dev/null 2>&1; then
-              sleep 1
-        	  polybar-msg action bspwm module_hide &
-        fi &
+
+        polybar-msg action bspwm module_hide
+
         if hash conky >/dev/null 2>&1; then
         	  pkill conky
         	  sleep 0.5
         	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         fi &
+
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
         	  sleep 0.5
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
         fi &
+
         if hash dockx >/dev/null 2>&1; then
         	  pkill dockx
         	  sleep 0.5
         	  dockx &
         fi
+
         if hash skippy-xd >/dev/null 2>&1; then
         	  pkill skippy-xd
         	  sleep 0.5
         	  skippy-xd --start-daemon &
         fi
+
         #if hash plank >/dev/null 2>&1; then
         #	  pkill plank
         #	  sleep 0.5
         #	  plank
         #fi &
+
+        polybar-msg action bspwm module_hide
       '';
     };
 

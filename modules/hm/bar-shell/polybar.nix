@@ -186,6 +186,23 @@ let
     magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m4 -r30
   '';
 
+  poly-dnd = pkgs.writeShellScriptBin "poly-dnd" ''
+    ICON_DND=""    # DND icon (font-awesome)
+    ICON_BELL=""   # Bell icon
+    WAITING=$(dunstctl count waiting)
+
+    if [ "$WAITING" -ne 0 ]; then
+        echo "$ICON_DND $WAITING"
+        exit 0
+    fi
+
+    if dunstctl is-paused | grep -q true; then
+        echo "$ICON_DND"
+    else
+        echo "$ICON_BELL"
+    fi
+  '';
+
 in
 
 { options.my.poly-height = lib.mkOption { type = lib.types.str; };
@@ -211,6 +228,7 @@ in
     poly-pp
     poly-color-picker
     poly-magnifier
+    poly-dnd
   ];
 
   my.poly-height = "18";
@@ -234,7 +252,7 @@ in
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup player"; # xwindow
+          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup networkspeeddown-wired networkspeedup-wired player"; # xwindow
           center = "xworkspaces";
           right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio hour power"; # date
         };
@@ -250,6 +268,17 @@ in
 
       "module/xworkspaces" = {
         type = "internal/xworkspaces";
+        group-by-monitor = false;
+        pin-workspaces = false;
+        enable-click = true;
+        enable-scroll = true;
+        reverse-scroll = false;
+       #icon-0 = "code;♚";
+       #icon-1 = "office;♛";
+       #icon-2 = "graphics;♜";
+       #icon-3 = "mail;♝";
+       #icon-4 = "web;♞";
+       #icon-default = "♟";
         label-active = "%name%";
         label-active-padding = 1;
         label-occupied = "%name%";
@@ -431,12 +460,15 @@ in
 
       "module/notif" = {
         type = "custom/script";
-        exec = "echo ''";
+        exec = "poly-dnd";
+        interval = 2;
+       #exec = "echo ''";
         format = "<label>%{O-8pt}";
         click-left = "dunstctl history-pop";
         click-right = "poly-notif";
         double-click-left = "dunstctl close-all";
         double-click-right = "dunstctl history-clear";
+        click-middle = "dunstctl set-paused toggle";
       };
 
       "module/power" = {
@@ -466,7 +498,8 @@ in
 
       "module/networkspeedup" = {
         type = "internal/network";
-        interface = "wlp3s0";
+        interface-type = "wireless";
+       #interface = "wlp3s0";
         unknown-as-up = true;
         interval = 2.0;
         label-connected = ''"%upspeed:4%%{O-5pt}"'';
@@ -477,7 +510,32 @@ in
 
       "module/networkspeeddown" = {
         type = "internal/network";
-        interface = "wlp3s0";
+        interface-type = "wireless";
+       #interface = "wlp3s0";
+        unknown-as-up = true;
+        interval = 2.0;
+        label-connected = ''"%downspeed:4%%{O-8pt}"'';
+        format-connected = "<label-connected>%{O-2pt}";
+        format-connected-prefix = ''""'';
+        speed-unit = '''';
+      };
+
+      "module/networkspeedup-wired" = {
+        type = "internal/network";
+        interface-type = "wired";
+       #interface = "wlp3s0";
+        unknown-as-up = true;
+        interval = 2.0;
+        label-connected = ''"%upspeed:4%%{O-5pt}"'';
+        format-connected = "<label-connected>%{O-5pt}";
+        format-connected-prefix = ''""'';
+        speed-unit = '''';
+      };
+
+      "module/networkspeeddown-wired" = {
+        type = "internal/network";
+        interface-type = "wired";
+       #interface = "wlp3s0";
         unknown-as-up = true;
         interval = 2.0;
         label-connected = ''"%downspeed:4%%{O-8pt}"'';
@@ -533,8 +591,8 @@ in
       };
 
       "settings" = {
-       #screenchange-reload = true;
-       #pseudo-transparency = true ;
+        screenchange-reload = true;
+        pseudo-transparency = true;
       };
 
     };

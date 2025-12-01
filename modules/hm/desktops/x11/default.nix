@@ -21,6 +21,8 @@ let
     DELAY0=120  # 2 minutes
     DELAY=180   # 3 minutes
 
+    dunstctl set-paused true
+
     # Start i3lock
     ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 30 --show-layout &
     LOCK_PID=$!

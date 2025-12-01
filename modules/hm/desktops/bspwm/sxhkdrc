@@ -481,3 +481,23 @@ super + shift + d
 # Show/Hide Conky
 super + shift + alt + g
     bsp-conky
+
+# Clear Notifications
+super + n
+    dunstctl close-all
+
+# Show Notifications one by one
+super + shift + n
+    dunstctl history-pop
+
+# Show Notifications History
+super + shift + alt + n
+    poly-notif
+
+# Toggle Do Not Disturb
+super + ctrl + shift + n
+    dunstctl set-paused toggle
+
+# Clear Notifications History
+super + ctrl + shift + alt + n
+    dunstctl history-clear
