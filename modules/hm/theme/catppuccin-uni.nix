@@ -212,6 +212,14 @@
      #tweaks = [ "black" ];
     };
 
+    fehw = pkgs.writeShellScriptBin "fehw" ''
+      if [ -f "$HOME/.fehbg" ]; then
+          "$HOME/.fehbg"
+      else
+          ${pkgs.feh}/bin/feh --bg-fill ${wallpaper}
+      fi
+    '';
+
     feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
       ${builtins.readFile ./feh-cycle.sh}
     '';
@@ -287,6 +295,7 @@
     plasma-cursor-package
     hypr-cursor-package
 
+    fehw
     feh-cycle
     feh-rofi
 
@@ -371,7 +380,7 @@
     xrdb -merge ${config.xresources.path} &
     xsetroot -cursor_name left_ptr &
     ${config.services.dunst.package}/bin/dunst &
-    ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
+    ${fehw}/bin/fehw &
     ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
   '';
   xsession.profileExtra = lib.mkIf config.xsession.enable ''
@@ -489,7 +498,7 @@
       style = i3Style;
       size = MonoSizeI3;
     };
-    startup = [ { command = "feh --bg-fill ${wallpaper}"; always = true; } ];
+    startup = [ { command = "fehw"; always = true; } ];
     colors = {
       urgent = {
         background = Base;
@@ -608,7 +617,7 @@
     extraConfig = ''
       #bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
       bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
-      ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
+      fehw &
   '';
     settings = {
       presel_feedback_color = Overlay1;
@@ -1255,13 +1264,14 @@
     openbox-autostart = {
       target = "openbox/autostart";
       text = ''
-        ${pkgs.feh}/bin/feh --bg-fill ${wallpaper} &
-         if hash polybar >/dev/null 2>&1; then
+        fehw &
+        if hash polybar >/dev/null 2>&1; then
         	  pkill polybar
         	  sleep 1
         	  ${config.services.polybar.package}/bin/polybar example &
         fi &
         if hash polybar >/dev/null 2>&1; then
+              sleep 1
         	  polybar-msg action bspwm module_hide &
         fi &
         if hash conky >/dev/null 2>&1; then
