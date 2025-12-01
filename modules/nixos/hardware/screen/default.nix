@@ -18,6 +18,9 @@ in
       pkgs.colord-gtk
      #pkgs.kdePackages.colord-kde
 
+      pkgs.brightnessctl
+      pkgs.ddcutil
+
     ];
 
     services = {

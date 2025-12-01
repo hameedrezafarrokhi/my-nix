@@ -13,11 +13,12 @@ in
   config = lib.mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
-      fontconfig freetype
-      font-manager gnome-font-viewer fontfinder
-      embellish get-google-fonts fontpreview fontfor
-      fontforge fontforge-fonttools
-      fontforge-gtk
+     #fontconfig freetype
+      font-manager
+     #gnome-font-viewer fontfinder
+     #embellish get-google-fonts fontpreview fontfor
+     #fontforge fontforge-fonttools
+     #fontforge-gtk
     ];
 
     console = {                                  # to find font "sudo find /nix/store -name '*terminus*'"

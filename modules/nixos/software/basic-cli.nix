@@ -22,20 +22,20 @@
    #python3Full                           # lots of overrides
    #pipx
    #curl
-    gcc
+   #gcc
     git
    #sparkleshare                  ##Git GUI
     gnumake
     gnutar
     gnugrep
-    clapgrep                      ##Grep Gui
+   #clapgrep                      ##Grep Gui
     ripgrep
    #bat
    #ninja
 
     trashy
-    net-tools
-    iproute2
+   #net-tools
+   #iproute2
 
     cmatrix                       ##Screeansaver fot cli
 
@@ -57,9 +57,13 @@
       enable = true;
       package = mypkgs.stable.bat;
       extraPackages = with mypkgs.stable.bat-extras; [
-        core batdiff batman
-        batwatch batpipe batgrep
-       #prettybat
+       #core
+        batdiff
+        batman
+        batwatch
+        batpipe
+        batgrep
+        prettybat
       ];
      #settings = {
      #  italic-text = "always";

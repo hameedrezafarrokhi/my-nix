@@ -563,50 +563,50 @@ in
 
   xdg.configFile = {
 
-    polybar-themes-blocks = {
-      source = "${inputs.polybar-themes}/bitmap/blocks";
-      target = "polybar/blocks";
-    };
-    polybar-themes-colorblocks = {
-      source = "${inputs.polybar-themes}/bitmap/colorblocks";
-      target = "polybar/colorblocks";
-    };
-    polybar-themes-cuts = {
-      source = "${inputs.polybar-themes}/bitmap/cuts";
-      target = "polybar/cuts";
-    };
-    polybar-themes-docky = {
-      source = "${inputs.polybar-themes}/bitmap/docky";
-      target = "polybar/docky";
-    };
-    polybar-themes-forest = {
-      source = "${inputs.polybar-themes}/bitmap/forest";
-      target = "polybar/forest";
-    };
-    polybar-themes-grayblocks = {
-      source = "${inputs.polybar-themes}/bitmap/grayblocks";
-      target = "polybar/grayblocks";
-    };
-    polybar-themes-hack = {
-      source = "${inputs.polybar-themes}/bitmap/hack";
-      target = "polybar/hack";
-    };
-    polybar-themes-material = {
-      source = "${inputs.polybar-themes}/bitmap/material";
-      target = "polybar/material";
-    };
-    polybar-themes-shades = {
-      source = "${inputs.polybar-themes}/bitmap/shades";
-      target = "polybar/shades";
-    };
-    polybar-themes-shapes = {
-      source = "${inputs.polybar-themes}/bitmap/shapes";
-      target = "polybar/shapes";
-    };
-    polybar-themes-launch = {
-      source = "${inputs.polybar-themes}/bitmap/launch.sh";
-      target = "polybar/launch.sh";
-    };
+   #polybar-themes-blocks = {
+   #  source = "${inputs.polybar-themes}/bitmap/blocks";
+   #  target = "polybar/blocks";
+   #};
+   #polybar-themes-colorblocks = {
+   #  source = "${inputs.polybar-themes}/bitmap/colorblocks";
+   #  target = "polybar/colorblocks";
+   #};
+   #polybar-themes-cuts = {
+   #  source = "${inputs.polybar-themes}/bitmap/cuts";
+   #  target = "polybar/cuts";
+   #};
+   #polybar-themes-docky = {
+   #  source = "${inputs.polybar-themes}/bitmap/docky";
+   #  target = "polybar/docky";
+   #};
+   #polybar-themes-forest = {
+   #  source = "${inputs.polybar-themes}/bitmap/forest";
+   #  target = "polybar/forest";
+   #};
+   #polybar-themes-grayblocks = {
+   #  source = "${inputs.polybar-themes}/bitmap/grayblocks";
+   #  target = "polybar/grayblocks";
+   #};
+   #polybar-themes-hack = {
+   #  source = "${inputs.polybar-themes}/bitmap/hack";
+   #  target = "polybar/hack";
+   #};
+   #polybar-themes-material = {
+   #  source = "${inputs.polybar-themes}/bitmap/material";
+   #  target = "polybar/material";
+   #};
+   #polybar-themes-shades = {
+   #  source = "${inputs.polybar-themes}/bitmap/shades";
+   #  target = "polybar/shades";
+   #};
+   #polybar-themes-shapes = {
+   #  source = "${inputs.polybar-themes}/bitmap/shapes";
+   #  target = "polybar/shapes";
+   #};
+   #polybar-themes-launch = {
+   #  source = "${inputs.polybar-themes}/bitmap/launch.sh";
+   #  target = "polybar/launch.sh";
+   #};
 
   };
 

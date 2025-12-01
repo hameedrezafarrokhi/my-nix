@@ -6,12 +6,12 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
-    base16-schemes
-    base16-shell-preview
-    base16-universal-manager
-    flavours
+   #base16-schemes
+   #base16-shell-preview
+   #base16-universal-manager
+   #flavours
 
-    nordic                        ##Nordic theme for kde
+   #nordic                        ##Nordic theme for kde
    #kdePackages.breeze-grub       ##Breeze for grub
 
     kdePackages.qtstyleplugin-kvantum
@@ -23,7 +23,7 @@
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.qt5.qtquickcontrols2
     libsForQt5.qt5.qtbase
-    libsForQt5.qt5.qtdeclarative
+   #libsForQt5.qt5.qtdeclarative
     libsForQt5.kdeclarative
     libsForQt5.qt5.qtwayland
     libsForQt5.plasma-wayland-protocols
@@ -41,17 +41,16 @@
    #catppuccin-sddm-corners
    #catppuccin-papirus-folders
    #catppuccin-grub
-    catppuccin-qt5ct
+   #catppuccin-qt5ct
    #catppuccin-kvantum
    #catppuccin-cursors
-    catppuccinifier-gui
-    catppuccinifier-cli
-    catppuccin-whiskers
-    catppuccin-catwalk
+   #catppuccinifier-gui
+   #catppuccinifier-cli
+   #catppuccin-whiskers
+   #catppuccin-catwalk
 
     papirus-folders
 
-    nur.repos.shadowrz.klassy-qt6
    #libsForQt5.bismuth
 
     # GRUB Themes
@@ -66,7 +65,7 @@
    ++
 
   [
-    mypkgs.stable.gradience                     ##Theming for gtk2/3/4
+   #mypkgs.stable.gradience                     ##Theming for gtk2/3/4
   ];
 
 };}

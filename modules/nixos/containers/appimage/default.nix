@@ -22,7 +22,7 @@ in
 
       pkgs.gearlever                     ##AppImage management
      #pkgs.appimageupdate
-      mypkgs.stable.appimageupdate-qt
+     #mypkgs.stable.appimageupdate-qt
 
     ];
 

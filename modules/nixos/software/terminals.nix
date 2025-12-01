@@ -17,14 +17,14 @@
    #xfce.xfce4-terminal           ##Terminal emulator (xfce)
 
     # Drop Down
-    tilda                         ##Dropdown terminal
+   #tilda                         ##Dropdown terminal
    #kdePackages.yakuake           ##Dropdown terminal plugin (kde)
    #gnomeExtensions.yakuake       ##Dropdown terminal plugin (gnome)
-    guake
+   #guake
    #kitti3
-    hyper                        ## web based terminal?
-    tdrop                        ## anything dropdown!
-    hdrop                        ## tdrop for hyprland
+   #hyper                        ## web based terminal?
+   #tdrop                        ## anything dropdown!
+   #hdrop                        ## tdrop for hyprland
 
   ] ) config.my.software.terminals.exclude)
 

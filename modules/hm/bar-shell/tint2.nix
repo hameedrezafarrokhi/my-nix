@@ -39,10 +39,10 @@
 
   xdg.configFile = {
 
-    tint2-collection = {
-      source = "${inputs.tint2-collection}/";
-      target = "tint2/";
-    };
+   #tint2-collection = {
+   #  source = "${inputs.tint2-collection}/";
+   #  target = "tint2/";
+   #};
 
   };
 

@@ -33,7 +33,7 @@ in
        "catppuccin-readme".source = "${inputs.catppuccin}/README.md";
       "nix-flatpak-readme".source = "${inputs.nix-flatpak}/README.md";
           "chaotic-readme".source = "${inputs.chaotic}/README.md";
-      "flake-utils-readme".source = "${inputs.flake-utils}/README.md";
+ #    "flake-utils-readme".source = "${inputs.flake-utils}/README.md";
      "xremap-flake-readme".source = "${inputs.xremap-flake}/README.md";
  #         "fabric-readme".source = "${inputs.fabric}/README.md";
  #                  "gray".source = "${inputs.gray}/README.md";

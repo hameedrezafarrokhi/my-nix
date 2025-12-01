@@ -20,7 +20,7 @@
    #thunderbird
    #evolution                     ##Email Client
     freetube                      ##YouTube Client
-    pipeline                      ##YouTube Client
+   #pipeline                      ##YouTube Client
 
    #wike                          ##Wikipedia Client
    #tangram                       ##WebApp Saver/Loader
@@ -38,8 +38,8 @@
    #deluge-gtk                    ##Torrent
    #deluge                        ##Torrent (CLI)
    #transmission_4-qt6            ##Torrent for Cinnamon
-    varia                         ##Torrent modern GTK (Another)
-    fragments                     ##Torrent modern GTK
+   #varia                         ##Torrent modern GTK (Another)
+   #fragments                     ##Torrent modern GTK
    #qbittorrent                   ##Torrent
 
    #youtube-dl

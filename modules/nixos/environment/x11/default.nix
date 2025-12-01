@@ -21,6 +21,9 @@ in
     };
 
     environment.systemPackages = [
+
+      pkgs.xorg.xsetroot
+
       pkgs.wayback-x11
      #pkgs.i3status             ##i3 status bar
      #pkgs.i3lock               ##i3 screenlock
@@ -32,8 +35,12 @@ in
       pkgs.dmenu                ##i3/dwm app launcher menu
       pkgs.rofi                 ##i3/dwm app launcher menu (alternative)
       pkgs.xclip                ## Clipboard_manager
-      pkgs.variety              ## Wallpaper_manager
+     #pkgs.variety              ## Wallpaper_manager
      #pkgs.plank                ## Dock
+      pkgs.networkmanagerapplet #Network manager applet for bar
+      pkgs.playerctl
+     #pkgs.upower
+
     ];
 
     programs = {

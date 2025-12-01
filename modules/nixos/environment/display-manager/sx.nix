@@ -7,7 +7,7 @@
   services.xserver.displayManager.sx = {
     enable = true;
     package = pkgs.sx;
-    addAsSession = true;
+    addAsSession = false;
   };
 
 };}

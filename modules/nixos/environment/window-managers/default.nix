@@ -35,7 +35,8 @@ in
 
      type = lib.types.listOf (lib.types.enum [
 
-       "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax" "hyprland-ashell" "hyprland-exo"
+       "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ashell" "hyprland-exo"
+      #"hyprland-ax"
        "niri-uwsm" "niri-noctalia" "niri-dms"
 
       ]);
@@ -98,7 +99,7 @@ in
     ./rices-shells/hyprland-caelestia.nix
     ./rices-shells/hyprland-uwsm.nix
     ./rices-shells/hyprland-dms.nix
-    ./rices-shells/hyprland-ax.nix
+   #./rices-shells/hyprland-ax.nix
     ./rices-shells/hyprland-ashell.nix
     ./rices-shells/hyprland-exo.nix
 

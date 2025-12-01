@@ -4,7 +4,7 @@
 
   services = {
 
-    dleyna.enable = true;
+   #dleyna.enable = true;
 
    #samba = {
    #  enable = true;

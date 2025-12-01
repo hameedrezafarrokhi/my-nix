@@ -266,6 +266,9 @@
 
   home.packages = [
 
+    pkgs.catppuccinifier-cli
+    pkgs.catppuccin-qt5ct
+
     global-package
 
     gtk-package
@@ -1356,14 +1359,14 @@
       enable = true;
         flavor = myStuff.myCat.myGlobal-Flav;
     };
-    firefox.profiles = {
-      default = {
-        enable = true;
-        force = false;
-          flavor = myStuff.myCat.myGlobal-Flav;
-          accent = myStuff.myCat.myGlobal-Color;
-      };
-    };
+   #firefox.profiles = {
+   #  default = {
+   #    enable = true;
+   #    force = false;
+   #      flavor = myStuff.myCat.myGlobal-Flav;
+   #      accent = myStuff.myCat.myGlobal-Color;
+   #  };
+   #};
     kitty = {
       enable = true;
         flavor = myStuff.myCat.myGlobal-Flav;

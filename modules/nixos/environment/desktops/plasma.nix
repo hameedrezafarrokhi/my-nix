@@ -10,9 +10,9 @@
 
   environment = {
     systemPackages = with pkgs; [
-      kdePackages.discover ##KDE appstore
+     #kdePackages.discover ##KDE appstore
       kdePackages.krohnkite
-      polonium
+     #polonium
       kdePackages.dolphin-plugins
       kdePackages.plasma-integration
       kdePackages.plasma-browser-integration
@@ -44,7 +44,8 @@
       kdePackages.qtwebengine
       kdePackages.qtwebchannel
       nur.repos.xddxdd.plasma-smart-video-wallpaper-reborn
-      plasma-panel-colorizer
+     #nur.repos.shadowrz.klassy-qt6
+     #plasma-panel-colorizer
       kara
       kdePackages.kwayland-integration
      #kdePackages.kded
@@ -63,9 +64,9 @@
 
     kde-pim = {
       enable = false;
-      kmail = true;
-      kontact = true;
-      merkuro = true;
+      kmail = false;
+      kontact = false;
+      merkuro = false;
     };
 
   };

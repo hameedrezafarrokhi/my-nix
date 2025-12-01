@@ -17,7 +17,7 @@
       settings = {
         General = {
           Numlock = "on";
-          InputMethod = "maliit-keyboard";
+         #InputMethod = "maliit-keyboard";
         };
        #Wayland = {
        #  CompositorCommand = "${pkgs.kdePackages.kwin}/bin/kwin_wayland --drm --no-global-shortcuts --no-kactivities --no-lockscreen --locale1 --inputmethod maliit-keyboard";
@@ -36,8 +36,8 @@
  #environment.etc."usr/share/sddm/faces/hrf.face.icon".source = ./hrf.face.icon;
 
   environment.systemPackages = with pkgs; [
-    kdePackages.qtvirtualkeyboard
-    maliit-keyboard
+   #kdePackages.qtvirtualkeyboard
+   #maliit-keyboard
 
    #(writeTextDir "etc/sddm.conf.d/numlock.conf" ''
    #Numlock=on

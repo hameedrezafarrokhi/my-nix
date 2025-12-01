@@ -10,10 +10,10 @@ in
 
   options.my.hardware.printer.enable = lib.mkEnableOption "enable printers";
 
-  config = lib.mkIf cfg.enable {
+  config = {
 
     services.printing = {
-      enable = true;
+      enable = if cfg.enable then true else false;
       openFirewall = true;
     };
 

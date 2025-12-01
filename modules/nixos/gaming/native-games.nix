@@ -6,24 +6,24 @@
 
    #crosswords                    ##Crosswords game
     space-cadet-pinball           ##Classic pinball
-    pinball                       ##Another pinball
+   #pinball                       ##Another pinball
 
-    gnome-sudoku                  ##Gnome games
-    gnome-mahjongg                ##Gnome games
+   #gnome-sudoku                  ##Gnome games
+   #gnome-mahjongg                ##Gnome games
     gnome-mines                   ##Gnome games
-    gnome-chess                   ##Gnome games
+   #gnome-chess                   ##Gnome games
     gnome-nibbles                 ##Gnome games
 
-    kdePackages.kapman            ##KDE games
-    kdePackages.kbreakout         ##KDE games
-    kdePackages.kmahjongg         ##KDE games
-    kdePackages.knights           ##KDE games
-    kdePackages.kpat              ##KDE games
-    kdePackages.knavalbattle      ##KDE games
-    kdePackages.minuet            ##KDE games (music game)
+   #kdePackages.kapman            ##KDE games
+   #kdePackages.kbreakout         ##KDE games
+   #kdePackages.kmahjongg         ##KDE games
+   #kdePackages.knights           ##KDE games
+   #kdePackages.kpat              ##KDE games
+   #kdePackages.knavalbattle      ##KDE games
+   #kdePackages.minuet            ##KDE games (music game)
 
-    extremetuxracer
-    superTuxKart
+   #extremetuxracer
+   #superTuxKart
     vitetris
    #zeroad
    #zeroad-data

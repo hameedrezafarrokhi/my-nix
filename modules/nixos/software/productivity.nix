@@ -30,9 +30,9 @@
    #pitivi                        ##Video editor
    #video2x                       ##Video upscaler
 
-    letterpress                   ##ACSII creator
-    ascii-draw                    ##ACSII creator
-    calligraphy                   ##ACSII creator
+   #letterpress                   ##ACSII creator
+   #ascii-draw                    ##ACSII creator
+   #calligraphy                   ##ACSII creator
 
    #zotero                        ##Research indexes
    #minder                        ##Create Plans

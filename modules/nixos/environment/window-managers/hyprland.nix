@@ -36,48 +36,54 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+
     hyprpicker
     hyprshot
     hyprsunset
+    hyprpaper
 
     waybar               ##Wayland Status bar
    #gbar                 ##Wayland Status bar (Another)
    #eww                  ##Wayland Status bar with widgets (Another)
-    yambar
+   #yambar
+
    #dunst                ##Hyprland notification daemon
-    hyprpaper            ##Hyprland Wallpaper manager
    #swaybg               ##Hyprland Wallpaper manager (Another)
    #wpaperd              ##Hyprland Wallpaper manager (Another)
    #mpvpaper             ##Hyprland Wallpaper manager (Another)
    #swww                 ##Hyprland Wallpaper manager (Another)
    #rofi                 ##Hyprland launcher menu
    #wofi                 ##Hyprland launcher menu in gtk
-    networkmanagerapplet #Network manager applet for bar
    #hyprgui              #Hyprland GUI App
    #hyprshade            #Hyprland shade configuration tool
+
     wl-clipboard         ##Sway clipboard copy/paste
     cliphist
     grim
     slurp
 
     # ax shell
-    gnome-bluetooth
-    grimblast
-   #nvtopPackages.full
-    nvtopPackages.amd
-   #nvtopPackages.nvidia
-    tmux                     # add options later WARNING
-    wlinhibit
-    psutils
-    gobject-introspection
-    imagemagick
-    libnotify
-    playerctl
-    swappy
-    tesseract
-    upower
-    vte
-    webp-pixbuf-loader
+  # gnome-bluetooth
+  # grimblast
+  ##nvtopPackages.full
+  # nvtopPackages.amd
+  ##nvtopPackages.nvidia
+  # tmux                     # add options later WARNING
+  # wlinhibit
+  # psutils
+  # gobject-introspection
+  # imagemagick
+  # libnotify
+  # playerctl
+  # swappy
+  # tesseract
+  # upower
+  # vte
+  # webp-pixbuf-loader
+
+
+
+
 
    #(python3.withPackages (ps: with ps; [
    #   pygobject3

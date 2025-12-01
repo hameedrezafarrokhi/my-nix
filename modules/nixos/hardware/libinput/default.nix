@@ -46,7 +46,7 @@ in
     };
 
     services.ratbagd = {
-      enable = true;
+      enable = false;
       package = pkgs.libratbag;
     };
 

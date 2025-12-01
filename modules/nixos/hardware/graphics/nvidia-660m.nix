@@ -212,7 +212,7 @@ in
     };
 
     lact = {                        # OverClocking GUI App
-      enable = true;
+      enable = false;
       package = pkgs.lact;
     };
     ollama = {
@@ -220,7 +220,7 @@ in
     };
     switcherooControl = {
       package = pkgs.switcheroo-control;
-      enable = true;
+      enable = false;
     };
   };
 

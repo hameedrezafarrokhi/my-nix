@@ -12,11 +12,11 @@ in
 
   config = lib.mkIf config.my.systemd.enable {
 
-    systemd.user.extraConfig = ''
-
-      DefaultTimeoutStopSec=5s
-
-    '';
+   #systemd.user.extraConfig = ''
+   #
+   #  DefaultTimeoutStopSec=5s
+   #
+   #'';
 
   };
 

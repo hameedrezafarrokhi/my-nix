@@ -21,7 +21,7 @@ in
       borgbackup                    ##Backend of Pika
       borgmatic                     ##Borg Frontend for CLI
       vorta                         ##Borg Frontend with BorgBase
-      pika-backup                   ##Home files backup with borg
+     #pika-backup                   ##Home files backup with borg
 
     ];
 

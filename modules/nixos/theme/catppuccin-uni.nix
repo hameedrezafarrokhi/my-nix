@@ -106,54 +106,54 @@
 
   environment.systemPackages = with pkgs; [
 
-    catppuccin-sddm-corners
+   #catppuccin-sddm-corners
    #sddm-sugar-dark
 
-    (sddm-astronaut.override {
-      embeddedTheme = "astronaut";
-      themeConfig = {
-       #ScreenWidth="1920";
-       #ScreenHeight="1080";
-       #ScreenPadding="";
-        Font=MonoSpace;
-        FontSize=MonoSize;
-        RoundCorners="20";
-       #Locale="";
-        HourFormat="HH:mm";
-        DateFormat="dddd d MMMM";
-       #HeaderText="";
-        FormPosition="center";
-        Blur="0.0";
-        Background="";
-        BackgroundColor=backgroundFill;
-      };
-    })
+   #(sddm-astronaut.override {
+   #  embeddedTheme = "astronaut";
+   #  themeConfig = {
+   #   #ScreenWidth="1920";
+   #   #ScreenHeight="1080";
+   #   #ScreenPadding="";
+   #    Font=MonoSpace;
+   #    FontSize=MonoSize;
+   #    RoundCorners="20";
+   #   #Locale="";
+   #    HourFormat="HH:mm";
+   #    DateFormat="dddd d MMMM";
+   #   #HeaderText="";
+   #    FormPosition="center";
+   #    Blur="0.0";
+   #    Background="";
+   #    BackgroundColor=backgroundFill;
+   #  };
+   #})
 
-    (pkgs.where-is-my-sddm-theme.override {
-      themeConfig.General = {
-       #background =displayManager-background ;
-       #backgroundMode = "none";
-        backgroundFill= backgroundFill;
-        showSessionsByDefault=true;
-        sessionsFontSize=13;
-        showUsersByDefault=true;
-        font=MonoSpace;
-        passwordFontSize=20;
-        passwordInputWidth=0.7;
-        passwordcharacter="";
-        cursorBlinkAnimation=false;
-        passwordInputCursorVisible=false;
-      };
-    })
+   #(pkgs.where-is-my-sddm-theme.override {
+   #  themeConfig.General = {
+   #   #background =displayManager-background ;
+   #   #backgroundMode = "none";
+   #    backgroundFill= backgroundFill;
+   #    showSessionsByDefault=true;
+   #    sessionsFontSize=13;
+   #    showUsersByDefault=true;
+   #    font=MonoSpace;
+   #    passwordFontSize=20;
+   #    passwordInputWidth=0.7;
+   #    passwordcharacter="";
+   #    cursorBlinkAnimation=false;
+   #    passwordInputCursorVisible=false;
+   #  };
+   #})
 
-    (writeTextDir "share/sddm/themes/catppuccin-sddm-corners/theme.conf.user" ''
-    [General]
-    LoginScale="0.080"
-    UserPictureBorderWidth="0"
-    TextFieldHighlightWidth="0"
-    Padding="25"
-    GeneralFontSize="8"
-    '')
+   #(writeTextDir "share/sddm/themes/catppuccin-sddm-corners/theme.conf.user" ''
+   #[General]
+   #LoginScale="0.080"
+   #UserPictureBorderWidth="0"
+   #TextFieldHighlightWidth="0"
+   #Padding="25"
+   #GeneralFontSize="8"
+   #'')
 
     (writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
     [General]
@@ -171,10 +171,17 @@
 
   boot.plymouth = {
     enable = true;
+   #package = pkgs.plymouth.override {
+   #            systemd = config.boot.initrd.systemd.package;
+   #          };
     themePackages = lib.mkForce [ plymouth-package ];
     theme = lib.mkForce plymouth-theme;
     logo = lib.mkForce plymouth-logo;
    #font = lib.mkForce plymouth-font;
+   #tpm2-totp = {
+   #  enable = false;
+   #  package = pkgs.tpm2-totp-"with"-plymouth;
+   #};
   };
 
   services.displayManager = {

@@ -22,39 +22,39 @@
   ############################################################   MUSIC_PLAYER
 
     amberol                       ##Modern music player
-    decibels                      ##Modern music player (gnome)
-    gnome-music                   ##Gnome music player
-    resonance                     ##Modern music player (Another)
+   #decibels                      ##Modern music player (gnome)
+   #gnome-music                   ##Gnome music player
+   #resonance                     ##Modern music player (Another)
    #qmmp                          ##Old music player (winapm)
-    audacious                     ##Old music player
-    parlatype                     ##Another Gnome Music Player
+   #audacious                     ##Old music player
+   #parlatype                     ##Another Gnome Music Player
 
-    spotify                       ##Spotify Client (unofficial)
-    spotdl                        ##Spotify Downloader
-    monophony                     ##Online music player
-    mousai                        ##Shazam for linux
-    shortwave                     ##Online radio
+   #spotify                       ##Spotify Client (unofficial)
+   #spotdl                        ##Spotify Downloader
+   #monophony                     ##Online music player
+   #mousai                        ##Shazam for linux
+   #shortwave                     ##Online radio
    #kdePackages.audiotube         ##KDE online music (not good)
 
-    cozy                          ##Audiobook manager
-    blanket                       ##White noises and ambient
+   #cozy                          ##Audiobook manager
+   #blanket                       ##White noises and ambient
 
    #cavalier                      ##Visualisation for audio
-    eartag                        ##Audio metadata editor
+   #eartag                        ##Audio metadata editor
 
   ################################################################   PICTURES
 
     pix                           ##Image viewer (Cinnamon)
-    nomacs                        ##Image viewer (Titus)
-    loupe                         ##Image viewer (Gnome)
+   #nomacs                        ##Image viewer (Titus)
+   #loupe                         ##Image viewer (Gnome)
     shotwell                      ##Image viewer (KDE-old)
     kdePackages.gwenview          ##Image viewer (KDE)
-    kdePackages.koko              ##Image viewer (KDE)
-    komikku                       ##Comicbook viewer
-    identity                      ##Compare images side-by-side
-    digikam                       ##Photo
-    switcheroo                    ##Image Conversion
-    converseen                    ##Bulk image editor
+   #kdePackages.koko              ##Image viewer (KDE)
+   #komikku                       ##Comicbook viewer
+   #identity                      ##Compare images side-by-side
+   #digikam                       ##Photo
+   #switcheroo                    ##Image Conversion
+   #converseen                    ##Bulk image editor
 
   ] ) config.my.software.multimedia.exclude)
 

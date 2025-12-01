@@ -14,11 +14,11 @@
       };
 
       # GNOME STUFF
-      gnome.localsearch.enable = true;
-      gnome.tinysparql.enable = true;
+      gnome.localsearch.enable = false;
+      gnome.tinysparql.enable = false;
       gnome.glib-networking.enable = true;
-      gnome.sushi.enable = true;
-      sysprof.enable = true;
+      gnome.sushi.enable = false;
+      sysprof.enable = false;
 
       gvfs = {
         enable = true;

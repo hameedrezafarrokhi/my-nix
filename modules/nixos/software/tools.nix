@@ -14,8 +14,8 @@
    #   enableWlrSupport = true;
    #   enableMonochromeIcon = true;
    #})
-    ksnip                         ##Screenshots
-    gradia                        ##Screenshots
+   #ksnip                         ##Screenshots
+   #gradia                        ##Screenshots
 
     kdePackages.kruler            ##KDE ruler
 
@@ -25,26 +25,26 @@
    #ulauncher                     ##Keyboard Launcher
    #albert                        ##Keyboard Launcher
 
-    kdePackages.kunitconversion   ##KDE unit converter krunner plugin
-    convertall                    ##Unit converter
-    valuta                        ##Currency converter
+   #kdePackages.kunitconversion   ##KDE unit converter krunner plugin
+   #convertall                    ##Unit converter
+   #valuta                        ##Currency converter
 
-    clairvoyant                   ##Ask the 8ball!
-    chance                        ##Roll the dice!
+   #clairvoyant                   ##Ask the 8ball!
+   #chance                        ##Roll the dice!
 
     eyedropper                    ##Colorpicker
 
     gnome-characters              ##Gnome emojis
-    gnome-decoder                 ##QR code reader
+   #gnome-decoder                 ##QR code reader
     gnome-clocks                  ##Gnome clock app
     gnome-calendar                ##Gnome calendar
-    gnome-weather                 ##Gnome weather
-    gnome-maps                    ##Gnome maps
+   #gnome-weather                 ##Gnome weather
+   #gnome-maps                    ##Gnome maps
 
-    mousam                        ##Persian Weather
-    kdePackages.kweather          ##KDE weather
+   #mousam                        ##Persian Weather
+   #kdePackages.kweather          ##KDE weather
 
-    keypunch                      ##Train keyboard
+   #keypunch                      ##Train keyboard
 
     kdePackages.ktimer            ##Task Timer KDE
     kdePackages.kalarm
@@ -52,12 +52,12 @@
     kdePackages.kcron
     peaclock                       ##CLI Clock and Task Timer utils
 
-    dxvk
-    dxvk_2
-    vulkan-tools
-    libva-utils
-    clinfo
-    vdpauinfo
+   #dxvk
+   #dxvk_2
+   #vulkan-tools
+   #libva-utils
+   #clinfo
+   #vdpauinfo
    #driversi686Linux.vdpauinfo
 
    #libgbm
@@ -74,8 +74,8 @@
    #celestia
    #astroterm
 
-    devtoolbox
-    emblem
+   #devtoolbox
+   #emblem
    #blesh
 
    #quickshell
@@ -87,16 +87,14 @@
 
     gpu-screen-recorder-gtk
     matugen
-    fltk
-    brightnessctl
-    ddcutil
+   #fltk
 
-    feishin
+   #feishin
    #CuboCore.coretime
 
     bullshit
 
-    ueberzug
+   #ueberzug
 
   ] ) config.my.software.tools.exclude)
 
@@ -108,17 +106,18 @@
 
   [
     mypkgs.stable.ulauncher
-    mypkgs.stable.CuboCore.coretime
+   #mypkgs.stable.CuboCore.coretime
   ]
 
    #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe/package.nix" { })]
    #++ [((pkgs.extend (final: prev: {openssl_3_3 = prev.openssl_3_5;})).callPackage "${inputs.windscribe}/windscribe.nix" { } )]
    #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe.nix" { })]
 
-    ++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
-    ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
     ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]

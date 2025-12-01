@@ -7,15 +7,15 @@
    #gamescope                     ##FSR stuff
    #gamemode                      ##Ferral gamemode optimization
     mangohud                      ##FPS overlay
-    goverlay                      ##FPS overlay GUI
-    mangojuice                    ##Goverlay alternative
-    protonplus                    ##Proton stuff
-    protonup-qt                   ##Proton stuff
+   #goverlay                      ##FPS overlay GUI
+   #mangojuice                    ##Goverlay alternative
+   #protonplus                    ##Proton stuff
+   #protonup-qt                   ##Proton stuff
    #protonup-ng
    #protonup-rs
    #protontricks                  ##Proton stuff
-    ludusavi                      ##Scan all games launcher
-    cartridges                    ##Export game saves
+   #ludusavi                      ##Scan all games launcher
+   #cartridges                    ##Export game saves
 
   ];
 

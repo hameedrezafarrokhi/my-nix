@@ -6,10 +6,10 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
-      helvum                        ##Pipewire control
-      qpwgraph                      ##Pipewire control (Another)
-      easyeffects                   ##Audio effect for Pipewire
-      jamesdsp                      ##Audio effect for Pipewire (Unstable Bad)
+     #helvum                        ##Pipewire control
+     #qpwgraph                      ##Pipewire control (Another)
+     #easyeffects                   ##Audio effect for Pipewire
+     #jamesdsp                      ##Audio effect for Pipewire (Unstable Bad)
 
       pavucontrol                   ##Pulseaudio control
      #jamesdsp-pulse                ##Audio effect for Pulseaudio

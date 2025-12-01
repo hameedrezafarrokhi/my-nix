@@ -18,8 +18,8 @@
   ];
 
     # ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.su}/bin/su m --command='systemctl --user start bspwm-reload.service'"
-  services.udev.extraRules = ''
-    ACTION=="add|remove", SUBSYSTEM=="drm", RUN+="${pkgs.systemd}/bin/systemctl --user start bspwm-reload.service"
-  '';
+ #services.udev.extraRules = ''
+ #  ACTION=="add|remove", SUBSYSTEM=="drm", RUN+="${pkgs.systemd}/bin/systemctl --user start bspwm-reload.service"
+ #'';
 
 };}

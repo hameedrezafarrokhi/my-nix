@@ -47,7 +47,7 @@
 
              chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; };
 
-         flake-utils = { url = "github:numtide/flake-utils";};
+#        flake-utils = { url = "github:numtide/flake-utils";};
 
       cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
                                 inputs.nixpkgs.follows = "nixpkgs";
@@ -72,8 +72,8 @@
                                 inputs.nixpkgs.follows = "nixpkgs"; };
                                #inputs.quickshell.follows = "quickshell"; };
 
-            ax-shell = { url = "github:poogas/Ax-Shell";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
+#           ax-shell = { url = "github:poogas/Ax-Shell";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
 
           #   fabric = { url = "github:Fabric-Development/fabric";      # OLD STUFF
           #                     inputs.nixpkgs.follows = "nixpkgs"; };
@@ -96,15 +96,15 @@
                                 flake = false; };
              drew-wm = { url = "github:drewgrif/dwm-setup";
                                 flake = false; };
-            bread-wm = { url = "github:BreadOnPenguins/dwm";
-                                flake = false; };
-               pd-wm = { url = "github:r0-zero/pdwm";
-                                flake = false; };
-               pdwmc = { url = "github:r0-zero/pdwmc";
-                                flake = false; };
+#           bread-wm = { url = "github:BreadOnPenguins/dwm";
+#                               flake = false; };
+#              pd-wm = { url = "github:r0-zero/pdwm";
+#                               flake = false; };
+#              pdwmc = { url = "github:r0-zero/pdwmc";
+#                               flake = false; };
 
-             omarchy = { url = "github:basecamp/omarchy";
-                                flake = false; };
+#            omarchy = { url = "github:basecamp/omarchy";
+#                               flake = false; };
 
          nix-artwork = { url = "github:NixOS/nixos-artwork";
                                 flake = false; };
@@ -115,18 +115,18 @@
   catppuccin-openbox = { url = "github:catppuccin/openbox";
                                 flake = false; };
 
-      polybar-themes = { url = "github:adi1090x/polybar-themes";
-                                flake = false; };
-  polybar-collection = { url = "github:Murzchnvok/polybar-collection";
-                                flake = false; };
-    tint2-collection = { url = "github:addy-dclxvi/tint2-theme-collections";
-                                flake = false; };
+#     polybar-themes = { url = "github:adi1090x/polybar-themes";
+#                               flake = false; };
+# polybar-collection = { url = "github:Murzchnvok/polybar-collection";
+#                               flake = false; };
+#   tint2-collection = { url = "github:addy-dclxvi/tint2-theme-collections";
+#                               flake = false; };
 
         picom-ftlabs = { url = "github:r0-zero/picom"; };
-      git-ignore-nix = { url = "github:hercules-ci/gitignore.nix";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
+#     git-ignore-nix = { url = "github:hercules-ci/gitignore.nix";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
 
-         #windscribe = { url = "github:ParkerrDev/nixpkgs-windscribe";};
+#         windscribe = { url = "github:ParkerrDev/nixpkgs-windscribe";};
 
   };
 
@@ -150,36 +150,19 @@
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};
-
-   #    kernel = import inputs.kernel     {system=system;config=pkgsConf;};
-   #  fallback = import inputs.fallback   {system=system;config=pkgsConf;};
+#     fallback = import inputs.fallback   {system=system;config=pkgsConf;};
     };
     myOverlays = [
      #inputs.nur.overlays.default
      #inputs.chaotic.overlays.default
-      inputs.ax-shell.overlays.default
+     #inputs.ax-shell.overlays.default
+
       (final: prev: {
         plasma-panel-colorizer = prev.plasma-panel-colorizer.overrideAttrs {
           postInstall = "chmod 755 $out/share/plasma/plasmoids/luisbocanegra.panel.colorizer/contents/ui/tools/list_presets.sh";
         };
       })
-     #(final: prev: {
-     #  picom = prev.picom.overrideAttrs (oldAttrs: rec {
-     #    version = "11";
-     #    pname = "picom";
-     #    buildInputs =
-     #      [
-     #        final.pcre2
-     #        final.xorg.xcbutil
-     #        final.libepoxy
-     #        final.asciidoc-full-with-plugins
-     #      ]
-     #      ++ final.lib.remove final.xorg.libXinerama (
-     #        final.lib.remove final.pcre oldAttrs.buildInputs
-     #      );
-     #    src = /*inputs.git-ignore-nix.lib.gitignoreSource*/ inputs.picom-ftlabs;
-     #  });
-     #})
+
     ];
 
 
@@ -212,7 +195,7 @@
               inputs.catppuccin.homeModules.catppuccin
               inputs.dankMaterialShell.homeModules.dankMaterialShell.default
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-              inputs.ax-shell.homeManagerModules.default
+             #inputs.ax-shell.homeManagerModules.default
               inputs.mango.hmModules.mango
               inputs.ignis.homeManagerModules.default
               (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
@@ -275,7 +258,7 @@
             inputs.catppuccin.homeModules.catppuccin
             inputs.dankMaterialShell.homeModules.dankMaterialShell.default
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-            inputs.ax-shell.homeManagerModules.default
+           #inputs.ax-shell.homeManagerModules.default
             inputs.mango.hmModules.mango
             inputs.ignis.homeManagerModules.default
             (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })

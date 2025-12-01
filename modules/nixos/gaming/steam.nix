@@ -33,7 +33,7 @@
     extest.enable = true;                                 # Translate X11 input (e.g. for using Steam Input on Wayland)
 
     gamescopeSession = {
-      enable = true;
+      enable = false;
      #args = [  ];
      #steamArgs = [  ];
      #env = {  };

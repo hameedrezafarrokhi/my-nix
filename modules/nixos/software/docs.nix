@@ -14,15 +14,15 @@
    #wpsoffice
 
    #evince                        ##PDF (Gnome)
-    xreader                       ##PDF (Cinnamon)
+   #xreader                       ##PDF (Cinnamon)
     sioyek
-    papers
+   #papers
     kdePackages.okular
    #calibre                       ##PDF/ebook (not that good)
    #pdfarranger                   ##PDF editor
    #karp                          ##KDEs pdfarranger Alternative
 
-    foliate
+   #foliate
 
     kdePackages.kate              ##text editor GUI (KDE)
 
@@ -30,7 +30,7 @@
    #joplin-desktop                ##Online notes
 
     iotas                         ##Markdown
-    kdePackages.marknote          ##Markdown (kde)
+   #kdePackages.marknote          ##Markdown (kde)
    #apostrophe                    ##Markdown
    #folio                         ##Markdown
 
@@ -38,8 +38,8 @@
 
     kdePackages.kompare           ##Compare Documents and Texts
 
-    morphosis                     ##Convert docs
-    gnome-frog                    ##PDF/img text extractor
+   #morphosis                     ##Convert docs
+   #gnome-frog                    ##PDF/img text extractor
 
   ] ) config.my.software.docs.exclude)
 
@@ -68,7 +68,7 @@
      #runtime = { };
     };
 
-    evince.enable = true;
+    evince.enable = false;
 
   };
 

@@ -24,7 +24,7 @@
         zram.enable = true;
         tmpfs.enable = true;
       };
-      fan = "cooler-control";
+     #fan = "cooler-control";
       mounts = [ ];
       bluetooth.enable = true;
       sound = "pipewire";
@@ -38,7 +38,7 @@
       };
       storage.enable = true;
       gamepads.enable = true;
-      logitech.enable = true;
+      logitech.enable = false;
       printer.enable = false;
       scanner.enable = false;
       power = {
@@ -46,7 +46,7 @@
       };
       cd.enable = false;
       screen.enable = true;
-      rgb.enable = true;
+      rgb.enable = false;
       android.enable = true;
     };
 
@@ -133,20 +133,20 @@
       shares.enable = true;
       avahi.enable = true;
       nm-applet.enable = true;
-      nfs.enable = true;
+      nfs.enable = false;
       torrent.enable = false;
-      tools.enable = true;
+      tools.enable = false;
     };
 
     services.enable = true;
 
     locale = "en_US.UTF-8";
-    geoclue.enable = true;
+    geoclue.enable = false;
     timeZone = "Asia/Tehran";
     fonts.enable = true;
 
     tasks.enable = false;
-    search.enable = true;
+    search.enable = false;
 
     user = {
       enable = true;
@@ -172,7 +172,7 @@
     containers = {
       flatpak.enable = true;
       appimage.enable = true;
-      podman.enable = true;
+      podman.enable = false;
       docker.enable = false;
       waydroid.enable = false;
     };
@@ -186,7 +186,7 @@
 
     software = {
       ai = {
-        enable = true;
+        enable = false;
         exclude = with pkgs; [ gpt4all gpt4all-cuda chatd aichat yai ];
         include = with pkgs; [ ];
       };
@@ -206,7 +206,7 @@
         include = with pkgs; [ ];
       };
       wallpaper = {
-        enable = true;
+        enable = false;
         exclude = with pkgs; [ ];
         include = with pkgs; [ ];
       };
@@ -271,7 +271,7 @@
         include = with pkgs; [ ];
       };
       peripherals = {
-        enable = true;
+        enable = false;
         exclude = with pkgs; [ ];
         include = with pkgs; [ ];
       };
@@ -371,7 +371,7 @@
 
           ];
 
-          distrobox.enable = true;
+          distrobox.enable = false;
 
           bar-shell.shells = [
             # wayland
