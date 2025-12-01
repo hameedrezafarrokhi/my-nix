@@ -1,4 +1,4 @@
-{ config, lib, pkgs, utils, ... }:
+{ config, lib, pkgs, utils, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.software.wine.enable) {
 

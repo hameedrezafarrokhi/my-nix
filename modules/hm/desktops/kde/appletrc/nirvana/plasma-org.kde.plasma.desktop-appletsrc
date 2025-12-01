@@ -62,7 +62,7 @@ plugin=org.kde.plasma.kicker
 
 [Containments][527][Applets][528][Configuration]
 PreloadWeight=100
-popupHeight=469
+popupHeight=441
 popupWidth=300
 
 [Containments][527][Applets][528][Configuration][ConfigDialog]
@@ -132,7 +132,7 @@ plugin=org.kde.plasma.weather
 
 [Containments][527][Applets][532][Configuration]
 PreloadWeight=100
-popupHeight=304
+popupHeight=330
 popupWidth=337
 
 [Containments][527][Applets][532][Configuration][ConfigDialog]

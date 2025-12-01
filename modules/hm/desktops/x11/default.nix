@@ -87,6 +87,8 @@ in
       pkgs.sxcs
 
       pkgs.betterlockscreen
+
+     #pkgs.deadd-notification-center
     ];
 
     xsession = {

@@ -17,6 +17,8 @@
     multitail                     ##ls stuff
     tldr                          ##Too long, didnt read!
     jq
+    killall
+   #toybox
 
     wget
    #python3Full                           # lots of overrides
