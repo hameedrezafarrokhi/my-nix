@@ -6,6 +6,8 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
+    libnotify
+
     xdotool
 
     onboard                       ##Onscreen keyboard
