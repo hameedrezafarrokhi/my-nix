@@ -45,6 +45,42 @@ let
     wait "$LOCK_PID"
   '';
 
+  xsession-save = pkgs.writeShellScriptBin "xsession-save" ''
+    OUT="$HOME/.cache/xsession-restore"
+    mkdir -p "$(dirname "$OUT")"
+    : > "$OUT"
+
+    # Use xlsclients to extract command strings for each GUI client
+    xlsclients -l | awk '/command/ {sub(/^.*command: /,""); print}' | while read -r cmd
+    do
+        # Filter out empty or weird commands
+        if [ -n "$cmd" ] && [[ "$cmd" != "??" ]]; then
+            echo "$cmd" >> "$OUT"
+        fi
+    done
+
+    notify-send "Session saved" "Stored in ~/.cache/xsession-restore"
+  '';
+
+  xsession-load = pkgs.writeShellScriptBin "xsession-load" ''
+    IN="$HOME/.cache/xsession-restore"
+
+    if [ ! -f "$IN" ]; then
+        notify-send "Restore failed" "No saved session file found."
+        exit 1
+    fi
+
+    while IFS= read -r cmd
+    do
+        if [ -n "$cmd" ]; then
+            # Launch each application in background
+            bash -c "$cmd" &
+        fi
+    done
+
+    notify-send "Session restored" "Applications launched."
+  '';
+
 in
 
 {
@@ -89,6 +125,9 @@ in
       pkgs.betterlockscreen
 
      #pkgs.deadd-notification-center
+
+      xsession-load
+      xsession-save
     ];
 
     xsession = {

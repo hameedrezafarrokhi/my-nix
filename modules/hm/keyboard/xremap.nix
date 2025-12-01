@@ -475,6 +475,10 @@ in
                       launch: [ "lock-restart" ]
                     c:
                       launch: [ "xremap-pp" ]
+                    y:
+                      launch: [ "xsession-save" ]
+                    u:
+                      launch: [ "xsession-load" ]
 
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]
