@@ -114,6 +114,7 @@ in
             fi
         done &
 
+        bspc rule -a Tilda state=floating # rectangle=0x0+0+0
         bspc rule -a ulauncher border=off
         bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
@@ -300,6 +301,7 @@ in
     home.packages = [
 
       pkgs.sxhkd
+      pkgs.tilda
      #pkgs.plank
       pkgs.dockbarx
      #pkgs.xorg.xdpyinfo
