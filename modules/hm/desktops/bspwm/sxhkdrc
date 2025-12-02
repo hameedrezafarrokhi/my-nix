@@ -482,6 +482,10 @@ super + shift + k ; {Up,Down,Left,Right}
 super + alt + k
     tabc detach $(bspc query -N -n focused)
 
+# Toggle Autosub For Focused Tabbed Window
+super + alt + shift + k
+    tabc autoattach $(bspc query -N -n)
+
 # Unhide Windows on Focused Desktop
 super + shift + alt + d
     bash -c 'for n in $(bspc query -N -n .hidden.local); do bspc node "$n" -g hidden=off; done'
