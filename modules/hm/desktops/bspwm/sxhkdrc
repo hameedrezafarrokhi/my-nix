@@ -306,13 +306,33 @@ super + alt + g
 super + shift + g
       bsp-poly-hide
 
-# Scratchpad Terminal
+# Scratchpad Sticky Kitty
 super + ctrl + Return
       {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && kitty}
 
-# Scratchpad
+# Scratchpad Sticky Audio/Pavucontrol
+super + v
+      {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && pavucontrol}
+
+# Scratchpad Terminal
 super + ctrl + space
       scratchpad
+
+# Scratchpad Add
+super + shift + apostrophe
+      bspad hide
+
+# Scratchpad Toggle
+super + apostrophe
+      bspad toggle
+
+# Scratchpad Cycle
+super + alt + apostrophe
+      bspad cycle
+
+# Scratchpad Remove
+super + alt + shift + apostrophe
+      bspad unmark; bspc node -t ~floating
 
 # Gaps Increase
 super + ctrl + equal
@@ -458,7 +478,7 @@ super + k
 super + shift + k
     tabc attach $(bspc query -N -n focused) $(bspc query -N -n pointed)
 
-# Creat Tab on Focused
+# Remove Focused Window from Tab
 super + alt + k
     tabc detach $(bspc query -N -n focused)
 

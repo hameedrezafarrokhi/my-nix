@@ -179,6 +179,10 @@ let
     ${builtins.readFile ./scratchpad}
   '';
 
+  bspad = pkgs.writeShellScriptBin "bspad" ''
+    ${builtins.readFile ./bspad}
+  '';
+
   bsp-gaps = pkgs.writeShellScriptBin "bsp-gaps" ''
     case "$1" in
         +|-) op="$1";;
@@ -570,6 +574,7 @@ in
       bsp-unhide-last-hidden
       bsp-conky
       bspswallow
+      bspad
       scratchpad
 
     ];
