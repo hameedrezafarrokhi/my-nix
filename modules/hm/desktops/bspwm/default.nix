@@ -178,7 +178,19 @@ in
         	  skippy-xd --start-daemon &
         fi
 
+         # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
         pgrep bspswallow || bspswallow &
+
+         # Generic Swallower (Doesnt Work)
+        #export PIDSWALLOW_SWALLOW_COMMAND='bspc node $pwid --flag hidden=on'
+        #export PIDSWALLOW_VOMIT_COMMAND='bspc node $pwid --flag hidden=off'
+        ##export PIDSWALLOW_PREGLUE_HOOK='bspc query -N -n $pwid.floating >/dev/null && bspc node $cwid --state floating'
+        #pgrep -fl 'pidswallow -gl' || pidswallow -gl &
+
+         # Manual Swallowe With Include List (Set Env Vars Below)
+        #export SWALLOW_APPLICATIONS="sxiv|zathura|mpv"
+        #export SWALLOW_TERMINALS="xterm|gnome-terminal"
+        bspwmswallow &
 
         #bspc subscribe node_add | while read -r _; do
         #   xdo raise -N Plank &
@@ -322,6 +334,14 @@ in
      #  '';
      #}))
     ];
+
+    home.sessionVariables = {
+
+      SWALLOW_APPLICATIONS = "sxiv|zathura|mpv|feh|vlc|gwenview|showtime|resources";
+     #SWALLOW_TERMINALS = "xterm|gnome-terminal";
+      SWALLOW_TERMINALS = "wezterm|ghostty";
+
+    };
 
     systemd.user.services.bspwm-reload = {
       Unit = {

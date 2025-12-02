@@ -518,6 +518,14 @@ let
     ${builtins.readFile ./bspswallow}
   '';
 
+  bspwmswallow = pkgs.writeShellScriptBin "bspwmswallow" ''
+    ${builtins.readFile ./bspwmswallow}
+  '';
+
+  pidswallow = pkgs.writeShellScriptBin "pidswallow" ''
+    ${builtins.readFile ./pidswallow}
+  '';
+
   bsp-touchegg = pkgs.writeShellScriptBin "bsp-touchegg" ''
     rm -f $HOME/.config/touchegg/touchegg.conf
     cp ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
@@ -574,6 +582,8 @@ in
       bsp-unhide-last-hidden
       bsp-conky
       bspswallow
+      bspwmswallow
+      pidswallow
       bspad
       scratchpad
 

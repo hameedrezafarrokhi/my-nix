@@ -475,8 +475,8 @@ super + k
     tabc create $(bspc query -N -n focused)
 
 # Join Focused Window to the Tab
-super + shift + k
-    tabc attach $(bspc query -N -n focused) $(bspc query -N -n pointed)
+super + shift + k ; {Up,Down,Left,Right}
+    tabc attach $(bspc query -N -n focused) $(bspc query -N -n {north,south,west,east})
 
 # Remove Focused Window from Tab
 super + alt + k
@@ -521,3 +521,11 @@ super + ctrl + shift + n
 # Clear Notifications History
 super + ctrl + shift + alt + n
     dunstctl history-clear
+
+# Swallow Focused Windows Terminal Parent
+super + slash
+    xdo id | pidswallow -gt
+
+# Swallow Focused Windows Terminal Parent with Click
+super + alt + slash
+    xwininfo | awk '/Window id:/{print $4}' | pidswallow -gt
