@@ -70,7 +70,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][527][Applets][528][Configuration][General]
-customButtonImage=/home/hrf/Pictures/nix-artwork/logo/nix-snowflake-white.svg
+customButtonImage=distributor-logo-nixos
 favoritesPortedToKAstats=true
 useCustomButtonImage=true
 
