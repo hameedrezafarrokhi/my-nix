@@ -96,6 +96,9 @@
 
     bullshit
 
+
+    wmctrl
+
    #ueberzug
 
   ] ) config.my.software.tools.exclude)
@@ -119,6 +122,7 @@
    #++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
     ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/xsession-manager.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]

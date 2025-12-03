@@ -21,6 +21,7 @@ let
     DELAY0=120  # 2 minutes
     DELAY=180   # 3 minutes
 
+    yes | xsession-manager -s temp &
     dunstctl set-paused true
 
     # Start i3lock

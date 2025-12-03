@@ -64,6 +64,7 @@ let
   '';
 
   x-logout = pkgs.writeShellScriptBin "x-logout" ''
+    xsession-manager -s temp
     bspc quit
     pkill dwm
     pkill dwm
@@ -163,6 +164,16 @@ let
     notify-send "$(curl -s "wttr.in/Tehran?format=%c+%C+%t+%f+%h+%w+%m+%l+%S+%s")"
   '';
 
+  xremap-xsession-save = pkgs.writeShellScriptBin "xremap-xsession-save" ''
+    echo "y" | xsession-manager -s temp &&
+    notify-send "Session Saved as Temp"
+  '';
+
+  xremap-xsession-load = pkgs.writeShellScriptBin "xremap-xsession-load" ''
+    echo "y" | xsession-manager -pr temp &&
+    notify-send "Temp Session Restored"
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -191,6 +202,8 @@ in
     xremap-help
     xremap-motd
     xremap-weather
+    xremap-xsession-load
+    xremap-xsession-save
    #vlc-env
   ];
 
@@ -475,10 +488,8 @@ in
                       launch: [ "lock-restart" ]
                     c:
                       launch: [ "xremap-pp" ]
-                    y:
-                      launch: [ "xsession-save" ]
-                    u:
-                      launch: [ "xsession-load" ]
+                    KEY_BACKSPACE:
+                      launch: [ "xremap-xsession-load" ]
 
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]
@@ -487,7 +498,9 @@ in
             Super-Shift-Ctrl-x:
                       launch: [ "xss-kill" ]
             Super-Shift-Ctrl-p:
-              launch: [ "xremap-picom-toggle" ]
+                      launch: [ "xremap-picom-toggle" ]
+            Super-Shift-Ctrl-KEY_BACKSPACE:
+                      launch: [ "xremap-xsession-save" ]
 
 
 

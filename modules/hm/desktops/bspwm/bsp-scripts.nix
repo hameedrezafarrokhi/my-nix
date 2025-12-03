@@ -107,7 +107,7 @@ let
   bsp-power = pkgs.writeShellScriptBin "bsp-power" ''
     ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
 
-    chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM❤️\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot" | \
+    chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM❤️\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot\n󰆓 Save Session\n󰆔 Restore Session" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
 
     case "$chosen" in
@@ -122,6 +122,8 @@ let
         "󰒲 Sleep") systemctl suspend  ;;
         "󰤆 Shutdown") systemctl poweroff ;;
         "󱄋 Reboot") systemctl reboot ;;
+        "󰆓 Save Session") yes | xsession-manager -s bspwm ;;
+        "󰆔 Restore Session") yes | xsession-manager -pr bspwm ;;
         *) exit 0 ;; # Exit on cancel or invalid input
     esac
   '';
