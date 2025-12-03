@@ -148,7 +148,7 @@ let
         tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         #plank &
-        dockx &
+        #dockx &
     fi
   '';
 
@@ -172,6 +172,14 @@ let
     else
         bspc config top_padding $TOP_HEIGHT
         polybar $BAR_NAME &
+    fi
+  '';
+
+  bsp-dock-hide = pkgs.writeShellScriptBin "bsp-dock-hide" ''
+    if pgrep dockx > /dev/null; then
+        pkill dockx
+    else
+        dockx &
     fi
   '';
 
@@ -545,6 +553,72 @@ let
     fi
   '';
 
+  bsp-desktop-switch = pkgs.writeShellScriptBin "bsp-desktop-switch" ''
+    target="$1"
+    current="$(bspc query -D -d focused --names)"
+
+    # Create a temporary desktop on the current monitor
+    temp="swap_buffer"
+    bspc monitor -a "$temp"
+
+    # Capture nodes before moving anything
+    current_nodes=$(bspc query -N -d "$current")
+    target_nodes=$(bspc query -N -d "$target")
+
+    # Move current → temp
+    for n in $current_nodes; do
+        bspc node "$n" --to-desktop "$temp"
+    done
+
+    # Move target → current
+    for n in $target_nodes; do
+        bspc node "$n" --to-desktop "$current"
+    done
+
+    # Move temp → target
+    temp_nodes=$(bspc query -N -d "$temp")
+    for n in $temp_nodes; do
+        bspc node "$n" --to-desktop "$target"
+    done
+
+    # Remove temporary desktop
+    bspc desktop "$temp" --remove
+  '';
+
+  bsp-desktop-switch-follow = pkgs.writeShellScriptBin "bsp-desktop-switch-follow" ''
+    target="$1"
+    current="$(bspc query -D -d focused --names)"
+
+    # Create a temporary desktop on the current monitor
+    temp="swap_buffer"
+    bspc monitor -a "$temp"
+
+    # Capture nodes before moving anything
+    current_nodes=$(bspc query -N -d "$current")
+    target_nodes=$(bspc query -N -d "$target")
+
+    # Move current → temp
+    for n in $current_nodes; do
+        bspc node "$n" --to-desktop "$temp"
+    done
+
+    # Move target → current
+    for n in $target_nodes; do
+        bspc node "$n" --to-desktop "$current"
+    done
+
+    # Move temp → target
+    temp_nodes=$(bspc query -N -d "$temp")
+    for n in $temp_nodes; do
+        bspc node "$n" --to-desktop "$target"
+    done
+
+    # Remove temporary desktop
+    bspc desktop "$temp" --remove
+
+    # Follow: switch focus to the target desktop
+    bspc desktop -f "$target"
+  '';
 in
 
 {
@@ -563,6 +637,7 @@ in
       bsp-bar-hide
       bsp-tint2-hide
       bsp-poly-hide
+      bsp-dock-hide
       bsp-gaps
       bsp-tag-view
       bsp-tag-view-revert
@@ -581,6 +656,8 @@ in
       bsp-touchegg
       bsp-unhide-last-hidden
       bsp-conky
+      bsp-desktop-switch
+      bsp-desktop-switch-follow
       bspswallow
       bspwmswallow
       pidswallow
@@ -594,18 +671,8 @@ in
       noswallow = {
         target = "bspwm/noswallow";
         text = ''
-          Kitty
-          kity
+          kitty
           Alacritty
-          alacritty
-          Magnify
-          magnify
-          XMagnify
-          Xmagnify
-          xmagnify
-          xzoom
-          Xzoom
-          XZoom
         '';
       };
 

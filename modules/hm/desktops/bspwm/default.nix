@@ -180,7 +180,7 @@ in
         fi
 
          # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
-        pgrep bspswallow || bspswallow &
+        #pgrep bspswallow || bspswallow &
 
          # Generic Swallower (Doesnt Work)
         #export PIDSWALLOW_SWALLOW_COMMAND='bspc node $pwid --flag hidden=on'
@@ -191,7 +191,7 @@ in
          # Manual Swallowe With Include List (Set Env Vars Below)
         #export SWALLOW_APPLICATIONS="sxiv|zathura|mpv"
         #export SWALLOW_TERMINALS="xterm|gnome-terminal"
-        bspwmswallow &
+        #bspwmswallow &
 
         #bspc subscribe node_add | while read -r _; do
         #   xdo raise -N Plank &

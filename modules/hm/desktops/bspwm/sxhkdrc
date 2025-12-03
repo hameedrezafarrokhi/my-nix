@@ -8,11 +8,11 @@ super + f
 
 # Set Window State: Fullscreen Mode
 super + Return
-	bspc node -t fullscreen
+	bsp-bar-hide; sleep 0.3; bspc node -t fullscreen
 
 # Set Window State: Fullscreen Mode
 super + shift + Return
-	bspc node -t ~tiled
+	bspc node -t ~tiled; sleep 0.3; bsp-bar-hide
 
 # Cycle to next window (like next tab)
 alt + Tab
@@ -105,6 +105,18 @@ super + shift + alt + {1-9,0}
 # Move Focused Desktop to Desktop 1-10 AND Follow
 super + shift + ctrl + alt + {1-9,0}
       bspc node @/ -d ^{1-9,10} --follow
+
+# Swap Focused Desktop with 1-10
+super + alt + e; {1-9,0}
+      bspc desktop focused --swap {1-9,10}
+
+# Swap Focused Desktop Windows with 1-10
+super + shift + e; {1-9,0}
+      bsp-desktop-switch {1-9,10}
+
+# Swap Focused Desktop Windows with 1-10 AND Follow
+super + alt + shift + e; {1-9,0}
+      bsp-desktop-switch-follow {1-9,10}
 
 # Send Focused Desktop to Next or Previous Monitor
 super + alt + shift + ctrl + Tab
@@ -306,6 +318,10 @@ super + alt + g
 super + shift + g
       bsp-poly-hide
 
+# Hide Dock
+super + shift + alt + g
+      bsp-dock-hide
+
 # Scratchpad Sticky Kitty
 super + ctrl + Return
       {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && kitty}
@@ -369,6 +385,10 @@ super + alt + Left
 # Remove All Preselections
 super + alt + Escape
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+# Move Focused Window to Preselection
+super + alt + Return
+    bspc node -n last.!automatic
 
 # Spawn Empty Point Up
 super + alt + shift + Up
@@ -503,7 +523,7 @@ super + shift + d
     bsp-unhide-last-hidden
 
 # Show/Hide Conky
-super + shift + alt + g
+super + shift + alt + h
     bsp-conky
 
 # Clear Notifications
