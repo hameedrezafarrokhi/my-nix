@@ -46,6 +46,8 @@ in
       xlock.enable = true;
       xscreensaver.enable = true;
       betterlockscreen.enable = true;
+      xremap-x-lock-sleep.enable = true;
+      x-lock-sleep.enable = true;
 
     };
 

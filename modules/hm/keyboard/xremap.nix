@@ -60,7 +60,7 @@ let
   '';
 
   xremap-x-lock-sleep = pkgs.writeShellScriptBin "xremap-x-lock-sleep" ''
-    ${config.services.screen-locker.lockCmd} &
+    ${config.services.screen-locker.lockCmd}
   '';
 
   x-logout = pkgs.writeShellScriptBin "x-logout" ''

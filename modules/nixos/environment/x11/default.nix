@@ -1,8 +1,15 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, admin, ... }:
 
 let
 
   cfg = config.my.x11;
+
+  xremap-x-lock-sleep = pkgs.writeShellScriptBin "xremap-x-lock-sleep" ''
+    ${config.home-manager.users.${admin}.services.screen-locker.lockCmd}
+  '';
+  xlock = pkgs.writeShellScriptBin "xlock" ''
+    ${config.home-manager.users.${admin}.services.screen-locker.lockCmd}
+  '';
 
 in
 
@@ -70,6 +77,27 @@ in
       owner = "root";
       group = "root";
       source = "${pkgs.betterlockscreen}/bin/betterlockscreen";
+    };
+
+    security.wrappers.x-lock-sleep = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = config.home-manager.users.${admin}.services.screen-locker.lockCmd;
+    };
+
+    security.wrappers.xlock = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${xlock}/bin/xlock";
+    };
+
+    security.wrappers.xremap-x-lock-sleep = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${xremap-x-lock-sleep}/bin/xremap-x-lock-sleep";
     };
 
   };
