@@ -212,75 +212,95 @@ Print
 
 # Master Stack Layout
 super + ctrl + 1
-      bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
 
 # Wide Layout
 super + ctrl + 2
-      bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
 # Monocle Layout
 super + ctrl + 3
-      bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
 
 # Tiled Layout
 super + ctrl + 4
-      bsp-cache-layout; bsp-layout set tiled; notify-send "Tiled Layout"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set tiled; notify-send "Tiled Layout"
 
 # Grid Layout
 super + ctrl + 5
-      bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
 
 # Even Layout
 super + ctrl + 6
-      bsp-cache-layout; bsp-layout set even; notify-send "Even Layout"
+      bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set even; notify-send "Even Layout"
 
 # Floating Layout
 super + ctrl + 7
-	bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+	bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
 
-# Resize All Windows Equally
+# Columns Layout
 super + ctrl + 8
-	bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Equal Size Windows"
+	bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-culomns; notify-send "Vertical Columns Layout"
 
-# Center Master Layout (Janky)
+# Rows Layout
 super + ctrl + 9
-	bsp-cache-layout; bsp-cmaster-layout
+	bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-rows; notify-send "Horizontal Rows Layout"
+
+# Center Master Layout (5 and 7)
+super + ctrl + 0
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; bsp-cmaster-layout; notify-send "Center Master Layout (5 and 7 Only)"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
-      bsp-layout once tall; notify-send "(one-shot) Master-Stack Layout"
+      bsp-culomns-rows-layout-remove; bsp-layout once tall; notify-send "(one-shot) Master-Stack Layout"
 
-# Master Stack Layout (OneShot)
+# Reverse Master Stack Layout (OneShot)
 super + ctrl + alt + 1
-      bsp-layout once rtall; notify-send "(one-shot) Master-Stack Layout"
+      bsp-culomns-rows-layout-remove; bsp-layout once rtall; notify-send "(one-shot) Master-Stack Layout"
 
 # Master Stack Layout (Horizontal) (OneShot)
 super + alt + 2
-      bsp-layout once wide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+      bsp-culomns-rows-layout-remove; bsp-layout once wide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
 
-# Master Stack Layout (Horizontal) (OneShot)
+# Reverse Master Stack Layout (Horizontal) (OneShot)
 super + ctrl + alt + 2
-      bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+      bsp-culomns-rows-layout-remove; bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
 
-# Master Stack Layout (OneShot)
+# Grid Layout (OneShot)
 super + alt + 5
-      bsp-layout once grid; notify-send "(one-shot) Grid Layout"
+      bsp-culomns-rows-layout-remove; bsp-layout once grid; notify-send "(one-shot) Grid Layout"
 
-# Master Stack Layout (OneShot)
+# Reverese Grid Layout (OneShot)
 super + ctrl + alt + 5
-      bsp-layout once rgrid; notify-send "(one-shot) Grid Layout (Reverse)"
+      bsp-culomns-rows-layout-remove; bsp-layout once rgrid; notify-send "(one-shot) Grid Layout (Reverse)"
 
-# Master Stack Layout (OneShot)
+# Even Layout (OneShot)
 super + alt + 6
-      bsp-layout once even; notify-send "(one-shot) Even Layout"
+      bsp-culomns-rows-layout-remove; bsp-layout once even; notify-send "(one-shot) Even Layout"
+
+# Resize All Windows Equally Manually (OneShot)
+super + ctrl + alt + 6
+	bsp-culomns-rows-layout-remove; bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Equal Size Windows"
+
+# Vertical Columns Layout (OneShot)
+super + alt + 8
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-vertical-layout-oneshot; notify-send "Vertical Columns Layout (OneShot)"
+
+# Horizontal Rows Layout (OneShot)
+super + alt + 9
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-horizontal-layout-oneshot; notify-send "Horizontal Rows Layout (OneShot)"
+
+# Center Master Layout (Jank Version)
+super + alt + 0
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
 
 # Remove Current Layout and Restore Original Layout
 super + ctrl + BackSpace
-	bsp-layout remove; bsp-restore-cached-layout; notify-send "Layout Restored"
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-restore-cached-layout; notify-send "Layout Restored"
 
 # Remove Current Layout
 super + BackSpace
-	bsp-layout remove; notify-send "Layout Removed"
+	bsp-layout remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
 
 # Remove Current Layout
 super + ctrl + grave

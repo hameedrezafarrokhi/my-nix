@@ -345,7 +345,101 @@ let
   '';
 
   bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
+    ${builtins.readFile ./layouts/cmaster}
+  '';
+
+  bsp-ctall-layout = pkgs.writeShellScriptBin "bsp-ctall-layout" ''
     ${builtins.readFile ./layouts/ctall.sh}
+  '';
+
+  bsp-vertical-layout-oneshot = pkgs.writeShellScriptBin "bsp-vertical-layout-oneshot" ''
+    ${builtins.readFile ./layouts/vetrical-columns-oneshot}
+  '';
+
+  bsp-horizontal-layout-oneshot = pkgs.writeShellScriptBin "bsp-horizontal-layout-oneshot" ''
+    ${builtins.readFile ./layouts/horizontal-columns-oneshot}
+  '';
+
+  bsp-culomns-rows-layout-oneshot = pkgs.writeShellScriptBin "bsp-culomns-rows-layout-oneshot" ''
+    CACHE_FILE="$HOME/.cache/bsp-columns-rows-oneshot"
+    if [[ -f "$CACHE_FILE" ]]; then
+        bsp-horizontal-layout-oneshot
+        rm "$CACHE_FILE"
+        notify-send "Horizontal Rows Layout (OneShot)"
+    else
+        bsp-vertical-layout-oneshot
+        touch "$CACHE_FILE"
+        notify-send "Vertical Columns Layout (OneShot)"
+    fi
+  '';
+
+  bsp-vertical-layout = pkgs.writeShellScriptBin "bsp-vertical-layout" ''
+    ${builtins.readFile ./layouts/vetrical-columns}
+  '';
+
+  bsp-horizontal-layout = pkgs.writeShellScriptBin "bsp-horizontal-layout" ''
+    ${builtins.readFile ./layouts/horizontal-columns}
+  '';
+
+  bsp-culomns = pkgs.writeShellScriptBin "bsp-culomns" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
+
+    # Kill existing monitor for THIS desktop
+    if [[ -f "$PID_FILE" ]]; then
+        kill $(cat "$PID_FILE") 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+
+    # Apply horizontal layout
+    bsp-vertical-layout
+
+    # Start monitoring and save PID
+    {
+        while read -r line; do
+            read -r event monitor desktop node action <<< "$line"
+            if [[ "$desktop" == "$DESKTOP" ]]; then
+                bsp-vertical-layout
+            fi
+        done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE"
+  '';
+
+  bsp-rows = pkgs.writeShellScriptBin "bsp-rows" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
+
+    # Kill existing monitor for THIS desktop
+    if [[ -f "$PID_FILE" ]]; then
+        kill $(cat "$PID_FILE") 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+
+    # Apply horizontal layout
+    bsp-horizontal-layout
+
+    # Start monitoring and save PID
+    {
+        while read -r line; do
+            read -r event monitor desktop node action <<< "$line"
+            if [[ "$desktop" == "$DESKTOP" ]]; then
+                bsp-horizontal-layout
+            fi
+        done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE"
+  '';
+
+  bsp-culomns-rows-layout-remove = pkgs.writeShellScriptBin "bsp-culomns-rows-layout-remove" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
+
+    # Kill existing monitor for THIS desktop
+    if [[ -f "$PID_FILE" ]]; then
+        kill $(cat "$PID_FILE") 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
   '';
 
   bsp-zoom = pkgs.writeShellScriptBin "bsp-zoom" ''
@@ -647,6 +741,7 @@ in
       bsp-zoom
       bsp-zoom-second_biggest
       bsp-cmaster-layout
+      bsp-ctall-layout
       bsp-send-follow
       bsp-border-color
       bsp-border-size
@@ -658,6 +753,14 @@ in
       bsp-conky
       bsp-desktop-switch
       bsp-desktop-switch-follow
+      bsp-vertical-layout-oneshot
+      bsp-horizontal-layout-oneshot
+      bsp-culomns-rows-layout-oneshot
+      bsp-vertical-layout
+      bsp-horizontal-layout
+      bsp-culomns
+      bsp-rows
+      bsp-culomns-rows-layout-remove
       bspswallow
       bspwmswallow
       pidswallow

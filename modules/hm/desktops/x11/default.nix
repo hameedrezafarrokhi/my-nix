@@ -50,7 +50,11 @@ let
   x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
     echo "y" | xsession-manager -s temp
     dunstctl set-paused true
-    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 30 --show-layout
+    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 120 --show-layout
+    sleep 180
+    if pgrep betterlock > /dev/null; then
+        systemctl suspend
+    fi
   '';
 
   xsession-save = pkgs.writeShellScriptBin "xsession-save" ''
@@ -214,7 +218,7 @@ in
 
       screen-locker = {
         enable = true;
-        inactiveInterval = 15; # min 1 max 60 (minutes)
+        inactiveInterval = 30; # min 1 max 60 (minutes)
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
