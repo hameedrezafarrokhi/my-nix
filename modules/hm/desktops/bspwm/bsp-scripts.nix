@@ -405,6 +405,52 @@ let
     ${builtins.readFile ./layouts/ctall.sh}
   '';
 
+  bsp-tv-layout = pkgs.writeShellScriptBin "bsp-tv-layout" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
+
+    bsp-cmaster-oneshot
+    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
+    sleep 0.5
+    bspc node @parent -R -90
+
+    {
+      while read -r line; do
+          read -r event monitor desktop node action <<< "$line"
+          if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-tv-layout
+          fi
+      done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
+  '';
+
+  bsp-rtv-layout = pkgs.writeShellScriptBin "bsp-rtv-layout" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
+
+    bsp-cmaster-oneshot
+    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
+    sleep 0.5
+    bspc node @parent -R 90
+
+    {
+      while read -r line; do
+          read -r event monitor desktop node action <<< "$line"
+          if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-rtv-layout
+          fi
+      done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
+  '';
+
   bsp-vertical-layout-oneshot = pkgs.writeShellScriptBin "bsp-vertical-layout-oneshot" ''
     ${builtins.readFile ./layouts/vetrical-columns-oneshot}
   '';
@@ -798,6 +844,8 @@ in
       bsp-cmaster-oneshot
       bsp-cmaster-remove
       bsp-ctall-layout
+      bsp-rtv-layout
+      bsp-tv-layout
       bsp-send-follow
       bsp-border-color
       bsp-border-size

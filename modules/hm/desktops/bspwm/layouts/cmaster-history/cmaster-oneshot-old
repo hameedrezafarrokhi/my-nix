@@ -5,39 +5,14 @@ TERM_TRACK_FILE="/tmp/center_master_spawned_terminal"
 PID_FILE="$HOME/.cache/center_master_terminal_pid"
 windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
 
-#case "$windowcount" in
-#    0) exit 0 ;;
-#esac
+case "$windowcount" in
+    0) exit 0 ;;
+esac
 
 # 1 2 3 10+ windows, exit
-#case "$windowcount" in
-#    1|2|[1-9][0-9]*) exit 0 ;;  # 1,2,3, or 10+
-#esac
-
-
-# 0 window
-if [ "$windowcount" -eq 0 ]; then
-  echo "no windows detected on workspace"
-  exit
-fi
-
-# 1 window
-if [ "$windowcount" -eq 1 ]; then
-  echo "only one window detected"
-  exit
-fi
-
-# 2 window
-if [ "$windowcount" -eq 2 ]; then
-  [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-  bspc node -s east
-  bspc node -s east
-  bsp-layout once even
-  bspc node -z left -240 0
-  exit
-fi
-
-
+case "$windowcount" in
+    1|2|[1-9][0-9]*) exit 0 ;;  # 1,2,3, or 10+
+esac
 
 # 3 windows
 if [ "$windowcount" -eq 3 ]; then
@@ -459,11 +434,13 @@ fi
 
 
 # 8 windows
-if [ "$windowcount" -eq 8 ]; then
 
 "$TERMINAL" >/dev/null 2>&1 &
 PID=$!
 printf '%s\n' "$PID" > "$HOME/.cache/center_master_terminal_pid"
+
+
+if [ "$windowcount" -eq 8 ]; then
 
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
@@ -758,13 +735,6 @@ right2=${cols2[2]}
     fi
 
     exit
-fi
-
-
-
-if [ "$windowcount" -ge 10 ]; then
-  echo "more than 9 windows detected"
-  exit
 fi
 
 

@@ -158,21 +158,29 @@ super + ctrl + alt + Up
 super + ctrl + alt + Down
 	bspc node -z top 0 40
 
-# Expand window width both sides
+# Move Window Border to Right on all sides
 super + ctrl + shift + Right
 	bspc node -z right 40 0; bspc node -z left 40 0
 
-# Shrink window width both sides
+# Move Window Border to Left on all sides
 super + ctrl + shift + Left
 	bspc node -z right -40 0; bspc node -z left -40 0
 
-# Resize Window: Shrink Down
+# Move Window Border Down on all sides
 super + ctrl + shift + Down
 	bspc node -z top 0 40; bspc node -z bottom 0 40
 
-# Resize Window: Shrink Up
+# Move Window Border Up on all sides
 super + ctrl + shift + Up
 	bspc node -z top 0 -40; bspc node -z bottom 0 -40
+
+# Expand window all sides
+super + ctrl + alt + shift + Up
+	bspc node -z right 40 0; bspc node -z left -40 0; bspc node -z top 0 -40; bspc node -z bottom 0 40
+
+# Shrink window all sides
+super + ctrl + alt + shift + Down
+	bspc node -z right -40 0; bspc node -z left 40 0; bspc node -z top 0 40; bspc node -z bottom 0 -40
 
 # Increase Volume
 XF86AudioRaiseVolume
@@ -222,9 +230,9 @@ super + ctrl + 2
 super + ctrl + 3
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
 
-# Center Master Layout (3 and 9)
+# Center Master Layout
 super + ctrl + 4
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout (3-9)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout"
 
 # Grid Layout
 super + ctrl + 5
@@ -246,13 +254,13 @@ super + ctrl + 8
 super + ctrl + 9
 	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-rows; notify-send "Horizontal Rows Layout"
 
-# TV Layout (3-9)
+# TV Layout
 super + ctrl + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; bspc node @parent -R -90; notify-send "TV Layout (3-9)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-tv-layout; notify-send "TV Layout"
 
-# Reverse TV Layout (3-9)
+# Reverse TV Layout
 super + ctrl + minus
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; bspc node @parent -R 90; notify-send "TV Layout (3-9)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rtv-layout; notify-send "Reverese TV Layout"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
@@ -270,9 +278,9 @@ super + alt + 2
 super + ctrl + alt + 2
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
 
-# Center Master Layout (3 and 9) (OneShot)
+# Center Master Layout (OneShot)
 super + alt + 4
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (3-9) (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
 
 # Center Master Layout (Jank Version)
 super + ctrl + alt + 4
@@ -302,13 +310,13 @@ super + alt + 8
 super + alt + 9
 	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-horizontal-layout-oneshot; notify-send "Horizontal Rows Layout (OneShot)"
 
-# TV Layout (3-9) (OneShot)
+# TV Layout (OneShot)
 super + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send "TV Layout (3-9) (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send "TV Layout (OneShot)"
 
-# Reverse TV Layout (3-9) (OneShot)
+# Reverse TV Layout (OneShot)
 super + ctrl + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R 90; notify-send "TV Layout (3-9) (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R 90; notify-send "TV Layout (OneShot)"
 
 # Remove Current Layout and Restore Original Layout
 super + ctrl + BackSpace
