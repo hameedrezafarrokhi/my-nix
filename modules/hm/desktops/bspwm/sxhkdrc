@@ -248,7 +248,7 @@ super + ctrl + 9
 
 # Center Master Layout (5 and 7)
 super + ctrl + 0
-	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; bsp-cmaster-layout; notify-send "Center Master Layout (5 and 7 Only)"
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; sleep 0.3; bsp-cmaster-layout; notify-send "Center Master Layout (3-9)"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
@@ -290,8 +290,12 @@ super + alt + 8
 super + alt + 9
 	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-horizontal-layout-oneshot; notify-send "Horizontal Rows Layout (OneShot)"
 
-# Center Master Layout (Jank Version)
+# TV Layout (3-9)
 super + alt + 0
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; sleep 0.5; bsp-cmaster-layout; bspc node @parent -R -90; notify-send "TV Layout (3-9)"
+
+# Center Master Layout (Jank Version)
+super + ctrl + alt + 0
 	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
 
 # Remove Current Layout and Restore Original Layout

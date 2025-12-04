@@ -1,13 +1,6 @@
 #!/bin/bash
 # Center-master layout for already spawned windows in bspwm
 
-# Note the Focused Window
-FOCUSED_WIN=$(bspc query -N -n focused)
-
-# Buffer Window
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal"
-PID_FILE="$HOME/.cache/center_master_terminal_pid"
-
 # ONLY APPLY FOR 4-9 WINDOWS
 windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
 case "$windowcount" in
@@ -15,10 +8,8 @@ case "$windowcount" in
 esac
 case "$windowcount" in
     4|6|8)
-          # launch terminal in background and save its PID
-          "$TERMINAL" >/dev/null 2>&1 &
-          PID=$!
-          printf '%s\n' "$PID" > "$HOME/.cache/center_master_terminal_pid"
+        "$TERMINAL" &
+        sleep 0.5
         ;;
 esac
 bsp-layout once even
@@ -83,25 +74,10 @@ sleep 0.1
 if [ "$windowcount" -eq 3 ]; then
     bspc node -z left -150 0
     bspc node -z right 150 0
-    bsp-zoom
 fi
 if [ "$windowcount" -eq 5 ] || [ "$windowcount" -eq 7 ]; then
     bspc node -z left -250 0
     bspc node -z right 250 0
-   if [ -f "$PID_FILE" ]; then
-    PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
-      if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
-        # try graceful termination first
-        kill -TERM "$PID" 2>/dev/null  true
-        bsp-zoom
-        sleep 0.3
-        # if still alive, force kill
-        if kill -0 "$PID" 2>/dev/null; then
-            kill -KILL "$PID" 2>/dev/null  true
-        fi
-      fi
-      rm -f "$PID_FILE"
-    fi
 fi
 if [ "$windowcount" -eq 9 ]; then
     bspc node -z left -200 0
@@ -146,24 +122,4 @@ if [ "$windowcount" -eq 9 ]; then
    #bspc node @parent -R 90
    #bspc node -z left -250 0
    #bspc node -z right 250 0
-   if [ -f "$PID_FILE" ]; then
-    PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
-      if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
-        # try graceful termination first
-        kill -TERM "$PID" 2>/dev/null  true
-        bsp-zoom
-        sleep 0.3
-        # if still alive, force kill
-        if kill -0 "$PID" 2>/dev/null; then
-            kill -KILL "$PID" 2>/dev/null  true
-            rm -f "$PID_FILE"
-        fi
-      fi
-      rm -f "$PID_FILE"
-    fi
 fi
-
-
-
-[ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-bsp-zoom
