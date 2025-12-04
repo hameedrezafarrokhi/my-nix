@@ -12,6 +12,7 @@
     systemPackages = with pkgs; [
      #kdePackages.discover ##KDE appstore
       kdePackages.krohnkite
+      kdePackages.karousel
      #polonium
       kdePackages.dolphin-plugins
       kdePackages.plasma-integration

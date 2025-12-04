@@ -34,6 +34,7 @@
     plasma-package = myKDECatppuccin;
     plasma-look = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
     plasma-theme = "default";
+    plasma-widget = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
     plasma-color = "Catppuccin${myStuff.myCat.myGlobal-FlavC}${myStuff.myCat.myGlobal-ColorC}";
     plasma-splash = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
     plasma-decoration-name = "__aurorae__svg__Catppuccin${myStuff.myCat.myGlobal-FlavC}-Classic";
@@ -639,6 +640,7 @@
     };
     workspace = {
       lookAndFeel = plasma-look;      # Global Theme  # plasma-apply-lookandfeel --list
+      widgetStyle = plasma-widget;
       theme = plasma-theme;           # Plasma Style  # # plasma-apply-desktoptheme --list-themes
       colorScheme = plasma-color;     # plasma-apply-colorscheme --list-schemes
       windowDecorations = {

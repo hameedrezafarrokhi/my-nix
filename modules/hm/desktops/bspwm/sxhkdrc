@@ -294,8 +294,12 @@ super + alt + 9
 super + alt + 0
 	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; sleep 0.5; bsp-cmaster-layout; bspc node @parent -R -90; notify-send "TV Layout (3-9)"
 
-# Center Master Layout (Jank Version)
+# Reverse TV Layout (3-9)
 super + ctrl + alt + 0
+	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; sleep 0.5; bsp-cmaster-layout; bspc node @parent -R 90; notify-send "TV Layout (3-9)"
+
+# Center Master Layout (Jank Version)
+super + ctrl + alt + minus
 	bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
 
 # Remove Current Layout and Restore Original Layout
