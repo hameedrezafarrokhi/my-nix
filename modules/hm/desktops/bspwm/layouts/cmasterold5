@@ -1,28 +1,18 @@
 #!/bin/bash
 
+FOCUSED_WIN=$(bspc query -N -n focused)
+TERM_TRACK_FILE="/tmp/center_master_spawned_terminal"
+PID_FILE="$HOME/.cache/center_master_terminal_pid"
 windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
 
-[ ${#windowcount[@]} -eq 0 ] && exit
 
 # 1 2 3 10+ windows, exit
-#case "$windowcount1" in
-#    1|2|[1-9][0-9]*) exit 0 ;;  # 1,2,3, or 10+
-#esac
+case "$windowcount" in
+    1|2|[1-9][0-9]*) exit 0 ;;  # 1,2,3, or 10+
+esac
 
 # 3 windows
 if [ "$windowcount" -eq 3 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
 
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
@@ -31,6 +21,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
     bsp-layout once even
     for w in "${windows[@]}"; do
@@ -57,37 +49,12 @@ right=${cols[2]}
     #bsp-zoom
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-
     exit
 fi
 
 
 # 5 windows
 if [ "$windowcount" -eq 5 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
 
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
@@ -96,8 +63,11 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
     bsp-layout once even
+
 
 
     for w in "${windows[@]}"; do
@@ -122,25 +92,31 @@ right=${cols[2]}
     bspc node -z left -250 0
     bspc node -z right 250 0
 
+
+
+    if [ -f "$PID_FILE" ]; then
+      PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
+        if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
+          # try graceful termination first
+          kill -TERM "$PID" 2>/dev/null  true
+          bsp-zoom
+          sleep 0.3
+          # if still alive, force kill
+          if kill -0 "$PID" 2>/dev/null; then
+              kill -KILL "$PID" 2>/dev/null  true
+          fi
+        fi
+      rm -f "$PID_FILE"
+    fi
+
+
+
     bsp-layout once even
     bspc node -z left -150 0
     bspc node -z right 150 0
     #bsp-zoom
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-
     exit
 
 fi
@@ -148,18 +124,6 @@ fi
 
 # 4 windows
 if [ "$windowcount" -eq 4 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
 
 "$TERMINAL" >/dev/null 2>&1 &
 PID=$!
@@ -173,6 +137,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
@@ -219,6 +185,8 @@ cols2=($(bspc query -N -n .leaf -d focused))
 left2=${cols2[0]}
 center2=${cols2[1]}
 right2=${cols2[2]}
+# 0 window , exit
+[ ${#windows2[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
@@ -247,18 +215,6 @@ right2=${cols2[2]}
     bspc node -z left -100 0
     bspc node -z right 100 0
 
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-
     exit
 
 fi
@@ -267,18 +223,6 @@ fi
 
 # 6 windows
 if [ "$windowcount" -eq 6 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
 
 "$TERMINAL" >/dev/null 2>&1 &
 PID=$!
@@ -292,6 +236,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
    #bsp-layout once even
 
@@ -340,11 +286,13 @@ cols2=($(bspc query -N -n .leaf -d focused))
 left2=${cols2[0]}
 center2=${cols2[1]}
 right2=${cols2[2]}
+# 0 window , exit
+[ ${#windows2[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
-    for w2 in "${windows2[@]}"; do
-        bspc node "$w2" -t tiled
+    for w in "${windows2[@]}"; do
+        bspc node "$w" -t tiled
     done
     bspc node "$master2" -p west
     bspc node "$master2" -p east
@@ -372,18 +320,6 @@ right2=${cols2[2]}
     bspc node -z left -300 0
     bspc node -z right 100 0
 
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-
     exit
 fi
 
@@ -391,19 +327,6 @@ fi
 
 # 7 windows
 if [ "$windowcount" -eq 7 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
-
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
 stack=("${windows[@]:1}")
@@ -411,6 +334,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
    #bsp-layout once even
 
@@ -436,6 +361,21 @@ right=${cols[2]}
    #bspc node -z left -250 0
    #bspc node -z right 250 0
 
+    if [ -f "$PID_FILE" ]; then
+      PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
+        if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
+          # try graceful termination first
+          kill -TERM "$PID" 2>/dev/null  true
+          bsp-zoom
+          sleep 0.3
+          # if still alive, force kill
+          if kill -0 "$PID" 2>/dev/null; then
+              kill -KILL "$PID" 2>/dev/null  true
+          fi
+        fi
+      rm -f "$PID_FILE"
+    fi
+
    #[ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
    #bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -452,11 +392,13 @@ cols2=($(bspc query -N -n .leaf -d focused))
 left2=${cols2[0]}
 center2=${cols2[1]}
 right2=${cols2[2]}
+# 0 window , exit
+[ ${#windows2[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
-    for w2 in "${windows2[@]}"; do
-        bspc node "$w2" -t tiled
+    for w in "${windows2[@]}"; do
+        bspc node "$w" -t tiled
     done
     bspc node "$master2" -p west
     bspc node "$master2" -p east
@@ -484,41 +426,18 @@ right2=${cols2[2]}
     bspc node -z left -150 0
     bspc node -z right 150 0
 
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-
     exit
 fi
 
 
 # 8 windows
-if [ "$windowcount" -eq 8 ]; then
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
 
 "$TERMINAL" >/dev/null 2>&1 &
 PID=$!
 printf '%s\n' "$PID" > "$HOME/.cache/center_master_terminal_pid"
 
+
+if [ "$windowcount" -eq 8 ]; then
 
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
@@ -527,6 +446,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
    #bsp-layout once even
 
@@ -574,11 +495,13 @@ cols2=($(bspc query -N -n .leaf -d focused))
 left2=${cols2[0]}
 center2=${cols2[1]}
 right2=${cols2[2]}
+# 0 window , exit
+[ ${#windows2[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
-    for w2 in "${windows2[@]}"; do
-        bspc node "$w2" -t tiled
+    for w in "${windows2[@]}"; do
+        bspc node "$w" -t tiled
     done
     bspc node "$master2" -p west
     bspc node "$master2" -p east
@@ -642,18 +565,21 @@ right2=${cols2[2]}
    #bspc node @parent -R 90
    #bspc node -z left -250 0
    #bspc node -z right 250 0
-
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
+   if [ -f "$PID_FILE" ]; then
+    PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
+      if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
+        # try graceful termination first
+        kill -TERM "$PID" 2>/dev/null  true
+        bsp-zoom
+        sleep 0.3
+        # if still alive, force kill
+        if kill -0 "$PID" 2>/dev/null; then
+            kill -KILL "$PID" 2>/dev/null  true
+            rm -f "$PID_FILE"
+        fi
+      fi
+      rm -f "$PID_FILE"
+    fi
 
     exit
 fi
@@ -663,18 +589,6 @@ fi
 # 9 windows
 if [ "$windowcount" -eq 9 ]; then
 
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
-TERM_TRACK_FILE="/tmp/center_master_spawned_terminal-$DESKTOP"
-PID_FILE="$HOME/.cache/center_master_terminal_pid-$DESKTOP"
-windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-  # Kill existing monitor for THIS desktop
-  kill $(cat "$PID_FILE_LISTEN")
-  rm -f "$PID_FILE_LISTEN"
-  sleep 0.5
-
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master=${windows[0]}
 stack=("${windows[@]:1}")
@@ -682,6 +596,8 @@ cols=($(bspc query -N -n .leaf -d focused))
 left=${cols[0]}
 center=${cols[1]}
 right=${cols[2]}
+# 0 window , exit
+[ ${#windows[@]} -eq 0 ] && exit
 
    #bsp-layout once even
 
@@ -707,6 +623,21 @@ right=${cols[2]}
    #bspc node -z left -250 0
    #bspc node -z right 250 0
 
+    if [ -f "$PID_FILE" ]; then
+      PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
+        if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
+          # try graceful termination first
+          kill -TERM "$PID" 2>/dev/null  true
+          bsp-zoom
+          sleep 0.3
+          # if still alive, force kill
+          if kill -0 "$PID" 2>/dev/null; then
+              kill -KILL "$PID" 2>/dev/null  true
+          fi
+        fi
+      rm -f "$PID_FILE"
+    fi
+
 windows2=($(bspc query -N -n .window.!floating.!hidden -d focused))
 master2=${windows2[0]}
 stack2=("${windows2[@]:1}")
@@ -714,11 +645,13 @@ cols2=($(bspc query -N -n .leaf -d focused))
 left2=${cols2[0]}
 center2=${cols2[1]}
 right2=${cols2[2]}
+# 0 window , exit
+[ ${#windows2[@]} -eq 0 ] && exit
 
     bsp-layout once even
 
-    for w2 in "${windows2[@]}"; do
-        bspc node "$w2" -t tiled
+    for w in "${windows2[@]}"; do
+        bspc node "$w" -t tiled
     done
     bspc node "$master2" -p west
     bspc node "$master2" -p east
@@ -782,19 +715,21 @@ right2=${cols2[2]}
    #bspc node @parent -R 90
    #bspc node -z left -250 0
    #bspc node -z right 250 0
-
-
-    # Start monitoring and save PID
-    {
-
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-oneshot
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
+   if [ -f "$PID_FILE" ]; then
+    PID=$(sed -n '1p' "$PID_FILE" | tr -d '[:space:]')
+      if [ -n "$PID" ] && printf '%s\n' "$PID" | grep -Eq '^[0-9]+$'; then
+        # try graceful termination first
+        kill -TERM "$PID" 2>/dev/null  true
+        bsp-zoom
+        sleep 0.3
+        # if still alive, force kill
+        if kill -0 "$PID" 2>/dev/null; then
+            kill -KILL "$PID" 2>/dev/null  true
+            rm -f "$PID_FILE"
+        fi
+      fi
+      rm -f "$PID_FILE"
+    fi
 
     exit
 fi

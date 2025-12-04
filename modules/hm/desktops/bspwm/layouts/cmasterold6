@@ -2,8 +2,6 @@
 
 windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
 
-[ ${#windowcount[@]} -eq 0 ] && exit
-
 # 1 2 3 10+ windows, exit
 #case "$windowcount1" in
 #    1|2|[1-9][0-9]*) exit 0 ;;  # 1,2,3, or 10+

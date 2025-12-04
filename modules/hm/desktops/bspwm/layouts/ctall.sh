@@ -2,7 +2,7 @@
 # Center-master layout for already spawned windows in bspwm
 
 # Get all windows on the current desktop
-windows=($(bspc query -N -n .window -d focused))
+windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 [ ${#windows[@]} -eq 0 ] && exit
 
 master=${windows[0]}

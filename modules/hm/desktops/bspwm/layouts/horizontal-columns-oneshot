@@ -4,7 +4,7 @@
 DESKTOP=$(bspc query -D -d focused)
 
 # Apply layout
-windows=($(bspc query -N -n .window -d focused))
+windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
 [ ${#windows[@]} -eq 0 ] && exit 0
 
 # Move all windows to root and make tiled

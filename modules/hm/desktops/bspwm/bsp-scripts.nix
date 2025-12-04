@@ -344,8 +344,61 @@ let
     rm "$CACHE_FILE"
   '';
 
+  bsp-cmaster-oneshot = pkgs.writeShellScriptBin "bsp-cmaster-oneshot" ''
+    ${builtins.readFile ./layouts/cmaster-oneshot}
+  '';
+
+  #${builtins.readFile ./layouts/cmaster}
   bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
-    ${builtins.readFile ./layouts/cmaster}
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
+
+    bsp-cmaster-oneshot
+
+    {
+      while read -r line; do
+          read -r event monitor desktop node action <<< "$line"
+          if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-cmaster-layout
+          fi
+      done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
+  '';
+
+  bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+    # Kill existing monitor for THIS desktop
+    if [[ -f "$PID_FILE_LISTEN" ]]; then
+        kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+        rm -f "$PID_FILE_LISTEN"
+    fi
+
+    # Apply horizontal layout
+    bsp-cmaster-layout
+
+    # Start monitoring and save PID
+    {
+        while read -r line; do
+            read -r event monitor desktop node action <<< "$line"
+            if [[ "$desktop" == "$DESKTOP" ]]; then
+                bsp-cmaster-layout
+            fi
+        done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
+  '';
+
+  bsp-cmaster-remove = pkgs.writeShellScriptBin "bsp-cmaster-remove" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+    kill $(cat "$PID_FILE_LISTEN")
+    rm -f "$PID_FILE_LISTEN"
   '';
 
   bsp-ctall-layout = pkgs.writeShellScriptBin "bsp-ctall-layout" ''
@@ -741,6 +794,9 @@ in
       bsp-zoom
       bsp-zoom-second_biggest
       bsp-cmaster-layout
+      bsp-cmaster
+      bsp-cmaster-oneshot
+      bsp-cmaster-remove
       bsp-ctall-layout
       bsp-send-follow
       bsp-border-color
