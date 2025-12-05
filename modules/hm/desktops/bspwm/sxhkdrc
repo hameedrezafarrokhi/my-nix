@@ -227,11 +227,11 @@ super + ctrl + 2
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
 # Monocle Layout
-super + ctrl + 3
+super + ctrl + 4
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
 
 # Center Master Layout
-super + ctrl + 4
+super + ctrl + 3
 	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout"
 
 # Grid Layout
@@ -279,11 +279,11 @@ super + ctrl + alt + 2
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
 
 # Center Master Layout (OneShot)
-super + alt + 4
+super + alt + 3
 	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
 
 # Center Master Layout (Jank Version)
-super + ctrl + alt + 4
+super + ctrl + alt + 3
 	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
 
 # Grid Layout (OneShot)

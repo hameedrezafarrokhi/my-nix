@@ -415,14 +415,30 @@ echo $! > "$PID_FILE_LISTEN"
 
   bsp-tv-layout = pkgs.writeShellScriptBin "bsp-tv-layout" ''
     DESKTOP=$(bspc query -D -d focused)
+
+    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
+
+    # Prevent multiple instances
+    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+        exit 0
+    fi
+
+    # Record current PID in lock file
+    echo $$ > "$LOCKFILE"
+
+    # Ensure lock file is removed when script exits
+    trap 'rm -f "$LOCKFILE"' EXIT
+
+
+
     PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
 
     kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
     rm -f "$PID_FILE_LISTEN"
 
-    bsp-cmaster-oneshot
+    bsp-cmaster-oneshot &&
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-    sleep 0.5
+    #sleep 0.5
     bspc node @parent -R -90
 
     {
@@ -438,14 +454,30 @@ echo $! > "$PID_FILE_LISTEN"
 
   bsp-rtv-layout = pkgs.writeShellScriptBin "bsp-rtv-layout" ''
     DESKTOP=$(bspc query -D -d focused)
+
+    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
+
+    # Prevent multiple instances
+    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+        exit 0
+    fi
+
+    # Record current PID in lock file
+    echo $$ > "$LOCKFILE"
+
+    # Ensure lock file is removed when script exits
+    trap 'rm -f "$LOCKFILE"' EXIT
+
+
+
     PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
 
     kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
     rm -f "$PID_FILE_LISTEN"
 
-    bsp-cmaster-oneshot
+    bsp-cmaster-oneshot &&
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-    sleep 0.5
+    #sleep 0.5
     bspc node @parent -R 90
 
     {
