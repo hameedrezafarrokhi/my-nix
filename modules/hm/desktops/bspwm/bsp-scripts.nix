@@ -372,17 +372,11 @@ let
   bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
     DESKTOP=$(bspc query -D -d focused)
     PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+    kill $(cat "$PID_FILE_LISTEN")
+    rm -f "$PID_FILE_LISTEN"
 
-    # Kill existing monitor for THIS desktop
-    if [[ -f "$PID_FILE_LISTEN" ]]; then
-        kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-        rm -f "$PID_FILE_LISTEN"
-    fi
-
-    # Apply horizontal layout
     bsp-cmaster-layout
 
-    # Start monitoring and save PID
     {
         while read -r line; do
             read -r event monitor desktop node action <<< "$line"

@@ -2,7 +2,7 @@
 
 let
 
-  cfg = config.my.labwc;
+  cfg = config.my.wayfire;
 
 in
 

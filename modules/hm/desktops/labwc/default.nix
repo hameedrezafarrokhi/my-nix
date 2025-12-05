@@ -19,21 +19,21 @@ in
       xwayland.enable = true;
 
       autostart = [
-       #"waybar &"
+        "waybar &"
       ];
 
       systemd = {
         enable = true;
-        variables = [ "-all" ];
-        extraCommands = [
-          "systemctl --user stop labwc-session.target"
-          "systemctl --user start labwc-session.target"
-        ];
+        variables = [ "--all" ];
+       #extraCommands = [
+       #  "systemctl --user stop labwc-session.target"
+       #  "systemctl --user start labwc-session.target"
+       #];
       };
 
-      environment = [
-        "XDG_CURRENT_DESKTOP=labwc:wlroots"
-      ];
+     #environment = [
+     #  "XDG_CURRENT_DESKTOP=labwc:wlroots"
+     #];
 
 
      #menu = [ ];

@@ -93,7 +93,9 @@
      #"qtile"
      #"dwl"
       "mango"
-     #"labwc" "river" "wayfire"
+      "labwc"
+     #"river"
+     #"wayfire"
 
       # Mir
      #"miracle-wm" "miriway"
@@ -105,7 +107,8 @@
       "i3"
      #"spectrwm" "herbstluftwm" "dk"
       "drew-wm" "titus-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
-      "bspwm" "awesome"
+      "bspwm"
+      "awesome"
      #"xmonad"
      #"exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
      #"fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
@@ -353,7 +356,7 @@
          #sway.enable = true;
          #river.enable = true;
          #wayfire.enable = true;
-         #labwc.enable = true;
+          labwc.enable = true;
           dwm.enable = true;
           i3.enable = true;
          #xmonad.enable = true;
