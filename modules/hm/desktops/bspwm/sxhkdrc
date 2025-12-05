@@ -494,13 +494,21 @@ super + alt + shift + Right
 super + alt + shift + Left
     bspc desktop -f prev
 
-# Swap Focus to The Largest Window and back (Zoom)
+# Swap Window With Largest Window and back (Zoom)
 super + s
     bsp-zoom
 
-# Swap Focus to The Second Largest Window and back (Zoom)
+# Swap Window With Second Largest Window and back (Zoom)
 super + alt + s
     bsp-zoom-second_biggest
+
+# Swap Window With Last Focused
+super + shift + s
+    bspc node -s last
+
+# Swap Focus With Last Focused
+alt + ctrl + Tab
+    bspc node -f last
 
 # Delete BSP Cache
 super + shift + ctrl + Escape

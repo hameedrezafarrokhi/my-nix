@@ -46,13 +46,9 @@ if [ "$windowcount" -eq 2 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
-  if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-      bspc node "$LAST_WIN" -f
-  fi
   [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
   bspc node -s east
   bspc node -s east
@@ -68,7 +64,6 @@ if [ "$windowcount" -eq 3 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -89,10 +84,6 @@ bspc node -s west
     bspc node -z left -150 0
     bspc node -z right 150 0
     #bsp-zoom
-
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -105,7 +96,6 @@ if [ "$windowcount" -eq 5 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -144,10 +134,6 @@ right=${cols[2]}
     bspc node -z left -240 0
     bspc node -z right 240 0
     #bsp-zoom
-
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
     exit
@@ -160,7 +146,6 @@ if [ "$windowcount" -eq 4 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -238,10 +223,6 @@ right=${cols[2]}
     kill -KILL "$PID"
     rm -f "$PID_FILE"
 
-
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -259,7 +240,6 @@ if [ "$windowcount" -eq 6 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -331,10 +311,6 @@ right2=${cols2[2]}
     kill -KILL "$PID"
     rm -f "$PID_FILE"
 
-
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -352,7 +328,6 @@ if [ "$windowcount" -eq 7 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -416,9 +391,6 @@ right2=${cols2[2]}
     bspc node "$right2" -s south
     bspc node "$center2" -f
 
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -435,7 +407,6 @@ if [ "$windowcount" -eq 8 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -555,11 +526,6 @@ right2=${cols2[2]}
    #bspc node -z left -250 0
    #bspc node -z right 250 0
 
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
     exit
 fi
 
@@ -570,7 +536,6 @@ if [ "$windowcount" -eq 9 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 FOCUSED_WIN=$(bspc query -N -n focused)
-LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
@@ -672,11 +637,6 @@ right2=${cols2[2]}
     bsp-layout once even
     bspc node -z left -300 0
     bspc node -z right 300 0
-
-    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
-        bspc node "$LAST_WIN" -f
-    fi
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
     exit
 fi
