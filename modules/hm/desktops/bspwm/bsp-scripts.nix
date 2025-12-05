@@ -350,23 +350,37 @@ let
 
   #${builtins.readFile ./layouts/cmaster}
   bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+DESKTOP=$(bspc query -D -d focused)
+LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
 
-    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-    rm -f "$PID_FILE_LISTEN"
+# Prevent multiple instances
+if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+    exit 0
+fi
 
-    bsp-cmaster-oneshot
+# Record current PID in lock file
+echo $$ > "$LOCKFILE"
 
-    {
-      while read -r line; do
-          read -r event monitor desktop node action <<< "$line"
-          if [[ "$desktop" == "$DESKTOP" ]]; then
-              bsp-cmaster-layout
-          fi
-      done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
+# Ensure lock file is removed when script exits
+trap 'rm -f "$LOCKFILE"' EXIT
+
+
+PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+rm -f "$PID_FILE_LISTEN"
+
+bsp-cmaster-oneshot
+
+{
+  while read -r line; do
+      read -r event monitor desktop node action <<< "$line"
+      if [[ "$desktop" == "$DESKTOP" ]]; then
+          bsp-cmaster-layout
+      fi
+  done
+} < <(bspc subscribe node_add node_remove) &
+echo $! > "$PID_FILE_LISTEN"
   '';
 
   bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''

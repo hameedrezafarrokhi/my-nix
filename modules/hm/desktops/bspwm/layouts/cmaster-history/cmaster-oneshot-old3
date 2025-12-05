@@ -1,22 +1,5 @@
 #!/bin/bash
 
-LOCKFILE="$HOME/.cache/bspwm-cmaster-oneshot-$DESKTOP.lock"
-
-# Prevent multiple instances
-if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
-    exit 0
-fi
-
-# Record current PID in lock file
-echo $$ > "$LOCKFILE"
-
-# Ensure lock file is removed when script exits
-trap 'rm -f "$LOCKFILE"' EXIT
-
-
-
-
-
 windowcount=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
 
 #case "$windowcount" in
