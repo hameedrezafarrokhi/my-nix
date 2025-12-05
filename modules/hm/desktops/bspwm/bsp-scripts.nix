@@ -350,37 +350,37 @@ let
 
   #${builtins.readFile ./layouts/cmaster}
   bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
-DESKTOP=$(bspc query -D -d focused)
-LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
+    DESKTOP=$(bspc query -D -d focused)
+    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
 
-# Prevent multiple instances
-if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
-    exit 0
-fi
+    # Prevent multiple instances
+    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+        exit 0
+    fi
 
-# Record current PID in lock file
-echo $$ > "$LOCKFILE"
+    # Record current PID in lock file
+    echo $$ > "$LOCKFILE"
 
-# Ensure lock file is removed when script exits
-trap 'rm -f "$LOCKFILE"' EXIT
+    # Ensure lock file is removed when script exits
+    trap 'rm -f "$LOCKFILE"' EXIT
 
 
-PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
 
-kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-rm -f "$PID_FILE_LISTEN"
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
 
-bsp-cmaster-oneshot
+    bsp-cmaster-oneshot
 
-{
-  while read -r line; do
-      read -r event monitor desktop node action <<< "$line"
-      if [[ "$desktop" == "$DESKTOP" ]]; then
-          bsp-cmaster-layout
-      fi
-  done
-} < <(bspc subscribe node_add node_remove) &
-echo $! > "$PID_FILE_LISTEN"
+    {
+      while read -r line; do
+          read -r event monitor desktop node action <<< "$line"
+          if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-cmaster-layout
+          fi
+      done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
   '';
 
   bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
@@ -852,6 +852,70 @@ echo $! > "$PID_FILE_LISTEN"
     # Follow: switch focus to the target desktop
     bspc desktop -f "$target"
   '';
+
+  bsp-manual-window-swap = pkgs.writeShellScriptBin "bsp-manual-window-swap" ''
+    CACHE="$HOME/.cache/bspwm_manual_window_swap"
+    TIMEOUT=60  # seconds
+
+    # If cache exists, check age
+    if [ -f "$CACHE" ]; then
+        NOW=$(date +%s)
+        MOD=$(stat -c %Y "$CACHE")
+        # If cache is older than timeout delete it
+        if [ $((NOW - MOD)) -ge $TIMEOUT ]; then
+            rm -f "$CACHE"
+        fi
+    fi
+
+    # If no cache file now: store focused window ID
+    if [ ! -f "$CACHE" ]; then
+        bspc query -N -n focused > "$CACHE"
+        exit 0
+    fi
+
+    # Cache exists and is fresh perform swap
+    CACHED_WIN=$(cat "$CACHE")
+    CURRENT_WIN=$(bspc query -N -n focused)
+
+    if [ -n "$CACHED_WIN" ] && [ -n "$CURRENT_WIN" ]; then
+        bspc node "$CACHED_WIN" -s "$CURRENT_WIN"
+    fi
+
+    rm -f "$CACHE"
+  '';
+
+  bsp-manual-window-send = pkgs.writeShellScriptBin "bsp-manual-window-send" ''
+    CACHE="$HOME/.cache/bspwm_swap"
+    TIMEOUT=60  # seconds
+
+    # If cache exists, check age
+    if [ -f "$CACHE" ]; then
+        NOW=$(date +%s)
+        MOD=$(stat -c %Y "$CACHE")
+
+        # If cache is older than timeout delete it
+        if [ $((NOW - MOD)) -ge $TIMEOUT ]; then
+            rm -f "$CACHE"
+        fi
+    fi
+
+    # If no cache file now: store focused window ID
+    if [ ! -f "$CACHE" ]; then
+        bspc query -N -n focused > "$CACHE"
+        exit 0
+    fi
+
+    # Cache exists and is fresh send cached window to current desktop
+    CACHED_WIN=$(cat "$CACHE")
+    CURRENT_DESKTOP=$(bspc query -D -d focused)
+
+    if [ -n "$CACHED_WIN" ] && [ -n "$CURRENT_DESKTOP" ]; then
+        bspc node "$CACHED_WIN" -d "$CURRENT_DESKTOP"
+    fi
+
+    rm -f "$CACHE"
+  '';
+
 in
 
 {
@@ -905,6 +969,8 @@ in
       bsp-culomns
       bsp-rows
       bsp-culomns-rows-layout-remove
+      bsp-manual-window-swap
+      bsp-manual-window-send
       bspswallow
       bspwmswallow
       pidswallow

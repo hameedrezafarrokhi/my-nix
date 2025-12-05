@@ -86,6 +86,22 @@ super + shift + Up
 super + shift + Right
 	bspc node -s east
 
+# Manual Window Swap
+super + shift + q
+      bsp-manual-window-swap
+
+# Manual Window Swap (Mouse)
+super + shift + button1
+      bsp-manual-window-swap
+
+# Manual Window Send
+super + shift + grave
+      bsp-manual-window-send
+
+# Manual Window Send (Mouse)
+super + shift + button3
+      bsp-manual-window-send
+
 # Switch to Workspace 1-12
 super + {1-9,0}
 	bspc desktop --focus ^{1-9,10}
@@ -285,6 +301,10 @@ super + alt + 3
 # Center Master Layout (Jank Version)
 super + ctrl + alt + 3
 	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
+
+# Monocle Layout
+super + alt + 4
+      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout set tiled; notify-send "Tile Layout"
 
 # Grid Layout (OneShot)
 super + alt + 5

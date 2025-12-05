@@ -180,9 +180,6 @@ right=${cols[2]}
     bspc node "$right" -s south
     bspc node "$center" -f
 
-
-DESKTOP=$(bspc query -D -d focused)
-FOCUSED_WIN=$(bspc query -N -n focused)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
 PID_FILE="$HOME/.cache/bsp-center_master_terminal_pid_$DESKTOP"
 
