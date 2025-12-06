@@ -916,6 +916,100 @@ let
     rm -f "$CACHE"
   '';
 
+  bsp-master-node-increase = pkgs.writeShellScriptBin "bsp-master-node-increase" ''
+    # Get current layout
+    current=$(bsp-layout-ext get)
+
+    case "$current" in
+        tall)
+            bsp-layout-ext set tall2
+            ;;
+        tall2)
+            bsp-layout-ext set tall3
+            ;;
+        tall3)
+            bsp-layout-ext set tall4
+            ;;
+        rtall)
+            bsp-layout-ext set rtall2
+            ;;
+        rtall2)
+            bsp-layout-ext set rtall3
+            ;;
+        rtall3)
+            bsp-layout-ext set rtall4
+            ;;
+        wide)
+            bsp-layout-ext set wide2
+            ;;
+        wide2)
+            bsp-layout-ext set wide3
+            ;;
+        wide3)
+            bsp-layout-ext set wide4
+            ;;
+        rwide)
+            bsp-layout-ext set rwide2
+            ;;
+        rwide2)
+            bsp-layout-ext set rwide3
+            ;;
+        rwide3)
+            bsp-layout-ext set rwide4
+            ;;
+        *)
+            echo "Unknown layout: $current"
+            ;;
+    esac
+  '';
+
+  bsp-master-node-decrease = pkgs.writeShellScriptBin "bsp-master-node-decrease" ''
+    # Get current layout
+    current=$(bsp-layout-ext get)
+
+    case "$current" in
+        tall4)
+            bsp-layout-ext set tall3
+            ;;
+        tall3)
+            bsp-layout-ext set tall2
+            ;;
+        tall2)
+            bsp-layout set tall
+            ;;
+        rtall4)
+            bsp-layout-ext set rtall3
+            ;;
+        rtall3)
+            bsp-layout-ext set rtall2
+            ;;
+        rtall2)
+            bsp-layout set rtall
+            ;;
+        wide4)
+            bsp-layout-ext set wide3
+            ;;
+        wide3)
+            bsp-layout-ext set wide2
+            ;;
+        wide2)
+            bsp-layout set wide
+            ;;
+        rwide4)
+            bsp-layout-ext set rwide3
+            ;;
+        rwide3)
+            bsp-layout-ext set rwide2
+            ;;
+        rwide2)
+            bsp-layout set rwide
+            ;;
+        *)
+            echo "Unknown layout: $current"
+            ;;
+    esac
+  '';
+
 in
 
 {
@@ -971,6 +1065,8 @@ in
       bsp-culomns-rows-layout-remove
       bsp-manual-window-swap
       bsp-manual-window-send
+      bsp-master-node-increase
+      bsp-master-node-decrease
       bspswallow
       bspwmswallow
       pidswallow

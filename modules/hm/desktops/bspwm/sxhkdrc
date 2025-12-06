@@ -242,6 +242,14 @@ super + ctrl + 1
 super + ctrl + 2
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
+# Master Node Increase
+super + equal
+      bsp-master-node-increase
+
+# Master Node Decrease
+super + minus
+      bsp-master-node-decrease
+
 # Monocle Layout
 super + ctrl + 4
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"

@@ -7,6 +7,8 @@ let
   bsp-tabbed = pkgs.callPackage ./tabbed/bsp-tabbed.nix { };
   bsptab = pkgs.callPackage ./tabbed/bsptab.nix { tabbed = bsp-tabbed; };
 
+  bsp-layout-ext = pkgs.callPackage ./bsp-layout-ext/bsp-layout-ext.nix { };
+
 in
 
 {
@@ -322,6 +324,8 @@ in
 
       bsp-tabbed
       bsptab
+
+      bsp-layout-ext
 
      #pkgs.tabbed
 
