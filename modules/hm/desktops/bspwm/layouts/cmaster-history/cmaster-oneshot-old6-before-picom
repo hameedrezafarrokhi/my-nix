@@ -104,15 +104,6 @@ fi
 if [ "$windowcount" -eq 5 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -159,12 +150,6 @@ right=${cols[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 
 fi
@@ -174,15 +159,6 @@ fi
 if [ "$windowcount" -eq 4 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -272,11 +248,6 @@ right=${cols[2]}
     bspc node -z left -150 0
     bspc node -z right 150 0
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 
 fi
@@ -287,15 +258,6 @@ fi
 if [ "$windowcount" -eq 6 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -380,11 +342,6 @@ right2=${cols2[2]}
     bspc node -z left -375 0
     bspc node -z right 150 0
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -394,15 +351,6 @@ fi
 if [ "$windowcount" -eq 7 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -478,11 +426,6 @@ right2=${cols2[2]}
     bspc node -z left -280 0
     bspc node -z right 280 0
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -491,15 +434,6 @@ fi
 if [ "$windowcount" -eq 8 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -626,11 +560,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -640,15 +569,6 @@ fi
 if [ "$windowcount" -eq 9 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -758,11 +678,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -774,15 +689,6 @@ fi
 if [ "$windowcount" -eq 10 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -964,11 +870,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -979,15 +880,6 @@ fi
 if [ "$windowcount" -eq 11 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -1119,11 +1011,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -1135,15 +1022,6 @@ fi
 if [ "$windowcount" -eq 12 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -1314,11 +1192,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -1329,15 +1202,6 @@ fi
 if [ "$windowcount" -eq 13 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -1551,11 +1415,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -1566,15 +1425,6 @@ fi
 if [ "$windowcount" -eq 14 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -1818,11 +1668,6 @@ right2=${cols2[2]}
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
-
     exit
 fi
 
@@ -1832,15 +1677,6 @@ fi
 if [ "$windowcount" -eq 15 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-
-    if systemctl --user is-active --quiet picom.service; then
-        systemctl --user stop picom.service
-        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-    fi
-
-
 FOCUSED_WIN=$(bspc query -N -n focused)
 LAST_WIN=$(bspc query -N -n last)
 TERM_TRACK_FILE="/tmp/bsp-center_master_spawned_terminal_$DESKTOP"
@@ -2087,11 +1923,6 @@ right2=${cols2[2]}
         bspc node "$LAST_WIN" -f
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
-    if [ -f "$PICOM_STOP" ]; then
-        systemctl --user restart picom.service
-        rm -f $PICOM_STOP
-    fi
 
     exit
 fi
