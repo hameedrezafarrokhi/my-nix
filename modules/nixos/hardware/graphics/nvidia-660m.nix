@@ -215,9 +215,9 @@ in
       enable = false;
       package = pkgs.lact;
     };
-    ollama = {
-      acceleration = false;
-    };
+   #ollama = {
+   #  acceleration = false;
+   #};
     switcherooControl = {
       package = pkgs.switcheroo-control;
       enable = false;

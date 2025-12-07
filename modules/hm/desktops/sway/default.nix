@@ -282,20 +282,20 @@ in
 
     services = {
 
-      swayidle = {
-        enable = true;
-        package = pkgs.swayidle;
-        systemdTarget = config.wayland.systemd.target;
-        events = [
-          { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
-          { event = "lock"; command = "lock"; }
-        ];
-        timeouts = [
-          { timeout = 3600; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
-	    { timeout = 5400; command = "${pkgs.systemd}/bin/systemctl suspend"; }
-        ];
-        extraArgs = [ "-w" ];
-      };
+     #swayidle = {
+     #  enable = true;
+     #  package = pkgs.swayidle;
+     #  systemdTarget = config.wayland.systemd.target;
+     #  events = [
+     #    { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+     #    { event = "lock"; command = "lock"; }
+     #  ];
+     #  timeouts = [
+     #    { timeout = 3600; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+     #    { timeout = 5400; command = "${pkgs.systemd}/bin/systemctl suspend"; }
+     #  ];
+     #  extraArgs = [ "-w" ];
+     #};
 
       swaync = {
         enable = true;
@@ -343,46 +343,46 @@ in
         Install.WantedBy = [ config.wayland.systemd.target ];
       };
 
-      swayidle-sway = {
-        Unit = {
-          Description = "Idle manager for Wayland";
-          Documentation = "man:swayidle(1)";
-          PartOf = [ config.services.swayidle.systemdTarget ];
-          After = [ config.services.swayidle.systemdTarget ];
-          ConditionEnvironment = "XDG_CURRENT_DESKTOP=sway";
-        };
-        Service = {
-          Type = "simple";
-          Restart = "always";
-          # swayidle executes commands using "sh -c", so the PATH needs to contain a shell.
-          Environment = [ "PATH=${lib.makeBinPath [ pkgs.bash ]}" ];
-          ExecStart =
-            let
-              mkTimeout =
-                t:
-                [
-                  "timeout"
-                  (toString t.timeout)
-                  t.command
-                ]
-                ++ lib.optionals (t.resumeCommand != null) [
-                  "resume"
-                  t.resumeCommand
-                ];
-
-              mkEvent = e: [
-                e.event
-                e.command
-              ];
-              args =
-                config.services.swayidle.extraArgs ++ (lib.concatMap mkTimeout config.services.swayidle.timeouts) ++ (lib.concatMap mkEvent config.services.swayidle.events);
-            in
-            "${lib.getExe config.services.swayidle.package} ${lib.escapeShellArgs args}";
-        };
-        Install = {
-          WantedBy = [ config.services.swayidle.systemdTarget ];
-        };
-      };
+     #swayidle-sway = {
+     #  Unit = {
+     #    Description = "Idle manager for Wayland";
+     #    Documentation = "man:swayidle(1)";
+     #    PartOf = [ config.services.swayidle.systemdTarget ];
+     #    After = [ config.services.swayidle.systemdTarget ];
+     #    ConditionEnvironment = "XDG_CURRENT_DESKTOP=sway";
+     #  };
+     #  Service = {
+     #    Type = "simple";
+     #    Restart = "always";
+     #    # swayidle executes commands using "sh -c", so the PATH needs to contain a shell.
+     #    Environment = [ "PATH=${lib.makeBinPath [ pkgs.bash ]}" ];
+     #   #ExecStart =
+     #   #  let
+     #   #    mkTimeout =
+     #   #      t:
+     #   #      [
+     #   #        "timeout"
+     #   #        (toString t.timeout)
+     #   #        t.command
+     #   #      ]
+     #   #      ++ lib.optionals (t.resumeCommand != null) [
+     #   #        "resume"
+     #   #        t.resumeCommand
+     #   #      ];
+     #   #
+     #   #    mkEvent = e: [
+     #   #      e.event
+     #   #      e.command
+     #   #    ];
+     #   #    args =
+     #   #      config.services.swayidle.extraArgs ++ (lib.concatMap mkTimeout config.services.swayidle.timeouts) ++ (lib.concatMap mkEvent config.services.swayidle.events);
+     #   #  in
+     #   #  "${lib.getExe config.services.swayidle.package} ${lib.escapeShellArgs args}";
+     #  };
+     #  Install = {
+     #    WantedBy = [ config.services.swayidle.systemdTarget ];
+     #  };
+     #};
 
       swayosd-sway = {
         Unit = {

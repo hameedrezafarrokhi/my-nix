@@ -44,7 +44,7 @@
     };
     nextjs-ollama-llm-ui = {
       enable = true;
-      package = pkgs.nextjs-ollama-llm-ui;
+      package = pkgs.nextjs-ollama-llm-ui; #services.ollama.package` to one of `pkgs.ollama[,-vulkan,-rocm,-cuda,-cpu]
      #ollamaUrl = "http://127.0.0.1:11434";
      #port = 3000;
      #hostname = "127.0.0.1";

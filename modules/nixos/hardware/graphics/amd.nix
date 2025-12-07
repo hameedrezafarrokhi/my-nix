@@ -60,7 +60,7 @@
     };
     ollama = {
      #rocmOverrideGfx = "";
-      acceleration = "rocm";
+     #acceleration = "rocm";
     };
   };
 
