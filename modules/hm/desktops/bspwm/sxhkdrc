@@ -256,7 +256,7 @@ super + ctrl + 4
 
 # Center Master Layout
 super + ctrl + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout"
 
 # Grid Layout
 super + ctrl + 5
@@ -272,19 +272,19 @@ super + ctrl + 7
 
 # Columns Layout
 super + ctrl + 8
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-culomns; notify-send "Vertical Columns Layout"
+	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns; notify-send "Vertical Columns Layout"
 
 # Rows Layout
 super + ctrl + 9
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-rows; notify-send "Horizontal Rows Layout"
+	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-layout-ext remove; bsp-rows; notify-send "Horizontal Rows Layout"
 
 # TV Layout
 super + ctrl + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-tv-layout; notify-send "TV Layout"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-tv-layout; notify-send "TV Layout"
 
 # Reverse TV Layout
 super + ctrl + minus
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rtv-layout; notify-send "Reverese TV Layout"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rtv-layout; notify-send "Reverese TV Layout"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
@@ -304,11 +304,11 @@ super + ctrl + alt + 2
 
 # Center Master Layout (OneShot)
 super + alt + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
 
 # Center Master Layout (Jank Version)
 super + ctrl + alt + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-ctall-layout; notify-send "Center Master Layout (Jank Version)"
 
 # Monocle Layout
 super + alt + 4
@@ -332,27 +332,27 @@ super + ctrl + alt + 6
 
 # Vertical Columns Layout (OneShot)
 super + alt + 8
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-vertical-layout-oneshot; notify-send "Vertical Columns Layout (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-vertical-layout-oneshot; notify-send "Vertical Columns Layout (OneShot)"
 
 # Horizontal Rows Layout (OneShot)
 super + alt + 9
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-horizontal-layout-oneshot; notify-send "Horizontal Rows Layout (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-horizontal-layout-oneshot; notify-send "Horizontal Rows Layout (OneShot)"
 
 # TV Layout (OneShot)
 super + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send "TV Layout (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send "TV Layout (OneShot)"
 
 # Reverse TV Layout (OneShot)
 super + ctrl + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R 90; notify-send "TV Layout (OneShot)"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R 90; notify-send "TV Layout (OneShot)"
 
 # Remove Current Layout and Restore Original Layout
 super + ctrl + BackSpace
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; bsp-restore-cached-layout; notify-send "Layout Restored"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-restore-cached-layout; notify-send "Layout Restored"
 
 # Remove Current Layout
 super + BackSpace
-	bsp-cmaster-remove; bsp-layout remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
+	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
 
 # Reload Current Layout
 super + ctrl + grave
