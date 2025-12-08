@@ -108,13 +108,13 @@ in
 
         #bspc rule -a '*' desktop='^10$' state=floating
 
-        bspc subscribe node_add | while read -r event; do
-            node_id=$(echo "$event" | cut -d' ' -f5)
-            desktop=$(bspc query -D -d focused --names)
-            if [ "$desktop" = "10" ]; then
-                bspc node "$node_id" -t floating
-            fi
-        done &
+        #bspc subscribe node_add | while read -r event; do
+        #    node_id=$(echo "$event" | cut -d' ' -f5)
+        #    desktop=$(bspc query -D -d focused --names)
+        #    if [ "$desktop" = "10" ]; then
+        #        bspc node "$node_id" -t floating
+        #    fi
+        #done &
 
         bspc rule -a Tilda state=floating # rectangle=0x0+0+0
         bspc rule -a ulauncher border=off
@@ -128,12 +128,12 @@ in
         # zoom apps float and size (xzoom and magnify)
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300
 
-        bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        bspc rule -a Dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        bspc rule -a dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
-        bspc rule -a Dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
 
         #bspc subscribe node_add | while read -r _; do
         #   xdo raise -N dockbarx &
@@ -163,11 +163,11 @@ in
         #	  plank &
         #fi
 
-        if hash dockx >/dev/null 2>&1; then
-        	  pkill dockx
-        	  sleep 0.5
-        	  dockx &
-        fi
+        #if hash dockx >/dev/null 2>&1; then
+        #	  pkill dockx
+        #	  sleep 0.5
+        #	  dockx &
+        #fi
 
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
@@ -175,11 +175,11 @@ in
         	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         fi
 
-        if hash skippy-xd >/dev/null 2>&1; then
-        	  skippy-xd --stop-daemon
-        	  sleep 0.5
-        	  skippy-xd --start-daemon &
-        fi
+        #if hash skippy-xd >/dev/null 2>&1; then
+        #	  skippy-xd --stop-daemon
+        #	  sleep 0.5
+        #	  skippy-xd --start-daemon &
+        #fi
 
          # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
         #pgrep bspswallow || bspswallow &

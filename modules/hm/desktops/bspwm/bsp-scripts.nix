@@ -1041,6 +1041,24 @@ let
 
   '';
 
+  bsp-skippy = pkgs.writeShellScriptBin "bsp-skippy" ''
+    #if hash skippy-xd >/dev/null 2>&1; then
+    #      pkill skippy-xd  && pkill skippy-xd && sleep 0.5 &&
+    #      #sleep 0.5
+    #      #skippy-xd --start-daemon &
+    #      notify-send "Skippy Stopped"
+    #      exit
+    #   else
+    #      skippy-xd --start-daemon & disown
+    #      notify-send "Skippy Started"
+    #      exit
+    #fi
+
+    skippy-xd --start-daemon
+
+  '';
+
+
 in
 
 {
@@ -1102,6 +1120,7 @@ in
       bsp-manual-order-save
       bsp-manual-order-remove
       bsp-full-screen
+      bsp-skippy
       bspswallow
       bspwmswallow
       pidswallow

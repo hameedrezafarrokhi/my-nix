@@ -34,6 +34,10 @@ super + ctrl + Tab
 super + ctrl + shift + Tab
       skippy-xd --paging
 
+# Skippy toggle
+super + shift + p
+      bsp-skippy; notify-send "Skippy"
+
 # Reload sxhkd (Hotkey Daemon)
 super + Escape
 	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'

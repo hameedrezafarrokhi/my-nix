@@ -448,7 +448,8 @@ in
         click-right = "dolphin";
         double-click-left = "skippy-xd --paging";
         click-middle = "ulauncher";
-        double-click-middle = "kate";
+       #double-click-middle = "kate";
+        double-click-middle = "skippy-xd --toggle";
         double-click-right = "kitty";
       };
 
