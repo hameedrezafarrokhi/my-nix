@@ -176,8 +176,10 @@ in
         xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle} &
         xset +dpms &
         # Standby: 30 Suspend: 40 Off: 90
+        # Default is 600 600 600
         #xset dpms 2100 2400 2700 &
-        xset dpms 6000 6000 6000 &
+        #xset dpms 6000 6000 6000 &
+        xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) &
         #xset -dpms &
         #xset dpms 0 0 0 &
         #xset dpms 2100 2400 2700

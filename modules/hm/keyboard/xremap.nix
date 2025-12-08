@@ -59,7 +59,8 @@ let
     xset +dpms
     #xset dpms 1800 3600 6000      # Standby: 30    Suspend: 40    Off: 90
     #xset dpms 2100 2400 2700
-    xset dpms 6000 6000 6000
+    #xset dpms 6000 6000 6000
+    xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 ))
     notify-send "Lock Activated "
   '';
 
