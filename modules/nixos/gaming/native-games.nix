@@ -24,7 +24,7 @@
 
    #extremetuxracer
    #superTuxKart
-    vitetris
+
    #zeroad
    #zeroad-data
    #wesnoth
@@ -38,6 +38,8 @@
 
    #minecraft
    #prismlauncher
+
+   #brogue-ce
 
   ];
 

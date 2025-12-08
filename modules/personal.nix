@@ -296,6 +296,7 @@
       launchers.enable = true;
       tools.enable = true;
       emulators.enable = true;
+      cli-games.enable = true;
     };
 
     default = config.home-manager.users.${admin}.my.default;

@@ -15,6 +15,7 @@ in
     native-games.enable = lib.mkEnableOption "some natve games collection";
     tools.enable = lib.mkEnableOption "gaming tools and softwares";
     emulators.enable = lib.mkEnableOption "emulation softwares";
+    cli-games.enable = lib.mkEnableOption "cli games";
 
   };
 
@@ -25,6 +26,7 @@ in
     ./launchers.nix
     ./tools.nix
     ./emulators.nix
+    ./cli-games.nix
 
   ];
 
