@@ -57,6 +57,12 @@ let
     fi
   '';
 
+  x-lock = pkgs.writeShellScriptBin "x-lock" ''
+    echo "y" | xsession-manager -s temp
+    dunstctl set-paused true
+    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 120 --show-layout
+  '';
+
   xsession-save = pkgs.writeShellScriptBin "xsession-save" ''
     OUT="$HOME/.cache/xsession-restore"
     mkdir -p "$(dirname "$OUT")"
@@ -97,7 +103,21 @@ in
 
 {
 
-  options.my.x11.enable =  lib.mkEnableOption "x11 configs";
+  options = {
+
+    my.x11.enable =  lib.mkEnableOption "x11 configs";
+
+    services.screen-locker.inactiveIntervalString = lib.mkOption {
+       type = lib.types.nullOr (lib.types.str);
+       default = "6000";
+    };
+
+    services.screen-locker.xss-lock.screensaverCycleString = lib.mkOption {
+       type = lib.types.nullOr (lib.types.str);
+       default = "6000";
+    };
+
+  };
 
   config = lib.mkIf cfg.enable {
 
@@ -126,6 +146,7 @@ in
       x-cursor
       pkgs.xbacklight
       x-lock-sleep
+      x-lock
       pkgs.xkblayout-state
       pkgs.skippy-xd
       pkgs.xcolor
@@ -152,7 +173,14 @@ in
 
       initExtra = ''
 
-        xset s 6000 6000 &
+        xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle} &
+        xset +dpms &
+        # Standby: 30 Suspend: 40 Off: 90
+        #xset dpms 2100 2400 2700 &
+        xset dpms 6000 6000 6000 &
+        #xset -dpms &
+        #xset dpms 0 0 0 &
+        #xset dpms 2100 2400 2700
         export GDK_BACKEND=x11 &
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
         blueman-applet &
@@ -229,7 +257,7 @@ in
         # "${pkgs.betterlockscreen}/bin/betterlockscreen --lock"
         # betterlockscreen -l --wallpaper-cmd "feh --bg-fill /home/hrf/Pictures/Wallpapers/astronaut-macchiato.png" -u "/home/hrf/Pictures/Wallpapers/astronaut-macchiato.png"
         xautolock = {
-          enable = true;
+          enable = true; # Either This Or XSS, ONLY ONE CAN BE USED (xauto lock uses loginctl (which doesnt work on x) and doesnt set xset s AND doesnt use lockCMD instead uses its own things (llisted below) BUT Detects sleep and other features, xss Uses lockCMD And sets xset s BUT its bear bones)
           package = pkgs.xautolock; # pkgs.xidlehook
           detectSleep = true;
           extraOptions = [
@@ -264,7 +292,8 @@ in
         xss-lock = {
           package = pkgs.xss-lock;
           extraOptions = [ ];
-          screensaverCycle = 60;
+          screensaverCycle = (config.services.screen-locker.inactiveInterval * 60); # 1800; # max 3600;
+          screensaverCycleString = "1800";
         };
       };
      #betterlockscreen = {

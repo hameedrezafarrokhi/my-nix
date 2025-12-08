@@ -11,7 +11,7 @@ let
   '';
 
   xlock = pkgs.writeShellScriptBin "xlock" ''
-    ${config.services.screen-locker.lockCmd}
+    x-lock
   '';
 
   xss-kill = pkgs.writeShellScriptBin "xss-kill" ''
@@ -37,25 +37,29 @@ let
     systemctl --user stop swayidle-sway.service
     systemctl --user stop swayidle.service
     systemctl --user stop hypridle.service
-    xset s off
     xset s noblank
+    xset s off
     xset s 0 0
+    xset dpms 0 0 0
     xset -dpms
     notify-send "Idle Inhibited "
   '';
 
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
-    systemctl --user restart xautolock-session.service
+    #systemctl --user restart xautolock-session.service
     systemctl --user restart xss-lock.service
     systemctl --user restart swayidle-mango.service
     systemctl --user restart swayidle-niri.service
     systemctl --user restart swayidle-sway.service
     systemctl --user restart swayidle.service
     systemctl --user restart hypridle.service
-    xset s on
     xset s blank
-    xset s 6000 6000
+    xset s on
+    xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle}
     xset +dpms
+    #xset dpms 1800 3600 6000      # Standby: 30    Suspend: 40    Off: 90
+    #xset dpms 2100 2400 2700
+    xset dpms 6000 6000 6000
     notify-send "Lock Activated "
   '';
 

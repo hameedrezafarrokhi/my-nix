@@ -17,23 +17,27 @@ let
     # Toggle based on state
     if [ "$CURRENT_TIMEOUT" -eq 0 ]; then
         # Re-enable idle (default X timeout)
-        xset s on
         xset s blank
-        xset s 6000 6000
+        xset s on
+        xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle}
         xset +dpms
+        #xset dpms 1800 3600 6000      # Standby: 30    Suspend: 40    Off: 90
+        #xset dpms 2100 2400 2700
+        xset dpms 6000 6000 6000
         systemctl --user restart xautolock-session.service
         systemctl --user restart xss-lock.service
     else
         # Disable idle
-        xset s off
-        xset s noblank
-        xset s 0 0
-        xset -dpms
         pkill .xscreensaver-w
         pkill xscreensaver-sy
         pkill .xscreensaver-s
         systemctl --user stop xautolock-session.service
         systemctl --user stop xss-lock.service
+        xset s noblank
+        xset s off
+        xset s 0 0
+        xset -dpms
+        xset dpms 0 0 0
     fi
   '';
 
