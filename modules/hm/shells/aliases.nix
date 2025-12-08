@@ -14,6 +14,8 @@ in
 
     gmail = "${config.my.default.browser-alt-name} gmail.com &";
 
+    fe = "microfetch";
+
     nixos = "cd ${nix-path}";
     store = "builtin cd /nix/store";
     flake = "${config.my.default.gui-editor-alt-name} ${nix-path}/flake.nix";

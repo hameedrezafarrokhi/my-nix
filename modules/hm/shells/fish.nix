@@ -23,7 +23,7 @@
 
     interactiveShellInit = ''
 
-      ${lib.getExe pkgs.microfetch}
+      #${lib.getExe pkgs.microfetch}
 
       set -g fish_greeting
 
