@@ -40,13 +40,13 @@ let
     xset s noblank
     xset s off
     xset s 0 0
-    xset dpms 0 0 0
     xset -dpms
+    xset dpms 0 0 0
     notify-send "Idle Inhibited "
   '';
 
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
-    #systemctl --user restart xautolock-session.service
+    systemctl --user restart xautolock-session.service
     systemctl --user restart xss-lock.service
     systemctl --user restart swayidle-mango.service
     systemctl --user restart swayidle-niri.service

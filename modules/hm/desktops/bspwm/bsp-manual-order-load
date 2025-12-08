@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DESKTOP=$(bspc query -D -d focused)
+saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
+current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
+
+for i in "${!saved_order[@]}"; do
+    want_order="${saved_order[$i]}"
+    have_order="${current_order[$i]}"
+
+    if [ "$want_order" != "$have_order" ]; then
+        # Find where "want" currently is
+        for j in "${!current_order[@]}"; do
+            if [ "${current_order[$j]}" = "$want_order" ]; then
+                # Swap them
+                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
+
+                # Update array to reflect swap
+                tmp_order="${current_order[$i]}"
+                current_order[$i]="${current_order[$j]}"
+                current_order[$j]="$tmp_order"
+                break
+            fi
+        done
+    fi
+done

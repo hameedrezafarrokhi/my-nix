@@ -1010,6 +1010,25 @@ let
     esac
   '';
 
+  bsp-manual-order-save = pkgs.writeShellScriptBin "bsp-manual-order-save" ''
+
+    DESKTOP=$(bspc query -D -d focused)
+    rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
+    bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
+
+  '';
+
+  bsp-manual-order-load = pkgs.writeShellScriptBin "bsp-manual-order-load" ''
+    ${builtins.readFile ./bsp-manual-order-load}
+  '';
+
+  bsp-manual-order-remove = pkgs.writeShellScriptBin "bsp-manual-order-remove" ''
+
+    DESKTOP=$(bspc query -D -d focused)
+    rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
+
+  '';
+
 in
 
 {
@@ -1067,6 +1086,9 @@ in
       bsp-manual-window-send
       bsp-master-node-increase
       bsp-master-node-decrease
+      bsp-manual-order-load
+      bsp-manual-order-save
+      bsp-manual-order-remove
       bspswallow
       bspwmswallow
       pidswallow

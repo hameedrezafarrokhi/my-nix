@@ -105,9 +105,6 @@ if [ "$windowcount" -eq 5 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
-
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
     if systemctl --user is-active --quiet picom.service; then
@@ -157,32 +154,6 @@ right=${cols[2]}
     bspc node -z right 240 0
     #bsp-zoom
 
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
@@ -203,9 +174,6 @@ fi
 if [ "$windowcount" -eq 4 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -293,32 +261,6 @@ right=${cols[2]}
 
     kill -KILL "$PID"
     rm -f "$PID_FILE"
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
 
 
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
@@ -346,9 +288,6 @@ if [ "$windowcount" -eq 6 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
 
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
-
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
     if systemctl --user is-active --quiet picom.service; then
@@ -431,32 +370,6 @@ right2=${cols2[2]}
     rm -f "$PID_FILE"
 
 
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
@@ -481,9 +394,6 @@ fi
 if [ "$windowcount" -eq 7 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -558,32 +468,6 @@ right2=${cols2[2]}
     bspc node "$right2" -s south
     bspc node "$center2" -f
 
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
@@ -607,9 +491,6 @@ fi
 if [ "$windowcount" -eq 8 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -740,32 +621,6 @@ right2=${cols2[2]}
    #bspc node -z left -250 0
    #bspc node -z right 250 0
 
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
@@ -785,9 +640,6 @@ fi
 if [ "$windowcount" -eq 9 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -862,32 +714,6 @@ right2=${cols2[2]}
     bspc node "$right2" -s south
     bspc node "$center2" -f
 
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
@@ -927,10 +753,6 @@ done
     bspc node -z left -300 0
     bspc node -z right 300 0
 
-
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
@@ -952,9 +774,6 @@ fi
 if [ "$windowcount" -eq 10 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -1120,15 +939,8 @@ right2=${cols2[2]}
     #kill -KILL "$PID"
     #rm -f "$PID_FILE"
 
-
-
-
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-
-
-
 
 
     bspc node -s west
@@ -1147,45 +959,9 @@ right2=${cols2[2]}
     bspc node -z right 240 0
 
 
-
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
     if [ -f "$PICOM_STOP" ]; then
@@ -1203,9 +979,6 @@ fi
 if [ "$windowcount" -eq 11 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -1341,36 +1114,10 @@ right2=${cols2[2]}
     bspc node -z left -314 0
     bspc node -z right 313 0
 
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
+    if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
+        bspc node "$LAST_WIN" -f
     fi
-done
-
-
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-
 
     if [ -f "$PICOM_STOP" ]; then
         systemctl --user restart picom.service
@@ -1388,9 +1135,6 @@ fi
 if [ "$windowcount" -eq 12 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -1536,9 +1280,6 @@ right2=${cols2[2]}
     bspc node "$left2" -s south
     bspc node "$right2" -s south
     bspc node "$center2" -f
-
-
-
 
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
@@ -1568,46 +1309,10 @@ right2=${cols2[2]}
     bspc node -z left -376 0
     bspc node -z right 262 0
 
-
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
 
     if [ -f "$PICOM_STOP" ]; then
         systemctl --user restart picom.service
@@ -1624,9 +1329,6 @@ fi
 if [ "$windowcount" -eq 13 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -1808,9 +1510,6 @@ right2=${cols2[2]}
     bspc node "$left2" -s south
     bspc node "$right2" -s south
     bspc node "$center2" -f
-
-
-
 
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
@@ -1847,45 +1546,10 @@ right2=${cols2[2]}
     bspc node -z left -323 0
     bspc node -z right 323 0
 
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-
 
     if [ -f "$PICOM_STOP" ]; then
         systemctl --user restart picom.service
@@ -1902,9 +1566,6 @@ fi
 if [ "$windowcount" -eq 14 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -2120,10 +1781,6 @@ right2=${cols2[2]}
     bspc node "$left2" -s south
     bspc node "$right2" -s south
     bspc node "$center2" -f
-
-
-
-
 
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
@@ -2156,45 +1813,10 @@ right2=${cols2[2]}
     bspc node -z left -376 0
     bspc node -z right 278 0
 
-
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
 
     if [ -f "$PICOM_STOP" ]; then
         systemctl --user restart picom.service
@@ -2210,9 +1832,6 @@ fi
 if [ "$windowcount" -eq 15 ]; then
 
 DESKTOP=$(bspc query -D -d focused)
-
-rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
-bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
 PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
 
@@ -2428,8 +2047,6 @@ right2=${cols2[2]}
     bspc node "$left2" -s south
     bspc node "$right2" -s south
     bspc node "$center2" -f
-
-
 
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
@@ -2466,46 +2083,10 @@ right2=${cols2[2]}
     bspc node -z left -330 0
     bspc node -z right 330 0
 
-
-
-
-
     if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
         bspc node "$LAST_WIN" -f
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-
-
-saved_order=( $(cat "$HOME/.cache/bspwm-order-$DESKTOP") )
-current_order=( $(bspc query -N -n ".leaf.!hidden.!floating" -d) )
-
-for i in "${!saved_order[@]}"; do
-    want_order="${saved_order[$i]}"
-    have_order="${current_order[$i]}"
-
-    if [ "$want_order" != "$have_order" ]; then
-        # Find where "want" currently is
-        for j in "${!current_order[@]}"; do
-            if [ "${current_order[$j]}" = "$want_order" ]; then
-                # Swap them
-                bspc node "${current_order[$i]}" -s "${current_order[$j]}"
-
-                # Update array to reflect swap
-                tmp_order="${current_order[$i]}"
-                current_order[$i]="${current_order[$j]}"
-                current_order[$j]="$tmp_order"
-                break
-            fi
-        done
-    fi
-done
-
-
-
-    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-
-
 
     if [ -f "$PICOM_STOP" ]; then
         systemctl --user restart picom.service

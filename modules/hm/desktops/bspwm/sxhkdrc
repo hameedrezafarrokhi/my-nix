@@ -633,3 +633,16 @@ super + slash
 # Swallow Focused Windows Terminal Parent with Click
 super + alt + slash
     xwininfo | awk '/Window id:/{print $4}' | pidswallow -gt
+
+# Manual Layout Order Save (Per Workspace)
+super + o
+    bsp-manual-order-save; notify-send "Layout Order Saved"
+
+# Manual Layout Order load (Per Workspace)
+super + shift + o
+    bsp-manual-order-load; notify-send "Layout Order Restored"
+
+# Manual Layout Order Remove (Per Workspace)
+super + alt + shift + o
+    bsp-manual-order-remove; notify-send "Layout Order Removed"
+
