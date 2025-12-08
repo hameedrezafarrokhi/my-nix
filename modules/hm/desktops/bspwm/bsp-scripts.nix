@@ -1029,6 +1029,18 @@ let
 
   '';
 
+  bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
+
+    if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
+        polybar example & disown & tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc & disown & bspc node -t tiled
+
+    else
+        pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
+        exit
+    fi
+
+  '';
+
 in
 
 {
@@ -1089,6 +1101,7 @@ in
       bsp-manual-order-load
       bsp-manual-order-save
       bsp-manual-order-remove
+      bsp-full-screen
       bspswallow
       bspwmswallow
       pidswallow

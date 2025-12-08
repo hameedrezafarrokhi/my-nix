@@ -173,6 +173,8 @@ in
 
       initExtra = ''
 
+        # first number Rate (faster start spawning repeating key when held) second number Delay (faster key press when held)
+        xset r rate 250 35 &
         xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle} &
         xset +dpms &
         # Standby: 30 Suspend: 40 Off: 90

@@ -8,11 +8,7 @@ super + f
 
 # Set Window State: Fullscreen Mode
 super + Return
-	bsp-bar-hide; sleep 0.3; bspc node -t fullscreen
-
-# Set Window State: Fullscreen Mode
-super + shift + Return
-	bspc node -t ~tiled; sleep 0.3; bsp-bar-hide
+	bsp-full-screen
 
 # Cycle to next window (like next tab)
 alt + Tab
