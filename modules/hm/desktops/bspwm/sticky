@@ -1,0 +1,27 @@
+#!/bin/bash
+
+CACHE_FILE="$HOME/.cache/bsp-sticky-window-cache"
+
+focused_window=$(bspc query -N -n focused)
+
+if [ -f "$CACHE_FILE" ]; then
+    cached_data=$(cat "$CACHE_FILE")
+    cached_window=$(echo "$cached_data" | cut -d':' -f1)
+    cached_desktop=$(echo "$cached_data" | cut -d':' -f2)
+
+    if [ "$cached_window" = "$focused_window" ]; then
+        exit 0
+    fi
+
+    if [ "$cached_window" != "$focused_window" ]; then
+        if bspc query -N -n "$cached_window" >/dev/null 2>&1; then
+            bspc node "$cached_window" --flag sticky
+            bspc node "$cached_window" -d "$cached_desktop"
+        fi
+        rm -f "$CACHE_FILE"
+    fi
+fi
+
+current_desktop=$(bspc query -D -d focused)
+echo "${focused_window}:${current_desktop}" > "$CACHE_FILE"
+bspc node "$focused_window" --flag sticky

@@ -95,7 +95,7 @@ super + shift + button1
       bsp-manual-window-swap
 
 # Manual Window Send
-super + shift + grave
+super + alt + q
       bsp-manual-window-send
 
 # Manual Window Send (Mouse)
@@ -430,12 +430,20 @@ super + ctrl + equal
 super + ctrl + alt + equal
     bsp-gaps -
 
-# Multiple Workspaces View
+# Sticky Window
+super + grave
+    bsp-sticky-window
+
+# Sticky Window
 super + shift + grave
+    bsp-sticky-window-revert
+
+# Multiple Workspaces View
+super + alt + grave
     rofi -dmenu -p "Desktops to toggle:" -theme ~/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi | xargs bsp-tag-view
 
 # Multiple Workspaces View Revert
-super + shift + Escape
+super + alt + shift + grave
     bsp-tag-view-revert; notify-send "Sticky Tag View Reverted"
 
 # Spawn Preselection Point Up

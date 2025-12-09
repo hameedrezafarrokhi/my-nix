@@ -264,6 +264,29 @@ let
     fi
   '';
 
+
+  bsp-sticky-window = pkgs.writeShellScriptBin "bsp-sticky-window" ''
+    ${builtins.readFile ./sticky}
+  '';
+
+  bsp-sticky-window-revert = pkgs.writeShellScriptBin "bsp-sticky-window-revert" ''
+    CACHE_FILE="$HOME/.cache/bsp-sticky-window-cache"
+
+    if [ -f "$CACHE_FILE" ]; then
+        cached_data=$(cat "$CACHE_FILE")
+        cached_window=$(echo "$cached_data" | cut -d':' -f1)
+        cached_desktop=$(echo "$cached_data" | cut -d':' -f2)
+
+        if bspc query -N -n "$cached_window" >/dev/null 2>&1; then
+            bspc node "$cached_window" --flag sticky
+            bspc node "$cached_window" -d "$cached_desktop"
+        fi
+
+        rm -f "$CACHE_FILE"
+    fi
+  '';
+
+
   bsp-cache-layout = pkgs.writeShellScriptBin "bsp-cache-layout" ''
     DESKTOP=$(bspc query -D -d focused)
     CACHE_FILE="$HOME/.cache/bsp-layout-$DESKTOP.json"
@@ -1121,6 +1144,8 @@ in
       bsp-manual-order-remove
       bsp-full-screen
       bsp-skippy
+      bsp-sticky-window
+      bsp-sticky-window-revert
       bspswallow
       bspwmswallow
       pidswallow
