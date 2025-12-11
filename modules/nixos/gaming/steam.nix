@@ -33,7 +33,7 @@
     extest.enable = true;                                 # Translate X11 input (e.g. for using Steam Input on Wayland)
 
     gamescopeSession = {
-      enable = false;
+      enable = true;
      #args = [  ];
      #steamArgs = [  ];
      #env = {  };
@@ -47,7 +47,7 @@
   };
 
   programs.gamescope = {
-    enable = true;
+    enable = lib.mkDefault true;
    #capSysNice = true;
     env = {
      #XDG_RUNTIME_DIR = "/run/user/1001";

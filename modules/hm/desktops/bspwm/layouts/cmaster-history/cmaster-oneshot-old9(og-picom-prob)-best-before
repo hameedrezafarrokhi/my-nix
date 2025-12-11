@@ -108,12 +108,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -189,10 +189,10 @@ done
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 
@@ -207,12 +207,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -330,10 +330,10 @@ done
     bspc node -z left -150 0
     bspc node -z right 150 0
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 
@@ -349,12 +349,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -467,10 +467,10 @@ done
     bspc node -z left -375 0
     bspc node -z right 150 0
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -485,12 +485,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -594,10 +594,10 @@ done
     bspc node -z left -280 0
     bspc node -z right 280 0
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -611,12 +611,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -771,10 +771,10 @@ done
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -789,12 +789,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -936,10 +936,10 @@ done
     fi
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -956,12 +956,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -1188,10 +1188,10 @@ done
 
     [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -1207,12 +1207,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -1372,10 +1372,10 @@ done
 
 
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -1392,12 +1392,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -1609,10 +1609,10 @@ done
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -1628,12 +1628,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -1887,10 +1887,10 @@ done
 
 
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -1906,12 +1906,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -2196,10 +2196,10 @@ done
     bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
 
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi
@@ -2214,12 +2214,12 @@ DESKTOP=$(bspc query -D -d focused)
 rm -f "$HOME/.cache/bspwm-order-$DESKTOP"
 bspc query -N -n ".leaf.!hidden.!floating" -d > "$HOME/.cache/bspwm-order-$DESKTOP"
 
-#PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
-#
-#    if systemctl --user is-active --quiet picom.service; then
-#        systemctl --user stop picom.service
-#        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
-#    fi
+PICOM_STOP="$HOME/.cache/bsp-picomstop_$DESKTOP"
+
+    if systemctl --user is-active --quiet picom.service; then
+        systemctl --user stop picom.service
+        printf '%s\n' "hellooooooooo" > "$HOME/.cache/bsp-picomstop_$DESKTOP"
+    fi
 
 
 FOCUSED_WIN=$(bspc query -N -n focused)
@@ -2507,10 +2507,10 @@ done
 
 
 
-#   if [ -f "$PICOM_STOP" ]; then
-#       systemctl --user restart picom.service
-#       rm -f $PICOM_STOP
-#   fi
+    if [ -f "$PICOM_STOP" ]; then
+        systemctl --user restart picom.service
+        rm -f $PICOM_STOP
+    fi
 
     exit
 fi

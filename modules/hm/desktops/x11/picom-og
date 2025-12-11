@@ -1,0 +1,182 @@
+ animations = (
+     {
+         triggers = ["close", "hide"];
+         opacity = {
+             curve = "linear";
+             duration = 0.2;  # Slightly longer duration for smoother opacity fade
+             start = "window-raw-opacity-before";
+             end = 0;
+         };
+         shadow-opacity = "opacity";
+         scale-x = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.4;  # Smoother zoom-out
+             start = 1;  # Start at full size
+             end = 0;  # Zoom out to 0
+         };
+         scale-y = "scale-x";
+         shadow-scale-x = "scale-x";
+         shadow-scale-y = "scale-y";
+
+         # Adjust offsets to zoom from the center
+         offset-x = "(1 - scale-x) / 2 * window-width";
+         offset-y = "(1 - scale-y) / 2 * window-height";
+         shadow-offset-x = "offset-x";
+         shadow-offset-y = "offset-y";
+
+         # Add blur effect during close
+         blur = {
+             curve = "linear";
+             duration = 0.4;  # Smooth blur fade
+             start = 0;
+             end = 10;  # Max blur (you can adjust this value for stronger/weaker blur)
+         };
+     },
+     {
+         triggers = ["open", "show"];
+         opacity = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Smoother fade-in with longer duration
+             start = 0;
+             end = "window-raw-opacity";
+         };
+         offset-x = "(1 - scale-x) / 2 * window-width";  # Start from center
+         offset-y = "(1 - scale-y) / 2 * window-height";  # Start from center
+         scale-x = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Slower zoom-in for smooth effect
+             start = 0;  # Start very small
+             end = 1;  # Zoom in to full size
+         };
+         scale-y = "scale-x";
+         shadow-scale-x = "scale-x";
+         shadow-scale-y = "scale-y";
+         shadow-offset-x = "offset-x";
+         shadow-offset-y = "offset-y";
+     },
+     {
+         triggers = ["geometry", "position"];
+         scale-x = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Smoother scaling
+             start = "window-width-before / window-width";
+             end = 1;
+         };
+         scale-y = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Smoother scaling
+             start = "window-height-before / window-height";
+             end = 1;
+         };
+         offset-x = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Smoother positioning
+             start = "window-x-before - window-x";
+             end = 0;
+         };
+         offset-y = {
+             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+             duration = 0.15;  # Smoother positioning
+             start = "window-y-before - window-y";
+             end = 0;
+         };
+         shadow-scale-x = "scale-x";
+         shadow-scale-y = "scale-y";
+         shadow-offset-x = "offset-x";
+         shadow-offset-y = "offset-y";
+     },
+     {
+         triggers = ["workspace-out"];
+         offset-x = {
+             duration = 0.15;
+             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+             start = "0";
+             end = "-window-monitor-height";
+         };
+         shadow-offset-x = "offset-x";
+         opacity = {
+             duration = 0.15;
+             timing = "0.15s linear";
+             start = "window-raw-opacity-before";
+             end = "window-raw-opacity-before";
+         };
+         blur-opacity = "opacity";
+         shadow-opacity = "opacity";
+     },
+     {
+         triggers = ["workspace-out-inverse"];
+         offset-x = {
+             duration = 0.15;
+             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+             start = "0";
+             end = "window-monitor-height";
+         };
+         shadow-offset-x = "offset-x";
+         opacity = {
+             duration = 0.15;
+             timing = "0.15s linear";
+             start = "window-raw-opacity-before";
+             end = "window-raw-opacity-before";
+         };
+         blur-opacity = "opacity";
+         shadow-opacity = "opacity";
+     },
+     {
+         triggers = ["workspace-in-inverse"];
+         offset-x = {
+             duration = 0.15;
+             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+             start = "-window-monitor-height";
+             end = "0";
+         };
+         shadow-offset-x = "offset-x";
+         opacity = {
+             duration = 0.15;
+             timing = "0.15s linear";
+             start = "window-raw-opacity";
+             end = "window-raw-opacity";
+         };
+         blur-opacity = "opacity";
+         shadow-opacity = "opacity";
+     },
+     {
+         triggers = ["workspace-in"];
+         offset-x = {
+             duration = 0.15;
+             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
+             start = "window-monitor-height";
+             end = "0";
+         };
+         shadow-offset-x = "offset-x";
+         opacity = {
+             duration = 0.15;
+             timing = "0.15s linear";
+             start = "window-raw-opacity";
+             end = "window-raw-opacity";
+         };
+         blur-opacity = "opacity";
+         shadow-opacity = "opacity";
+     },
+     {
+        triggers = ["focus-change"];
+        scale-x = {
+            curve = "cubic-bezier(0.25,0.8,0.25,1)";
+            duration = 0.2;
+            start = 0.95;
+            end = 1;
+        };
+        scale-y = "scale-x";
+        opacity = {
+            curve = "linear";
+            duration = 0.2;
+            start = 0.8;
+            end = 1;
+        };
+     }
+
+ )
+
+ animation-exclude = [
+   "class_g *= 'conky'",
+   "class_g *= 'Conky'"
+ ];

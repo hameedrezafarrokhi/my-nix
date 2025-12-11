@@ -18,7 +18,8 @@ in
   # To See Kernel Drivers in Use ( or available ): lspci -k -d ::03xx
 
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
+   #kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_17;
    #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];  # DOES NOTHING
     kernelModules = [   # HANDLED BY NIXOS AND NVIDIA OPTIONS
    #  "nvidia"
@@ -61,11 +62,11 @@ in
       VDPAU_DRIVER = "va_gl";          # "va_gl" fot intel, "radeonsi" for amd, "nouveau" "nvidia" for nvidia
 
       # VULKAN ( WARNING MAY BREAK APPS IN OLDER GPUs )
-      ANV_DEBUG = "video-decode,video-encode";       # For intel
+    # ANV_DEBUG = "video-decode,video-encode";       # For intel
      #RADV_PERFTEST = "video_decode,video_encode";  # For AMD
 
       # VULKAN DEVICE FOR HYBRIDS ( to see available devices: MESA_VK_DEVICE_SELECT=list vulkaninfo )
-      MESA_VK_DEVICE_SELECT = "10de:fd4";               # WARNING ONLY THIS DEVICE: 10de:fd4 for nvidia, 8086:166 for intel ( Using “vid:did!” will have the same effect as using the MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE variable )
+    # MESA_VK_DEVICE_SELECT = "10de:fd4";               # WARNING ONLY THIS DEVICE: 10de:fd4 for nvidia, 8086:166 for intel ( Using “vid:did!” will have the same effect as using the MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE variable ) # WARNING BREAKS GAMESCOPE
      #MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE = 1;   # Forces the default
 
      #DRI_PRIME = 1;                    # For Prime Hybrid Laptops
@@ -245,6 +246,34 @@ in
     '')
 
   ];
+
+  programs.gamescope = {
+    env = {
+     #XDG_RUNTIME_DIR = "/run/user/1001";
+     #WAYLAND_DISPLAY = "wayland-1";
+     #DISPLAY = ":0";
+     #__NV_PRIME_RENDER_OFFLOAD = "1";
+     #__NV_PRIME_RENDER_OFFLOAD_PROVIDER="NVIDIA-G0";
+     #__VK_LAYER_NV_optimus = "NVIDIA_only";
+     #__GLX_VENDOR_LIBRARY_NAME = "nvidia";
+     #MESA_VK_DEVICE_SELECT = "";
+     #ANV_DEBUG = "";
+    };
+   #args = [  ];
+  };
+
+  programs.steam.gamescopeSession = {
+   #args = [  ];
+   #steamArgs = [  ];
+    env = {
+     #__NV_PRIME_RENDER_OFFLOAD = "1";
+     #__NV_PRIME_RENDER_OFFLOAD_PROVIDER="NVIDIA-G0";
+     #__VK_LAYER_NV_optimus = "NVIDIA_only";
+     #__GLX_VENDOR_LIBRARY_NAME = "nvidia";
+     #MESA_VK_DEVICE_SELECT = "";
+     #ANV_DEBUG = "";
+    };
+  };
 
 };}
 

@@ -39,7 +39,7 @@
       tab_bar_margin_height = "10 10";
       tab_bar_style = "powerline";
       tab_powerline_style = "round";
-      tab_bar_min_tabs = 1;
+      tab_bar_min_tabs = 2;
       tab_activity_symbol = "none";
       background_opacity = lib.mkDefault 1;
       dynamic_background_opacity = "yes";
