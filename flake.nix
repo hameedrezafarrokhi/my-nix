@@ -7,16 +7,16 @@
          nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   #      nixpkgs.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-          master.url = "github:NixOS/nixpkgs/master";
+  #       master.url = "github:NixOS/nixpkgs/master";
   #       master.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
         unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   #     unstable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-          stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+          stable.url = "github:NixOS/nixpkgs/nixos-25.11";
   #       stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-      old-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+      old-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
   #   old-stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
   #     fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
@@ -146,7 +146,7 @@
      #overlays = myOverlays;
     };
     myPKGS =  system: {
-        master = import inputs.master     {system=system;config=pkgsConf;};
+#       master = import inputs.master     {system=system;config=pkgsConf;};
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};

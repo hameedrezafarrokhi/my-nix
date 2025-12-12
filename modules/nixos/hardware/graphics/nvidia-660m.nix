@@ -120,7 +120,7 @@ in
 
       ] ++
       [
-        mypkgs.stable.intel-media-sdk
+        mypkgs.old-stable.intel-media-sdk
       ];
 
       enable32Bit = true;

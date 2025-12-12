@@ -262,20 +262,27 @@ in
             CAPSLOCK:
               held: [LEFTMETA, Z]
               alone: CAPSLOCK
-              alone_timeout_millis: 5000
+              alone_timeout_millis: 250
 
         - name: r-ctrl
           remap:
             RIGHTCTRL:
               alone: [LEFTMETA, Z]
               held: RIGHTCTRL
-              alone_timeout_millis: 1000
+              alone_timeout_millis: 500
 
         - name: r-alt
           remap:
             RIGHTALT:
               held: RIGHTALT
               alone: [LEFTALT, X]
+              alone_timeout_millis: 500
+
+        - name: compose
+          remap:
+            COMPOSE:
+              held: LEFTMETA
+              alone: COMPOSE
               alone_timeout_millis: 1000
 
       keymap:

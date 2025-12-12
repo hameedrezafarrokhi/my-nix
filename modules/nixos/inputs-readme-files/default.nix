@@ -16,7 +16,7 @@ in
           "nixpkgs-readme".source = "${inputs.nixpkgs}/README.md";
            "stable-readme".source = "${inputs.stable}/README.md";
          "unstable-readme".source = "${inputs.unstable}/README.md";
-           "master-readme".source = "${inputs.master}/README.md";
+#          "master-readme".source = "${inputs.master}/README.md";
        "old-stable-readme".source = "${inputs.old-stable}/README.md";
   #        "kernel-readme".source = "${inputs.kernel}/README.md";
   #      "fallback-readme".source = "${inputs.fallback}/README.md";
