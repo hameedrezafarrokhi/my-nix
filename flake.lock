@@ -1514,6 +1514,26 @@
         "type": "github"
       }
     },
+    "oxwm": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765621728,
+        "narHash": "sha256-zJUAXhzRhPHkzj24wEcJti3KPd5WKZLT8Il+ZPuGCMk=",
+        "owner": "tonybanters",
+        "repo": "oxwm",
+        "rev": "cba29539e654c74fdb0dba86f01060374dcabb01",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tonybanters",
+        "repo": "oxwm",
+        "type": "github"
+      }
+    },
     "picom-ftlabs": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -1626,6 +1646,7 @@
         "noctalia-shell": "noctalia-shell",
         "nur": "nur",
         "old-stable": "old-stable",
+        "oxwm": "oxwm",
         "picom-ftlabs": "picom-ftlabs",
         "plasma-manager": "plasma-manager",
         "quickshell": "quickshell",

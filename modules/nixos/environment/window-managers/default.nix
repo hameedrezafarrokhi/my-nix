@@ -26,6 +26,8 @@ in
        "fvwm2" "fvwm3" "leftwm" "berry" "hypr" "sawfish"
        "twm" "jwm" "ratpoison" "e16"
 
+       "oxwm"
+
       ]);
      default = [ ];
 
@@ -94,6 +96,8 @@ in
     ./leftwm.nix
     ./e16.nix
     ./mango.nix
+
+    ./oxwm.nix
 
     ./rices-shells/hyprland-noctalia.nix
     ./rices-shells/hyprland-caelestia.nix

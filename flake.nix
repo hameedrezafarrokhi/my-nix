@@ -103,6 +103,9 @@
 #              pdwmc = { url = "github:r0-zero/pdwmc";
 #                               flake = false; };
 
+                oxwm = { url = "github:tonybanters/oxwm";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+
 #            omarchy = { url = "github:basecamp/omarchy";
 #                               flake = false; };
 
@@ -224,6 +227,7 @@
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
             inputs.mango.nixosModules.mango
+            inputs.oxwm.nixosModules.default
            #inputs.xremap-flake.nixosModules.default
            #(import "${inputs.windscribe}/windscribe/default.nix")
 

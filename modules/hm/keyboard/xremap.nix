@@ -68,6 +68,14 @@ let
     ${config.services.screen-locker.lockCmd}
   '';
 
+  xremap-lock-button = pkgs.writeShellScriptBin "xremap-lock-button" ''
+    if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+        systemctl suspend
+    else
+        xlock
+    fi
+  '';
+
   x-logout = pkgs.writeShellScriptBin "x-logout" ''
     xsession-manager -s temp
     bspc quit
@@ -199,6 +207,7 @@ in
     lock-kill
     lock-restart
     xremap-x-lock-sleep
+    xremap-lock-button
     x-logout
     xremap-picom-toggle
     xremap-volume
@@ -283,6 +292,20 @@ in
             COMPOSE:
               held: LEFTMETA
               alone: COMPOSE
+              alone_timeout_millis: 1000
+
+        - name: restart-button
+          remap:
+            PROG1:
+              held: [LEFTMETA, PROG1]
+              alone: [LEFTMETA, PROG1]
+              alone_timeout_millis: 1000
+
+        - name: media-button
+          remap:
+            PROG3:
+              held: [LEFTMETA, PROG3]
+              alone: [LEFTMETA, PROG3]
               alone_timeout_millis: 1000
 
       keymap:
@@ -503,6 +526,7 @@ in
                     KEY_BACKSPACE:
                       launch: [ "xremap-xsession-load" ]
 
+
             Super-Shift-Ctrl-l:
                       launch: [ "xlock" ]
             Super-Shift-Ctrl-KEY_SEMICOLON:
@@ -513,6 +537,8 @@ in
                       launch: [ "xremap-picom-toggle" ]
             Super-Shift-Ctrl-KEY_BACKSPACE:
                       launch: [ "xremap-xsession-save" ]
+            Super-KEY_PROG1:
+                      launch: [ "xremap-lock-button" ]
 
 
 
@@ -591,6 +617,8 @@ in
               launch: [ "playerctl", "next" ]
             KEY_MUTE:
               launch: [ "xremap-volume", "mute" ]
+            Super-KEY_PROG3:
+              launch: [ "playerctl", "play-pause" ]
 
 
 
