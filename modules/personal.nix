@@ -210,7 +210,7 @@
         include = with pkgs; [ ];
       };
       wallpaper = {
-        enable = false;
+        enable = true;
         exclude = with pkgs; [ ];
         include = with pkgs; [ ];
       };
