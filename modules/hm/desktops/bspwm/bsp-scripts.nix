@@ -23,7 +23,7 @@ let
     formatted_keybindings=$(echo "$keybindings" | column -t -s '|')
 
     # Show in rofi and capture the selected line
-    selected=$(echo "$formatted_keybindings" | rofi -dmenu -i -p "Keybindings" -line-padding 4 -hide-scrollbar -theme ${nix-path}/modules/hm/desktops/bspwm/keybinds.rasi)
+    selected=$(echo "$formatted_keybindings" | rofi -dmenu -i -p "Keybindings" -line-padding 4 -hide-scrollbar -theme $HOME/.config/rofi/themes/keybinds.rasi)
 
     # Execute the selected keybinding's command (if needed)
     if [ -n "$selected" ]; then
@@ -105,7 +105,7 @@ let
   '';
 
   bsp-power = pkgs.writeShellScriptBin "bsp-power" ''
-    ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
+    ROFI_THEME="$HOME/.config/rofi/themes/power.rasi"
 
     chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM❤️\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot\n󰆓 Save Session\n󰆔 Restore Session" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")

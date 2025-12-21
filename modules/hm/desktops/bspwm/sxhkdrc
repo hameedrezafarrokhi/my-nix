@@ -1,6 +1,6 @@
 # Launch Rofi Application Menu
 super + space
-   	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi
+   	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi
 
 # Set Window State: Floating Mode
 super + f
@@ -440,7 +440,7 @@ super + shift + grave
 
 # Multiple Workspaces View
 super + alt + grave
-    rofi -dmenu -p "Desktops to toggle:" -theme ~/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi | xargs bsp-tag-view
+    rofi -dmenu -p "Desktops to toggle:" -theme $HOME/.config/rofi/themes/main.rasi | xargs bsp-tag-view
 
 # Multiple Workspaces View Revert
 super + alt + shift + grave
@@ -554,11 +554,15 @@ super + shift + b
 super + shift + alt + b
     bsp-border-color prev
 
-# Cycle Feh Wallpapers
+# Fehbg
+super + w
+    pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
+
+# Cycle Feh Wallpapers Next
 super + shift + w
     feh-cycle next
 
-# Cycle Feh Wallpapers
+# Cycle Feh Wallpapers Prev
 super + shift + alt + w
     feh-cycle prev
 
@@ -653,4 +657,24 @@ super + shift + o
 # Manual Layout Order Remove (Per Workspace)
 super + alt + shift + o
     bsp-manual-order-remove; notify-send "Layout Order Removed"
+
+# Live Wallpaper
+super + ctrl + shift + comma
+    live-bg
+
+# Live Wallpaper Cycle Next
+super + shift + comma
+    live-bg-cycle +
+
+# Live Wallpaper Cycle Prev
+super + shift + alt + comma
+    live-bg-cycle -
+
+# Live Wallpaper Speed Increase
+super + ctrl + comma
+    live-bg-speed +
+
+# Live Wallpaper Speed Decrease
+super + ctrl + alt + comma
+    live-bg-speed -
 

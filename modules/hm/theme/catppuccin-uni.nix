@@ -108,6 +108,8 @@
 
     dunstFont = "Comic Sans 10";
 
+    rofiMenuFont = "Comic Mono 12";
+
     MonoSize = 10;
     MonoSizeKitty = 9;
     MonoSizeAlacritty = 9.5;
@@ -213,9 +215,28 @@
      #tweaks = [ "black" ];
     };
 
+   #fehw = pkgs.writeShellScriptBin "fehw" ''
+   #  if [ -f "$HOME/.fehbg" ]; then
+   #      "$HOME/.fehbg"
+   #  else
+   #      ${pkgs.feh}/bin/feh --bg-fill ${wallpaper}
+   #  fi
+   #'';
+
     fehw = pkgs.writeShellScriptBin "fehw" ''
-      if [ -f "$HOME/.fehbg" ]; then
-          "$HOME/.fehbg"
+      FEHBG="$HOME/.fehbg"
+      LIVEBG="$HOME/.live-bg"
+
+      if [[ -f "$FEHBG" && -f "$LIVEBG" ]]; then
+          if [[ "$FEHBG" -nt "$LIVEBG" ]]; then
+              bash "$FEHBG"
+          else
+              bash "$LIVEBG"
+          fi
+      elif [[ -f "$LIVEBG" ]]; then
+          bash "$LIVEBG"
+      elif [[ -f "$FEHBG" ]]; then
+          bash "$FEHBG"
       else
           ${pkgs.feh}/bin/feh --bg-fill ${wallpaper}
       fi
@@ -232,7 +253,7 @@
       set="feh --bg-fill"
       view="feh -F"
       selectpic(){
-          wallpaper=$(ls $dir | rofi -dmenu -p "select: ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+          wallpaper=$(ls $dir | rofi -dmenu -p "select: ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
 
           if [[ $wallpaper == "qq" ]]; then
               exit
@@ -241,7 +262,7 @@
           fi
       }
       action(){
-        whattodo=$(echo -e "view\nset" | rofi -dmenu -p "action ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+        whattodo=$(echo -e "view\nset" | rofi -dmenu -p "action ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
           if [[ $whattodo == "set" ]]; then
               set_wall
           else
@@ -256,7 +277,7 @@
           set_after_view
       }
       set_after_view(){
-        setorno=$(echo -e "set\nback" | rofi -dmenu -p "set it? ($wallpaper)" -theme /home/hrf/nixos/modules/hm/desktops/awesome/awesome/rofi/config.rasi)
+        setorno=$(echo -e "set\nback" | rofi -dmenu -p "set it? ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
 
         if [[ $setorno == "set" ]]; then
             set_wall
@@ -267,6 +288,83 @@
         fi
       }
       selectpic
+    '';
+
+    live-bg = pkgs.writeShellScriptBin "live-bg" ''
+      LIVE_BG="$HOME/.live-bg"
+      LIVE_DIR="$HOME/Pictures/live-wallpapers"
+      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
+      DEFAULT_FOLDER=1
+      DEFAULT_SPEED=10
+      pkill paperview-rs 2>/dev/null && touch $HOME/.fehbg && exit 0
+      if [[ -f "$LIVE_BG" ]]; then
+          touch $HOME/.live-bg
+          bash "$LIVE_BG"
+          exit 0
+      fi
+      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$DEFAULT_FOLDER/:$DEFAULT_SPEED\""
+      echo "#!/bin/bash" > "$LIVE_BG"
+      echo "$CMD" >> "$LIVE_BG"
+      chmod +x "$LIVE_BG"
+      eval "$CMD"
+    '';
+
+    live-bg-cycle = pkgs.writeShellScriptBin "live-bg-cycle" ''
+      LIVE_BG="$HOME/.live-bg"
+      LIVE_DIR="$HOME/Pictures/live-wallpapers"
+      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
+      DEF_FOLDER=1
+      DEF_SPEED=10
+      ACTION="$1"
+      pkill paperview-rs 2>/dev/null
+      if [[ -f "$LIVE_BG" ]]; then
+          CUR_FOLDER=$(grep -oP 'live-wallpapers/\K[0-9]+' "$LIVE_BG")
+          CUR_SPEED=$(grep -oP ':[0-9]+$' "$LIVE_BG" | tr -d :)
+      fi
+      [[ -z "$CUR_FOLDER" ]] && CUR_FOLDER=$DEF_FOLDER
+      [[ -z "$CUR_SPEED"  ]] && CUR_SPEED=$DEF_SPEED
+      MAX=$(ls -d "$LIVE_DIR"/*/ 2>/dev/null | wc -l)
+      if [[ "$ACTION" == "+" ]]; then
+          ((CUR_FOLDER++))
+          ((CUR_FOLDER > MAX)) && CUR_FOLDER=1
+      elif [[ "$ACTION" == "-" ]]; then
+          ((CUR_FOLDER--))
+          ((CUR_FOLDER < 1)) && CUR_FOLDER=$MAX
+      else
+          exit 1
+      fi
+      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
+      printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
+      chmod +x "$LIVE_BG"
+      eval "$CMD"
+    '';
+
+    live-bg-speed = pkgs.writeShellScriptBin "live-bg-speed" ''
+      LIVE_BG="$HOME/.live-bg"
+      LIVE_DIR="$HOME/Pictures/live-wallpapers"
+      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
+      DEF_FOLDER=1
+      DEF_SPEED=10
+      ACTION="$1"
+      pkill paperview-rs 2>/dev/null
+      if [[ -f "$LIVE_BG" ]]; then
+          CUR_FOLDER=$(sed -n 's|.*/live-wallpapers/\([0-9]\+\)/.*|\1|p' "$LIVE_BG")
+          CUR_SPEED=$(sed -n 's|.*:\([0-9]\+\)".*|\1|p' "$LIVE_BG")
+      fi
+      [[ -z "$CUR_FOLDER" ]] && CUR_FOLDER=$DEF_FOLDER
+      [[ -z "$CUR_SPEED"  ]] && CUR_SPEED=$DEF_SPEED
+      if [[ "$ACTION" == "+" ]]; then
+          CUR_SPEED=$((CUR_SPEED + 1))
+      elif [[ "$ACTION" == "-" ]]; then
+          CUR_SPEED=$((CUR_SPEED - 1))
+          ((CUR_SPEED < 1)) && CUR_SPEED=1
+      else
+          exit 1
+      fi
+      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
+      printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
+      chmod +x "$LIVE_BG"
+      eval "$CMD"
     '';
 
   in
@@ -299,6 +397,10 @@
     fehw
     feh-cycle
     feh-rofi
+
+    live-bg
+    live-bg-speed
+    live-bg-cycle
 
   ];
 
@@ -1233,6 +1335,11 @@
       target = "Pictures/themed-wallpapers";
       recursive = true;
     };
+    live-wallpapers = {
+      source = "${inputs.assets}/live-wallpapers/";
+      target = "Pictures/live-wallpapers";
+      recursive = true;
+    };
 
     face-icons = {
       source = "${inputs.assets}/icons/";
@@ -1271,54 +1378,6 @@
 
   xdg.configFile = {
 
-    openbox-autostart = {
-      target = "openbox/autostart";
-      text = ''
-        fehw &
-
-        if hash polybar >/dev/null 2>&1; then
-        	  pkill polybar
-        	  sleep 1
-        	  ${config.services.polybar.package}/bin/polybar example &
-        	  polybar-msg action bspwm module_hide
-        fi &
-
-        polybar-msg action bspwm module_hide
-
-        if hash conky >/dev/null 2>&1; then
-        	  pkill conky
-        	  sleep 0.5
-        	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
-        fi &
-
-        if hash tint2 >/dev/null 2>&1; then
-        	  pkill tint2
-        	  sleep 0.5
-        	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc
-        fi &
-
-        if hash dockx >/dev/null 2>&1; then
-        	  pkill dockx
-        	  sleep 0.5
-        	  dockx &
-        fi
-
-        if hash skippy-xd >/dev/null 2>&1; then
-        	  pkill skippy-xd
-        	  sleep 0.5
-        	  skippy-xd --start-daemon &
-        fi
-
-        #if hash plank >/dev/null 2>&1; then
-        #	  pkill plank
-        #	  sleep 0.5
-        #	  plank
-        #fi &
-
-        polybar-msg action bspwm module_hide
-      '';
-    };
-
     catppuccinifier = {
       target = "com.lighttigerxiv.catppuccinifier/settings.json";
       text = builtins.toJSON {
@@ -1345,6 +1404,305 @@
     };
 
     "Kvantum/${kvantum-theme}".source = "${config.catppuccin.sources.kvantum}/share/Kvantum/${kvantum-theme}";
+
+    rofi-power = {
+      target = "rofi/themes/power.rasi";
+      text = ''
+        * {
+            bg: ${Mantle};
+            background-color: @bg;
+            font: "${rofiMenuFont}";
+        }
+        configuration {
+            show-icons: true;
+            icon-theme: "${gtk-icon}";
+            location: 0;
+            display-drun: "Launch:";
+        }
+        window {
+            width: 20%;
+            transparency: "real";
+            orientation: vertical;
+            border-color: ${Crust};
+            border-radius: 0px;
+        }
+        mainbox {
+            children: [inputbar, listview];
+        }
+        element {
+            padding: 4 8;
+            text-color: ${Sapphire};
+            background-color: ${Crust};
+            border-radius: 5px;
+        }
+        element.selected {
+            text-color: ${Text};
+            background-color: ${Mantle};
+        }
+        element-text {
+            background-color: inherit;
+            text-color: inherit;
+        }
+        element-icon {
+            size: 16 px;
+            background-color: inherit;
+            padding: 0 6 0 0;
+            alignment: vertical;
+        }
+        element.selected.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.alternate.normal {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.alternate.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.selected.normal {
+            background-color: ${Red};
+            text-color: ${Crust};
+        }
+        element.normal.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.normal.normal {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.normal.urgent {
+            background-color: ${Red};
+            text-color: ${Crust};
+        }
+        listview {
+            columns: 1;
+            lines: 7;
+            padding: 8 0;
+            fixed-height: true;
+            fixed-columns: true;
+            fixed-lines: true;
+            border: 0 10 6 10;
+        }
+        inputbar {
+            padding: 10 0 0;
+            margin: 0 0 0 0;
+        }
+        entry {
+            text-color: ${Red};
+            padding: 10 10 0 0;
+            margin: 0 -2 0 0;
+        }
+        prompt {
+            text-color: ${Blue};
+            padding: 10 6 0 10;
+            margin: 0 -2 0 0;
+        }
+      '';
+    };
+
+    rofi-main = {
+      target = "rofi/themes/main.rasi";
+      text = ''
+        * {
+            bg: ${Mantle};
+            fg: ${Text};
+            selection: ${Sapphire};
+            border: ${Crust};
+            urgent: ${Red};
+            text-dark: ${Crust};
+            comment:${Subtext0};
+            background-color: @bg;
+          }
+          configuration {
+            show-icons: true;
+            icon-theme: "${gtk-icon}";
+            location: 0;
+            font: "${rofiMenuFont}";
+            display-drun: "Launch:";
+          }
+          window {
+            width: 45%;
+            transparency: "real";
+            orientation: vertical;
+            border-color: @border;
+            border-radius: 0px;
+          }
+          mainbox {
+            children: [inputbar, listview];
+          }
+          element {
+            padding: 4 12;
+            text-color: @fg;
+            border-radius: 5px;
+          }
+          element selected {
+            text-color: @bg;
+            background-color: @selection;
+          }
+          element-text {
+            background-color: inherit;
+            text-color: inherit;
+          }
+          element-icon {
+            size: 16 px;
+            background-color: inherit;
+            padding: 0 6 0 0;
+            alignment: vertical;
+          }
+          element.selected.active {
+           	background-color: @bg;
+           	text-color: @fg;
+          }
+          element.alternate.normal {
+          	background-color: @bg;
+          	text-color: @fg;
+          }
+          element.alternate.active {
+          	background-color: @selection;
+          	text-color: @bg;
+          }
+          element.selected.normal {
+          	background-color: @selection;
+          	text-color: @bg;
+          }
+          element.normal.active {
+          	background-color: @bg;
+          	text-color: @fg;
+          }
+          element.normal.normal {
+          	background-color: @bg;
+          	text-color: @fg;
+          }
+          element.normal.urgent {
+          	background-color: @urgent;
+          	text-color: @bg;
+          }
+          listview {
+            columns: 2;
+            lines: 9;
+            padding: 8 0;
+            fixed-height: true;
+            fixed-columns: true;
+            fixed-lines: true;
+            border: 0 10 6 10;
+          }
+          entry {
+            text-color: @fg;
+            padding: 10 10 0 0;
+            margin: 0 -2 0 0;
+          }
+          inputbar {
+            padding: 10 0 0;
+            margin: 0 0 0 0;
+          }
+          prompt {
+            text-color: @selection;
+            padding: 10 6 0 10;
+            margin: 0 -2 0 0;
+          }
+      '';
+    };
+
+    rofi-keybinds = {
+      target = "rofi/themes/keybinds.rasi";
+      text = ''
+        * {
+            bg: ${Mantle};
+            background-color: @bg;
+            font: "${rofiMenuFont}";
+        }
+        configuration {
+            show-icons: true;
+            icon-theme: "${gtk-icon}";
+            location: 0;
+            display-drun: "Launch:";
+        }
+        window {
+            width: 70%;
+            transparency: "real";
+            orientation: vertical;
+            border-color: ${Crust};
+            border-radius: 0px;
+        }
+        mainbox {
+            children: [inputbar, listview];
+        }
+        element {
+            padding: 4 8;
+            text-color: ${Sapphire};
+            background-color: ${Crust};
+            border-radius: 5px;
+        }
+        element.selected {
+            text-color: ${Text};
+            background-color: ${Mantle};
+        }
+        element-text {
+            background-color: inherit;
+            text-color: inherit;
+        }
+        element-icon {
+            size: 16 px;
+            background-color: inherit;
+            padding: 0 6 0 0;
+            alignment: vertical;
+        }
+        element.selected.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.alternate.normal {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.alternate.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.selected.normal {
+            background-color: ${Red};
+            text-color: ${Crust};
+        }
+        element.normal.active {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.normal.normal {
+            background-color: ${Mantle};
+            text-color: ${Text};
+        }
+        element.normal.urgent {
+            background-color: ${Red};
+            text-color: ${Crust};
+        }
+        listview {
+            columns: 1;
+            lines: 16;
+            padding: 8 0;
+            fixed-height: true;
+            fixed-columns: true;
+            fixed-lines: true;
+            border: 0 10 6 10;
+        }
+        inputbar {
+            padding: 10 0 0;
+            margin: 0 0 0 0;
+        }
+        entry {
+            text-color: ${Red};
+            padding: 10 10 0 0;
+            margin: 0 -2 0 0;
+        }
+        prompt {
+            text-color: ${Blue};
+            padding: 10 6 0 10;
+            margin: 0 -2 0 0;
+        }
+      '';
+    };
 
   };
 

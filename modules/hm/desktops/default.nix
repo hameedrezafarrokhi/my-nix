@@ -38,6 +38,7 @@
     ./bspwm
     ./dwm
     ./uwsm
+    ./openbox
     ./x11
 
   ];

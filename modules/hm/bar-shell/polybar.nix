@@ -66,7 +66,7 @@ let
   '';
 
   poly-power = pkgs.writeShellScriptBin "poly-power" ''
-    ROFI_THEME="${nix-path}/modules/hm/desktops/awesome/awesome/rofi/power.rasi"
+    ROFI_THEME="$HOME/.config/rofi/themes/power.rasi"
 
     chosen=$(echo -e "[Cancel]\n󰑓 Reload\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
@@ -444,7 +444,7 @@ in
         exec = ''"echo ' '"'';
        #interval = 60;
         click-left = "jgmenu_run";
-       #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ${nix-path}/modules/hm/desktops/awesome/awesome/rofi/config.rasi -location 1 -yoffset 42 -xoffset 8";
+       #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "dolphin";
         double-click-left = "skippy-xd --paging";
         click-middle = "ulauncher";
@@ -598,7 +598,7 @@ in
 
       "settings" = {
         screenchange-reload = true;
-        pseudo-transparency = true;
+       #pseudo-transparency = true;
       };
 
     };

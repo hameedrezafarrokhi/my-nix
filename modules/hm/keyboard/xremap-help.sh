@@ -62,7 +62,7 @@ fi
 
 # Show Rofi menu
 selected=$(printf "%s\n" "${output[@]}" | column -t -s '|' \
-            | rofi -dmenu -i -p "XRemap Keybindings" -line-padding 4 -hide-scrollbar -theme ~/nixos/modules/hm/desktops/bspwm/keybinds.rasi)
+            | rofi -dmenu -i -p "XRemap Keybindings" -line-padding 4 -hide-scrollbar -theme $HOME/.config/rofi/themes/keybinds.rasi)
 
 # Execute selected command
 if [[ -n "$selected" ]]; then

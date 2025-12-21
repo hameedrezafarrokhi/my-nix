@@ -361,6 +361,7 @@
           labwc.enable = true;
           dwm.enable = true;
           i3.enable = true;
+          openbox.enable = true;
          #xmonad.enable = true;
           awesome.enable = true;
          #qtile.enable = true;
