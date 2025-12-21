@@ -384,6 +384,23 @@
       eval "$CMD"
     '';
 
+    live-bg-pause = pkgs.writeShellScriptBin "live-bg-pause" ''
+      PROC="paperview-rs"
+      PID=$(pgrep -n "$PROC")
+      if [ -z "$PID" ]; then
+          echo "Process not running"
+          exit 1
+      fi
+      STATE=$(ps -o state= -p "$PID")
+      if [[ "$STATE" == *T* ]]; then
+          kill -CONT "$PID"
+          echo "Resumed $PROC"
+      else
+          kill -STOP "$PID"
+          echo "Paused $PROC"
+      fi
+    '';
+
   in
 
 { config = lib.mkIf (config.my.theme == "catppuccin-uni") {
@@ -419,6 +436,7 @@
     live-bg
     live-bg-speed
     live-bg-cycle
+    live-bg-pause
 
   ];
 

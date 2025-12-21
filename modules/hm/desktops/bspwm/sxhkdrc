@@ -678,3 +678,7 @@ super + ctrl + comma
 super + ctrl + alt + comma
     live-bg-speed -
 
+# Live Wallpaper Speed Decrease
+super + alt + comma
+    live-bg-pause
+
