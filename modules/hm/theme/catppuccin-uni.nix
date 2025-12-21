@@ -229,17 +229,34 @@
 
       if [[ -f "$FEHBG" && -f "$LIVEBG" ]]; then
           if [[ "$FEHBG" -nt "$LIVEBG" ]]; then
-              bash "$FEHBG"
+              pkill paperview-rs & sh -c "$FEHBG"
+              exit 0
           else
-              bash "$LIVEBG"
+              pkill paperview-rs & sh -c "$FEHBG" && sleep 3 && sh -c "$LIVEBG"
+              exit 0
           fi
       elif [[ -f "$LIVEBG" ]]; then
-          bash "$LIVEBG"
+          pkill paperview-rs & sh -c "$LIVEBG"
+          exit 0
       elif [[ -f "$FEHBG" ]]; then
-          bash "$FEHBG"
+          pkill paperview-rs & sh -c "$FEHBG"
+          exit 0
       else
           ${pkgs.feh}/bin/feh --bg-fill ${wallpaper}
       fi
+    '';
+
+    betterlock-init = pkgs.writeShellScriptBin "betterlock-init" ''
+      FEHBG="$HOME/.fehbg"
+      FALLBACK_WALLPAPER="${wallpaper}"
+      wallpaper=""
+      if [[ -f "$FEHBG" ]]; then
+          wallpaper=$(grep -oE "'[^']+\.(jpg|jpeg|png|webp)'" "$FEHBG" | tail -n 1 | tr -d "'")
+      fi
+      if [[ -z "$wallpaper" || ! -f "$wallpaper" ]]; then
+          wallpaper="$FALLBACK_WALLPAPER"
+      fi
+      betterlockscreen -u "$wallpaper" --fx dimblur --dim 50 --blur 0.5
     '';
 
     feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
@@ -394,6 +411,7 @@
     plasma-cursor-package
     hypr-cursor-package
 
+    betterlock-init
     fehw
     feh-cycle
     feh-rofi
@@ -484,7 +502,8 @@
     xsetroot -cursor_name left_ptr &
     ${config.services.dunst.package}/bin/dunst &
     ${fehw}/bin/fehw &
-    ${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
+    ${betterlock-init}/bin/betterlock-init &
+    #${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
   '';
   xsession.profileExtra = lib.mkIf config.xsession.enable ''
     xsetroot -cursor_name left_ptr &
