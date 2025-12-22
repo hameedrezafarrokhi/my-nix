@@ -682,3 +682,6 @@ super + ctrl + alt + comma
 super + alt + comma
     live-bg-pause
 
+# Live Wallpaper Manual Speed
+super + shift + ctrl + alt + comma
+    live-bg-speed-manual

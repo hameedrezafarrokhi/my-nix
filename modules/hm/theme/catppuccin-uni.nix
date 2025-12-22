@@ -401,6 +401,15 @@
       fi
     '';
 
+    live-bg-speed-manual = pkgs.writeShellScriptBin "live-bg-speed-manual" ''
+      FILE="$HOME/.live-bg"
+      [ -f "$FILE" ] || exit 0
+      SPEED=$(rofi -dmenu -p "Speed" -theme $HOME/.config/rofi/themes/power.rasi)
+      [ -z "$SPEED" ] && exit 0
+      sed -i "s/:\([0-9]\+\)\"$/:$SPEED\"/" "$FILE"
+      pkill paperview-rs && $HOME/.live-bg
+    '';
+
   in
 
 { config = lib.mkIf (config.my.theme == "catppuccin-uni") {
@@ -437,6 +446,7 @@
     live-bg-speed
     live-bg-cycle
     live-bg-pause
+    live-bg-speed-manual
 
   ];
 
