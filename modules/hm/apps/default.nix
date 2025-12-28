@@ -12,6 +12,7 @@ in
 
     alacritty.enable = lib.mkEnableOption "alacritty";
     amberol.enable = lib.mkEnableOption "amberol";
+    bat.enable = lib.mkEnableOption "bat";
     bazaar.enable = lib.mkEnableOption "bazaar";
     borg.enable = lib.mkEnableOption "borg";
     btop.enable = lib.mkEnableOption "btop";
@@ -39,6 +40,7 @@ in
     ludusavi.enable = lib.mkEnableOption "ludusavi";
     lutris.enable = lib.mkEnableOption "lutris";
     mangohud.enable = lib.mkEnableOption "mangohud";
+    mpv.enable = lib.mkEnableOption "mpv";
     neovim.enable = lib.mkEnableOption "neovim";
     nautilus.enable = lib.mkEnableOption "nautilus";
     obs.enable = lib.mkEnableOption "obs";
@@ -60,6 +62,7 @@ in
     vim.enable = lib.mkEnableOption "vim";
     yazi.enable = lib.mkEnableOption "yazi";
     yt-dlp.enable = lib.mkEnableOption "yt-dlp";
+    wezterm.enable = lib.mkEnableOption "wezterm";
 
     webapps.enable = lib.mkEnableOption "webapps collection";
 
@@ -69,6 +72,7 @@ in
 
       ./alacritty.nix
       ./amberol.nix
+      ./bat.nix
       ./bazaar.nix
       ./borg.nix
       ./btop.nix
@@ -96,6 +100,7 @@ in
       ./ludusavi.nix
       ./lutris.nix
       ./mangohud.nix
+      ./mpv.nix
       ./neovim.nix
       ./nautilus.nix
       ./obs.nix
@@ -117,6 +122,7 @@ in
       ./yazi.nix
       ./yt-dlp.nix
       ./television.nix
+      ./wezterm.nix
 
       ./webapps-chromium.nix
       ./webapps-firefox.nix

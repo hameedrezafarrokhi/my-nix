@@ -9,7 +9,7 @@
     enableZshIntegration = true;
     enableFishIntegration = true;
     enableTransience = true;
-    settings = {
+    settings = lib.mkDefault {
       format = lib.concatStrings [
        "[](#3B4252)"
        "$python"

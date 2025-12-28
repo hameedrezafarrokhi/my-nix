@@ -390,6 +390,7 @@
           apps = {
             alacritty.enable = true;
             amberol.enable = true;
+            bat.enable = true;
             bazaar.enable = false;
             borg.enable = true;
             btop.enable = true;
@@ -417,6 +418,7 @@
             ludusavi.enable = false;
             lutris.enable = true;
             mangohud.enable = true;
+            mpv.enable = true;
             neovim.enable = true;
             nautilus.enable = false;
             obs.enable = true;
@@ -438,6 +440,7 @@
             vim.enable = true;
             yazi.enable = true;
             yt-dlp.enable = true;
+            wezterm.enable = true;
 
             webapps.enable = true;
           };
@@ -461,7 +464,7 @@
             browser-alt-name = "brave";
             browser-package = pkgs.brave;
             image-viewer = "org.kde.gwenview";
-            video-player = "org.gnome.Showtime";
+            video-player = "mpv"; #"org.gnome.Showtime";
             audio-player = "io.bassi.Amberol";
             pdf-viewer = "org.kde.okular";
             archive-manager = "org.kde.ark";

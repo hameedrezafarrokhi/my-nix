@@ -6,7 +6,9 @@
     enable = true;
     package = pkgs.neovim-unwrapped;
    #extraPackages = [ ];
-   #plugins = [ ];
+   #plugins = with pkgs.vimPlugins [
+   #  catppuccin-nvim
+   #];
     withNodeJs = false;
     withPython3 = true;
     withRuby = true;

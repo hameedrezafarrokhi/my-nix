@@ -66,7 +66,8 @@
     okular-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
     dolphin-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
     alacritty-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
-    ghostty-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
+    ghostty-theme = "light:catppuccin-${myStuff.myCat.myGlobal-Flav},dark:catppuccin-${myStuff.myCat.myGlobal-Flav}";
+    ghostty-theme-name = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
 
     freetube-base = "catppuccinMocha";
     freetube-main = "CatppuccinMochaSapphire";
@@ -74,8 +75,22 @@
 
     superfile-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
 
+    fish-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
+
     tv-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}";
     tv-preview = "TwoDark";
+
+    bat-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
+    bat-source = pkgs.fetchurl {
+      url = "https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20${myStuff.myCat.myGlobal-FlavC}.tmTheme";
+      sha256 = "sha256-8BKmij32yf+/3N92pKTLpDSOAz1yWd1I/+pNQ4ewu0c=";
+    };
+
+    btop-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+
+    cava-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+
+    dunst-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
 
     catppuccinifier-flav = "${myStuff.myCat.myGlobal-Flav}";
     catppuccinifier-flavC = "${myStuff.myCat.myGlobal-FlavC}";
@@ -86,6 +101,37 @@
     onboard-color = "${pkgs.onboard}/share/onboard/themes/Granite.colors";
     onboard-layout = "${pkgs.onboard}/share/onboard/layouts/Full Keyboard.onboard";
     onboard-key = "dish";
+
+    nvim-package = pkgs.vimPlugins.catppuccin-nvim;
+    nvim-theme = "catppuccin-nvim";
+    nvim-config = ''
+      lua << EOF
+        local compile_path = vim.fn.stdpath("cache") .. "/catppuccin-nvim"
+        vim.fn.mkdir(compile_path, "p")
+        vim.opt.runtimepath:append(compile_path)
+
+        require("catppuccin").setup({
+        ["compile_path"] = (compile_path),
+        ["flavour"] = "${myStuff.myCat.myGlobal-Flav}"
+      })
+
+        vim.api.nvim_command("colorscheme catppuccin")
+      EOF
+    '';
+
+    xfce4-terminal-theme = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}";
+
+   #obs-theme = "Catppuccin";
+   #obs-theme-name = "Catppuccin_${myStuff.myCat.myGlobal-FlavC}";
+   #obs-obt-source = pkgs.fetchurl {
+   #  url = "https://github.com/catppuccin/obs/blob/main/themes/Catppuccin.obt";
+   #  sha256 = "sha256-80pWKD8b6oKn99pTAbjf+zjplr8zMlQRiziNcggVdfk=";
+   #};
+   #obs-ovt-source = pkgs.fetchurl {
+   #  url = "https://github.com/catppuccin/obs/blob/main/themes/${obs-theme-name}.ovt";
+   #  sha256 = "sha256-xkhyYB/u6qvwycrVizFKkKAshuEMetSjN5lNQO+Q2UU=";
+   #};
+
 
     MonoSpace = "Comic Mono";
     Mono-X = "Comic Mono,  10";
@@ -118,46 +164,75 @@
     MonoSizeI3 = 9.0;
     MonoSizeI3Bar = 10.0;
     SansSize = 10;
+    MangohudSize = 24;
 
     sound = "ocean";
 
-    kitty-back =           "#1D2231";
-    kitty-back-tab =       "#1D2231";
-    kitty-back-tab-act =   "#3A688D";
-    kitty-back-tab-inact = "#3B4453";
-    kitty-for-tab-act =    "#FFFFFF";
-    kitty-for-tab-inact =  "#FFFFFF";
-    kitty-marg-tab =       "#1D2231";
+    starship1 =           "#3B4252";
+    starship2 =           "#434C5E";
+    starship3 =           "#4C566A";
+    starship4 =           "#86BBD8";
+    starship5 =           "#06969A";
+    starship6 =           "#33658A";
 
-    Rosewater = "#f4dbd6";  alt-Rosewater = "f4dbd6";  rgb-Rosewater = "rgb(244, 219, 214)";  rgb-alt-Rosewater = "244,219,214";
-    Flamingo =  "#f0c6c6";  alt-Flamingo =  "f0c6c6";  rgb-Flamingo =  "rgb(240, 198, 198)";  rgb-alt-Flamingo =  "240,198,198";
-    Pink =      "#f5bde6";  alt-Pink =      "f5bde6";  rgb-Pink =      "rgb(245, 189, 230)";  rgb-alt-Pink =      "245,189,230";
-    Mauve =     "#c6a0f6";  alt-Mauve =     "c6a0f6";  rgb-Mauve =     "rgb(198, 160, 246)";  rgb-alt-Mauve =     "198,160,246";
-    Red =       "#ed8796";  alt-Red =       "ed8796";  rgb-Red =       "rgb(237, 135, 150)";  rgb-alt-Red =       "237,135,150";
-    Maroon =    "#ee99a0";  alt-Maroon =    "ee99a0";  rgb-Maroon =    "rgb(238, 153, 160)";  rgb-alt-Maroon =    "238,153,160";
-    Peach =     "#f5a97f";  alt-Peach =     "f5a97f";  rgb-Peach =     "rgb(245, 169, 127)";  rgb-alt-Peach =     "245,169,127";
-    Yellow =    "#eed49f";  alt-Yellow =    "eed49f";  rgb-Yellow =    "rgb(238, 212, 159)";  rgb-alt-Yellow =    "238,212,159";
-    Green =     "#a6da95";  alt-Green =     "a6da95";  rgb-Green =     "rgb(166, 218, 149)";  rgb-alt-Green =     "166,218,149";
-    Teal =      "#8bd5ca";  alt-Teal =      "8bd5ca";  rgb-Teal =      "rgb(139, 213, 202)";  rgb-alt-Teal =      "139,213,202";
-    Sky =       "#91d7e3";  alt-Sky =       "91d7e3";  rgb-Sky =       "rgb(145, 215, 227)";  rgb-alt-Sky =       "145,215,227";
-    Sapphire =  "#7dc4e4";  alt-Sapphire =  "7dc4e4";  rgb-Sapphire =  "rgb(125, 196, 228)";  rgb-alt-Sapphire =  "125,196,228";
-    Blue =      "#8aadf4";  alt-Blue =      "8aadf4";  rgb-Blue =      "rgb(138, 173, 244)";  rgb-alt-Blue =      "138,173,244";
-    Lavender =  "#b7bdf8";  alt-Lavender =  "b7bdf8";  rgb-Lavender =  "rgb(183, 189, 248)";  rgb-alt-Lavender =  "183,189,248";
+    Rosewater =  "#f4dbd6";  alt-Rosewater = "f4dbd6";  rgb-Rosewater = "rgb(244, 219, 214)";  rgb-alt-Rosewater = "244,219,214";
+    Flamingo =   "#f0c6c6";  alt-Flamingo =  "f0c6c6";  rgb-Flamingo =  "rgb(240, 198, 198)";  rgb-alt-Flamingo =  "240,198,198";
+    Pink =       "#f5bde6";  alt-Pink =      "f5bde6";  rgb-Pink =      "rgb(245, 189, 230)";  rgb-alt-Pink =      "245,189,230";
+    Mauve =      "#c6a0f6";  alt-Mauve =     "c6a0f6";  rgb-Mauve =     "rgb(198, 160, 246)";  rgb-alt-Mauve =     "198,160,246";
+    Red =        "#ed8796";  alt-Red =       "ed8796";  rgb-Red =       "rgb(237, 135, 150)";  rgb-alt-Red =       "237,135,150";
+    Maroon =     "#ee99a0";  alt-Maroon =    "ee99a0";  rgb-Maroon =    "rgb(238, 153, 160)";  rgb-alt-Maroon =    "238,153,160";
+    Peach =      "#f5a97f";  alt-Peach =     "f5a97f";  rgb-Peach =     "rgb(245, 169, 127)";  rgb-alt-Peach =     "245,169,127";
+    Yellow =     "#eed49f";  alt-Yellow =    "eed49f";  rgb-Yellow =    "rgb(238, 212, 159)";  rgb-alt-Yellow =    "238,212,159";
+    Green =      "#a6da95";  alt-Green =     "a6da95";  rgb-Green =     "rgb(166, 218, 149)";  rgb-alt-Green =     "166,218,149";
+    Teal =       "#8bd5ca";  alt-Teal =      "8bd5ca";  rgb-Teal =      "rgb(139, 213, 202)";  rgb-alt-Teal =      "139,213,202";
+    Sky =        "#91d7e3";  alt-Sky =       "91d7e3";  rgb-Sky =       "rgb(145, 215, 227)";  rgb-alt-Sky =       "145,215,227";
+    Sapphire =   "#7dc4e4";  alt-Sapphire =  "7dc4e4";  rgb-Sapphire =  "rgb(125, 196, 228)";  rgb-alt-Sapphire =  "125,196,228";
+    Blue =       "#8aadf4";  alt-Blue =      "8aadf4";  rgb-Blue =      "rgb(138, 173, 244)";  rgb-alt-Blue =      "138,173,244";
+    Lavender =   "#b7bdf8";  alt-Lavender =  "b7bdf8";  rgb-Lavender =  "rgb(183, 189, 248)";  rgb-alt-Lavender =  "183,189,248";
 
-    Text =      "#cad3f5";  alt-Text =      "cad3f5";  rgb-Text =      "rgb(202, 211, 245)";  rgb-alt-Text =      "202,211,245";
-    Subtext1 =  "#b8c0e0";  alt-Subtext1 =  "b8c0e0";  rgb-Subtext1 =  "rgb(184, 192, 224)";  rgb-alt-Subtext1 =  "184,192,224";
-    Subtext0 =  "#a5adcb";  alt-Subtext0 =  "a5adcb";  rgb-Subtext0 =  "rgb(165, 173, 203)";  rgb-alt-Subtext0 =  "165,173,203";
-    Overlay2 =  "#939ab7";  alt-Overlay2 =  "939ab7";  rgb-Overlay2 =  "rgb(147, 154, 183)";  rgb-alt-Overlay2 =  "147,154,183";
-    Overlay1 =  "#8087a2";  alt-Overlay1 =  "8087a2";  rgb-Overlay1 =  "rgb(128, 135, 162)";  rgb-alt-Overlay1 =  "128,135,162";
-    Overlay0 =  "#6e738d";  alt-Overlay0 =  "6e738d";  rgb-Overlay0 =  "rgb(110, 115, 141)";  rgb-alt-Overlay0 =  "110,115,141";
-    Surface2 =  "#5b6078";  alt-Surface2 =  "5b6078";  rgb-Surface2 =    "rgb(91, 96, 120)";  rgb-alt-Surface2 =    "91,96,120";
-    Surface1 =  "#494d64";  alt-Surface1 =  "494d64";  rgb-Surface1 =    "rgb(73, 77, 100)";  rgb-alt-Surface1 =    "73,77,100";
-    Surface0 =  "#363a4f";  alt-Surface0 =  "363a4f";  rgb-Surface0 =     "rgb(54, 58, 79)";  rgb-alt-Surface0 =     "54,58,79";
-    Base =      "#24273a";  alt-Base =      "24273a";  rgb-Base =         "rgb(36, 39, 58)";  rgb-alt-Base =         "36,39,58";
-    Mantle =    "#1e2030";  alt-Mantle =    "1e2030";  rgb-Mantle =       "rgb(30, 32, 48)";  rgb-alt-Mantle =       "30,32,48";
-    Crust =     "#181926";  alt-Crust =     "181926";  rgb-Crust =        "rgb(24, 25, 38)";  rgb-alt-Crust =        "24,25,38";
+    Text =       "#cad3f5";  alt-Text =      "cad3f5";  rgb-Text =      "rgb(202, 211, 245)";  rgb-alt-Text =      "202,211,245";
+    Subtext1 =   "#b8c0e0";  alt-Subtext1 =  "b8c0e0";  rgb-Subtext1 =  "rgb(184, 192, 224)";  rgb-alt-Subtext1 =  "184,192,224";
+    Subtext0 =   "#a5adcb";  alt-Subtext0 =  "a5adcb";  rgb-Subtext0 =  "rgb(165, 173, 203)";  rgb-alt-Subtext0 =  "165,173,203";
+    Overlay2 =   "#939ab7";  alt-Overlay2 =  "939ab7";  rgb-Overlay2 =  "rgb(147, 154, 183)";  rgb-alt-Overlay2 =  "147,154,183";
+    Overlay1 =   "#8087a2";  alt-Overlay1 =  "8087a2";  rgb-Overlay1 =  "rgb(128, 135, 162)";  rgb-alt-Overlay1 =  "128,135,162";
+    Overlay0 =   "#6e738d";  alt-Overlay0 =  "6e738d";  rgb-Overlay0 =  "rgb(110, 115, 141)";  rgb-alt-Overlay0 =  "110,115,141";
+    Surface2 =   "#5b6078";  alt-Surface2 =  "5b6078";  rgb-Surface2 =    "rgb(91, 96, 120)";  rgb-alt-Surface2 =    "91,96,120";
+    Surface1 =   "#494d64";  alt-Surface1 =  "494d64";  rgb-Surface1 =    "rgb(73, 77, 100)";  rgb-alt-Surface1 =    "73,77,100";
+    Surface0 =   "#363a4f";  alt-Surface0 =  "363a4f";  rgb-Surface0 =     "rgb(54, 58, 79)";  rgb-alt-Surface0 =     "54,58,79";
+    Base =       "#24273a";  alt-Base =      "24273a";  rgb-Base =         "rgb(36, 39, 58)";  rgb-alt-Base =         "36,39,58";
+    Mantle =     "#1e2030";  alt-Mantle =    "1e2030";  rgb-Mantle =       "rgb(30, 32, 48)";  rgb-alt-Mantle =       "30,32,48";
+    Crust =      "#181926";  alt-Crust =     "181926";  rgb-Crust =        "rgb(24, 25, 38)";  rgb-alt-Crust =        "24,25,38";
 
-    Transparent = "#FF00000";
+    CRosewater = "#F4DBD6";  Calt-Rosewater ="F4DBD6";
+    CFlamingo =  "#F0C6C6";  Calt-Flamingo = "F0C6C6";
+    CPink =      "#F5BDE6";  Calt-Pink =     "F5BDE6";
+    CMauve =     "#C6A0F6";  Calt-Mauve =    "C6A0F6";
+    CRed =       "#ED8796";  Calt-Red =      "ED8796";
+    CMaroon =    "#EE99A0";  Calt-Maroon =   "EE99A0";
+    CPeach =     "#F5A97F";  Calt-Peach =    "F5A97F";
+    CYellow =    "#EED49F";  Calt-Yellow =   "EED49F";
+    CGreen =     "#A6DA95";  Calt-Green =    "A6DA95";
+    CTeal =      "#8BD5CA";  Calt-Teal =     "8BD5CA";
+    CSky =       "#91D7E3";  Calt-Sky =      "91D7E3";
+    CSapphire =  "#7DC4E4";  Calt-Sapphire = "7DC4E4";
+    CBlue =      "#8AADF4";  Calt-Blue =     "8AADF4";
+    CLavender =  "#B7BDF8";  Calt-Lavender = "B7BDF8";
+
+    CText =      "#CAD3F5";  Calt-Text =     "CAD3F5";
+    CSubtext1 =  "#B8C0E0";  Calt-Subtext1 = "B8C0E0";
+    CSubtext0 =  "#A5ADCB";  Calt-Subtext0 = "A5ADCB";
+    COverlay2 =  "#939AB7";  Calt-Overlay2 = "939AB7";
+    COverlay1 =  "#8087A2";  Calt-Overlay1 = "8087A2";
+    COverlay0 =  "#6E738D";  Calt-Overlay0 = "6E738D";
+    CSurface2 =  "#5B6078";  Calt-Surface2 = "5B6078";
+    CSurface1 =  "#494D64";  Calt-Surface1 = "494D64";
+    CSurface0 =  "#363A4F";  Calt-Surface0 = "363A4F";
+    CBase =      "#24273A";  Calt-Base =     "24273A";
+    CMantle =    "#1E2030";  Calt-Mantle =   "1E2030";
+    CCrust =     "#181926";  Calt-Crust =    "181926";
+
+    Transparent = "#FF00000"; alt-Transparent = "#FF00000";
+    Black-Transparent = "#00000000"; alt-Black-Transparent = "00000000";
 
     base00 =     "24273a";  alt-base00 =   "#24273a";  # base
     base01 =     "1e2030";  alt-base01 =   "#1e2030";  # mantle
@@ -186,8 +261,8 @@
     myGlobalCatppuccin = pkgs.catppuccin.override {
       variant = myStuff.myCat.myGlobal-Flav;
       accent = myStuff.myCat.myGlobal-Color;
-      themeList = [ "alacritty" "bat" "bottom" "btop" "element" "grub" "hyprland" "k9s" "kvantum" "lazygit"
-                    "lxqt" "qt5ct" "refind" "rofi" "starship" "thunderbird" "waybar" ];
+      themeList = [ "alacritty" "bat" /*"bottom"*/ "btop" /*"element"*/ "grub" /*"hyprland"*/ /*"k9s"*/ /*"kvantum"*/ /*"lazygit"*/
+                    /*"lxqt"*/ "qt5ct" "refind" "rofi" "starship" /*"thunderbird"*/ "waybar" ];
     };
 
     myKDECatppuccin = pkgs.catppuccin-kde.override {
@@ -203,10 +278,14 @@
       accent = myStuff.myCat.myGlobal-Color;
     };
 
-    myKvantumCatppuccin = pkgs.catppuccin-kvantum.override {
+    myKvantumCatppuccin = (pkgs.catppuccin-kvantum.override {
       variant = myStuff.myCat.myGlobal-Flav;
       accent = myStuff.myCat.myGlobal-Color;
-    };
+    }).overrideAttrs (old: {
+      installPhase = old.installPhase + ''
+        sed -i 's/^\(shadowless_popup=\)false/\1true/' \
+          $out/share/Kvantum/catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}/*.kvconfig
+      '';});
 
     myGTKCatppuccin = pkgs.catppuccin-gtk.override {
       variant = myStuff.myCat.myGlobal-Flav;
@@ -423,7 +502,7 @@
 
     gtk-package
     qt-package
-   #kvantum-package
+    kvantum-package
     plasma-package
     xfce-package
     mate-package
@@ -990,6 +1069,9 @@
       "backdrop/screen0/monitor0/image-path" = wallpaper;
       "backdrop/screen0/monitorLVDS-1/workspace0/last-image" = wallpaper;
     };
+    xfce4-terminal = {
+      "scheme-name" = xfce4-terminal-theme;
+    };
   };
 
   programs = {
@@ -1024,13 +1106,46 @@
     };
     kitty = lib.mkIf config.programs.kitty.enable {
       settings = {
-        background = kitty-back;
-        tab_bar_background = kitty-back-tab;
-        tab_bar_margin_color = kitty-marg-tab;
-        active_tab_foreground = kitty-for-tab-act;
-        active_tab_background = kitty-back-tab-act;
-        inactive_tab_foreground = kitty-for-tab-inact;
-        inactive_tab_background = kitty-back-tab-inact;
+        background = Base;
+        foreground = Text;
+        tab_bar_background = Base;
+        tab_bar_margin_color = Base;
+        active_tab_foreground = Text;
+        active_tab_background = starship6;
+        inactive_tab_foreground = Text;
+        inactive_tab_background = starship1;
+        selection_foreground = Base;
+        selection_background = Rosewater;
+        cursor = Rosewater;
+        cursor_text_color = Base;
+        url_color = Rosewater;
+        active_border_color = Lavender;
+        inactive_border_color = Overlay0;
+        bell_border_color = Yellow;
+        wayland_titlebar_color = "system";
+        macos_titlebar_color = "system";
+        mark1_foreground = Base;
+        mark1_background = Lavender;
+        mark2_foreground = Base;
+        mark2_background = Mauve;
+        mark3_foreground = Base;
+        mark3_background = Sapphire;
+        color0  = Surface1;   # black
+        color8  = Surface2;
+        color1  = Red;        # red
+        color9  = Red;
+        color2  = Green;      # green
+        color10 = Green;
+        color3  = Yellow;     # yellow
+        color11 = Yellow;
+        color4  = Blue;       # blue
+        color12 = Blue;
+        color5  = Pink;       # magenta
+        color13 = Pink;
+        color6  = Teal;       # cyan
+        color14 = Teal;
+        color7  =  Subtext1;  # white
+        color15 = Subtext0;
       };
       font = {
         name = lib.mkForce MonoSpace;
@@ -1064,30 +1179,32 @@
         font-size = 10;
       };
       themes = {
-        ${alacritty-theme} = {
-          background = Base;
-          cursor-color = Overlay0;
-          foreground = Text;
+        ${ghostty-theme-name} = {
+          background = alt-Base;
+          cursor-color = alt-Rosewater;
+          cursor-text = alt-Crust;
+          foreground = alt-Text;
           palette = [
-             "0=${base00}"
-             "1=${base01}"
-             "2=${base02}"
-             "3=${base03}"
-             "4=${base04}"
-             "5=${base05}"
-             "6=${base06}"
-             "7=${base07}"
-             "8=${base08}"
-             "9=${base09}"
-            "10=${base0A}"
-            "11=${base0B}"
-            "12=${base0C}"
-            "13=${base0D}"
-            "14=${base0E}"
-            "15=${base0F}"
+             "0=${alt-base03}"
+             "1=${alt-base08}"
+             "2=${alt-base0B}"
+             "3=${alt-base0A}"
+             "4=${alt-base0D}"
+             "5=${Pink}"
+             "6=${alt-base0C}"
+             "7=${Subtext0}"
+             "8=${alt-base04}"
+             "9=${alt-base08}"
+            "10=${alt-base0B}"
+            "11=${alt-base0A}"
+            "12=${alt-base0D}"
+            "13=${Pink}"
+            "14=${alt-base0C}"
+            "15=${Subtext1}"
           ];
-          selection-background = "353749";
-          selection-foreground = "cdd6f4";
+          selection-background = alt-Rosewater;
+          selection-foreground = alt-Crust;
+          split-divider-color = alt-Surface0;
         };
       };
     };
@@ -1107,7 +1224,10 @@
     };
     rofi = lib.mkIf config.programs.rofi.enable {
       font = MonoRofi;
-     #theme = { };
+      theme = {
+        "@theme" = "${config.my.theme}";
+        "@import" = "${config.my.theme}-color";
+      };
     };
     waybar = lib.mkIf config.programs.waybar.enable {
       style = lib.mkBefore ''
@@ -1176,6 +1296,416 @@
         ui.theme = tv-theme;
         previewers.file.theme = tv-preview;
       };
+    };
+    starship = lib.mkIf config.programs.starship.enable {
+      settings = {
+        format = lib.concatStrings [
+         "[](${starship1})"
+         "$python"
+         "$username"
+         "[](bg:${starship2} fg:${starship1})"
+         "$directory"
+         "[](fg:${starship2} bg:${starship3})"
+         "$git_branch"
+         "$git_status"
+         "[](fg:${starship3} bg:${starship4})"
+         "$c"
+         "$elixir"
+         "$elm"
+         "$golang"
+         "$haskell"
+         "$java"
+         "$julia"
+         "$nodejs"
+         "$nim"
+         "$rust"
+         "[](fg:${starship4} bg:${starship5})"
+         "$docker_context"
+         "[](fg:${starship5} bg:${starship6})"
+         "$time"
+         "[ ](fg:${starship6})"
+         ];
+        command_timeout = 5000;
+        username = {
+         show_always = true;
+         style_user = "bg:${starship1}";
+         style_root = "bg:${starship1}";
+         format = "[$user ]($style)";
+        };
+        directory = {
+         style = "bg:${starship2}";
+         format = "[ $path ]($style)";
+         truncation_length = 3;
+         truncation_symbol = "…/";
+        };
+        directory.substitutions = {
+         "Documents" = "󰈙 ";
+         "Downloads" = " ";
+         "Music" = " ";
+         "Pictures" = " ";
+        };
+        time = {
+         disabled = false;
+         time_format = "%R"; # Hour:Minute Format
+         style = "bg:${starship6}";
+         format ="[ $time ]($style)";
+        };
+        c = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        docker_context = {
+         symbol = " ";
+         style = "bg:${starship5}";
+         format = "[ $symbol $context ]($style)$path";
+        };
+        elixir = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        elm = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        git_branch = {
+         symbol = "";
+         style = "bg:${starship3}";
+         format = "[ $symbol $branch ]($style)";
+        };
+        git_status = {
+         style = "bg:${starship3}";
+         format = "[$all_status$ahead_behind ]($style)";
+        };
+        golang = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        haskell = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        java = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        julia = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        nodejs = {
+         symbol = "";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        nim = {
+         symbol = " ";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+        python = {
+         style = "bg:${starship1}";
+         format = "[(\($virtualenv\) )]($style)";
+        };
+        rust = {
+         symbol = "";
+         style = "bg:${starship4}";
+         format = "[ $symbol ($version) ]($style)";
+        };
+       #character = {
+       #  format = lib.concatStrings [
+       #    "[](bg:${starship1} fg:${starship1})"
+       #    "[](bg:${starship1} fg:${starship1})"
+       #    "[](bg:${starship1} fg:${starship1})"
+       #  ];
+       #};
+        custom.character2 = {
+          command = "";
+          format = "[](fg:${starship6})";
+          when = true;
+          style = "fg:${starship6}";
+        };
+        custom.character3 = {
+          command = "";
+          when = true;
+          format = "[ ](fg:${starship6})";
+          style = "fg:${starship6}";
+        };
+        custom.character4 = {
+          command = "";
+          format = "[ ](fg:${starship2})";
+          when = true;
+          style = "fg:${starship2}";
+        };
+        custom.character5 = {
+          command = "";
+          format = "[](fg:${starship2})";
+          when = true;
+          style = "fg:${starship2}";
+        };
+      };
+    };
+    bat = lib.mkIf config.programs.bat.enable {
+      config.theme = bat-theme;
+      themes = {
+        "${bat-theme}" = {
+          src = bat-source;
+         #file = "${bat-theme}.tmTheme";
+        };
+      };
+    };
+    btop = lib.mkIf config.programs.btop.enable {
+      settings = {
+        color_theme = "${btop-theme}.theme";
+      };
+      themes = {
+        "${btop-theme}" = ''
+          # Main background, empty for terminal default, need to be empty if you want transparent background
+          theme[main_bg]="${Base}"
+          # Main text color
+          theme[main_fg]="${Text}"
+          # Title color for boxes
+          theme[title]="${Text}"
+          # Highlight color for keyboard shortcuts
+          theme[hi_fg]="${Blue}"
+          # Background color of selected item in processes box
+          theme[selected_bg]="${Surface1}"
+          # Foreground color of selected item in processes box
+          theme[selected_fg]="${Blue}"
+          # Color of inactive/disabled text
+          theme[inactive_fg]="${Overlay1}"
+          # Color of text appearing on top of graphs, i.e uptime and current network graph scaling
+          theme[graph_text]="${Rosewater}"
+          # Background color of the percentage meters
+          theme[meter_bg]="${Surface1}"
+          # Misc colors for processes box including mini cpu graphs, details memory graph and details status text
+          theme[proc_misc]="${Rosewater}"
+          # CPU, Memory, Network, Proc box outline colors
+          theme[cpu_box]="${Mauve}" #Mauve
+          theme[mem_box]="${Green}" #Green
+          theme[net_box]="${Maroon}" #Maroon
+          theme[proc_box]="${Blue}" #Blue
+          # Box divider line and small boxes line color
+          theme[div_line]="${Overlay0}"
+          # Temperature graph color (Green -> Yellow -> Red)
+          theme[temp_start]="${Green}"
+          theme[temp_mid]="${Yellow}"
+          theme[temp_end]="${Red}"
+          # CPU graph colors (Teal -> Lavender)
+          theme[cpu_start]="${Teal}"
+          theme[cpu_mid]="${Sapphire}"
+          theme[cpu_end]="${Lavender}"
+          # Mem/Disk free meter (Mauve -> Lavender -> Blue)
+          theme[free_start]="${Mauve}"
+          theme[free_mid]="${Lavender}"
+          theme[free_end]="${Blue}"
+          # Mem/Disk cached meter (Sapphire -> Lavender)
+          theme[cached_start]="${Sapphire}"
+          theme[cached_mid]="${Blue}"
+          theme[cached_end]="${Lavender}"
+          # Mem/Disk available meter (Peach -> Red)
+          theme[available_start]="${Peach}"
+          theme[available_mid]="${Maroon}"
+          theme[available_end]="${Red}"
+          # Mem/Disk used meter (Green -> Sky)
+          theme[used_start]="${Green}"
+          theme[used_mid]="${Teal}"
+          theme[used_end]="${Sky}"
+          # Download graph colors (Peach -> Red)
+          theme[download_start]="${Peach}"
+          theme[download_mid]="${Maroon}"
+          theme[download_end]="${Red}"
+          # Upload graph colors (Green -> Sky)
+          theme[upload_start]="${Green}"
+          theme[upload_mid]="${Teal}"
+          theme[upload_end]="${Sky}"
+          # Process box color gradient for threads, mem and cpu usage (Sapphire -> Mauve)
+          theme[process_start]="${Sapphire}"
+          theme[process_mid]="${Lavender}"
+          theme[process_end]="${Mauve}"
+        '';
+      };
+    };
+    cava = lib.mkIf config.programs.cava.enable {
+      settings = {
+        color = {
+          theme = cava-theme;
+        };
+      };
+    };
+    fzf = lib.mkIf config.programs.fzf.enable {
+      colors = {
+        bg = CBase;
+        "bg+" = CSurface0;
+        spinner = CRosewater;
+        hl = CRed;
+        fg = CText;
+        header = CRed;
+        info = CMauve;
+        pointer = CRosewater;
+        marker = CLavender;
+        "fg+" = CText;
+        prompt = CMauve;
+        "hl+" = CRed;
+        selected-bg = CSurface1;
+        border = COverlay0;
+        label = CText;
+      };
+    };
+    gh-dash = lib.mkIf config.programs.gh-dash.enable {
+      settings = {
+        theme = {
+          colors = {
+            text = {
+              primary = Text;
+              secondary = Sapphire;
+              inverted = Crust;
+              faint = Subtext1;
+              warning = Yellow;
+              success = Green;
+              error = Red;
+            };
+            background = {
+              selected = Surface0;
+            };
+            border = {
+              primary = Sapphire;
+              secondary = Surface1;
+              faint = Surface0;
+            };
+          };
+        };
+      };
+    };
+    mangohud = lib.mkIf config.programs.mangohud.enable {
+      settings = {
+        legacy_layout = "false";
+        round_corners = 10;
+        background_alpha = 0.8;
+        background_color = Calt-Base;
+        table_columns = 3;
+        font_size = MangohudSize;
+        text_color = Calt-Text;
+        text_outline_color = Calt-Surface0;
+        gpu_color = Calt-Green;
+        gpu_load_color = "${Calt-Text},${Calt-Peach},${Calt-Red}";
+        vram_color = Calt-Mauve;
+        cpu_color = Calt-Blue;
+        cpu_load_color = "${Calt-Text},${Calt-Peach},${Calt-Red}";
+        ram_color = Calt-Pink;
+        engine_color = Calt-Red;
+        fps_color = "${Calt-Red},${Calt-Yellow},${Calt-Green}";
+        fps_color_change = "${Calt-Red},${Calt-Yellow},${Calt-Green}";
+        wine_color = Calt-Red;
+        frametime_color = Calt-Green;
+        media_player_color = Calt-Lavender;
+        battery_color = Calt-Red;
+        io_color = Calt-Pink;
+      };
+    };
+    mpv = lib.mkIf config.programs.mpv.enable {
+      config = {
+        background-color = Base;
+        osd-back-color = Crust;
+        osd-border-color = Crust;
+        osd-color = Text;
+        osd-shadow-color = Base;
+        "script-opts-append=stats-border_color" = alt-Mauve;
+        "script-opts-append=stats-font_color" = alt-Pink;
+        "script-opts-append=stats-plot_bg_border_color" = alt-Yellow;
+        "script-opts-append=stats-plot_bg_color" = alt-Mauve;
+        "script-opts-append=stats-plot_color" = alt-Yellow;
+        "script-opts-append=uosc-color" = "foreground=${alt-Sapphire},foreground_text=${alt-Surface0},background=${alt-Base},background_text=${alt-Text},curtain=${alt-Mantle},success=${alt-Green},error=${alt-Red}";
+
+      };
+      scriptOpts = {
+        uosc.color = "background=${alt-Base},background_text=${alt-Text},foreground=${alt-Text},foreground_text=${alt-Base},success=${alt-Green},error=${alt-Red}";
+        modernz = {
+          seekbarfg_color = Peach;
+          seekbarbg_color = Sapphire;
+          seekbar_cache_color = Sapphire;
+          window_title_color = Blue;
+          window_controls_color = Blue;
+
+          title_color = Text;
+          time_color = Text;
+          chapter_title_color = Text;
+          cache_info_color = Text;
+
+          middle_buttons_color = Peach;
+          side_buttons_color = Mauve;
+          playpause_color = Green;
+          hover_effect_color = Pink;
+        };
+      };
+    };
+    neovim = lib.mkIf config.programs.neovim.enable {
+      plugins = [
+        {
+          plugin = nvim-package;
+          config = nvim-config;
+        }
+      ];
+    };
+    sioyek.config = lib.mkIf config.programs.sioyek.enable {
+      "background_color" = Base;
+      "text_highlight_color" = Yellow;
+      "visual_mark_color" = Overlay0;
+      "search_highlight_color" = Yellow;
+      "link_highlight_color" = Blue;
+      "synctex_highlight_color" = Green;
+      "highlight_color_a" = Yellow;
+      "highlight_color_b" = Green;
+      "highlight_color_c" = Sky;
+      "highlight_color_d" = Maroon;
+      "highlight_color_e" = Mauve;
+      "highlight_color_f" = Red;
+      "highlight_color_g" = Yellow;
+      "custom_background_color" = Base;
+      "custom_text_color" = Text;
+      "ui_text_color" = Text;
+      "ui_background_color" = Surface0;
+      "ui_selected_text_color" = Text;
+      "ui_selected_background_color" = Surface2;
+      "status_bar_color" = Surface0;
+      "status_bar_text_color" = Text;
+    };
+    swaylock.settings = lib.mkIf config.programs.swaylock.enable {
+      bs-hl-color = alt-Rosewater;
+      caps-lock-bs-hl-color = alt-Rosewater;
+      caps-lock-key-hl-color = alt-Green;
+      color = alt-Base;
+      inside-caps-lock-color = alt-Black-Transparent;
+      inside-clear-color = alt-Black-Transparent;
+      inside-color = alt-Black-Transparent;
+      inside-ver-color = alt-Black-Transparent;
+      inside-wrong-color = alt-Black-Transparent;
+      key-hl-color = alt-Green;
+      layout-bg-color = alt-Black-Transparent;
+      layout-border-color = alt-Black-Transparent;
+      layout-text-color = alt-Text;
+      line-caps-lock-color = alt-Black-Transparent;
+      line-clear-color = alt-Black-Transparent;
+      line-color = alt-Black-Transparent;
+      line-ver-color = alt-Black-Transparent;
+      line-wrong-color = alt-Black-Transparent;
+      ring-caps-lock-color = alt-Peach;
+      ring-clear-color = alt-Rosewater;
+      ring-color = alt-Lavender;
+      ring-ver-color = alt-Blue;
+      ring-wrong-color = alt-Maroon;
+      separator-color = alt-Black-Transparent;
+      text-caps-lock-color = alt-Peach;
+      text-clear-color = alt-Rosewater;
+      text-color = alt-Text;
+      text-ver-color = alt-Blue;
+      text-wrong-color = alt-Maroon;
     };
 
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
@@ -1441,6 +1971,34 @@
       };
     };
 
+   #"obs-studio/themes/${obs-theme}.obt".source = obs-obt-source;
+   #"obs-studio/themes/${obs-theme-name}.ovt".source = obs-ovt-source;
+
+    "television/themes/${tv-theme}.toml".text = ''
+      # general
+      background = '${Base}'
+      border_fg = '${Surface1}'
+      text_fg = '${Text}'
+      dimmed_text_fg = '${Overlay0}'
+      # input
+      input_text_fg = '${Sapphire}'
+      result_count_fg = '${Sapphire}'
+      # results
+      result_name_fg = '${Blue}'
+      result_line_number_fg = '${Yellow}'
+      result_value_fg = '${Lavender}'
+      selection_fg = '${Green}'
+      selection_bg = '${Surface0}'
+      match_fg = '${Green}'
+      # preview
+      preview_title_fg = '${Sapphire}'
+      # modes
+      channel_mode_fg = '${Base}'
+      channel_mode_bg = '${Sapphire}'
+      remote_control_mode_fg = '${Base}'
+      remote_control_mode_bg = '${Green}'
+    '';
+
     Kvantum = {
       target = "Kvantum/kvantum.kvconfig";
       text = ''
@@ -1450,7 +2008,81 @@
       '';
     };
 
-    "Kvantum/${kvantum-theme}".source = "${config.catppuccin.sources.kvantum}/share/Kvantum/${kvantum-theme}";
+   #"Kvantum/${kvantum-theme}".source = "${config.catppuccin.sources.kvantum}/share/Kvantum/${kvantum-theme}";
+    "Kvantum/${kvantum-theme}".source = "${kvantum-package}/share/Kvantum/${kvantum-theme}";
+
+    "fish/themes/${fish-theme}.theme".text = ''
+      # name: 'Catppuccin Macchiato'
+      # url: 'https://github.com/catppuccin/fish'
+      # preferred_background: ${alt-Base}
+
+      fish_color_normal ${alt-Text}
+      fish_color_command ${alt-Blue}
+      fish_color_param ${alt-Flamingo}
+      fish_color_keyword ${alt-Red}
+      fish_color_quote ${alt-Green}
+      fish_color_redirection ${alt-Pink}
+      fish_color_end ${alt-Peach}
+      fish_color_comment ${alt-Overlay1}
+      fish_color_error ${alt-Red}
+      fish_color_gray ${alt-Overlay0}
+      fish_color_selection --background=${alt-Surface0}
+      fish_color_search_match --background=${alt-Surface0}
+      fish_color_option ${alt-Green}
+      fish_color_operator ${alt-Pink}
+      fish_color_escape ${alt-Maroon}
+      fish_color_autosuggestion ${alt-Overlay0}
+      fish_color_cancel ${alt-Red}
+      fish_color_cwd ${alt-Yellow}
+      fish_color_user ${alt-Teal}
+      fish_color_host ${alt-Blue}
+      fish_color_host_remote ${alt-Green}
+      fish_color_status ${alt-Red}
+      fish_pager_color_progress ${alt-Overlay0}
+      fish_pager_color_prefix ${alt-Pink}
+      fish_pager_color_completion ${alt-Text}
+      fish_pager_color_description ${alt-Overlay0}
+    '';
+
+    "cava/themes/${cava-theme}" = {
+      text = ''
+        [color]
+        background = '${Base}'
+
+        gradient = 1
+
+        gradient_color_1 = '${Teal}'
+        gradient_color_2 = '${Sky}'
+        gradient_color_3 = '${Sapphire}'
+        gradient_color_4 = '${Blue}'
+        gradient_color_5 = '${Mauve}'
+        gradient_color_6 = '${Pink}'
+        gradient_color_7 = '${Maroon}'
+        gradient_color_8 = '${Red}'
+      '';
+    };
+
+    "dunst/dunstrc.d/00-${dunst-theme}.conf" = {
+      text = ''
+        [global]
+        frame_color = "${Blue}"
+        separator_color= frame
+        highlight = "${Blue}"
+
+        [urgency_low]
+        background = "${Base}"
+        foreground = "${Text}"
+
+        [urgency_normal]
+        background = "${Base}"
+        foreground = "${Text}"
+
+        [urgency_critical]
+        background = "${Base}"
+        foreground = "${Text}"
+        frame_color = "${Peach}"
+      '';
+    };
 
     rofi-power = {
       target = "rofi/themes/power.rasi";
@@ -1753,6 +2385,226 @@
 
   };
 
+  xdg.dataFile = {
+    "rofi/themes/${config.my.theme}.rasi".text = ''
+      * {
+        selected-active-foreground:  @background;
+        lightfg:                     @text;
+        separatorcolor:              @foreground;
+        urgent-foreground:           @red;
+        alternate-urgent-background: @lightbg;
+        lightbg:                     @mantle;
+        background-color:            transparent;
+        border-color:                @foreground;
+        normal-background:           @background;
+        selected-urgent-background:  @red;
+        alternate-active-background: @lightbg;
+        spacing:                     2;
+        alternate-normal-foreground: @foreground;
+        urgent-background:           @background;
+        selected-normal-foreground:  @lightbg;
+        active-foreground:           @blue;
+        background:                  @base;
+        selected-active-background:  @blue;
+        active-background:           @background;
+        selected-normal-background:  @lightfg;
+        alternate-normal-background: @lightbg;
+        foreground:                  @text;
+        selected-urgent-foreground:  @background;
+        normal-foreground:           @foreground;
+        alternate-urgent-foreground: @red;
+        alternate-active-foreground: @blue;
+      }
+      element {
+          padding: 1px ;
+          cursor:  pointer;
+          spacing: 5px ;
+          border:  0;
+      }
+      element normal.normal {
+          background-color: @normal-background;
+          text-color:       @normal-foreground;
+      }
+      element normal.urgent {
+          background-color: @urgent-background;
+          text-color:       @urgent-foreground;
+      }
+      element normal.active {
+          background-color: @active-background;
+          text-color:       @active-foreground;
+      }
+      element selected.normal {
+          background-color: @selected-normal-background;
+          text-color:       @selected-normal-foreground;
+      }
+      element selected.urgent {
+          background-color: @selected-urgent-background;
+          text-color:       @selected-urgent-foreground;
+      }
+      element selected.active {
+          background-color: @selected-active-background;
+          text-color:       @selected-active-foreground;
+      }
+      element alternate.normal {
+          background-color: @alternate-normal-background;
+          text-color:       @alternate-normal-foreground;
+      }
+      element alternate.urgent {
+          background-color: @alternate-urgent-background;
+          text-color:       @alternate-urgent-foreground;
+      }
+      element alternate.active {
+          background-color: @alternate-active-background;
+          text-color:       @alternate-active-foreground;
+      }
+      element-text {
+          background-color: transparent;
+          cursor:           inherit;
+          highlight:        inherit;
+          text-color:       inherit;
+      }
+      element-icon {
+          background-color: transparent;
+          size:             1.0000em ;
+          cursor:           inherit;
+          text-color:       inherit;
+      }
+      window {
+          padding:          5;
+          background-color: @background;
+          border:           1;
+      }
+      mainbox {
+          padding: 0;
+          border:  0;
+      }
+      message {
+          padding:      1px ;
+          border-color: @separatorcolor;
+          border:       2px dash 0px 0px ;
+      }
+      textbox {
+          text-color: @foreground;
+      }
+      listview {
+          padding:      2px 0px 0px ;
+          scrollbar:    true;
+          border-color: @separatorcolor;
+          spacing:      2px ;
+          fixed-height: 0;
+          border:       2px dash 0px 0px ;
+      }
+      scrollbar {
+          width:        4px ;
+          padding:      0;
+          handle-width: 8px ;
+          border:       0;
+          handle-color: @normal-foreground;
+      }
+      sidebar {
+          border-color: @separatorcolor;
+          border:       2px dash 0px 0px ;
+      }
+      button {
+          cursor:     pointer;
+          spacing:    0;
+          text-color: @normal-foreground;
+      }
+      button selected {
+          background-color: @selected-normal-background;
+          text-color:       @selected-normal-foreground;
+      }
+      num-filtered-rows {
+          expand:     false;
+          text-color: Gray;
+      }
+      num-rows {
+          expand:     false;
+          text-color: Gray;
+      }
+      textbox-num-sep {
+          expand:     false;
+          str:        "/";
+          text-color: Gray;
+      }
+      inputbar {
+          padding:    1px ;
+          spacing:    0px ;
+          text-color: @normal-foreground;
+          children:   [ "prompt","textbox-prompt-colon","entry","num-filtered-rows","textbox-num-sep","num-rows","case-indicator" ];
+      }
+      case-indicator {
+          spacing:    0;
+          text-color: @normal-foreground;
+      }
+      entry {
+          text-color:        @normal-foreground;
+          cursor:            text;
+          spacing:           0;
+          placeholder-color: Gray;
+          placeholder:       "Type to filter";
+      }
+      prompt {
+          spacing:    0;
+          text-color: @normal-foreground;
+      }
+      textbox-prompt-colon {
+          margin:     0px 0.3000em 0.0000em 0.0000em ;
+          expand:     false;
+          str:        ":";
+          text-color: inherit;
+      }
+    '';
+    "rofi/themes/${config.my.theme}-color.rasi".text = ''
+      * {
+        rosewater: ${Rosewater};
+        flamingo: ${Flamingo};
+        pink: ${Pink};
+        mauve: ${Mauve};
+        red: ${Red};
+        maroon: ${Maroon};
+        peach: ${Peach};
+        yellow: ${Yellow};
+        green: ${Green};
+        teal: ${Teal};
+        sky: ${Sky};
+        sapphire: ${Sapphire};
+        blue: ${Blue};
+        lavender: ${Lavender};
+        text: ${Text};
+        subtext1: ${Subtext1};
+        subtext0: ${Subtext0};
+        overlay2: ${Overlay2};
+        overlay1: ${Overlay1};
+        overlay0: ${Overlay0};
+        surface2: ${Surface2};
+        surface1: ${Surface1};
+        surface0: ${Surface0};
+        base: ${Base};
+        mantle: ${Mantle};
+        crust: ${Crust};
+      }
+    '';
+    "xfce4/terminal/colorschemes/${xfce4-terminal-theme}.theme".text = ''
+      [Scheme]
+      Name=${xfce4-terminal-theme}
+      ColorCursor=${Rosewater}
+      ColorCursorForeground=${Crust}
+      ColorCursorUseDefault=FALSE
+      ColorForeground=${Text}
+      ColorBackground=${Base}
+      ColorSelectionBackground=${Surface2}
+      ColorSelection=${Text}
+      ColorSelectionUseDefault=FALSE
+      TabActivityColor=${Peach}
+      ColorPalette=${Surface1};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext1};${Surface2};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext0}
+    '';
+  };
+
+  programs.fish.shellInit = ''
+    fish_config theme choose "${fish-theme}"
+  '';
+
  #xdg.dataFile = {
  #  icons = {
  #    target = "icons/${gtk-icon}/";
@@ -1771,47 +2623,105 @@
   catppuccin = {
     enable = true;
    #cache.enable = true;
-      flavor = myStuff.myCat.myGlobal-Flav;
-      accent = myStuff.myCat.myGlobal-Color;
-    kvantum = {
-      enable = true;
-      apply = false;
-        flavor = myStuff.myCat.myGlobal-Flav;
-        accent = myStuff.myCat.myGlobal-Color;
-    };
-    alacritty = {
-      enable = false;
-    };
-    hyprland = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-        accent = myStuff.myCat.myGlobal-Color;
-    };
-    brave = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
+    flavor = myStuff.myCat.myGlobal-Flav;
+    accent = myStuff.myCat.myGlobal-Color;
+
+
+
+   #aerc
+   #anki
+   #atuin
+   #bottom
+   #brave
+   #chromium
+   #delta
+   #element-desktop
+   #eza
+   #fcitx5
+   #floorp
+   #foot
+   #fuzzel
+   #gitui
+   #glamour
+   #halloy
+   #helix
+   #imv
+   #k9s
+   #lazygit
+   #librewolf
+   #lsd
+   #mako
+   #micro
+   #newsboat
+   #nushell
+   #rio
+   #skim
+   #spotify-player
+   #thunderbird
+   #tmux
+   #tofi
+   #vesktop
+   #vicinae
+   #vivaldi
+   #vivid
+   #vscode
+
+
+
+
+    alacritty.enable = false;
+    bat.enable = false;
+    btop.enable = false;
+    cava.enable = false;
+    cursors.enable = false;
+    dunst.enable = false;
+    fish.enable = false;
+    freetube.enable = false;
+    fzf.enable = false;
+    gh-dash.enable = false;
+    ghostty.enable = false;
+    gtk.icon.enable = false;
+    kitty.enable = false;
+    kvantum.enable = false;
+    mangohud.enable = false;
+    mpv.enable = false;
+    nvim.enable = false;
+    polybar.enable = false;
+    rofi.enable = false;
+    sioyek.enable = false;
+    starship.enable = false;
+    sway.enable = false;
+    swaylock.enable = false;
+    television.enable = false;
+    waybar.enable = false;
+    xfce4-terminal.enable = false;
+    yazi.enable = true;
+    zathura.enable = false;
+    zed.enable = false;
+    zellij.enable = false;
+    zsh-syntax-highlighting.enable = false;
+
+
+    # Extended Work Needed
+    hyprland.enable = true;
+    hyprlock.enable = true;
+    swaync.enable = true;
+    brave.enable = true;
+    wlogout.enable = true;
+   #wezterm = {        # doesnt work
+   #  enable = true;
+   #  apply = true;
+   #};
    #firefox.profiles = {
    #  default = {
    #    enable = true;
    #    force = false;
-   #      flavor = myStuff.myCat.myGlobal-Flav;
-   #      accent = myStuff.myCat.myGlobal-Color;
    #  };
    #};
-    kitty = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    starship = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    btop = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    waybar.mode = "createLink";  # "prependImport" (for declarative nix way)
+
+    # Only Way (for now)
+    obs.enable = true;
+
   };
 
 };}
