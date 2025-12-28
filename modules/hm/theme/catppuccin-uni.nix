@@ -2695,7 +2695,6 @@
     television.enable = false;
     waybar.enable = false;
     xfce4-terminal.enable = false;
-    yazi.enable = true;
     zathura.enable = false;
     zed.enable = false;
     zellij.enable = false;
@@ -2708,6 +2707,8 @@
     swaync.enable = true;
     brave.enable = true;
     wlogout.enable = true;
+    yazi.enable = true;
+    qutebrowser.enable = true;
    #wezterm = {        # doesnt work
    #  enable = true;
    #  apply = true;
