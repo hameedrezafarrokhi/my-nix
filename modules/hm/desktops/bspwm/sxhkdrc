@@ -124,15 +124,15 @@ super + shift + ctrl + alt + {1-9,0}
 
 # Swap Focused Desktop with 1-10
 super + alt + e; {1-9,0}
-      bspc desktop focused --swap {1-9,10}
+      bspc desktop focused --swap ^{1-9,10}
 
 # Swap Focused Desktop Windows with 1-10
 super + shift + e; {1-9,0}
-      bsp-desktop-switch {1-9,10}
+      bsp-desktop-switch ^{1-9,10}
 
 # Swap Focused Desktop Windows with 1-10 AND Follow
 super + alt + shift + e; {1-9,0}
-      bsp-desktop-switch-follow {1-9,10}
+      bsp-desktop-switch-follow ^{1-9,10}
 
 # Send Focused Desktop to Next or Previous Monitor
 super + alt + shift + ctrl + Tab
