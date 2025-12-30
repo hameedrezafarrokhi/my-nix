@@ -237,6 +237,13 @@ in
 
         rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
+        if [ -f "$HOME/.bsp_conf" ]; then
+            "$HOME/.bsp_conf"
+        fi
+
+        pkill bsp-icon-bar
+        bsp-icon-bar &
+
       '';
 
       startupPrograms = [
@@ -358,6 +365,33 @@ in
         ExecStart = ''/bin/bash -c "bspc wm -r"'';
         StandardOutput = "journal";
        #ExecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER bspwm'";
+      };
+    };
+
+    systemd.user.services.bsp-conf = {
+      Unit = {
+        Description = "Save Bspwm Config";
+        ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = ''/bin/bash -c "bsp-conf"'';
+      };
+    };
+
+    systemd.user.timers.bsp-conf = {
+      Unit = {
+        Description = "Bspwm Config Save Every 20min";
+        ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Install = {
+        WantedBy = [ "timers.target" ];
+      };
+      Timer = {
+        OnBootSec = "20min";
+        OnUnitActiveSec = "20min";
+        AccuracySec = "1min";
+        Persistent = true;
       };
     };
 

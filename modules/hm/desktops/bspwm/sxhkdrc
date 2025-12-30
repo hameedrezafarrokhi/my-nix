@@ -422,13 +422,73 @@ super + alt + apostrophe
 super + alt + shift + apostrophe
       bspad unmark; bspc node -t ~floating
 
-# Gaps Increase
+# All Gaps Increase
 super + ctrl + equal
     bsp-gaps +
 
-# Gaps Decrease
+# All Gaps Decrease
 super + ctrl + alt + equal
     bsp-gaps -
+
+# Manul Top Padding Increase
+super + ctrl + KP_Up
+  bsp-manual-gaps top_padding +
+
+# Manul Top Padding Decrease
+super + ctrl + alt + KP_Up
+  bsp-manual-gaps top_padding -
+
+# Manul Bottom Padding Increase
+super + ctrl + KP_Down
+  bsp-manual-gaps bottom_padding +
+
+# Manul Bottom Padding Decrease
+super + ctrl + alt + KP_Down
+  bsp-manual-gaps bottom_padding -
+
+# Manul Top & Bottom Padding Increase
+super + ctrl + shift + KP_Up
+  bsp-manual-gaps top_padding +; bsp-manual-gaps bottom_padding +
+
+# Manul Top & Bottom Padding Decrease
+super + ctrl + shift + KP_Down
+  bsp-manual-gaps top_padding -; bsp-manual-gaps bottom_padding -
+
+# Manul Right Padding Increase
+super + ctrl + KP_Right
+  bsp-manual-gaps right_padding +
+
+# Manul Bottom Padding Decrease
+super + ctrl + alt + KP_Right
+  bsp-manual-gaps right_padding -
+
+# Manul Left Padding Increase
+super + ctrl + KP_Left
+  bsp-manual-gaps left_padding +
+
+# Manul Left Padding Decrease
+super + ctrl + alt + KP_Left
+  bsp-manual-gaps left_padding -
+
+# Manul Left & Right Padding Increase
+super + ctrl + shift + KP_Right
+  bsp-manual-gaps left_padding +; bsp-manual-gaps right_padding +
+
+# Manul Left & Right Padding Decrease
+super + ctrl + shift + KP_Left
+  bsp-manual-gaps left_padding -; bsp-manual-gaps right_padding -
+
+# Manul Left Padding Increase
+super + ctrl + KP_Begin
+  bsp-manual-gaps gap +
+
+# Manul Left Padding Decrease
+super + ctrl + alt + KP_Begin
+  bsp-manual-gaps gap -
+
+# All Gaps Default Restore
+super + ctrl + alt + shift + equal
+  bsp-gaps-default
 
 # Sticky Window
 super + grave
@@ -538,6 +598,10 @@ super + ctrl + shift + equal
 super + shift + ctrl + b
     bsp-border-toggle
 
+# Borders Default Restore
+super + ctrl + alt + shift + b
+  bsp-border-default
+
 # Border Size Increase
 super + ctrl + b
     bsp-border-size inc
@@ -614,6 +678,10 @@ super + alt + d
 super + shift + d
     bsp-unhide-last-hidden
 
+# Unhide Rofi Menu
+super + alt + space
+    bsp-hidden-menu
+
 # Show/Hide Conky
 super + shift + alt + h
     bsp-conky
@@ -685,3 +753,11 @@ super + alt + comma
 # Live Wallpaper Manual Speed
 super + shift + ctrl + alt + comma
     live-bg-speed-manual
+
+# BSPWM Manual Config Save
+super + alt + r
+    bsp-conf; notify-send "Config Saved"
+
+# BSPWM Manual Config Load
+super + ctrl + shift + r
+    $HOME/.bsp_conf; notify-send "Config Loaded"

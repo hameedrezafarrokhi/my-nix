@@ -1747,9 +1747,12 @@
         "module/xworkspaces" = {
           label = {
             active = {
-              foreground = Base;
-              background = Sapphire;
-              underline= Blue;
+             #foreground = Base;
+              foreground = Sapphire;
+             #background = Sapphire;
+              background = Base;
+             #underline= Blue;
+              underline= Base;
             };
             urgent.background = Red;
             empty.foreground = Mantle;

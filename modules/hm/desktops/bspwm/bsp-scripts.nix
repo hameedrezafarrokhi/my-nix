@@ -133,19 +133,33 @@ let
     BOTTOM_HEIGHT=15
     BAR_NAME="${config.my.poly-name}"
 
+    bsp-gaps-bar-cache
+
     if pgrep polybar > /dev/null; then
+        #bsp-gaps-bar-cache
         pkill polybar
-        pkill tint2
+        #pkill tint2
         #pkill plank
         pkill dockx
         #pkill conky
-        bspc config top_padding 0
-        bspc config bottom_padding 0
+        "$HOME/.bsp_gaps_bar_cache"
+        bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) - $TOP_HEIGHT ))
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+            pkill tint2
+            bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) - $BOTTOM_HEIGHT ))
+        fi
     else
-        bspc config top_padding $TOP_HEIGHT
-        bspc config top_padding $BOTTOM_HEIGHT
+        "$HOME/.bsp_gaps_bar_cache"
+        #bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) + $TOP_HEIGHT ))
+
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+            echo ""
+        else
+            #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
+            tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+        fi
+
         polybar $BAR_NAME &
-        tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
         #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         #plank &
         #dockx &
@@ -153,11 +167,15 @@ let
   '';
 
   bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
+    BOTTOM_HEIGHT=15
+    bsp-gaps-bar-cache
     if pgrep -x .tint2-wrapped  >/dev/null; then
         pkill .tint2-wrapped
-        bspc config bottom_padding 0
+        "$HOME/.bsp_gaps_bar_cache"
+        bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) - $BOTTOM_HEIGHT ))
     else
-        bspc config bottom_padding 15
+        "$HOME/.bsp_gaps_bar_cache"
+        #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
         tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
     fi
   '';
@@ -165,12 +183,15 @@ let
   bsp-poly-hide = pkgs.writeShellScriptBin "bsp-poly-hide" ''
     TOP_HEIGHT=${config.my.poly-height}
     BAR_NAME="${config.my.poly-name}"
+    bsp-gaps-bar-cache
 
     if pgrep polybar > /dev/null; then
         pkill polybar
-        bspc config top_padding 0
+        "$HOME/.bsp_gaps_bar_cache"
+        bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) - $TOP_HEIGHT ))
     else
-        bspc config top_padding $TOP_HEIGHT
+        "$HOME/.bsp_gaps_bar_cache"
+        #bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) + $TOP_HEIGHT ))
         polybar $BAR_NAME &
     fi
   '';
@@ -209,6 +230,36 @@ let
     bspc config left_padding  $(adj $lp)
     bspc config right_padding $(adj $rp)
     bspc config window_gap   $(adj $wg)
+  '';
+
+  bsp-manual-gaps = pkgs.writeShellScriptBin "bsp-manual-gaps" ''
+    [ $# -ne 2 ] && {
+        echo "Usage: $0 {left_padding|right_padding|top_padding|bottom_padding|gap} {+|-}"
+        exit 1
+    }
+    param="$1"
+    op="$2"
+    case "$op" in
+        +|-) ;;
+        *) echo "Second argument must be + or -"; exit 1 ;;
+    esac
+    case "$param" in
+        left_padding|right_padding|top_padding|bottom_padding)
+            key="$param"
+            ;;
+        gap)
+            key="window_gap"
+            ;;
+        *)
+            echo "Unknown parameter: $param"
+            exit 1
+            ;;
+    esac
+    cur=$(bspc config "$key")
+    adj() {
+        [ "$op" = "+" ] && echo $(( cur + 1 )) || echo $(( cur - 1 ))
+    }
+    bspc config "$key" "$(adj)"
   '';
 
   bsp-tag-view = pkgs.writeShellScriptBin "bsp-tag-view" ''
@@ -702,17 +753,54 @@ let
   '';
 
   bsp-gaps-toggle = pkgs.writeShellScriptBin "bsp-gaps-toggle" ''
+    TOP_HEIGHT=${config.my.poly-height}
+    BOTTOM_HEIGHT=15
     # Get current window gap
     gap=$(bspc config window_gap)
 
     if [ "$gap" -eq 0 ]; then
         # Restore default gap (adjust to your preference)
-        bspc config window_gap 10
+        "$HOME/.bsp_gaps_cache"
     else
         # Turn off gaps
+        bsp-gaps-cache
         bspc config left_padding 0
         bspc config right_padding 0
         bspc config window_gap 0
+        if pgrep polybar > /dev/null; then
+            bspc config top_padding $TOP_HEIGHT
+            pkill polybar
+            polybar example &
+        else
+            bspc config top_padding 0
+        fi
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+            bspc config bottom_padding $BOTTOM_HEIGHT
+        else
+            bspc config bottom_padding 0
+        fi
+    fi
+  '';
+
+  bsp-gaps-default = pkgs.writeShellScriptBin "bsp-gaps-default" ''
+    TOP_HEIGHT=${config.my.poly-height}
+    BOTTOM_HEIGHT=15
+
+    bsp-gaps-cache
+    bspc config left_padding ${toString config.xsession.windowManager.bspwm.settings.left_padding}
+    bspc config right_padding ${toString config.xsession.windowManager.bspwm.settings.right_padding}
+    bspc config window_gap ${toString config.xsession.windowManager.bspwm.settings.window_gap}
+    if pgrep polybar > /dev/null; then
+        bspc config top_padding $TOP_HEIGHT
+        pkill polybar
+        polybar example &
+    else
+        bspc config top_padding ${toString config.xsession.windowManager.bspwm.settings.top_padding}
+    fi
+    if pgrep -x .tint2-wrapped  >/dev/null; then
+        bspc config bottom_padding $BOTTOM_HEIGHT
+    else
+        bspc config bottom_padding ${toString config.xsession.windowManager.bspwm.settings.bottom_padding}
     fi
   '';
 
@@ -737,6 +825,14 @@ let
         echo "$current" > "$TMPFILE"
         bspc config border_width 0
     fi
+  '';
+
+  bsp-border-default = pkgs.writeShellScriptBin "bsp-border-default" ''
+    bspc config border_width ${toString config.xsession.windowManager.bspwm.settings.border_width}
+    bspc config focused_border_color ${config.xsession.windowManager.bspwm.settings.focused_border_color}
+    bspc config normal_border_color ${config.xsession.windowManager.bspwm.settings.normal_border_color}
+    bspc config active_border_color ${config.xsession.windowManager.bspwm.settings.active_border_color}
+    bspc config presel_feedback_color ${config.xsession.windowManager.bspwm.settings.presel_feedback_color}
   '';
 
   bsp-border-size = pkgs.writeShellScriptBin "bsp-border-size" ''
@@ -1081,6 +1177,60 @@ let
 
   '';
 
+   bsp-conf = pkgs.writeShellScriptBin "bsp-conf" ''
+    ${builtins.readFile ./bspconf}
+  '';
+
+   bsp-gaps-cache = pkgs.writeShellScriptBin "bsp-gaps-cache" ''
+    ${builtins.readFile ./bsp-gaps-cache}
+  '';
+
+   bsp-gaps-bar-cache = pkgs.writeShellScriptBin "bsp-gaps-bar-cache" ''
+    ${builtins.readFile ./bsp-gaps-bar-cache}
+  '';
+
+  bsp-hidden-menu = pkgs.writeShellScriptBin "bsp-hidden-menu" ''
+    FILTER_PATTERNS="WM_NAME"
+
+    # Get hidden window IDs and names
+    windows=""
+    while read id; do
+        name=$(xprop -id "$id" WM_NAME 2>/dev/null | cut -d'"' -f2)
+        # Skip filtered names
+        echo "$name" | grep -qiE "$FILTER_PATTERNS" && continue
+
+        class=$(xprop -id "$id" WM_CLASS 2>/dev/null | grep -o '"[^"]*"' | tail -1 | tr -d '"')
+        windows+="$name\0icon\x1f$class\n"
+    done < <(bspc query -N -d focused -n .hidden)
+
+    # Show in rofi and get selection
+    selected=$(echo -e "$windows" | rofi -dmenu -i -p "Hidden windows:" -show-icons -theme $HOME/.config/rofi/themes/power.rasi)
+
+    # Unhide selected window
+    if [ -n "$selected" ]; then
+        id=$(bspc query -N -d focused -n .hidden | while read wid; do
+            wname=$(xprop -id "$wid" WM_NAME 2>/dev/null | cut -d'"' -f2)
+            [ "$wname" = "$selected" ] && echo "$wid" && break
+        done)
+        [ -n "$id" ] && bspc node "$id" --flag hidden=off --focus
+    fi
+  '';
+
+  bsp-icon-bar = pkgs.writeShellScriptBin "bsp-icon-bar" ''
+    bspc subscribe all | while read -r line; do
+        case $line in
+          node_add*|node_remove*|node_transfer*|desktop_layout*)
+                bspi --config ${nix-path}/modules/hm/desktops/bspwm/bspi.ini
+                ;;
+            *)
+            ;;
+        esac
+    done
+  '';
+
+  bspi = pkgs.writeScriptBin "bspi" ''
+    ${builtins.readFile ./bspi.py}
+  '';
 
 in
 
@@ -1092,6 +1242,7 @@ in
 
       bsp-plank-reset
       bsp-help
+      bsp-conf
       bsp-volume
       bsp-layout-manager
       bsp-xkb-layout
@@ -1102,6 +1253,11 @@ in
       bsp-poly-hide
       bsp-dock-hide
       bsp-gaps
+      bsp-gaps-cache
+      bsp-gaps-bar-cache
+      bsp-gaps-default
+      bsp-manual-gaps
+      bsp-border-default
       bsp-tag-view
       bsp-tag-view-revert
       bsp-tag-view-rofi
@@ -1146,11 +1302,14 @@ in
       bsp-skippy
       bsp-sticky-window
       bsp-sticky-window-revert
+      bsp-hidden-menu
+      bsp-icon-bar
       bspswallow
       bspwmswallow
       pidswallow
       bspad
       scratchpad
+      bspi
 
     ];
 

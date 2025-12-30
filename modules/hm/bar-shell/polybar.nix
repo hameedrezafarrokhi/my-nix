@@ -284,11 +284,11 @@ in
        #icon-3 = "mail;♝";
        #icon-4 = "web;♞";
        #icon-default = "♟";
-        label-active = "%name%";
+        label-active = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
         label-active-padding = 1;
-        label-occupied = "%name%";
+        label-occupied = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
         label-occupied-padding = 1;
-        label-urgent = "%name%";
+        label-urgent = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
         label-urgent-padding = 1;
         label-empty = "";
         label-empty-padding = 0;
@@ -445,7 +445,7 @@ in
        #interval = 60;
         click-left = "jgmenu_run";
        #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
-        click-right = "dolphin";
+        click-right = "bsp-hidden-menu";
         double-click-left = "skippy-xd --paging";
         click-middle = "ulauncher";
        #double-click-middle = "kate";
