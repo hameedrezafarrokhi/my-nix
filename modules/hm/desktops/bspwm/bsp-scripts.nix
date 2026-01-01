@@ -866,9 +866,9 @@ let
     bspc config border_width "$new"
   '';
 
-  bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
-    ${builtins.readFile ./themes/${config.my.theme}-borders}
-  '';
+ #bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
+ #  ${builtins.readFile ./themes/${config.my.theme}-borders}
+ #'';
 
   bsp-empty-remove = pkgs.writeShellScriptBin "bsp-empty-remove" ''
     for win in $(bspc query -N -n .leaf.\!window); do bspc node $win -k; done
@@ -1232,6 +1232,18 @@ let
     ${builtins.readFile ./bspi.py}
   '';
 
+  bsp-window-rules-add = pkgs.writeScriptBin "bsp-window-rules-add" ''
+    bspc rule -a kate desktop='^2' follow=on
+    bspc rule -a dolphin desktop='^2' follow=on
+    bspc rule -a brave-browser desktop='^3' follow=on
+  '';
+
+  bsp-window-rules-remove = pkgs.writeScriptBin "bsp-window-rules-remove" ''
+    bspc rule -a kate desktop="" follow=off
+    bspc rule -a dolphin desktop="" follow=off
+    bspc rule -a brave-browser desktop="" follow=off
+  '';
+
 in
 
 {
@@ -1273,7 +1285,7 @@ in
       bsp-rtv-layout
       bsp-tv-layout
       bsp-send-follow
-      bsp-border-color
+     #bsp-border-color
       bsp-border-size
       bsp-border-toggle
       bsp-gaps-toggle
@@ -1304,6 +1316,8 @@ in
       bsp-sticky-window-revert
       bsp-hidden-menu
       bsp-icon-bar
+      bsp-window-rules-add
+      bsp-window-rules-remove
       bspswallow
       bspwmswallow
       pidswallow

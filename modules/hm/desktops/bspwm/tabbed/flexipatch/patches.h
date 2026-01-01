@@ -90,12 +90,12 @@
 /* Add a decorative separator bar to the beginning of each tab.
  * https://tools.suckless.org/tabbed/patches/separator/
  */
-#define SEPARATOR_PATCH 1
+#define SEPARATOR_PATCH 0
 
 /* This patch allows tabbed colors to be defined via Xresources.
  * https://tools.suckless.org/tabbed/patches/xresources/
  */
-#define XRESOURCES_PATCH 1
+#define XRESOURCES_PATCH 0
 
 /* Expansion of the resources patch above, allows resources to be reloaded during
  * runtime by using a USR1 kill signal.
@@ -105,4 +105,4 @@
  *
  * https://tools.suckless.org/tabbed/patches/xresources-with-reload-signal/
  */
-#define XRESOURCES_RELOAD_PATCH 1
+#define XRESOURCES_RELOAD_PATCH 0

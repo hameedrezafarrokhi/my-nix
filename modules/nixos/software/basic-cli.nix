@@ -41,6 +41,10 @@
    #iproute2
 
     cmatrix                       ##Screeansaver fot cli
+    cbonsai
+    pipes
+    pipes-rs
+    snowmachine
 
     fd
 

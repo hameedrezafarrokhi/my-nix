@@ -4,9 +4,9 @@ let
 
   cfg = config.my.bspwm;
 
-  bsp-tabbed = pkgs.callPackage ./tabbed/bsp-tabbed.nix { };
-  bsptab = pkgs.callPackage ./tabbed/bsptab.nix { tabbed = bsp-tabbed; };
-
+ #bsp-tabbed = pkgs.callPackage ./tabbed/bsp-tabbed.nix { };
+ #bsptab = pkgs.callPackage ./tabbed/bsptab.nix { tabbed = bsp-tabbed; };
+ #
   bsp-layout-ext = pkgs.callPackage ./bsp-layout-ext/bsp-layout-ext.nix { };
 
 in
@@ -329,8 +329,8 @@ in
      #pkgs.touchegg
      #pkgs.tabbed
 
-      bsp-tabbed
-      bsptab
+     #bsp-tabbed
+     #bsptab
 
       bsp-layout-ext
 

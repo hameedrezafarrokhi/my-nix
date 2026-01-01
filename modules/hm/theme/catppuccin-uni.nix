@@ -56,7 +56,7 @@
     i3BarPos = "top";
     i3BarMode = "dock";
 
-    konsole-scheme = ./Konsole-catppuccin-macchiato.colorscheme;
+   #konsole-scheme = ./Konsole-catppuccin-macchiato.colorscheme;
     konsole-theme = "Konsole-catppuccin-${myStuff.myCat.myGlobal-Flav}";
     kate-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
     kate-ui = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
@@ -85,6 +85,7 @@
       url = "https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20${myStuff.myCat.myGlobal-FlavC}.tmTheme";
       sha256 = "sha256-8BKmij32yf+/3N92pKTLpDSOAz1yWd1I/+pNQ4ewu0c=";
     };
+    yazi-bat = "catppuccin-macchiato-yazi";
 
     btop-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
 
@@ -155,6 +156,8 @@
     dunstFont = "Comic Sans 10";
 
     rofiMenuFont = "Comic Mono 12";
+
+    bspTabFont = "monospace:size=11";
 
     MonoSize = 10;
     MonoSizeKitty = 9;
@@ -489,6 +492,130 @@
       pkill paperview-rs && $HOME/.live-bg
     '';
 
+    bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
+      direction=$1
+      TMPFILE="/tmp/.bspwm_border_color_index"
+      color0="${Red}"
+      color1="${Peach}"
+      color2="${Blue}"
+      color3="${Sapphire}"
+      color4="${Sky}"
+      color5="${Teal}"
+      color6="${Green}"
+      color7="${Yellow}"
+      color8="${Maroon}"
+      color9="${Mauve}"
+      color10="${Rosewater}"
+      color11="${Flamingo}"
+      color12="${Pink}"
+      color13="${Base}"
+      color14="${Lavender}"
+      NUM_COLORS=15
+      if [ -f "$TMPFILE" ]; then
+          index=$(cat "$TMPFILE")
+      else
+          index=0
+      fi
+      if ! [ "$index" -eq "$index" ] 2>/dev/null; then
+          index=0
+      fi
+      if [ $index -ge $NUM_COLORS ] || [ $index -lt 0 ]; then
+          index=0
+      fi
+      if [ "$direction" = "next" ]; then
+          index=$(( (index + 1) % NUM_COLORS ))
+      elif [ "$direction" = "prev" ]; then
+          index=$(( (index - 1 + NUM_COLORS) % NUM_COLORS ))
+      else
+          echo "Usage: $0 next|prev"
+          exit 1
+      fi
+      case $index in
+          0) color="$color0" ;;
+          1) color="$color1" ;;
+          2) color="$color2" ;;
+          3) color="$color3" ;;
+          4) color="$color4" ;;
+          5) color="$color5" ;;
+          6) color="$color6" ;;
+          7) color="$color7" ;;
+          8) color="$color8" ;;
+          9) color="$color9" ;;
+          10) color="$color10" ;;
+          11) color="$color11" ;;
+          12) color="$color12" ;;
+          13) color="$color13" ;;
+          14) color="$color14" ;;
+          *) color="$color0" ;;
+      esac
+      bspc config focused_border_color "$color"
+      echo "$index" > "$TMPFILE"
+    '';
+
+    bsp-tabbed = pkgs.callPackage ../desktops/bspwm/tabbed/bsp-tabbed.nix {
+      customConfig = ''
+        static char *font         = "${bspTabFont}";
+        static char *normbgcolor  = "${Surface0}";
+        static char *normfgcolor  = "${Text}";
+        static char *selbgcolor   = "${Base}";
+        static char *selfgcolor   = "${Text}";
+        static char *urgbgcolor   = "${Red}";
+        static char *urgfgcolor   = "${Crust}";
+        static char before[]      = "<";
+        static char after[]       = ">";
+        static char titletrim[]   = "...";
+        static int  tabwidth      = 200;
+        static int  foreground    = 1;
+        static int  urgentswitch  = 0;
+        static int  newposition   = -1; // attach new windows at the end
+        //static int newposition  = 0;
+        static int npisrelative = 0;
+
+        #define SETPROP(p) { \
+        .v = (char *[]){ "/bin/sh", "-c", \
+            "prop=\"`xwininfo -children -id $1 | grep '^     0x' |" \
+            "sed -e's@^ *\\(0x[0-9a-f]*\\) \"\\([^\"]*\\)\".*@\\1 \\2@' |" \
+            "xargs -0 printf %b | dmenu -l 10 -w $1`\" &&" \
+            "xprop -id $1 -f $0 8s -set $0 \"$prop\"", \
+            p, winid, NULL \
+        } \
+        }
+
+        #define MODKEY ControlMask
+        static const Key keys[] = {
+            /* modifier             key           function     argument */
+            { MODKEY|ShiftMask,     XK_Return,    focusonce,   { 0 } },
+            { MODKEY|ShiftMask,     XK_Return,    spawn,       { 0 } },
+
+            { MODKEY|ShiftMask,     XK_l,         rotate,      { .i = +1 } },
+            { MODKEY|ShiftMask,     XK_h,         rotate,      { .i = -1 } },
+            { MODKEY|ShiftMask,     XK_j,         movetab,     { .i = -1 } },
+            { MODKEY|ShiftMask,     XK_k,         movetab,     { .i = +1 } },
+            { MODKEY,               XK_Tab,       rotate,      { .i = 0 } },
+
+            { MODKEY,               XK_grave,     spawn,       SETPROP("_TABBED_SELECT_TAB") },
+            { MODKEY,               XK_1,         move,        { .i = 0 } },
+            { MODKEY,               XK_2,         move,        { .i = 1 } },
+            { MODKEY,               XK_3,         move,        { .i = 2 } },
+            { MODKEY,               XK_4,         move,        { .i = 3 } },
+            { MODKEY,               XK_5,         move,        { .i = 4 } },
+            { MODKEY,               XK_6,         move,        { .i = 5 } },
+            { MODKEY,               XK_7,         move,        { .i = 6 } },
+            { MODKEY,               XK_8,         move,        { .i = 7 } },
+            { MODKEY,               XK_9,         move,        { .i = 8 } },
+            { MODKEY,               XK_0,         move,        { .i = 9 } },
+
+            { MODKEY,               XK_q,         killclient,  { 0 } },
+
+            { MODKEY,               XK_u,         focusurgent, { 0 } },
+            { MODKEY|ShiftMask,     XK_u,         toggle,      { .v = (void*) &urgentswitch } },
+
+            { 0,                    XK_F11,       fullscreen,  { 0 } },
+        };
+      '';
+    };
+    bsptab = pkgs.callPackage ../desktops/bspwm/tabbed/bsptab.nix { tabbed = bsp-tabbed; };
+
   in
 
 { config = lib.mkIf (config.my.theme == "catppuccin-uni") {
@@ -526,6 +653,10 @@
     live-bg-cycle
     live-bg-pause
     live-bg-speed-manual
+
+    bsp-border-color
+    bsp-tabbed
+    bsptab
 
   ];
 
@@ -1077,7 +1208,77 @@
   programs = {
     konsole = lib.mkIf config.my.kde.konsole.enable {
       customColorSchemes = {
-        Konsole-catppuccin-macchiato = konsole-scheme;
+        ${konsole-theme} = pkgs.writeTextFile {
+          name = "${konsole-theme}.colorscheme";
+          text = ''
+            [Background]
+            Color=${rgb-alt-Base}
+            [BackgroundFaint]
+            Color=${rgb-alt-Base}
+            [BackgroundIntense]
+            Color=${rgb-alt-Base}
+            [Color0]
+            Color=${rgb-alt-Overlay0}
+            [Color0Faint]
+            Color=${rgb-alt-Overlay0}
+            [Color0Intense]
+            Color=${rgb-alt-Overlay0}
+            [Color1]
+            Color=${rgb-alt-Red}
+            [Color1Faint]
+            Color=${rgb-alt-Red}
+            [Color1Intense]
+            Color=${rgb-alt-Red}
+            [Color2]
+            Color=${rgb-alt-Green}
+            [Color2Faint]
+            Color=${rgb-alt-Green}
+            [Color2Intense]
+            Color=${rgb-alt-Green}
+            [Color3]
+            Color=${rgb-alt-Yellow}
+            [Color3Faint]
+            Color=${rgb-alt-Yellow}
+            [Color3Intense]
+            Color=${rgb-alt-Yellow}
+            [Color4]
+            Color=${rgb-alt-Blue}
+            [Color4Faint]
+            Color=${rgb-alt-Blue}
+            [Color4Intense]
+            Color=${rgb-alt-Blue}
+            [Color5]
+            Color=${rgb-alt-Mauve}
+            [Color5Faint]
+            Color=${rgb-alt-Mauve}
+            [Color5Intense]
+            Color=${rgb-alt-Mauve}
+            [Color6]
+            Color=${rgb-alt-Sky}
+            [Color6Faint]
+            Color=${rgb-alt-Sky}
+            [Color6Intense]
+            Color=${rgb-alt-Sky}
+            [Color7]
+            Color=${rgb-alt-Text}
+            [Color7Faint]
+            Color=${rgb-alt-Text}
+            [Color7Intense]
+            Color=${rgb-alt-Text}
+            [Foreground]
+            Color=${rgb-alt-Text}
+            [ForegroundFaint]
+            Color=${rgb-alt-Text}
+            [ForegroundIntense]
+            Color=${rgb-alt-Text}
+            [General]
+            Blur=false
+            ColorRandomization=false
+            Description=Catppuccin Macchiato
+            Opacity=1
+            Wallpaper=
+          '';
+        };
       };
       ui.colorScheme = konsole-theme;
       profiles = {
@@ -1266,6 +1467,246 @@
           font-weight: 700;
           padding-bottom: 0px;
         }
+        tooltip {
+          background: @crust;
+          border: 2px solid @subtext0;
+        }
+        #window {
+        	margin: 0px 5px 0px 5px;
+        	padding-left: 10px;
+        	padding-right: 10px;
+        	background-color: @base;
+        	color: @text;
+        }
+        window#waybar.empty #window {
+        	background-color: transparent;
+        	border-bottom: none;
+        	border-right: none;
+        }
+        window#waybar {
+          background-color:@base;
+          color: @text;
+        }
+        /* Workspaces */
+        #workspaces {
+          margin: 0px 0px 0px 0px;
+          padding: 0px;
+          background-color: @base;
+          color: @rosewater;
+        }
+        #workspaces button {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 0px;
+          background-color: @base;
+          color: @text;
+        }
+        #workspaces button.active {
+            padding: 0 0px 0 0px;
+            color: @base;
+            background-color: @sapphire;
+        }
+        #workspaces button.urgent {
+        	color: @red;
+        }
+        #custom-gpu-util {
+          margin: 0px 5px 0px 5px;
+          padding-left: 10px;
+          padding-right: 10px;
+          background-color: @base;
+          color: @text;
+        }
+        #tray {
+          margin: 0px 0px 0px 0px;
+          padding-left: 4px;
+          padding-right: 4px;
+          background-color: @base;
+          color: @rosewater;
+        }
+        #idle_inhibitor {
+          margin: 1px 10px 0px 10px;
+          padding-left: 4px;
+          padding-right: 4px;
+          background-color: @base;
+          color: @red;
+        }
+        #idle_inhibitor.activated {
+          color: @green;
+        }
+        #network {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 0px;
+          background-color: @base;
+          color: @rosewater;
+        }
+        #network.linked {
+          color: @green;
+        }
+        #network.disconnected,
+        #network.disabled {
+          color: @red;
+        }
+        #custom-cliphist {
+        	color: @rosewater;
+        	margin: 0px 0px 0px 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            background-color: @base;
+
+        }
+        #custom-gpu-temp,
+        #custom-clipboard {
+          margin: 0px 0px 0px 5px;
+          padding-left: 0px;
+          padding-right: 0px;
+          color: @text;
+          background-color: @base;
+        }
+        #cpu {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 4px;
+          color: @text;
+          background-color: @base;
+        }
+        #custom-cpuicon {
+          margin: 0px 0px 0px 0px;
+          padding: 0px 10px 0px 0px;
+          color: @maroon;
+          background-color: @base;
+        }
+        #custom-diskicon {
+          margin: 0px 0px 0px 0px;
+          padding: 0px 6px 0px 10px;
+          color: @green;
+          background-color: @base;
+        }
+        #disk {
+          margin: 0px 0px 0px 0;
+          padding-left: 2px;
+          padding-right: 0px;
+          color: @text;
+          background-color: @base;
+        }
+        #custom-notification {
+        background-color: @base;
+        color: @yellow;
+        padding: 3px 4px 0px 4px;
+        margin-right: 0px;
+        font-size: 14px;
+        font-family: "JetBrainsMono Nerd Font";
+        }
+        #custom-memoryicon {
+          margin: 0px 4px 0px 2px;
+          color: @mauve;
+          padding: 0 0px 0 0px;
+          background-color: @base;
+        }
+        #memory {
+          margin: 0px 0px 0px 0px;
+          padding-left: 5px;
+          padding-right: 10px;
+          color: @text;
+          background-color: @base;
+        }
+        #custom-tempicon {
+          margin: 0px 0px 0px 0px;
+          color: @red;
+          padding: 0px 4px 0px 2px;
+          background-color: @base;
+        }
+        #temperature {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 0px;
+          color: @text;
+          background-color: @base;
+        }
+        #custom-playerctl {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 0px;
+          color: @text;
+          background-color: @base;
+        }
+        #battery,
+        #backlight,
+        #bluetooth,
+        #pulseaudio {
+        	margin-right: 0px;
+        	margin-left: 0px;
+        	padding-left: 4px;
+          	padding-right: 4px;
+              color: @flamingo;
+              background-color: @base;
+        }
+        #battery,
+        #bluetooth {
+        	margin-left: 0px;
+        	margin-right: 0px;
+        	padding-left: 0px;
+        	padding-right: 0px;
+              color: @blue;
+              background-color: @base;
+        }
+        #clock {
+          margin: 0px 0px 0px 0px;
+          padding-left: 4px;
+          padding-right: 4px;
+          color: @peach;
+          background-color: @base;
+        }
+        #custom-clockicon {
+          margin: 0px 0px 0px 0px;
+          color: @maroon;
+          padding: 0px 4px 0px 4px;
+          background-color: @base;
+          color: @peach;
+        }
+        #taskbar {
+            padding: 0px 0px 0px 0px;
+            margin: 0 0px;
+            padding-left: 4px;
+            padding-right: 0px;
+            color: @text;
+            background-color: @base;
+        }
+        #taskbar button {
+            padding: 0px 10px 0px 4px;
+            margin: 0px 0px;
+            padding-left: 0px;
+            padding-right: 4px;
+            color: @text;
+            background-color: @surface0;
+        }
+        #taskbar button.active {
+            padding-left: 10px;
+            padding-right: 0px;
+            background-color: @sapphire;
+            color: @base;
+        }
+        #mode {
+          margin: 0px 0px 0px 0px;
+          padding-left: 0px;
+          padding-right: 0px;
+          background-color: @base;
+          color: @green;
+        }
+        #custom-apps {
+          margin: 0px 0px 0px 0px;
+          padding-left: 10px;
+          padding-right: 10px;
+          background-color: @base;
+          color: @text;
+        }
+        #custom-windowicon {
+        margin: 0px 0px 0px 0px;
+        padding: 3px 4px 0px 4px;
+        background-color: @base;
+        color: @sapphire;
+        }
+
       '';
     };
     ashell.settings = lib.mkIf config.programs.ashell.enable {
@@ -1706,6 +2147,202 @@
       text-color = alt-Text;
       text-ver-color = alt-Blue;
       text-wrong-color = alt-Maroon;
+    };
+
+    qutebrowser.settings = {
+      hints.border = "1px solid ${Base}";
+      colors = {
+        completion = {
+          category = { bg = Base; fg = Green; border = { bottom = Mantle; top = Overlay2; }; };
+          even.bg = Mantle;
+          fg = Subtext0;
+          item.selected = { bg = Surface2; border = { bottom = Surface2; top = Surface2; }; fg = Text; match.fg = Rosewater; };
+          match.fg = Text;
+          odd.bg = Crust;
+          scrollbar = { bg = Crust; fg = Surface2; };
+        };
+        contextmenu = {
+          disabled = { bg = Mantle; fg = Overlay0; };
+          menu = { bg = Base; fg = Text; };
+          selected = { bg = Overlay0; fg = Rosewater; }; };
+        downloads = {
+          bar.bg = Base;
+          error = { bg = Base; fg = Red; };
+          start = { bg = Base; fg = Blue; };
+          stop = { bg = Base; fg = Green; }; };
+        hints = { bg = Peach; fg = Mantle; match.fg = Subtext1; /*border = "1px solid ${Mantle}";*/ };
+        keyhint = { bg = Mantle; fg = Text; suffix.fg = Subtext1; };
+        messages = {
+          error = { bg = Overlay0; fg = Red; border = Mantle; };
+          info = { bg = Overlay0; fg = Text; border = Mantle; };
+          warning = { bg = Overlay0; fg = Peach; border = Mantle; };
+        };
+        prompts = { bg = Mantle; border = "1px solid ${Overlay0}"; fg = Text; selected.bg = Surface2; selected.fg = Rosewater; };
+        statusbar = {
+          caret = { bg = Base; fg = Peach; selection = { bg = Base; fg = Peach; }; };
+          command = { bg = Base; fg = Text; private = { bg = Base; fg = Subtext1; }; };
+          insert = { bg = Crust; fg = Rosewater; };
+          normal = { bg = Base; fg = Text; };
+          passthrough = { bg = Base; fg = Peach; };
+          private = { bg = Mantle; fg = Subtext1; };
+          progress.bg = Base;
+          url = { error.fg = Red; fg = Text; hover.fg = Sky; success = { http.fg = Green; https.fg = Text; }; warn.fg = Yellow; };
+        };
+        tabs = {
+          bar.bg = Crust;
+          even = { bg = Surface2; fg = Overlay2; };
+          indicator = { error = Red; start = Sapphire; stop = Text; };
+          odd = { bg = Surface1; fg = Overlay2; };
+          pinned = { even = { bg = Sapphire; fg = Base; }; odd = { bg = Sky; fg = Crust; };
+            selected = { even = { bg = Crust; fg = Overlay0; }; odd = { bg = Mantle; fg = Text; }; }; };
+          selected = { even = { bg = Base; fg = Text; }; odd = { bg = Base; fg = Text; }; };
+        };
+        tooltip = { bg = Crust; fg = Rosewater; };
+      };
+    };
+    yazi.theme = {
+      mgr = {
+        cwd = { fg = Teal; };
+        hovered = { fg = Base; bg = Sapphire; };
+        preview_hovered = { fg = Base; bg = Text; };
+        find_keyword = { fg = Yellow; italic = true; };
+        find_position = { fg = Pink; bg = "reset"; italic = true; };
+        marker_copied = { fg = Green; bg = Green; };
+        marker_cut = { fg = Red; bg = Red; };
+        marker_marked = { fg = Teal; bg = Teal; };
+        marker_selected = { fg = Sapphire; bg = Sapphire; };
+        count_copied = { fg = Base; bg = Green; };
+        count_cut = { fg = Base; bg = Red; };
+        count_selected = { fg = Base; bg = Sapphire; };
+        border_symbol = "│";
+        border_style = { fg = Overlay1; };
+        syntect_theme = "${nix-path}/modules/hm/theme/bat-themes/${yazi-bat}.tmTheme";
+      };
+      tabs = { active = { fg = Base; bg = Text; bold = true; }; inactive = { fg = Text; bg = Surface1; }; };
+      mode = {
+        normal_main = { fg = Base; bg = Sapphire; bold = true; };
+        normal_alt = { fg = Sapphire; bg = Surface0; };
+        select_main = { fg = Base; bg = Green; bold = true; };
+        select_alt = { fg = Green; bg = Surface0; };
+        unset_main = { fg = Base; bg = Flamingo; bold = true; };
+        unset_alt = { fg = Flamingo; bg = Surface0; };
+      };
+      status = {
+        sep_left = { open = ""; close = ""; };
+        sep_right = { open = ""; close = ""; };
+        progress_label  = { fg = "#ffffff"; bold = true; };
+        progress_normal = { fg = Blue; bg = Surface1; };
+        progress_error  = { fg = Red; bg = Surface1; };
+        perm_type = { fg = Blue; };
+        perm_read = { fg = Yellow; };
+        perm_write = { fg = Red; };
+        perm_exec = { fg = Green; };
+        perm_sep = { fg = Overlay1; };
+      };
+      input = { border = { fg = Sapphire; }; title = {}; value = {}; selected = { reversed = true; }; };
+      pick = { border = { fg = Sapphire; }; active = { fg = Pink; }; inactive = {}; };
+      confirm = {
+        border = { fg = Sapphire; };
+        title = { fg = Sapphire; };
+        content = {};
+        list = {};
+        btn_yes = { reversed = true; };
+        btn_no = {};
+      };
+      cmp = { border = { fg = Sapphire; }; };
+      tasks = { border = { fg = Sapphire; }; title = {}; hovered = { underline = true; }; };
+      which = {
+      mask = { bg = Surface0; };
+      cand = { fg = Teal; };
+      rest = { fg = Overlay2; };
+      desc = { fg = Pink; };
+      separator = "  ";
+      separator_style = { fg = Surface2; };
+      };
+      help = {
+      on = { fg = Teal; };
+      run = { fg = Pink; };
+      desc = { fg = Overlay2; };
+      hovered = { bg = Surface2; bold = true; };
+      footer = { fg = Text; bg = Surface1; };
+      };
+      notify = {
+        title_info = { fg = Teal; };
+        title_warn = { fg = Yellow; };
+        title_error = { fg = Red; };
+      };
+      filetype = {
+        rules = [
+          # Media
+          { mime = "image/*"; fg = Teal; }
+          { mime = "{audio,video}/*"; fg = Yellow; }
+          # Archives
+          { mime = "application/*zip"; fg = Pink; }
+          { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}"; fg = Pink; }
+          # Documents
+          { mime = "application/{pdf,doc,rtf}"; fg = Green; }
+          # Fallback
+          { name = "*"; fg = Text; }
+          { name = "*/"; fg = Sapphire; }
+        ];
+      };
+      spot = {
+        border = { fg = Sapphire; };
+        title = { fg = Sapphire; };
+        tbl_cell = { fg = Sapphire; reversed = true; };
+        tbl_col = { bold = true; };
+      };
+      icon = {
+        files = let m = name: text: fg: { inherit name text fg; }; in [
+          (m "kritadisplayrc" "" Mauve) (m ".gtkrc-2.0" "" Rosewater) (m "bspwmrc" "" Mantle) (m "webpack" "󰜫" Sapphire) (m "tsconfig.json" "" Sapphire)
+          (m ".vimrc" "" Green) (m "gemfile$" "" Crust) (m "xmobarrc" "" Red) (m "avif" "" Overlay1)
+          (m "fp-info-cache" "" Rosewater) (m ".zshrc" "" Green) (m "robots.txt" "󰚩" Overlay0) (m "dockerfile" "󰡨" Blue)
+          (m ".git-blame-ignore-revs" "" Peach) (m ".nvmrc" "" Green) (m "hyprpaper.conf" "" Teal) (m ".prettierignore" "" Blue)
+          (m "rakefile" "" Crust) (m "code_of_conduct" "" Red) (m "cmakelists.txt" "" Text) (m ".env" "" Yellow)
+          (m "copying.lesser" "" Yellow) (m "readme" "󰂺" Rosewater) (m "settings.gradle" "" Surface2) (m "gruntfile.coffee" "" Peach)
+          (m ".eslintignore" "" Surface1) (m "kalgebrarc" "" Blue) (m "kdenliverc" "" Blue) (m ".prettierrc.cjs" "" Blue)
+          (m "cantorrc" "" Blue) (m "rmd" "" Sapphire) (m "vagrantfile$" "" Overlay0) (m ".Xauthority" "" Peach)
+          (m "prettier.config.ts" "" Blue) (m "node_modules" "" Red) (m ".prettierrc.toml" "" Blue) (m "build.zig.zon" "" Peach)
+          (m ".ds_store" "" Surface1) (m "PKGBUILD" "" Blue) (m ".prettierrc" "" Blue) (m ".bash_profile" "" Green)
+          (m ".npmignore" "" Red) (m ".mailmap" "󰊢" Peach) (m ".codespellrc" "󰓆" Green) (m "svelte.config.js" "" Peach)
+          (m "eslint.config.ts" "" Surface1) (m "config" "" Overlay1) (m ".gitlab-ci.yml" "" Red) (m ".gitconfig" "" Peach)
+          (m "_gvimrc" "" Green) (m ".xinitrc" "" Peach) (m "checkhealth" "󰓙" Blue) (m "sxhkdrc" "" Mantle)
+          (m ".bashrc" "" Green) (m "tailwind.config.mjs" "󱏿" Sapphire) (m "ext_typoscript_setup.txt" "" Peach) (m "commitlint.config.ts" "󰜘" Teal)
+          (m "py.typed" "" Yellow) (m ".nanorc" "" Base) (m "commit_editmsg" "" Peach) (m ".luaurc" "" Blue)
+          (m "fp-lib-table" "" Rosewater) (m ".editorconfig" "" Rosewater) (m "justfile" "" Overlay1) (m "kdeglobals" "" Blue)
+          (m "license.md" "" Yellow) (m ".clang-format" "" Overlay1) (m "docker-compose.yaml" "󰡨" Blue) (m "copying" "" Yellow)
+          (m "go.mod" "" Sapphire) (m "lxqt.conf" "" Blue) (m "brewfile" "" Crust) (m "gulpfile.coffee" "" Red)
+          (m ".dockerignore" "󰡨" Blue) (m ".settings.json" "" Surface2) (m "tailwind.config.js" "󱏿" Sapphire) (m ".clang-tidy" "" Overlay1)
+          (m ".gvimrc" "" Green) (m "nuxt.config.cjs" "󱄆" Teal) (m "xsettingsd.conf" "" Peach) (m "nuxt.config.js" "󱄆" Teal)
+          (m "eslint.config.cjs" "" Surface1) (m "sym-lib-table" "" Rosewater) (m ".condarc" "" Green) (m "xmonad.hs" "" Red)
+          (m "tmux.conf" "" Green) (m "xmobarrc.hs" "" Red) (m ".prettierrc.yaml" "" Blue) (m ".pre-commit-config.yaml" "󰛢" Yellow)
+          (m "i3blocks.conf" "" Text) (m "xorg.conf" "" Peach) (m ".zshenv" "" Green) (m "vlcrc" "󰕼" Peach)
+          (m "license" "" Yellow) (m "unlicense" "" Yellow) (m "tmux.conf.local" "" Green) (m ".SRCINFO" "󰣇" Blue)
+          (m "tailwind.config.ts" "󱏿" Sapphire) (m "security.md" "󰒃" Subtext1) (m "security" "󰒃" Subtext1) (m ".eslintrc" "" Surface1)
+          (m "gradle.properties" "" Surface2) (m "code_of_conduct.md" "" Red) (m "PrusaSlicerGcodeViewer.ini" "" Peach) (m "PrusaSlicer.ini" "" Peach)
+          (m "procfile" "" Overlay1) (m "mpv.conf" "" Base) (m ".prettierrc.json5" "" Blue) (m "i3status.conf" "" Text)
+          (m "prettier.config.mjs" "" Blue) (m ".pylintrc" "" Overlay1) (m "prettier.config.cjs" "" Blue) (m ".luacheckrc" "" Blue)
+          (m "containerfile" "󰡨" Blue) (m "eslint.config.mjs" "" Surface1) (m "gruntfile.js" "" Peach) (m "bun.lockb" "" Rosewater)
+          (m ".gitattributes" "" Peach) (m "gruntfile.ts" "" Peach) (m "pom.xml" "" Surface0) (m "favicon.ico" "" Yellow)
+          (m "package-lock.json" "" Surface0) (m "build" "" Green) (m "package.json" "" Red) (m "nuxt.config.ts" "󱄆" Teal)
+          (m "nuxt.config.mjs" "󱄆" Teal) (m "mix.lock" "" Overlay1) (m "makefile" "" Overlay1) (m "gulpfile.js" "" Red)
+          (m "lxde-rc.xml" "" Overlay1) (m "kritarc" "" Mauve) (m "gtkrc" "" Rosewater) (m "ionic.config.json" "" Blue)
+          (m ".prettierrc.mjs" "" Blue) (m ".prettierrc.yml" "" Blue) (m ".npmrc" "" Red) (m "weston.ini" "" Yellow)
+          (m "gulpfile.babel.js" "" Red) (m "i18n.config.ts" "󰗊" Overlay1) (m "commitlint.config.js" "󰜘" Teal) (m ".gitmodules" "" Peach)
+          (m "gradle-wrapper.properties" "" Surface2) (m "hypridle.conf" "" Teal) (m "vercel.json" "▲" Rosewater) (m "hyprlock.conf" "" Teal)
+          (m "go.sum" "" Sapphire) (m "kdenlive-layoutsrc" "" Blue) (m "gruntfile.babel.js" "" Peach) (m "compose.yml" "󰡨" Blue)
+          (m "i18n.config.js" "󰗊" Overlay1) (m "readme.md" "󰂺" Rosewater) (m "gradlew" "" Surface2) (m "go.work" "" Sapphire)
+          (m "gulpfile.ts" "" Red) (m "gnumakefile" "" Overlay1) (m "FreeCAD.conf" "" Red) (m "compose.yaml" "󰡨" Blue)
+          (m "eslint.config.js" "" Surface1) (m "hyprland.conf" "" Teal) (m "docker-compose.yml" "󰡨" Blue) (m "groovy" "" Surface2)
+          (m "QtProject.conf" "" Green) (m "platformio.ini" "" Peach) (m "build.gradle" "" Surface2) (m ".nuxtrc" "󱄆" Teal)
+          (m "_vimrc" "" Green) (m ".zprofile" "" Green) (m ".xsession" "" Peach) (m "prettier.config.js" "" Blue)
+          (m ".babelrc" "" Yellow) (m "workspace" "" Green) (m ".prettierrc.json" "" Blue) (m ".prettierrc.js" "" Blue)
+          (m ".Xresources" "" Peach) (m ".gitignore" "" Peach) (m ".justfile" "" Overlay1)
+        ];
+        exts = let m = name: text: fg: { inherit name text fg; }; in [
+          (m "otf" "" Rosewater) (m "import" "" Rosewater) (m "krz" "" Mauve) (m "adb" "" Teal) (m "ttf" "" Rosewater) (m "webpack" "󰜫" Sapphire) (m "dart" "" Surface2) (m "vsh" "" Overlay1) (m "doc" "󰈬" Surface2) (m "zsh" "" Green) (m "ex" "" Overlay1) (m "hx" "" Peach) (m "fodt" "" Sapphire) (m "mojo" "" Peach) (m "templ" "" Yellow) (m "nix" "" Sapphire) (m "cshtml" "󱦗" Surface1) (m "fish" "" Surface2) (m "ply" "󰆧" Overlay1) (m "sldprt" "󰻫" Green) (m "gemspec" "" Crust) (m "mjs" "" Yellow) (m "csh" "" Surface2) (m "cmake" "" Text) (m "fodp" "" Peach) (m "vi" "" Yellow) (m "msf" "" Blue) (m "blp" "󰺾" Blue) (m "less" "" Surface1) (m "sh" "" Surface2) (m "odg" "" Yellow) (m "mint" "󰌪" Green) (m "dll" "" Crust) (m "odf" "" Red) (m "sqlite3" "" Rosewater) (m "Dockerfile" "󰡨" Blue) (m "ksh" "" Surface2) (m "rmd" "" Sapphire) (m "wv" "" Sapphire) (m "xml" "󰗀" Peach) (m "markdown" "" Text) (m "qml" "" Green) (m "3gp" "" Peach) (m "pxi" "" Blue) (m "flac" "" Overlay0) (m "gpr" "" Mauve) (m "huff" "󰡘" Surface1) (m "json" "" Yellow) (m "gv" "󱁉" Surface2) (m "bmp" "" Overlay1) (m "lock" "" Subtext1) (m "sha384" "󰕥" Overlay1) (m "cobol" "⚙" Surface2) (m "cob" "⚙" Surface2) (m "java" "" Red) (m "cjs" "" Yellow) (m "qm" "" Sapphire) (m "ebuild" "" Surface1) (m "mustache" "" Peach) (m "terminal" "" Green) (m "ejs" "" Yellow) (m "brep" "󰻫" Green) (m "rar" "" Yellow) (m "gradle" "" Surface2) (m "gnumakefile" "" Overlay1) (m "applescript" "" Overlay1) (m "elm" "" Sapphire) (m "ebook" "" Peach) (m "kra" "" Mauve) (m "tf" "" Surface2) (m "xls" "󰈛" Surface2) (m "fnl" "" Yellow) (m "kdbx" "" Green) (m "kicad_pcb" "" Rosewater) (m "cfg" "" Overlay1) (m "ape" "" Sapphire) (m "org" "" Teal) (m "yml" "" Overlay1) (m "swift" "" Peach) (m "eln" "" Overlay0) (m "sol" "" Sapphire) (m "awk" "" Surface2) (m "7z" "" Yellow) (m "apl" "⍝" Peach) (m "epp" "" Peach) (m "app" "" Surface1) (m "dot" "󱁉" Surface2) (m "kpp" "" Mauve) (m "eot" "" Rosewater) (m "hpp" "" Overlay1) (m "spec.tsx" "" Surface2) (m "hurl" "" Red) (m "cxxm" "" Sapphire) (m "c" "" Blue) (m "fcmacro" "" Red) (m "sass" "" Red) (m "yaml" "" Overlay1) (m "xz" "" Yellow) (m "material" "󰔉" Overlay0) (m "json5" "" Yellow) (m "signature" "λ" Peach) (m "3mf" "󰆧" Overlay1) (m "jpg" "" Overlay1) (m "xpi" "" Peach) (m "fcmat" "" Red) (m "pot" "" Sapphire) (m "bin" "" Surface1) (m "xlsx" "󰈛" Surface2) (m "aac" "" Sapphire) (m "kicad_sym" "" Rosewater) (m "xcstrings" "" Sapphire) (m "lff" "" Rosewater) (m "xcf" "" Surface2) (m "azcli" "" Overlay0) (m "license" "" Yellow) (m "jsonc" "" Yellow) (m "xaml" "󰙳" Surface1) (m "md5" "󰕥" Overlay1) (m "xm" "" Sapphire) (m "sln" "" Surface2) (m "jl" "" Overlay1) (m "ml" "" Peach) (m "http" "" Blue) (m "x" "" Blue) (m "wvc" "" Sapphire) (m "wrz" "󰆧" Overlay1) (m "csproj" "󰪮" Surface1) (m "wrl" "󰆧" Overlay1) (m "wma" "" Sapphire) (m "woff2" "" Rosewater) (m "woff" "" Rosewater) (m "tscn" "" Overlay1) (m "webmanifest" "" Yellow) (m "webm" "" Peach) (m "fcbak" "" Red) (m "log" "󰌱" Text) (m "wav" "" Sapphire) (m "wasm" "" Surface2) (m "styl" "" Green) (m "gif" "" Overlay1) (m "resi" "" Red) (m "aiff" "" Sapphire) (m "sha256" "󰕥" Overlay1) (m "igs" "󰻫" Green) (m "vsix" "" Surface2) (m "vim" "" Green) (m "diff" "" Surface1) (m "drl" "" Maroon) (m "erl" "" Overlay0) (m "vhdl" "󰍛" Green) (m "🔥" "" Peach) (m "hrl" "" Overlay0) (m "fsi" "" Sapphire) (m "mm" "" Sapphire) (m "bz" "" Yellow) (m "vh" "󰍛" Green) (m "kdb" "" Green) (m "gz" "" Yellow) (m "cpp" "" Sapphire) (m "ui" "" Surface2) (m "txt" "󰈙" Green) (m "spec.ts" "" Sapphire) (m "ccm" "" Red) (m "typoscript" "" Peach) (m "typ" "" Teal) (m "txz" "" Yellow) (m "test.ts" "" Sapphire) (m "tsx" "" Surface2) (m "mk" "" Overlay1) (m "webp" "" Overlay1) (m "opus" "" Overlay0) (m "bicep" "" Sapphire) (m "ts" "" Sapphire) (m "tres" "" Overlay1) (m "torrent" "" Teal) (m "cxx" "" Sapphire) (m "iso" "" Flamingo) (m "ixx" "" Sapphire) (m "hxx" "" Overlay1) (m "gql" "" Red) (m "tmux" "" Green) (m "ini" "" Overlay1) (m "m3u8" "󰲹" Red) (m "image" "" Flamingo) (m "tfvars" "" Surface2) (m "tex" "" Surface1) (m "cbl" "⚙" Surface2) (m "flc" "" Rosewater) (m "elc" "" Overlay0) (m "test.tsx" "" Surface2) (m "twig" "" Green) (m "sql" "" Rosewater) (m "test.jsx" "" Sapphire) (m "htm" "" Peach) (m "gcode" "󰐫" Overlay0) (m "test.js" "" Yellow) (m "ino" "" Sapphire) (m "tcl" "󰛓" Surface2) (m "cljs" "" Sapphire) (m "tsconfig" "" Peach) (m "img" "" Flamingo) (m "t" "" Sapphire) (m "fcstd1" "" Red) (m "out" "" Surface1) (m "jsx" "" Sapphire) (m "bash" "" Green) (m "edn" "" Sapphire) (m "rss" "" Peach) (m "flf" "" Rosewater) (m "cache" "" Rosewater) (m "sbt" "" Red) (m "cppm" "" Sapphire) (m "svelte" "" Peach) (m "mo" "∞" Overlay1) (m "sv" "󰍛" Green) (m "ko" "" Rosewater) (m "suo" "" Surface2) (m "sldasm" "󰻫" Green) (m "icalendar" "" Surface0) (m "go" "" Sapphire) (m "sublime" "" Peach) (m "stl" "󰆧" Overlay1) (m "mobi" "" Peach) (m "graphql" "" Red) (m "m3u" "󰲹" Red) (m "cpy" "⚙" Surface2) (m "kdenlive" "" Blue) (m "pyo" "" Yellow) (m "po" "" Sapphire) (m "scala" "" Red) (m "exs" "" Overlay1) (m "odp" "" Peach) (m "dump" "" Rosewater) (m "stp" "󰻫" Green) (m "step" "󰻫" Green) (m "ste" "󰻫" Green) (m "aif" "" Sapphire) (m "strings" "" Sapphire) (m "cp" "" Sapphire) (m "fsscript" "" Sapphire) (m "mli" "" Peach) (m "bak" "󰁯" Overlay1) (m "ssa" "󰨖" Yellow) (m "toml" "" Red) (m "makefile" "" Overlay1) (m "php" "" Overlay1) (m "zst" "" Yellow) (m "spec.jsx" "" Sapphire) (m "kbx" "󰯄" Overlay0) (m "fbx" "󰆧" Overlay1) (m "blend" "󰂫" Peach) (m "ifc" "󰻫" Green) (m "spec.js" "" Yellow) (m "so" "" Rosewater) (m "desktop" "" Surface1) (m "sml" "λ" Peach) (m "slvs" "󰻫" Green) (m "pp" "" Peach) (m "ps1" "󰨊" Overlay0) (m "dropbox" "" Overlay0) (m "kicad_mod" "" Rosewater) (m "bat" "" Green) (m "slim" "" Peach) (m "skp" "󰻫" Green) (m "css" "" Blue) (m "xul" "" Peach) (m "ige" "󰻫" Green) (m "glb" "" Peach) (m "ppt" "󰈧" Red) (m "sha512" "󰕥" Overlay1) (m "ics" "" Surface0) (m "mdx" "" Sapphire) (m "sha1" "󰕥" Overlay1) (m "f3d" "󰻫" Green) (m "ass" "󰨖" Yellow) (m "godot" "" Overlay1) (m "ifb" "" Surface0) (m "cson" "" Yellow) (m "lib" "" Crust) (m "luac" "" Sapphire) (m "heex" "" Overlay1) (m "scm" "󰘧" Rosewater) (m "psd1" "󰨊" Overlay0) (m "sc" "" Red) (m "scad" "" Yellow) (m "kts" "" Overlay0) (m "svh" "󰍛" Green) (m "mts" "" Sapphire) (m "nfo" "" Yellow) (m "pck" "" Overlay1) (m "rproj" "󰗆" Green) (m "rlib" "" Peach) (m "cljd" "" Sapphire) (m "ods" "" Green) (m "res" "" Red) (m "apk" "" Green) (m "haml" "" Rosewater) (m "d.ts" "" Peach) (m "razor" "󱦘" Surface1) (m "rake" "" Crust) (m "patch" "" Surface1) (m "cuh" "" Overlay1) (m "d" "" Red) (m "query" "" Green) (m "psb" "" Sapphire) (m "nu" ">" Green) (m "mov" "" Peach) (m "lrc" "󰨖" Yellow) (m "pyx" "" Blue) (m "pyw" "" Blue) (m "cu" "" Green) (m "bazel" "" Green) (m "obj" "󰆧" Overlay1) (m "pyi" "" Yellow) (m "pyd" "" Yellow) (m "exe" "" Surface1) (m "pyc" "" Yellow) (m "fctb" "" Red) (m "part" "" Teal) (m "blade.php" "" Red) (m "git" "" Peach) (m "psd" "" Sapphire) (m "qss" "" Green) (m "csv" "" Green) (m "psm1" "󰨊" Overlay0) (m "dconf" "" Rosewater) (m "config.ru" "" Crust) (m "prisma" "" Overlay0) (m "conf" "" Overlay1) (m "clj" "" Green) (m "o" "" Surface1) (m "mp4" "" Peach) (m "cc" "" Red) (m "kicad_prl" "" Rosewater) (m "bz3" "" Yellow) (m "asc" "󰦝" Surface2) (m "png" "" Overlay1) (m "android" "" Green) (m "pm" "" Sapphire) (m "h" "" Overlay1) (m "pls" "󰲹" Red) (m "ipynb" "" Peach) (m "pl" "" Sapphire) (m "ads" "" Rosewater) (m "sqlite" "" Rosewater) (m "pdf" "" Red) (m "pcm" "" Overlay0) (m "ico" "" Yellow) (m "a" "" Rosewater) (m "R" "󰟔" Surface2) (m "ogg" "" Overlay0) (m "pxd" "" Blue) (m "kdenlivetitle" "" Blue) (m "jxl" "" Overlay1) (m "nswag" "" Green) (m "nim" "" Yellow) (m "bqn" "⎉" Surface2) (m "cts" "" Sapphire) (m "fcparam" "" Red) (m "rs" "" Peach) (m "mpp" "" Sapphire) (m "fdmdownload" "" Teal) (m "pptx" "󰈧" Red) (m "jpeg" "" Overlay1) (m "bib" "󱉟" Yellow) (m "vhd" "󰍛" Green) (m "m" "" Blue) (m "js" "" Yellow) (m "eex" "" Overlay1) (m "tbc" "󰛓" Surface2) (m "astro" "" Red) (m "sha224" "󰕥" Overlay1) (m "xcplayground" "" Peach) (m "el" "" Overlay0) (m "m4v" "" Peach) (m "m4a" "" Sapphire) (m "cs" "󰌛" Green) (m "hs" "" Overlay1) (m "tgz" "" Yellow) (m "fs" "" Sapphire) (m "luau" "" Blue) (m "dxf" "󰻫" Green) (m "download" "" Teal) (m "cast" "" Peach) (m "qrc" "" Green) (m "lua" "" Sapphire) (m "lhs" "" Overlay1) (m "md" "" Text) (m "leex" "" Overlay1) (m "ai" "" Yellow) (m "lck" "" Subtext1) (m "kt" "" Overlay0) (m "bicepparam" "" Overlay1) (m "hex" "" Overlay0) (m "zig" "" Peach) (m "bzl" "" Green) (m "cljc" "" Green) (m "kicad_dru" "" Rosewater) (m "fctl" "" Red) (m "f#" "" Sapphire) (m "odt" "" Sapphire) (m "conda" "" Green) (m "vala" "" Surface2) (m "erb" "" Crust) (m "mp3" "" Sapphire) (m "bz2" "" Yellow) (m "coffee" "" Yellow) (m "cr" "" Rosewater) (m "f90" "󱈚" Surface2) (m "jwmrc" "" Overlay0) (m "c++" "" Red) (m "fcscript" "" Red) (m "fods" "" Green) (m "cue" "󰲹" Red) (m "srt" "󰨖" Yellow) (m "info" "" Yellow) (m "hh" "" Overlay1) (m "sig" "λ" Peach) (m "html" "" Peach) (m "iges" "󰻫" Green) (m "kicad_wks" "" Rosewater) (m "hbs" "" Peach) (m "fcstd" "" Red) (m "gresource" "" Rosewater) (m "sub" "󰨖" Yellow) (m "ical" "" Surface0) (m "crdownload" "" Teal) (m "pub" "󰷖" Yellow) (m "vue" "" Green) (m "gd" "" Overlay1) (m "fsx" "" Sapphire) (m "mkv" "" Peach) (m "py" "" Yellow) (m "kicad_sch" "" Rosewater) (m "epub" "" Peach) (m "env" "" Yellow) (m "magnet" "" Surface1) (m "elf" "" Surface1) (m "fodg" "" Yellow) (m "svg" "󰜡" Peach) (m "dwg" "󰻫" Green) (m "docx" "󰈬" Surface2) (m "pro" "" Yellow) (m "db" "" Rosewater) (m "rb" "" Crust) (m "r" "󰟔" Surface2) (m "scss" "" Red) (m "cow" "󰆚" Peach) (m "gleam" "" Pink) (m "v" "󰍛" Green) (m "kicad_pro" "" Rosewater) (m "liquid" "" Green) (m "zip" "" Yellow)
+        ];
+      };
     };
 
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
@@ -2690,6 +3327,7 @@
     mpv.enable = false;
     nvim.enable = false;
     polybar.enable = false;
+    qutebrowser.enable = false;
     rofi.enable = false;
     sioyek.enable = false;
     starship.enable = false;
@@ -2698,6 +3336,7 @@
     television.enable = false;
     waybar.enable = false;
     xfce4-terminal.enable = false;
+    yazi.enable = false;
     zathura.enable = false;
     zed.enable = false;
     zellij.enable = false;
@@ -2710,8 +3349,8 @@
     swaync.enable = true;
     brave.enable = true;
     wlogout.enable = true;
-    yazi.enable = true;
-    qutebrowser.enable = true;
+
+
    #wezterm = {        # doesnt work
    #  enable = true;
    #  apply = true;

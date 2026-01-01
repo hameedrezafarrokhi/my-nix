@@ -8,8 +8,6 @@ import sys
 import argparse
 import configparser
 
-MAX_ICONS=4
-
 script_dir = os.path.dirname(os.path.realpath(__file__))
 default_config_loc = f'{script_dir}/bspi.ini'
 
@@ -85,8 +83,11 @@ class Node:
 
     @property
     def deduced_name(self):
-        unique = dict.fromkeys(self.client_classes)
-        return ' '.join(str(Icon(c)) for c in list(unique)[:MAX_ICONS])
+        if self.client_classes:
+            return ' '.join([str(Icon(client_class)) for client_class in
+                    self.client_classes])
+        else:
+            return ""
 
     @property
     def client_classes(self):

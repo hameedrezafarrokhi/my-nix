@@ -761,3 +761,11 @@ super + alt + r
 # BSPWM Manual Config Load
 super + ctrl + shift + r
     $HOME/.bsp_conf; notify-send "Config Loaded"
+
+# BSPWM Window Rule Apply
+super + shift + t
+    bsp-window-rules-add; notify-send "Window Rules Applied"
+
+# BSPWM Window Rule Remove
+super + alt + shift + t
+    bsp-window-rules-remove; notify-send "Window Rules Removed"
