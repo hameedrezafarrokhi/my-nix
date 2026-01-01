@@ -769,3 +769,15 @@ super + shift + t
 # BSPWM Window Rule Remove
 super + alt + shift + t
     bsp-window-rules-remove; notify-send "Window Rules Removed"
+
+# Icon Bar Start
+alt + shift + i
+    bsp-icon-bar
+
+# Icon Bar Stop
+alt + shift + u
+    pkill bsp-icon-bar
+
+# Icon Bar Restart
+alt + shift + o
+    pkill bsp-icon-bar; bsp-icon-bar

@@ -63,6 +63,7 @@ in
     yazi.enable = lib.mkEnableOption "yazi";
     yt-dlp.enable = lib.mkEnableOption "yt-dlp";
     wezterm.enable = lib.mkEnableOption "wezterm";
+    wlogout.enable = lib.mkEnableOption "wlogout";
 
     webapps.enable = lib.mkEnableOption "webapps collection";
 
@@ -123,6 +124,7 @@ in
       ./yt-dlp.nix
       ./television.nix
       ./wezterm.nix
+      ./wlogout.nix
 
       ./webapps-chromium.nix
       ./webapps-firefox.nix

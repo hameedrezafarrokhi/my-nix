@@ -441,6 +441,7 @@
             yazi.enable = true;
             yt-dlp.enable = true;
             wezterm.enable = true;
+            wlogout.enable = true;
 
             webapps.enable = true;
           };

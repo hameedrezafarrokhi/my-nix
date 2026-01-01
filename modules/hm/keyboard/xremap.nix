@@ -503,6 +503,8 @@ in
                       launch: [ "shutdown", "now" ]
                     w:
                       launch: [ "wayland-logout" ]
+                    e:
+                      launch: [ "wlogout" ]
                     q:
                       launch: [ "x-logout" ]
                     l:
