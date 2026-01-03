@@ -1,0 +1,145 @@
+#!/bin/bash
+window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+DESKTOP=$(bspc query -D -d focused)
+FOCUSED_WIN=$(bspc query -N -n focused)
+LAST_WIN=$(bspc query -N -n last.local)
+
+icon_bar_was_running=false
+if pgrep -x bsp-icon-bar >/dev/null; then
+    icon_bar_was_running=true
+    if (( window_count >= 1 )); then
+        pkill -x bsp-icon-bar
+    fi
+fi
+
+if [ "$window_count" -eq 1 ]; then
+  if $icon_bar_was_running; then
+      bsp-icon-bar &
+  fi
+  exit
+fi
+
+if [ "$window_count" -eq 2 ]; then
+  if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
+      bspc node "$LAST_WIN" -f
+  fi
+  [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
+  bspc node -s east
+  bspc node -s east
+  bspc query -N -d | xargs -I % bspc node % -B
+  bspc node -z left -240 0
+  if $icon_bar_was_running; then
+      bsp-icon-bar &
+  fi
+  exit
+fi
+
+tmp_column_layout() {
+local windows_columns
+windows_columns=($(bspc query -N -n .window.!floating.!hidden -d focused))
+[ ${#windows_columns[@]} -eq 0 ] && return 0
+for w in "${windows_columns[@]}"; do
+    bspc node "$w" -t tiled
+    bspc node "$w" -n @/ 2>/dev/null || true
+done
+bspc node @/ -B
+while bspc node -f east 2>/dev/null; do :; done && bspc node @/ -R 90
+}
+
+top_stack() {
+    for ((i=0; i<window_count; i++)); do
+        bspc node -f north
+    done
+    local n=$((window_count / 2))
+    for ((i=0; i<n-1; i++)); do
+        bspc node --presel-dir \~east
+        bspc node -f south
+        bspc node -n last.!automatic
+    done
+}
+
+bottom_stack() {
+    local n=$((window_count / 2))
+        for ((i=0; i<n +1; i++)); do
+            bspc node -f south
+        done
+    local repeat
+    if (( window_count % 2 == 0 )); then
+        repeat=$((n - 2))
+    else
+        repeat=$((n - 1))
+    fi
+    for ((i=0; i<repeat; i++)); do
+        bspc node --presel-dir \~west
+        while bspc node -f north 2>/dev/null; do :; done && bspc node -f south
+        bspc node -n last.!automatic
+    done
+}
+
+focus_new_win() {
+if bspc query -N -n ".local.!hidden" -d focused | grep -qx "$LAST_WIN"; then
+        bspc node "$LAST_WIN" -f
+    fi
+    [ -n "$FOCUSED_WIN" ] && bspc node "$FOCUSED_WIN" -f
+    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
+}
+
+
+tmp_column_layout
+window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+if (( window_count >= 4 )); then
+    top_stack
+    bottom_stack
+fi
+bsp-layout once even
+if [ "$window_count" -eq 3 ]; then
+    bspc node -s north
+    bspc node -s north
+    bspc node -s south
+    bspc node -z top 0 -100
+    bspc node -z bottom 0 100
+    focus_new_win
+    if $icon_bar_was_running; then
+        bsp-icon-bar &
+    fi
+    exit
+fi
+
+
+
+
+
+bspc node -f north
+
+jget() {
+    key=$1
+    shift
+    var=${*#*\"$key\":}
+    var=${var%%[,\}]*}
+    echo "$var"
+}
+master_size=45
+mon_height=$(jget height "$(bspc query -T -m)")
+want=$(( master_size * mon_height / 100 ))
+have=$(jget height "$(bspc query -T -n focused)")
+diff=$(( want - have ))
+if (( diff > 0 )); then
+    if (( window_count % 2 == 1 )); then
+        bspc node -z top  0 -$((diff / 2))
+        bspc node -z bottom 0 $((diff / 2))
+    else
+        bias=$(( diff / window_count ))
+        bspc node -z top  0 -$((diff / 2 + bias))
+        bspc node -z bottom 0 $((diff / 2 - bias))
+    fi
+fi
+
+
+bspc node -f south
+focus_new_win
+
+
+
+if $icon_bar_was_running; then
+    bsp-icon-bar &
+fi

@@ -422,6 +422,10 @@ let
     ${builtins.readFile ./layouts/cmaster-oneshot}
   '';
 
+  bsp-rcmaster-oneshot = pkgs.writeShellScriptBin "bsp-rcmaster-oneshot" ''
+    ${builtins.readFile ./layouts/rcmaster-oneshot}
+  '';
+
   #${builtins.readFile ./layouts/cmaster}
  #bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
  #  DESKTOP=$(bspc query -D -d focused)
@@ -459,6 +463,10 @@ let
 
   bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
     ${builtins.readFile ./layouts/cmaster-layout}
+  '';
+
+  bsp-rcmaster-layout = pkgs.writeShellScriptBin "bsp-rcmaster-layout" ''
+    ${builtins.readFile ./layouts/rcmaster-layout}
   '';
 
   bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
@@ -569,6 +577,45 @@ let
     echo $! > "$PID_FILE_LISTEN"
   '';
 
+  bsp-double-stack-layout = pkgs.writeShellScriptBin "bsp-double-stack-layout" ''
+    DESKTOP=$(bspc query -D -d focused)
+
+    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
+
+    # Prevent multiple instances
+    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+        exit 0
+    fi
+
+    # Record current PID in lock file
+    echo $$ > "$LOCKFILE"
+
+    # Ensure lock file is removed when script exits
+    trap 'rm -f "$LOCKFILE"' EXIT
+
+
+
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
+
+    bsp-cmaster-oneshot &&
+    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
+    #sleep 0.5
+    bspc node @parent -R -180
+
+    {
+      while read -r line; do
+          read -r event monitor desktop node action <<< "$line"
+          if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-double-stack-layout
+          fi
+      done
+    } < <(bspc subscribe node_add node_remove) &
+    echo $! > "$PID_FILE_LISTEN"
+  '';
+
   bsp-vertical-layout-oneshot = pkgs.writeShellScriptBin "bsp-vertical-layout-oneshot" ''
     ${builtins.readFile ./layouts/vetrical-columns-oneshot}
   '';
@@ -599,8 +646,11 @@ let
   '';
 
   bsp-culomns = pkgs.writeShellScriptBin "bsp-culomns" ''
+    #!/bin/bash
     DESKTOP=$(bspc query -D -d focused)
     PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
+    LAST_WIN=$(bspc query -N -n last.local)
+    FOCUSED_WIN=$(bspc query -N -n focused)
 
     # Kill existing monitor for THIS desktop
     if [[ -f "$PID_FILE" ]]; then
@@ -611,21 +661,45 @@ let
     # Apply horizontal layout
     bsp-vertical-layout
 
-    # Start monitoring and save PID
     {
         while read -r line; do
+            # Split the line into fields
             read -r event monitor desktop node action <<< "$line"
+
+            # Only act if the desktop matches
             if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-vertical-layout
+                case "$event" in
+                    node_add)
+                        window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+                        if (( window_count <= 2 )); then
+                          bsp-vertical-layout
+                        fi
+                        if (( window_count > 2 )); then
+                          LAST_WIN=$(bspc query -N -n last.local)
+                          bspc node --presel-dir \~west
+                          bspc node -f "$LAST_WIN"
+                          bspc node -n last.!automatic
+                          bspc node @/ -B
+                          bspc node -f east
+                        fi
+                        ;;
+
+                    node_remove)
+                        bspc node @/ -B
+                        ;;
+                esac
             fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
+        done < <(bspc subscribe node_add node_remove)
+    } &
     echo $! > "$PID_FILE"
   '';
 
   bsp-rows = pkgs.writeShellScriptBin "bsp-rows" ''
+    #!/bin/bash
     DESKTOP=$(bspc query -D -d focused)
     PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
+    LAST_WIN=$(bspc query -N -n last.local)
+    FOCUSED_WIN=$(bspc query -N -n focused)
 
     # Kill existing monitor for THIS desktop
     if [[ -f "$PID_FILE" ]]; then
@@ -636,15 +710,36 @@ let
     # Apply horizontal layout
     bsp-horizontal-layout
 
-    # Start monitoring and save PID
     {
         while read -r line; do
+            # Split the line into fields
             read -r event monitor desktop node action <<< "$line"
+
+            # Only act if the desktop matches
             if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-horizontal-layout
+                case "$event" in
+                    node_add)
+                        window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+                        if (( window_count <= 1 )); then
+                          bsp-horizontal-layout
+                        fi
+                        if (( window_count >= 2 )); then
+                          LAST_WIN=$(bspc query -N -n last.local)
+                          bspc node --presel-dir \~north
+                          bspc node -f "$LAST_WIN"
+                          bspc node -n last.!automatic
+                          bspc node @/ -B
+                          bspc node -f south
+                        fi
+                        ;;
+
+                    node_remove)
+                        bsp-horizontal-layout
+                        ;;
+                esac
             fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
+        done < <(bspc subscribe node_add node_remove)
+    } &
     echo $! > "$PID_FILE"
   '';
 
@@ -1248,6 +1343,16 @@ let
     bspc rule -a brave-browser desktop="" follow=off
   '';
 
+  bsp-group-delete = pkgs.writeScriptBin "bsp-group-delete" ''
+    file="$HOME/.cache/bsp-delete"
+    [ -f "$file" ] && while read line; do bspc node "$line" -c; done < "$file"
+    rm -f "$file"
+  '';
+
+  bsp-rofi-group-delete-cache = pkgs.writeScriptBin "bsp-rofi-group-delete-cache" ''
+    ${builtins.readFile ./bsp-rofi-group-delete-cache}
+  '';
+
 in
 
 {
@@ -1284,10 +1389,13 @@ in
       bsp-cmaster-layout
       bsp-cmaster
       bsp-cmaster-oneshot
+      bsp-rcmaster-oneshot
+      bsp-rcmaster-layout
       bsp-cmaster-remove
       bsp-ctall-layout
       bsp-rtv-layout
       bsp-tv-layout
+      bsp-double-stack-layout
       bsp-send-follow
      #bsp-border-color
       bsp-border-size
@@ -1322,6 +1430,8 @@ in
       bsp-icon-bar
       bsp-window-rules-add
       bsp-window-rules-remove
+      bsp-group-delete
+      bsp-rofi-group-delete-cache
       bspswallow
       bspwmswallow
       pidswallow

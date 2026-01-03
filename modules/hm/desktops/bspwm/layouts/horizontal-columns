@@ -2,6 +2,20 @@
 # SIMPLE three-column layout
 
 DESKTOP=$(bspc query -D -d focused)
+window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+FOCUSED_WIN=$(bspc query -N -n focused)
+
+if (( window_count <= 1 )); then
+exit 0
+fi
+
+icon_bar_was_running=false
+if pgrep -x bsp-icon-bar >/dev/null; then
+    icon_bar_was_running=true
+    if (( window_count >= 1 )); then
+        pkill -x bsp-icon-bar
+    fi
+fi
 
 # Apply layout
 windows=($(bspc query -N -n .window.!floating.!hidden -d focused))
@@ -17,3 +31,9 @@ done
 bspc node @/ -B
 
 while bspc node -f east 2>/dev/null; do :; done && bspc node @/ -R 90
+
+bspc node -f "$FOCUSED_WIN"
+
+if $icon_bar_was_running; then
+    bsp-icon-bar &
+fi
