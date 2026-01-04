@@ -279,7 +279,7 @@ let
     > "$CACHE"
 
     for desk in "$@"; do
-        for wid in $(bspc query -N -d "$desk"); do
+        for wid in $(bspc query -N -d ^"$desk"); do
             echo "$wid $desk" >> "$CACHE"
             bspc node "$wid" --flag sticky 1
         done
@@ -296,7 +296,7 @@ let
 
     while read wid desk; do
         bspc node "$wid" --flag sticky 0
-        bspc node "$wid" --to-desktop "$desk"
+        bspc node "$wid" --to-desktop ^"$desk"
     done < "$CACHE"
 
     rm "$CACHE"

@@ -194,6 +194,7 @@
     MonoSizeI3Bar = 10.0;
     SansSize = 10;
     MangohudSize = 24;
+    MonoSizeWezterm = 9.0;
 
     sound = "ocean";
 
@@ -2423,6 +2424,215 @@
       }
     '';
 
+    wezterm = {
+      extraConfig = ''
+        return {
+          font = wezterm.font("${MonoSpace}"),
+          font_size = ${toString MonoSizeWezterm},
+          color_scheme = "nix",
+          tab_bar_at_bottom = true,
+          hide_tab_bar_if_only_one_tab = true,
+          window_frame = {
+              active_titlebar_bg = "${Base}",
+              active_titlebar_fg = "${Text}",
+              font_size = ${toString MonoSizeWezterm},
+              active_titlebar_border_bottom = "${Sapphire}",
+              border_left_color = "${Sapphire}",
+              border_right_color = "${Sapphire}",
+              border_bottom_color = "${Sapphire}",
+              border_top_color = "${Sapphire}",
+              button_bg = "${Overlay0}",
+              button_fg = "${Text}",
+              button_hover_bg = "${Rosewater}",
+              button_hover_fg = "${Crust}",
+              inactive_titlebar_bg = "${Base}",
+              inactive_titlebar_fg = "${Text}",
+              inactive_titlebar_border_bottom = "${Surface0}",
+          },
+          colors = {
+            tab_bar = {
+              background = "${Base}",
+              inactive_tab_edge = "${Surface0}",
+              active_tab = {
+                bg_color = "${starship6}",
+                fg_color = "${Text}",
+              },
+              inactive_tab = {
+                bg_color = "${starship1}",
+                fg_color = "${Text}",
+              },
+              inactive_tab_hover = {
+                bg_color = "${Base}",
+                fg_color = "${Text}",
+              },
+              new_tab = {
+                bg_color = "${Surface0}",
+                fg_color = "${Text}",
+              },
+              new_tab_hover = {
+                bg_color = "${Surface0}",
+                fg_color = "${Text}",
+              },
+            },
+          },
+          command_palette_bg_color = "${Base}",
+          command_palette_fg_color = "${Text}",
+        }
+      '';
+
+      colorSchemes = {
+        nix =  {
+          ansi = [
+            Surface1
+            Red
+            Green
+            Yellow
+            Blue
+            Pink
+            Teal
+            Subtext1
+          ];
+          brights = [
+            Surface1
+            Red
+            Green
+            Yellow
+            Blue
+            Pink
+            Teal
+            Subtext1
+          ];
+          background = Base;
+          cursor_bg = Rosewater;
+          cursor_fg = Sapphire;
+          compose_cursor = Flamingo;
+          foreground = Text;
+          scrollbar_thumb = Sapphire;
+          selection_bg = Rosewater;
+          selection_fg = Crust;
+          split = Overlay1;
+          visual_bell = Surface0;
+          tab_bar = {
+            background = Crust;
+            inactive_tab_edge = Surface0;
+            active_tab = {
+              bg_color = Sapphire;
+              fg_color = Crust;
+            };
+            inactive_tab = {
+              bg_color = Mantle;
+              fg_color = Text;
+            };
+            inactive_tab_hover = {
+              bg_color = Base;
+              fg_color = Text;
+            };
+            new_tab = {
+              bg_color = Surface0;
+              fg_color = Text;
+            };
+            new_tab_hover = {
+              bg_color = Surface0;
+              fg_color = Text;
+            };
+          };
+        };
+      };
+    };
+
+    hyprlock = {
+      settings = {
+        general = {
+          hide_cursor = true;
+        };
+        background = [
+          {
+            monitor = "";
+            path = "$HOME/.config/background";
+            blur_passes = 0;
+            color = rgb-Base;
+          }
+        ];
+        label = [
+          {
+            monitor = "";
+            text = "Layout: $LAYOUT";
+            color = rgb-Text;
+            font_size = 25;
+            font_family = Sans;
+            position = "30, -30";
+            halign = "left";
+            valign = "top";
+          }
+          {
+            monitor = "";
+            text = "$TIME";
+            color = rgb-Text;
+            font_size = 90;
+            font_family = Sans;
+            position = "-30, 0";
+            halign = "right";
+            valign = "top";
+          }
+          {
+            monitor = "";
+            text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
+            color = rgb-Text;
+            font_size = 25;
+            font_family = Sans;
+            position = "-30, -150";
+            halign = "right";
+            valign = "top";
+          }
+          {
+            monitor = "";
+            text = "$FPRINTPROMPT";
+            color = "$text";
+            font_size = 14;
+            font_family = Sans;
+            position = "0, -107";
+            halign = "center";
+            valign = "center";
+          }
+        ];
+        image = [
+          {
+            monitor = "";
+            path = "$HOME/.face";
+            size = 100;
+            border_color = rgb-Sapphire;
+            position = "0, 75";
+            halign = "center";
+            valign = "center";
+          }
+        ];
+        input-field = [
+          {
+            monitor = "";
+            size = "300, 60";
+            outline_thickness = 4;
+            dots_size = 0.2;
+            dots_spacing = 0.2;
+            dots_center = true;
+            outer_color = rgb-Sapphire;
+            inner_color = rgb-Surface0;
+            font_color = rgb-Text;
+            fade_on_empty = false;
+            placeholder_text = ''<span foreground="##${alt-Text}"><i>󰌾 Logged in as </i><span foreground="##${alt-Sapphire}">$USER</span></span>'';
+            hide_input = false;
+            check_color = rgb-Sapphire;
+            fail_color = rgb-Red;
+            fail_text = ''<i>$FAIL <b>($ATTEMPTS)</b></i>'';
+            capslock_color = rgb-Yellow;
+            position = "0, -47";
+            halign = "center";
+            valign = "center";
+          }
+        ];
+      };
+     #extraConfig = '' '';
+    };
+
    #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
   };
 
@@ -2604,6 +2814,202 @@
      #  name = ;
      #  size = ;
      #};
+    };
+
+    swaync = {
+     #settings = { };
+      style = ''
+        * {
+          all: unset;
+          font-size: 14px;
+          font-family: "${Sans}";
+          transition: 200ms;
+        }
+        trough highlight { background: ${Text}; }
+        scale trough {
+          margin: 0rem 1rem;
+          background-color: ${Surface0};
+          min-height: 8px;
+          min-width: 70px;
+        }
+        slider { background-color: ${Blue}; }
+        .floating-notifications.background .notification-row .notification-background {
+          box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px ${Surface0};
+          border-radius: 12.6px;
+          margin: 18px;
+          background-color: ${Base};
+          color: ${Text};
+          padding: 0;
+        }
+        .floating-notifications.background .notification-row .notification-background .notification { padding: 7px; border-radius: 12.6px; }
+        .floating-notifications.background .notification-row .notification-background .notification.critical { box-shadow: inset 0 0 7px 0 ${Red}; }
+        .floating-notifications.background .notification-row .notification-background .notification .notification-content { margin: 7px; }
+        .floating-notifications.background .notification-row .notification-background .notification .notification-content .summary { color: ${Text}; }
+        .floating-notifications.background .notification-row .notification-background .notification .notification-content .time { color: ${Subtext0}; }
+        .floating-notifications.background .notification-row .notification-background .notification .notification-content .body { color: ${Text}; }
+        .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * { min-height: 3.4em; }
+        .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action {
+          border-radius: 7px;
+          color: ${Text};
+          background-color: ${Surface0};
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          margin: 7px;
+        }
+        .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Surface0};
+          color: ${Text};
+        }
+        .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Sapphire};
+          color: ${Text};
+        }
+        .floating-notifications.background .notification-row .notification-background .close-button {
+          margin: 7px;
+          padding: 2px;
+          border-radius: 6.3px;
+          color: ${Base};
+          background-color: ${Red};
+        }
+        .floating-notifications.background .notification-row .notification-background .close-button:hover {
+          background-color: ${Maroon};
+          color: ${Base};
+        }
+        .floating-notifications.background .notification-row .notification-background .close-button:active {
+          background-color: ${Red};
+          color: ${Base};
+        }
+        .control-center {
+          box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px ${Surface0};
+          border-radius: 12.6px;
+          margin: 18px;
+          background-color: ${Base};
+          color: ${Text};
+          padding: 14px;
+        }
+        .control-center .widget-title > label { color: ${Text}; font-size: 1.3em; }
+        .control-center .widget-title button {
+          border-radius: 7px;
+          color: ${Text};
+          background-color: ${Surface0};
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          padding: 8px;
+        }
+        .control-center .widget-title button:hover {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Surface2};
+          color: ${Text};
+        }
+        .control-center .widget-title button:active {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Sapphire};
+          color: ${Base};
+        }
+        .control-center .notification-row .notification-background {
+          border-radius: 7px;
+          color: ${Text};
+          background-color: ${Surface0};
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          margin-top: 14px;
+        }
+        .control-center .notification-row .notification-background .notification { padding: 7px; border-radius: 7px; }
+        .control-center .notification-row .notification-background .notification.critical { box-shadow: inset 0 0 7px 0 ${Red}; }
+        .control-center .notification-row .notification-background .notification .notification-content { margin: 7px; }
+        .control-center .notification-row .notification-background .notification .notification-content .summary { color: ${Text}; }
+        .control-center .notification-row .notification-background .notification .notification-content .time { color: ${Subtext0}; }
+        .control-center .notification-row .notification-background .notification .notification-content .body { color: ${Text}; }
+        .control-center .notification-row .notification-background .notification > *:last-child > * { min-height: 3.4em; }
+        .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action {
+          border-radius: 7px;
+          color: ${Text};
+          background-color: ${Crust};
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          margin: 7px;
+        }
+        .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Surface0};
+          color: ${Text};
+        }
+        .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Sapphire};
+          color: ${Text};
+        }
+        .control-center .notification-row .notification-background .close-button {
+          margin: 7px;
+          padding: 2px;
+          border-radius: 6.3px;
+          color: ${Base};
+          background-color: ${Maroon};
+        }
+        .close-button { border-radius: 6.3px; }
+        .control-center .notification-row .notification-background .close-button:hover {
+          background-color: ${Red};
+          color: ${Base};
+        }
+        .control-center .notification-row .notification-background .close-button:active {
+          background-color: ${Red};
+          color: ${Base};
+        }
+        .control-center .notification-row .notification-background:hover {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Overlay1};
+          color: ${Text};
+        }
+        .control-center .notification-row .notification-background:active {
+          box-shadow: inset 0 0 0 1px ${Subtext1};
+          background-color: ${Sapphire};
+          color: ${Text};
+        }
+        .notification.critical progress { background-color: ${Red}; }
+        .notification.low progress,
+        .notification.normal progress {
+          background-color: ${Blue};
+        }
+        .control-center-dnd {
+          margin-top: 5px;
+          border-radius: 8px;
+          background: ${Surface0};
+          border: 1px solid ${Subtext1};
+          box-shadow: none;
+        }
+        .control-center-dnd:checked { background: ${Surface0}; }
+        .control-center-dnd slider { background: ${Subtext1}; border-radius: 8px; }
+        .widget-dnd { margin: 0px; font-size: 1.1rem; }
+        .widget-dnd > switch {
+          font-size: initial;
+          border-radius: 8px;
+          background: ${Surface0};
+          border: 1px solid ${Subtext1};
+          box-shadow: none;
+        }
+        .widget-dnd > switch:checked { background: ${Surface0}; }
+        .widget-dnd > switch slider {
+          background: ${Subtext1};
+          border-radius: 8px;
+          border: 1px solid ${Overlay0};
+        }
+        .widget-mpris .widget-mpris-player { background: ${Surface0}; padding: 7px; }
+        .widget-mpris .widget-mpris-title { font-size: 1.2rem; }
+        .widget-mpris .widget-mpris-subtitle { font-size: 0.8rem; }
+        .widget-menubar > box > .menu-button-bar > button > label { font-size: 3rem; padding: 0.5rem 2rem; }
+        .widget-menubar > box > .menu-button-bar > :last-child { color: ${Red}; }
+        .power-buttons button:hover,
+        .powermode-buttons button:hover,
+        .screenshot-buttons button:hover { background: ${Surface0}; }
+        .control-center .widget-label > label { color: ${Text}; font-size: 2rem; }
+        .widget-buttons-grid { padding-top: 1rem; }
+        .widget-buttons-grid > flowbox > flowboxchild > button label { font-size: 2.5rem; }
+        .widget-volume { padding-top: 1rem; }
+        .widget-volume label { font-size: 1.5rem; color: ${Sapphire}; }
+        .widget-volume trough highlight { background: ${Sapphire}; }
+        .widget-backlight trough highlight { background: ${Yellow}; }
+        .widget-backlight label { font-size: 1.5rem; color: ${Yellow}; }
+        .widget-backlight .KB { padding-bottom: 1rem; }
+        .image { padding-right: 0.5rem; }
+      '';
     };
 
   };
@@ -3390,15 +3796,19 @@
     alacritty.enable = false;
     bat.enable = false;
     btop.enable = false;
+    brave.enable = false;
     cava.enable = false;
     cursors.enable = false;
     dunst.enable = false;
+   #firefox.profiles={default={enable=false;force=false;};};
     fish.enable = false;
     freetube.enable = false;
     fzf.enable = false;
     gh-dash.enable = false;
     ghostty.enable = false;
     gtk.icon.enable = false;
+    hyprland.enable = false;
+    hyprlock.enable = false;
     kitty.enable = false;
     kvantum.enable = false;
     mangohud.enable = false;
@@ -3411,8 +3821,10 @@
     starship.enable = false;
     sway.enable = false;
     swaylock.enable = false;
+    swaync.enable = false;
     television.enable = false;
     waybar.enable = false;
+    wezterm.enable = false;
     wlogout.enable = false;
     xfce4-terminal.enable = false;
     yazi.enable = false;
@@ -3420,24 +3832,6 @@
     zed.enable = false;
     zellij.enable = false;
     zsh-syntax-highlighting.enable = false;
-
-    # Extended Work Needed
-    hyprland.enable = true;
-    hyprlock.enable = true;
-    swaync.enable = true;
-    brave.enable = true;
-
-    # Not Working
-   #wezterm = {
-   #  enable = true;
-   #  apply = true;
-   #};
-   #firefox.profiles = {
-   #  default = {
-   #    enable = true;
-   #    force = false;
-   #  };
-   #};
 
     # Only Way (for now)
     obs.enable = true;
