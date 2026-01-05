@@ -4,23 +4,23 @@
 
     scheme ="dark";
     global-package = myGlobalCatppuccin;
-    wallpaper = "${config.home.homeDirectory}/Pictures/Wallpapers/astronaut-macchiato.png";
-    wallpaper-alt = "file:///home/${config.home.username}/Pictures/Wallpapers/astronaut-macchiato.png";
+    wallpaper = "${config.home.homeDirectory}/Pictures/Wallpapers/astronaut-${flavor}.png";
+    wallpaper-alt = "file:///home/${config.home.username}/Pictures/Wallpapers/astronaut-${flavor}.png";
 
-    gtk-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-standard";
+    gtk-theme = "catppuccin-${flavor}-${accent}-standard";
     gtk-decoration = ":minimize,maximize,close";
     gtk-package = myGTKCatppuccin;
     gtk2-package = myGTKCatppuccin;
     gtk-icon = "Papirus-Dark";
     gtk-icon-package = myIconCatppuccin;
 
-    gtk-cursor = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+    gtk-cursor = "catppuccin-${flavor}-${accent}-cursors";
     gtk-cursor-package = myCursorCatppuccin;
-    x-cursor = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+    x-cursor = "catppuccin-${flavor}-${accent}-cursors";
     x-cursor-package = myCursorCatppuccin;
-    plasma-cursor = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+    plasma-cursor = "catppuccin-${flavor}-${accent}-cursors";
     plasma-cursor-package = myCursorCatppuccin;
-    hypr-cursor = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+    hypr-cursor = "catppuccin-${flavor}-${accent}-cursors";
     hypr-cursor-package = myCursorCatppuccin;
     cursor-size = 24;
 
@@ -30,73 +30,74 @@
     qt-icon = "Papirus-Dark";
     qt-icon-package = myIconCatppuccin;
     kvantum-package = myKvantumCatppuccin;
-    kvantum-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}";
+    kvantum-theme = "catppuccin-${flavor}-${accent}";
     plasma-package = myKDECatppuccin;
-    plasma-look = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
+    plasma-look = "Catppuccin-${flavorC}-${accentC}";
     plasma-theme = "default";
-    plasma-widget = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
-    plasma-color = "Catppuccin${myStuff.myCat.myGlobal-FlavC}${myStuff.myCat.myGlobal-ColorC}";
-    plasma-splash = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}-${myStuff.myCat.myGlobal-ColorC}";
-    plasma-decoration-name = "__aurorae__svg__Catppuccin${myStuff.myCat.myGlobal-FlavC}-Classic";
+    plasma-widget = "Catppuccin-${flavorC}-${accentC}";
+    plasma-color = "Catppuccin${flavorC}${accentC}";
+    plasma-splash = "Catppuccin-${flavorC}-${accentC}";
+    plasma-decoration-name = "__aurorae__svg__Catppuccin${flavorC}-Classic";
     plasma-decoration-platform = "org.kde.kwin.aurorae";
     plasma-decoration-right = [ "minimize" "maximize" "close" ];
     plasma-decoration-left = [ "application-menu" "on-all-desktops" "keep-above-windows" ];
 
-    cinnamon-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-standard";
+    cinnamon-theme = "catppuccin-${flavor}-${accent}-standard";
     cinnamon-package = myGTKCatppuccin;
-    mate-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-standard";
+    mate-theme = "catppuccin-${flavor}-${accent}-standard";
     mate-package = myGTKCatppuccin;
     xfce-theme = "Prune";
     xfce-package = myGTKCatppuccin;
 
-    openbox-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
+    openbox-theme = "catppuccin-${flavor}";
 
-    i3status-theme = "ctp-${myStuff.myCat.myGlobal-Flav}";
+    i3status-theme = "ctp-${flavor}";
     i3status-icon = "material-nf";
     i3BarPos = "top";
     i3BarMode = "dock";
 
-   #konsole-scheme = ./Konsole-catppuccin-macchiato.colorscheme;
-    konsole-theme = "Konsole-catppuccin-${myStuff.myCat.myGlobal-Flav}";
-    kate-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
-    kate-ui = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
-    kwrite-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
-    kwrite-color = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
-    marknote-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
-    okular-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
-    dolphin-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC} ${myStuff.myCat.myGlobal-ColorC}";
-    alacritty-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
-    ghostty-theme = "light:catppuccin-${myStuff.myCat.myGlobal-Flav},dark:catppuccin-${myStuff.myCat.myGlobal-Flav}";
-    ghostty-theme-name = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
+    konsole-theme = "Konsole-catppuccin-${flavor}";
+    konsole-theme-name = "Catppuccin ${flavorC}";
+    kate-theme = "Catppuccin ${flavorC}";
+    kate-ui = "Catppuccin ${flavorC} ${accentC}";
+    kwrite-theme = "Catppuccin ${flavorC}";
+    kwrite-color = "Catppuccin ${flavorC} ${accentC}";
+    marknote-theme = "Catppuccin ${flavorC} ${accentC}";
+    okular-theme = "Catppuccin ${flavorC} ${accentC}";
+    dolphin-theme = "Catppuccin ${flavorC} ${accentC}";
+    alacritty-theme = "catppuccin_${flavor}";
+    ghostty-theme = "light:catppuccin-${flavor},dark:catppuccin-${flavor}";
+    ghostty-theme-name = "catppuccin-${flavor}";
 
     freetube-base = "catppuccinMocha";
     freetube-main = "CatppuccinMochaSapphire";
     freetube-sec = "CatppuccinMochaBlue";
 
-    superfile-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
+    superfile-theme = "catppuccin-${flavor}";
 
-    fish-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
+    fish-theme = "Catppuccin ${flavorC}";
+    fish-theme-name = "Catppuccin ${flavorC}";
 
-    tv-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}";
+    tv-theme = "catppuccin-${flavor}-${accent}";
     tv-preview = "TwoDark";
 
-    bat-theme = "Catppuccin ${myStuff.myCat.myGlobal-FlavC}";
+    bat-theme = "Catppuccin ${flavorC}";
     bat-source = pkgs.fetchurl {
-      url = "https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20${myStuff.myCat.myGlobal-FlavC}.tmTheme";
+      url = "https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20${flavorC}.tmTheme";
       sha256 = "sha256-8BKmij32yf+/3N92pKTLpDSOAz1yWd1I/+pNQ4ewu0c=";
     };
-    yazi-bat = "catppuccin-macchiato-yazi";
+    yazi-bat = "catppuccin-${flavor}-yazi";
 
-    btop-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+    btop-theme = "catppuccin_${flavor}";
 
-    cava-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+    cava-theme = "catppuccin_${flavor}";
 
-    dunst-theme = "catppuccin_${myStuff.myCat.myGlobal-Flav}";
+    dunst-theme = "catppuccin_${flavor}";
 
-    catppuccinifier-flav = "${myStuff.myCat.myGlobal-Flav}";
-    catppuccinifier-flavC = "${myStuff.myCat.myGlobal-FlavC}";
-    catppuccinifier-acc = "${myStuff.myCat.myGlobal-Color}";
-    catppuccinifier-accC = "${myStuff.myCat.myGlobal-ColorC}";
+    catppuccinifier-flav = "${flavor}";
+    catppuccinifier-flavC = "${flavorC}";
+    catppuccinifier-acc = "${accent}";
+    catppuccinifier-accC = "${accentC}";
 
     onboard-theme = "${pkgs.onboard}/share/onboard/themes/ModelM.theme";
     onboard-color = "${pkgs.onboard}/share/onboard/themes/Granite.colors";
@@ -113,215 +114,198 @@
 
         require("catppuccin").setup({
         ["compile_path"] = (compile_path),
-        ["flavour"] = "${myStuff.myCat.myGlobal-Flav}"
+        ["flavour"] = "${flavor}"
       })
 
         vim.api.nvim_command("colorscheme catppuccin")
       EOF
     '';
 
-    xfce4-terminal-theme = "Catppuccin-${myStuff.myCat.myGlobal-FlavC}";
+    xfce4-terminal-theme = "Catppuccin-${flavorC}";
 
     wlogout-button-style = "wleave";
     wlogout-icon-shutdown = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/shutdown.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/shutdown.svg";
       sha256 = "sha256-UKumaHqLiOZILPQrr4wOY5gQ9/In3QaHxWGU3LfhPGI=";
     };
     wlogout-icon-suspend = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/suspend.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/suspend.svg";
       sha256 = "sha256-Ck+BIIdGbNjQ9uvQ3Vv0j1Gt4z7Je54K5zWUyhH+mbI=";
     };
     wlogout-icon-lock = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/lock.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/lock.svg";
       sha256 = "sha256-lxFVi5IoQ2D9HgEwzZLte2BxbdFzs/ImJ/WG8w/s3Do=";
     };
     wlogout-icon-logout = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/logout.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/logout.svg";
       sha256 = "sha256-74KMoyoLjSHJIQcnKtJ/TD/gLKkEu5suHRcJvSI5fUE=";
     };
     wlogout-icon-reboot = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/reboot.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/reboot.svg";
       sha256 = "sha256-Tus9+yxpBLODVjzvSTmaMvag1lMC5xAIl2xLo2MMS1I=";
     };
     wlogout-icon-hibernate = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${myStuff.myCat.myGlobal-Flav}/${myStuff.myCat.myGlobal-Color}/hibernate.svg";
+      url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/hibernate.svg";
       sha256 = "sha256-JEpr5Du5/WUlOFQ9nZtXWmHS3xLXnq47AUwEM9NBzno=";
     };
 
-   #obs-theme = "Catppuccin";
-   #obs-theme-name = "Catppuccin_${myStuff.myCat.myGlobal-FlavC}";
-   #obs-obt-source = pkgs.fetchurl {
-   #  url = "https://github.com/catppuccin/obs/blob/main/themes/Catppuccin.obt";
-   #  sha256 = "sha256-80pWKD8b6oKn99pTAbjf+zjplr8zMlQRiziNcggVdfk=";
-   #};
-   #obs-ovt-source = pkgs.fetchurl {
-   #  url = "https://github.com/catppuccin/obs/blob/main/themes/${obs-theme-name}.ovt";
-   #  sha256 = "sha256-xkhyYB/u6qvwycrVizFKkKAshuEMetSjN5lNQO+Q2UU=";
-   #};
-
 
     MonoSpace = "Comic Mono";
-    Mono-X = "Comic Mono,  10";
     MonoAlt = "Monofur Nerd Font Mono";
-    MonoRofi = "Comic Mono 10";
-    MonoOnboard = "Monofur Nerd Font Mono bold";
-    MonoSt = "Comic Mono:style:Regular:pixelsize=10";
-    MonoURxvt = "xft:Comic Mono:size=10";
     Sans = "Comic Sans MS";
-    Sans-X = "Comic Sans MS,  10";
     Serif = "Comic Sans MS";
     Emoji = "Blobmoji";
 
-    Poly1 = "Comic Mono:size=10.5:weight=medium;3";
-    Poly2 = "Hack Nerd Font:size=10.5:weight=medium;3";
-    PolySymbols = "Symbols Nerd Font:size=10.5:weight=medium;3";
 
+    Sans-X = "${Sans},  ${toString MonoSize}";
+    Mono-X = "${MonoSpace},  ${toString MonoSize}";
+    MonoRofi = "${MonoSpace} ${toString MonoSize}";
+    MonoSt = "${MonoSpace}:style:Regular:pixelsize=${toString MonoSize}";
+    MonoURxvt = "xft:${MonoSpace}:size=${toString MonoSize}";
+    rofiMenuFont = "${MonoSpace} 12";
+    dunstFont = "${MonoSpace} ${toString MonoSize}";
+    MonoOnboard = "${MonoAlt} bold";
+    Poly1 = "${MonoSpace}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    Poly2 = "Hack Nerd Font:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    PolySymbols = "Symbols Nerd Font:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    awesome-wmFont = "Comic Sans Bold ${toString SansSize}";
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
-
-    dunstFont = "Comic Sans 10";
-
-    rofiMenuFont = "Comic Mono 12";
-
     bspTabFont = "monospace:size=11";
 
     MonoSize = 10;
+    SansSize = MonoSize;
     MonoSizeKitty = 9;
     MonoSizeAlacritty = 9.5;
     MonoSizePlasma = 11;
     MonoSizePlasmaSmall = 8;
     MonoSizeI3 = 9.0;
     MonoSizeI3Bar = 10.0;
-    SansSize = 10;
     MangohudSize = 24;
     MonoSizeWezterm = 9.0;
+    PolySize = 10.5;
+    PolyWeight = "medium";
+    PolyScale = 3;
 
     sound = "ocean";
 
-    starship1 =           "#3B4252";
-    starship2 =           "#434C5E";
-    starship3 =           "#4C566A";
-    starship4 =           "#86BBD8";
-    starship5 =           "#06969A";
-    starship6 =           "#33658A";
+    hexToRgb = hex:
+      let
+        hexDigit = c: {
+          "0" = 0;  "1" = 1;  "2" = 2;  "3" = 3; "4" = 4;  "5" = 5;  "6" = 6; "7" = 7;
+          "8" = 8;  "9" = 9;  "a" = 10;  "b" = 11; "c" = 12; "d" = 13; "e" = 14;
+          "f" = 15; "A" = 10; "B" = 11; "C" = 12; "D" = 13; "E" = 14; "F" = 15;
+        }.${c};
+        hexByte = i:
+          let
+            hi = hexDigit (builtins.substring i 1 hex);
+            lo = hexDigit (builtins.substring (i + 1) 1 hex);
+          in hi * 16 + lo;
+        r = hexByte 0;
+        g = hexByte 2;
+        b = hexByte 4;
+      in
+        "${toString r},${toString g},${toString b}";
 
-    Rosewater =  "#f4dbd6";  alt-Rosewater = "f4dbd6";  rgb-Rosewater = "rgb(244, 219, 214)";  rgb-alt-Rosewater = "244,219,214";
-    Flamingo =   "#f0c6c6";  alt-Flamingo =  "f0c6c6";  rgb-Flamingo =  "rgb(240, 198, 198)";  rgb-alt-Flamingo =  "240,198,198";
-    Pink =       "#f5bde6";  alt-Pink =      "f5bde6";  rgb-Pink =      "rgb(245, 189, 230)";  rgb-alt-Pink =      "245,189,230";
-    Mauve =      "#c6a0f6";  alt-Mauve =     "c6a0f6";  rgb-Mauve =     "rgb(198, 160, 246)";  rgb-alt-Mauve =     "198,160,246";
-    Red =        "#ed8796";  alt-Red =       "ed8796";  rgb-Red =       "rgb(237, 135, 150)";  rgb-alt-Red =       "237,135,150";
-    Maroon =     "#ee99a0";  alt-Maroon =    "ee99a0";  rgb-Maroon =    "rgb(238, 153, 160)";  rgb-alt-Maroon =    "238,153,160";
-    Peach =      "#f5a97f";  alt-Peach =     "f5a97f";  rgb-Peach =     "rgb(245, 169, 127)";  rgb-alt-Peach =     "245,169,127";
-    Yellow =     "#eed49f";  alt-Yellow =    "eed49f";  rgb-Yellow =    "rgb(238, 212, 159)";  rgb-alt-Yellow =    "238,212,159";
-    Green =      "#a6da95";  alt-Green =     "a6da95";  rgb-Green =     "rgb(166, 218, 149)";  rgb-alt-Green =     "166,218,149";
-    Teal =       "#8bd5ca";  alt-Teal =      "8bd5ca";  rgb-Teal =      "rgb(139, 213, 202)";  rgb-alt-Teal =      "139,213,202";
-    Sky =        "#91d7e3";  alt-Sky =       "91d7e3";  rgb-Sky =       "rgb(145, 215, 227)";  rgb-alt-Sky =       "145,215,227";
-    Sapphire =   "#7dc4e4";  alt-Sapphire =  "7dc4e4";  rgb-Sapphire =  "rgb(125, 196, 228)";  rgb-alt-Sapphire =  "125,196,228";
-    Blue =       "#8aadf4";  alt-Blue =      "8aadf4";  rgb-Blue =      "rgb(138, 173, 244)";  rgb-alt-Blue =      "138,173,244";
-    Lavender =   "#b7bdf8";  alt-Lavender =  "b7bdf8";  rgb-Lavender =  "rgb(183, 189, 248)";  rgb-alt-Lavender =  "183,189,248";
+    alt-Rosewater = "f4dbd6"; Rosewater ="#${alt-Rosewater}"; Calt-Rosewater = lib.strings.toUpper alt-Rosewater; CRosewater = lib.strings.toUpper Rosewater;
+    alt-Flamingo =  "f0c6c6"; Flamingo = "#${alt-Flamingo}";  Calt-Flamingo =  lib.strings.toUpper alt-Flamingo;  CFlamingo =  lib.strings.toUpper Flamingo;
+    alt-Pink =      "f5bde6"; Pink =     "#${alt-Pink}";      Calt-Pink =      lib.strings.toUpper alt-Pink;      CPink =      lib.strings.toUpper Pink;
+    alt-Mauve =     "c6a0f6"; Mauve =    "#${alt-Mauve}";     Calt-Mauve =     lib.strings.toUpper alt-Mauve;     CMauve =     lib.strings.toUpper Mauve;
+    alt-Red =       "ed8796"; Red =      "#${alt-Red}";       Calt-Red =       lib.strings.toUpper alt-Red;       CRed =       lib.strings.toUpper Red;
+    alt-Maroon =    "ee99a0"; Maroon =   "#${alt-Maroon}";    Calt-Maroon =    lib.strings.toUpper alt-Maroon;    CMaroon =    lib.strings.toUpper Maroon;
+    alt-Peach =     "f5a97f"; Peach =    "#${alt-Peach}";     Calt-Peach =     lib.strings.toUpper alt-Peach;     CPeach =     lib.strings.toUpper Peach;
+    alt-Yellow =    "eed49f"; Yellow =   "#${alt-Yellow}";    Calt-Yellow =    lib.strings.toUpper alt-Yellow;    CYellow =    lib.strings.toUpper Yellow;
+    alt-Green =     "a6da95"; Green =    "#${alt-Green}";     Calt-Green =     lib.strings.toUpper alt-Green;     CGreen =     lib.strings.toUpper Green;
+    alt-Teal =      "8bd5ca"; Teal =     "#${alt-Teal}";      Calt-Teal =      lib.strings.toUpper alt-Teal;      CTeal =      lib.strings.toUpper Teal;
+    alt-Sky =       "91d7e3"; Sky =      "#${alt-Sky}";       Calt-Sky =       lib.strings.toUpper alt-Sky;       CSky =       lib.strings.toUpper Sky;
+    alt-Sapphire =  "7dc4e4"; Sapphire = "#${alt-Sapphire}";  Calt-Sapphire =  lib.strings.toUpper alt-Sapphire;  CSapphire =  lib.strings.toUpper Sapphire;
+    alt-Blue =      "8aadf4"; Blue =     "#${alt-Blue}";      Calt-Blue =      lib.strings.toUpper alt-Blue;      CBlue =      lib.strings.toUpper Blue;
+    alt-Lavender =  "b7bdf8"; Lavender = "#${alt-Lavender}";  Calt-Lavender =  lib.strings.toUpper alt-Lavender;  CLavender =  lib.strings.toUpper Lavender;
+    alt-Text =      "cad3f5"; Text =     "#${alt-Text}";      Calt-Text =      lib.strings.toUpper alt-Text;      CText =      lib.strings.toUpper Text;
+    alt-Subtext1 =  "b8c0e0"; Subtext1 = "#${alt-Subtext1}";  Calt-Subtext1 =  lib.strings.toUpper alt-Subtext1;  CSubtext1 =  lib.strings.toUpper Subtext1;
+    alt-Subtext0 =  "a5adcb"; Subtext0 = "#${alt-Subtext0}";  Calt-Subtext0 =  lib.strings.toUpper alt-Subtext0;  CSubtext0 =  lib.strings.toUpper Subtext0;
+    alt-Overlay2 =  "939ab7"; Overlay2 = "#${alt-Overlay2}";  Calt-Overlay2 =  lib.strings.toUpper alt-Overlay2;  COverlay2 =  lib.strings.toUpper Overlay2;
+    alt-Overlay1 =  "8087a2"; Overlay1 = "#${alt-Overlay1}";  Calt-Overlay1 =  lib.strings.toUpper alt-Overlay1;  COverlay1 =  lib.strings.toUpper Overlay1;
+    alt-Overlay0 =  "6e738d"; Overlay0 = "#${alt-Overlay0}";  Calt-Overlay0 =  lib.strings.toUpper alt-Overlay0;  COverlay0 =  lib.strings.toUpper Overlay0;
+    alt-Surface2 =  "5b6078"; Surface2 = "#${alt-Surface2}";  Calt-Surface2 =  lib.strings.toUpper alt-Surface2;  CSurface2 =  lib.strings.toUpper Surface2;
+    alt-Surface1 =  "494d64"; Surface1 = "#${alt-Surface1}";  Calt-Surface1 =  lib.strings.toUpper alt-Surface1;  CSurface1 =  lib.strings.toUpper Surface1;
+    alt-Surface0 =  "363a4f"; Surface0 = "#${alt-Surface0}";  Calt-Surface0 =  lib.strings.toUpper alt-Surface0;  CSurface0 =  lib.strings.toUpper Surface0;
+    alt-Base =      "24273a"; Base =     "#${alt-Base}";      Calt-Base =      lib.strings.toUpper alt-Base;      CBase =      lib.strings.toUpper Base;
+    alt-Mantle =    "1e2030"; Mantle =   "#${alt-Mantle}";    Calt-Mantle =    lib.strings.toUpper alt-Mantle;    CMantle =    lib.strings.toUpper Mantle;
+    alt-Crust =     "181926"; Crust =    "#${alt-Crust}";     Calt-Crust =     lib.strings.toUpper alt-Crust;     CCrust =     lib.strings.toUpper Crust;
 
-    Text =       "#cad3f5";  alt-Text =      "cad3f5";  rgb-Text =      "rgb(202, 211, 245)";  rgb-alt-Text =      "202,211,245";
-    Subtext1 =   "#b8c0e0";  alt-Subtext1 =  "b8c0e0";  rgb-Subtext1 =  "rgb(184, 192, 224)";  rgb-alt-Subtext1 =  "184,192,224";
-    Subtext0 =   "#a5adcb";  alt-Subtext0 =  "a5adcb";  rgb-Subtext0 =  "rgb(165, 173, 203)";  rgb-alt-Subtext0 =  "165,173,203";
-    Overlay2 =   "#939ab7";  alt-Overlay2 =  "939ab7";  rgb-Overlay2 =  "rgb(147, 154, 183)";  rgb-alt-Overlay2 =  "147,154,183";
-    Overlay1 =   "#8087a2";  alt-Overlay1 =  "8087a2";  rgb-Overlay1 =  "rgb(128, 135, 162)";  rgb-alt-Overlay1 =  "128,135,162";
-    Overlay0 =   "#6e738d";  alt-Overlay0 =  "6e738d";  rgb-Overlay0 =  "rgb(110, 115, 141)";  rgb-alt-Overlay0 =  "110,115,141";
-    Surface2 =   "#5b6078";  alt-Surface2 =  "5b6078";  rgb-Surface2 =    "rgb(91, 96, 120)";  rgb-alt-Surface2 =    "91,96,120";
-    Surface1 =   "#494d64";  alt-Surface1 =  "494d64";  rgb-Surface1 =    "rgb(73, 77, 100)";  rgb-alt-Surface1 =    "73,77,100";
-    Surface0 =   "#363a4f";  alt-Surface0 =  "363a4f";  rgb-Surface0 =     "rgb(54, 58, 79)";  rgb-alt-Surface0 =     "54,58,79";
-    Base =       "#24273a";  alt-Base =      "24273a";  rgb-Base =         "rgb(36, 39, 58)";  rgb-alt-Base =         "36,39,58";
-    Mantle =     "#1e2030";  alt-Mantle =    "1e2030";  rgb-Mantle =       "rgb(30, 32, 48)";  rgb-alt-Mantle =       "30,32,48";
-    Crust =      "#181926";  alt-Crust =     "181926";  rgb-Crust =        "rgb(24, 25, 38)";  rgb-alt-Crust =        "24,25,38";
+    rgb-alt-Rosewater = hexToRgb alt-Rosewater; rgb-Rosewater = "rgb(${rgb-alt-Rosewater})"; base00 = alt-Base;     alt-base00 = "#${alt-Base}";
+    rgb-alt-Flamingo =  hexToRgb alt-Flamingo;  rgb-Flamingo =  "rgb(${rgb-alt-Flamingo})";  base01 = alt-Red;      alt-base01 = "#${alt-Red}";
+    rgb-alt-Pink =      hexToRgb alt-Pink;      rgb-Pink =      "rgb(${rgb-alt-Pink})";      base02 = alt-Green;    alt-base02 = "#${alt-Green}";
+    rgb-alt-Mauve =     hexToRgb alt-Mauve;     rgb-Mauve =     "rgb(${rgb-alt-Mauve})";     base03 = alt-Yellow;   alt-base03 = "#${alt-Yellow}";
+    rgb-alt-Red =       hexToRgb alt-Red;       rgb-Red =       "rgb(${rgb-alt-Red})";       base04 = alt-Blue;     alt-base04 = "#${alt-Blue}";
+    rgb-alt-Maroon =    hexToRgb alt-Maroon;    rgb-Maroon =    "rgb(${rgb-alt-Maroon})";    base05 = alt-Pink;     alt-base05 = "#${alt-Pink}";
+    rgb-alt-Peach =     hexToRgb alt-Peach;     rgb-Peach =     "rgb(${rgb-alt-Peach})";     base06 = alt-Teal;     alt-base06 = "#${alt-Teal}";
+    rgb-alt-Yellow =    hexToRgb alt-Yellow;    rgb-Yellow =    "rgb(${rgb-alt-Yellow})";    base07 = alt-Subtext1; alt-base07 = "#${alt-Subtext1}";
+    rgb-alt-Green =     hexToRgb alt-Green;     rgb-Green =     "rgb(${rgb-alt-Green})";     base08 = alt-Surface2; alt-base08 = "#${alt-Surface2}";
+    rgb-alt-Teal =      hexToRgb alt-Teal;      rgb-Teal =      "rgb(${rgb-alt-Teal})";      base09 = alt-Red;      alt-base09 = "#${alt-Red}";
+    rgb-alt-Sky =       hexToRgb alt-Sky;       rgb-Sky =       "rgb(${rgb-alt-Sky})";       base0A = alt-Green;    alt-base0A = "#${alt-Green}";
+    rgb-alt-Sapphire =  hexToRgb alt-Sapphire;  rgb-Sapphire =  "rgb(${rgb-alt-Sapphire})";  base0B = alt-Yellow;   alt-base0B = "#${alt-Yellow}";
+    rgb-alt-Blue =      hexToRgb alt-Blue;      rgb-Blue =      "rgb(${rgb-alt-Blue})";      base0C = alt-Blue;     alt-base0C = "#${alt-Blue}";
+    rgb-alt-Lavender =  hexToRgb alt-Lavender;  rgb-Lavender =  "rgb(${rgb-alt-Lavender})";  base0D = alt-Pink;     alt-base0D = "#${alt-Pink}";
+    rgb-alt-Text =      hexToRgb alt-Text;      rgb-Text =      "rgb(${rgb-alt-Text})";      base0E = alt-Teal;     alt-base0E = "#${alt-Teal}";
+    rgb-alt-Subtext1 =  hexToRgb alt-Subtext1;  rgb-Subtext1 =  "rgb(${rgb-alt-Subtext1})";  base0F = alt-Subtext0; alt-base0F = "#${alt-Subtext0}";
+    rgb-alt-Subtext0 =  hexToRgb alt-Subtext0;  rgb-Subtext0 =  "rgb(${rgb-alt-Subtext0})";
+    rgb-alt-Overlay2 =  hexToRgb alt-Overlay2;  rgb-Overlay2 =  "rgb(${rgb-alt-Overlay2})";
+    rgb-alt-Overlay1 =  hexToRgb alt-Overlay1;  rgb-Overlay1 =  "rgb(${rgb-alt-Overlay1})";
+    rgb-alt-Overlay0 =  hexToRgb alt-Overlay0;  rgb-Overlay0 =  "rgb(${rgb-alt-Overlay0})";
+    rgb-alt-Surface2 =  hexToRgb alt-Surface2;  rgb-Surface2 =  "rgb(${rgb-alt-Surface2})";
+    rgb-alt-Surface1 =  hexToRgb alt-Surface1;  rgb-Surface1 =  "rgb(${rgb-alt-Surface1})";
+    rgb-alt-Surface0 =  hexToRgb alt-Surface0;  rgb-Surface0 =  "rgb(${rgb-alt-Surface0})";
+    rgb-alt-Base =      hexToRgb alt-Base;      rgb-Base =      "rgb(${rgb-alt-Base})";
+    rgb-alt-Mantle =    hexToRgb alt-Mantle;    rgb-Mantle =    "rgb(${rgb-alt-Mantle})";
+    rgb-alt-Crust =     hexToRgb alt-Crust;     rgb-Crust =     "rgb(${rgb-alt-Crust})";
 
-    CRosewater = "#F4DBD6";  Calt-Rosewater ="F4DBD6";
-    CFlamingo =  "#F0C6C6";  Calt-Flamingo = "F0C6C6";
-    CPink =      "#F5BDE6";  Calt-Pink =     "F5BDE6";
-    CMauve =     "#C6A0F6";  Calt-Mauve =    "C6A0F6";
-    CRed =       "#ED8796";  Calt-Red =      "ED8796";
-    CMaroon =    "#EE99A0";  Calt-Maroon =   "EE99A0";
-    CPeach =     "#F5A97F";  Calt-Peach =    "F5A97F";
-    CYellow =    "#EED49F";  Calt-Yellow =   "EED49F";
-    CGreen =     "#A6DA95";  Calt-Green =    "A6DA95";
-    CTeal =      "#8BD5CA";  Calt-Teal =     "8BD5CA";
-    CSky =       "#91D7E3";  Calt-Sky =      "91D7E3";
-    CSapphire =  "#7DC4E4";  Calt-Sapphire = "7DC4E4";
-    CBlue =      "#8AADF4";  Calt-Blue =     "8AADF4";
-    CLavender =  "#B7BDF8";  Calt-Lavender = "B7BDF8";
 
-    CText =      "#CAD3F5";  Calt-Text =     "CAD3F5";
-    CSubtext1 =  "#B8C0E0";  Calt-Subtext1 = "B8C0E0";
-    CSubtext0 =  "#A5ADCB";  Calt-Subtext0 = "A5ADCB";
-    COverlay2 =  "#939AB7";  Calt-Overlay2 = "939AB7";
-    COverlay1 =  "#8087A2";  Calt-Overlay1 = "8087A2";
-    COverlay0 =  "#6E738D";  Calt-Overlay0 = "6E738D";
-    CSurface2 =  "#5B6078";  Calt-Surface2 = "5B6078";
-    CSurface1 =  "#494D64";  Calt-Surface1 = "494D64";
-    CSurface0 =  "#363A4F";  Calt-Surface0 = "363A4F";
-    CBase =      "#24273A";  Calt-Base =     "24273A";
-    CMantle =    "#1E2030";  Calt-Mantle =   "1E2030";
-    CCrust =     "#181926";  Calt-Crust =    "181926";
+    starship1 =  "#3B4252";  obs-selection = "#3a3d53";   Transparent = "#FF00000";
+    starship2 =  "#434C5E";  obs-vol-num =   "#78c75d";   Black-Transparent = "#00000000";
+    starship3 =  "#4C566A";  obs-vol-warn =  "#ef7939";   alt-Transparent = "#FF00000";
+    starship4 =  "#86BBD8";  obs-vol-error = "#e3455d";   alt-Black-Transparent = "00000000";
+    starship5 =  "#06969A";                               wlogout-base = "rgba(36, 39, 58, 0.90)";
+    starship6 =  "#33658A";                               wlogout-button = "rgb(53, 57, 75)"; # 20% Overlay2, 80% mantle
 
-    Transparent = "#FF00000"; alt-Transparent = "#FF00000";
-    Black-Transparent = "#00000000"; alt-Black-Transparent = "00000000";
-    wlogout-base = "rgba(36, 39, 58, 0.90)";
-    wlogout-button = "rgb(53, 57, 75)"; # 20% Overlay2, 80% mantle
-
-    base00 =     "24273a";  alt-base00 =   "#24273a";  # base
-    base01 =     "1e2030";  alt-base01 =   "#1e2030";  # mantle
-    base02 =     "363a4f";  alt-base02 =   "#363a4f";  # surface0
-    base03 =     "494d64";  alt-base03 =   "#494d64";  # surface1
-    base04 =     "5b6078";  alt-base04 =   "#5b6078";  # surface2
-    base05 =     "cad3f5";  alt-base05 =   "#cad3f5";  # text
-    base06 =     "f4dbd6";  alt-base06 =   "#f4dbd6";  # rosewater
-    base07 =     "b7bdf8";  alt-base07 =   "#b7bdf8";  # lavender
-    base08 =     "ed8796";  alt-base08 =   "#ed8796";  # red
-    base09 =     "f5a97f";  alt-base09 =   "#f5a97f";  # peach
-    base0A =     "eed49f";  alt-base0A =   "#eed49f";  # yellow
-    base0B =     "a6da95";  alt-base0B =   "#a6da95";  # green
-    base0C =     "8bd5ca";  alt-base0C =   "#8bd5ca";  # teal
-    base0D =     "8aadf4";  alt-base0D =   "#8aadf4";  # blue
-    base0E =     "c6a0f6";  alt-base0E =   "#c6a0f6";  # mauve
-    base0F =     "f0c6c6";  alt-base0F =   "#f0c6c6";  # flamingo
-
-    myStuff.myCat = {
-      myGlobal-Flav   = "macchiato";
-      myGlobal-FlavC  = "Macchiato";
-      myGlobal-Color  = "sapphire";
-      myGlobal-ColorC = "Sapphire";
-    };
+    flavor = "macchiato";
+    flavorC = "Macchiato";
+    accent = "sapphire";
+    accentC = "Sapphire";
 
     myGlobalCatppuccin = pkgs.catppuccin.override {
-      variant = myStuff.myCat.myGlobal-Flav;
-      accent = myStuff.myCat.myGlobal-Color;
+      variant = flavor;
+      accent = accent;
       themeList = [ "alacritty" "bat" /*"bottom"*/ "btop" /*"element"*/ "grub" /*"hyprland"*/ /*"k9s"*/ /*"kvantum"*/ /*"lazygit"*/
                     /*"lxqt"*/ "qt5ct" "refind" "rofi" "starship" /*"thunderbird"*/ "waybar" ];
     };
 
     myKDECatppuccin = pkgs.catppuccin-kde.override {
-      flavour = [ myStuff.myCat.myGlobal-Flav ];
-      accents = [ myStuff.myCat.myGlobal-Color ];
+      flavour = [ flavor ];
+      accents = [ accent ];
       winDecStyles = [ "classic" ];
     };
 
-    myCursorCatppuccin = pkgs.catppuccin-cursors."${myStuff.myCat.myGlobal-Flav}${myStuff.myCat.myGlobal-ColorC}";
+    myCursorCatppuccin = pkgs.catppuccin-cursors."${flavor}${accentC}";
 
     myIconCatppuccin = pkgs.catppuccin-papirus-folders.override {
-      flavor = myStuff.myCat.myGlobal-Flav;
-      accent = myStuff.myCat.myGlobal-Color;
+      flavor = flavor;
+      accent = accent;
     };
 
     myKvantumCatppuccin = (pkgs.catppuccin-kvantum.override {
-      variant = myStuff.myCat.myGlobal-Flav;
-      accent = myStuff.myCat.myGlobal-Color;
+      variant = flavor;
+      accent = accent;
     }).overrideAttrs (old: {
       installPhase = old.installPhase + ''
         sed -i 's/^\(shadowless_popup=\)false/\1true/' \
-          $out/share/Kvantum/catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}/*.kvconfig
+          $out/share/Kvantum/catppuccin-${flavor}-${accent}/*.kvconfig
       '';});
 
     myGTKCatppuccin = pkgs.catppuccin-gtk.override {
-      variant = myStuff.myCat.myGlobal-Flav;
-      accents = [ myStuff.myCat.myGlobal-Color ];
+      variant = flavor;
+      accents = [ accent ];
       size = "standard";
      #tweaks = [ "black" ];
     };
@@ -987,7 +971,7 @@
         theme = i3status-theme;
        #settings = {
        #  theme =  {
-       #    theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
+       #    theme = "catppuccin-${flavor}";
        #    overrides = {
        #      idle_bg = "#123456";
        #      idle_fg = "#abcdef";
@@ -1303,7 +1287,7 @@
             [General]
             Blur=false
             ColorRandomization=false
-            Description=Catppuccin Macchiato
+            Description=${konsole-theme-name}
             Opacity=1
             Wallpaper=
           '';
@@ -1415,21 +1399,21 @@
           cursor-text = alt-Crust;
           foreground = alt-Text;
           palette = [
-             "0=${alt-base03}"
-             "1=${alt-base08}"
-             "2=${alt-base0B}"
-             "3=${alt-base0A}"
-             "4=${alt-base0D}"
+             "0=${Surface1}"
+             "1=${Red}"
+             "2=${Green}"
+             "3=${Yellow}"
+             "4=${Blue}"
              "5=${Pink}"
-             "6=${alt-base0C}"
+             "6=${Teal}"
              "7=${Subtext0}"
-             "8=${alt-base04}"
-             "9=${alt-base08}"
-            "10=${alt-base0B}"
-            "11=${alt-base0A}"
-            "12=${alt-base0D}"
+             "8=${Surface2}"
+             "9=${Red}"
+            "10=${Green}"
+            "11=${Yellow}"
+            "12=${Blue}"
             "13=${Pink}"
-            "14=${alt-base0C}"
+            "14=${Teal}"
             "15=${Subtext1}"
           ];
           selection-background = alt-Rosewater;
@@ -2633,7 +2617,7 @@
      #extraConfig = '' '';
     };
 
-   #btop.settings = { color_theme = "catppuccin_macchiato.theme"; };
+   #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };
   };
 
   services = {
@@ -3136,7 +3120,7 @@
     "Kvantum/${kvantum-theme}".source = "${kvantum-package}/share/Kvantum/${kvantum-theme}";
 
     "fish/themes/${fish-theme}.theme".text = ''
-      # name: 'Catppuccin Macchiato'
+      # name: '${fish-theme-name}'
       # url: 'https://github.com/catppuccin/fish'
       # preferred_background: ${alt-Base}
 
@@ -3205,6 +3189,160 @@
         background = "${Base}"
         foreground = "${Text}"
         frame_color = "${Peach}"
+      '';
+    };
+
+    awesome-theme = {
+      target = "awesome/themes/default/theme.lua";
+      text = ''
+        local beautiful    = require("beautiful")
+        local theme_assets = require("beautiful.theme_assets")
+        local xresources   = require("beautiful.xresources")
+        local dpi          = require("beautiful.xresources").apply_dpi
+        local gears        = require("gears")
+        local gfs          = require("gears.filesystem")
+        local themes_path  = gfs.get_themes_dir()
+        local theme = {}
+        theme.font         = "${awesome-wmFont}"
+        theme.gh_fg        = "${Text}"   -- Foreground text
+        theme.gh_bg        = "${Base}"   -- Background
+        theme.gh_comment   = "${Overlay2}"   -- Comments/muted text
+        theme.gh_red       = "${Red}"   -- Error, deletion
+        theme.gh_green     = "${Green}"   -- Success, addition
+        theme.gh_yellow    = "${Yellow}"   -- Warning, modified
+        theme.gh_blue      = "${Blue}"   -- Info, links
+        theme.gh_magenta   = "${Mauve}"   -- Variables, prop names
+        theme.gh_cyan      = "${Teal}"   -- Tags, tokens
+        theme.gh_selection = "${Surface1}"   -- Selection background
+        theme.gh_highlight = "${Rosewater}"   -- Highlighted text
+        theme.gh_caret     = "#${Sapphire}"   -- Cursor/caret color
+        theme.gh_invisibles= "${Crust}"  -- Invisible characters
+        theme.gh_mantle    = "${Mantle}"  -- Invisible characters
+        theme.bg_normal     = theme.gh_bg        -- Normal background
+        theme.bg_focus      = theme.gh_blue      -- Focused elements
+        theme.bg_urgent     = theme.gh_red       -- Urgent (alert) background
+        theme.bg_minimize   = theme.gh_invisibles -- Minimized window background
+        theme.bg_systray    = theme.gh_bg        -- System tray background
+        theme.fg_normal     = theme.gh_fg        -- Normal text color
+        theme.fg_focus      = theme.gh_bg        -- Focused text color
+        theme.fg_urgent     = theme.gh_fg        -- Urgent text color
+        theme.fg_minimize   = theme.gh_comment   -- Minimized text color
+        theme.titlebar_bg_normal   = theme.gh_mantle   -- inactive
+        theme.titlebar_bg_focus    = theme.gh_mantle   -- active window
+        theme.titlebar_bg_urgent   = theme.gh_red   -- urgent
+        theme.titlebar_fg_normal   = theme.gh_caret   -- inactive
+        theme.titlebar_fg_focus    = theme.gh_caret   -- active window
+        local function rc(img) return gears.color.recolor_image(img, theme.titlebar_fg_focus) end
+        theme.titlebar_close_button_normal = rc(theme.titlebar_close_button_normal)
+        theme.titlebar_close_button_focus  = rc(theme.titlebar_close_button_focus)
+        theme.useless_gap   = dpi(8)             -- Gap between windows
+        theme.border_width  = dpi(4)             -- Border width for windows
+        theme.border_normal = theme.gh_invisibles -- Border color for inactive windows
+        theme.border_focus  = theme.gh_blue      -- Border color for focused windows
+        theme.border_marked = theme.gh_magenta   -- Border color for marked windows
+        theme.taglist_squares_sel = nil
+        theme.taglist_squares_unsel = nil
+        theme.taglist_fg_focus = theme.gh_caret      -- Active tag text color (using highlight color for more contrast)
+        theme.taglist_bg_focus = "transparent"            -- Active tag background (transparent)
+        theme.taglist_fg_occupied = theme.gh_fg           -- Occupied tag text color
+        theme.taglist_bg_occupied = "transparent"         -- Occupied tag background (transparent)
+        theme.taglist_fg_empty = theme.gh_comment .. "80" -- Empty tag text color with 50% opacity for even lower visibility
+        theme.taglist_bg_empty = "transparent"            -- Empty tag background (transparent)
+        theme.taglist_fg_urgent = theme.gh_red     -- Urgent tag text color
+        theme.taglist_bg_urgent = "transparent"    -- Urgent tag background (transparent)
+        theme.taglist_spacing = dpi(6)             -- Space between tags
+        theme.menu_submenu_icon = themes_path.."default/submenu.png"
+        theme.menu_height = dpi(18)
+        theme.menu_width  = dpi(100)
+        theme.titlebar_close_button_normal       = themes_path.."default/titlebar/close_normal.png"
+        theme.titlebar_close_button_focus        = themes_path.."default/titlebar/close_focus.png"
+        theme.titlebar_minimize_button_normal    = themes_path.."default/titlebar/minimize_normal.png"
+        theme.titlebar_minimize_button_focus     = themes_path.."default/titlebar/minimize_focus.png"
+        theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
+        theme.titlebar_ontop_button_focus_inactive  = themes_path.."default/titlebar/ontop_focus_inactive.png"
+        theme.titlebar_ontop_button_normal_active    = themes_path.."default/titlebar/ontop_normal_active.png"
+        theme.titlebar_ontop_button_focus_active     = themes_path.."default/titlebar/ontop_focus_active.png"
+        theme.titlebar_sticky_button_normal_inactive = themes_path.."default/titlebar/sticky_normal_inactive.png"
+        theme.titlebar_sticky_button_focus_inactive  = themes_path.."default/titlebar/sticky_focus_inactive.png"
+        theme.titlebar_sticky_button_normal_active     = themes_path.."default/titlebar/sticky_normal_active.png"
+        theme.titlebar_sticky_button_focus_active      = themes_path.."default/titlebar/sticky_focus_active.png"
+        theme.titlebar_floating_button_normal_inactive = themes_path.."default/titlebar/floating_normal_inactive.png"
+        theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/floating_focus_inactive.png"
+        theme.titlebar_floating_button_normal_active     = themes_path.."default/titlebar/floating_normal_active.png"
+        theme.titlebar_floating_button_focus_active      = themes_path.."default/titlebar/floating_focus_active.png"
+        theme.titlebar_maximized_button_normal_inactive = themes_path.."default/titlebar/maximized_normal_inactive.png"
+        theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
+        theme.titlebar_maximized_button_normal_active     = themes_path.."default/titlebar/maximized_normal_active.png"
+        theme.titlebar_maximized_button_focus_active      = themes_path.."default/titlebar/maximized_focus_active.png"
+        theme.layout_fairh         = themes_path.."default/layouts/fairhw.png"
+        theme.layout_fairv         = themes_path.."default/layouts/fairvw.png"
+        theme.layout_floating      = themes_path.."default/layouts/floatingw.png"
+        theme.layout_magnifier     = themes_path.."default/layouts/magnifierw.png"
+        theme.layout_max           = themes_path.."default/layouts/maxw.png"
+        theme.layout_fullscreen    = themes_path.."default/layouts/fullscreenw.png"
+        theme.layout_tilebottom    = themes_path.."default/layouts/tilebottomw.png"
+        theme.layout_tileleft      = themes_path.."default/layouts/tileleftw.png"
+        theme.layout_tile          = themes_path.."default/layouts/tilew.png"
+        theme.layout_tiletop       = themes_path.."default/layouts/tiletopw.png"
+        theme.layout_spiral        = themes_path.."default/layouts/spiralw.png"
+        theme.layout_dwindle       = themes_path.."default/layouts/dwindlew.png"
+        theme.layout_cornernw      = themes_path.."default/layouts/cornernww.png"
+        theme.layout_cornerne      = themes_path.."default/layouts/cornernew.png"
+        theme.layout_cornersw      = themes_path.."default/layouts/cornersww.png"
+        theme.layout_cornerse      = themes_path.."default/layouts/cornersew.png"
+        theme.systray_icon_spacing = 5
+        theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.gh_blue, theme.gh_bg)
+        theme.icon_theme = nil
+        return theme
+      '';
+    };
+
+    obs-ovt-nix-theme = {
+      target = "obs-studio/themes/Nix.ovt";
+      text = lib.mkBefore ''
+        @OBSThemeMeta {
+            name: 'Nix';
+            id: 'com.obsproject.Nix.Nix';
+            extends: 'com.obsproject.Nix';
+            author: 'Xurdejl';
+            dark: 'true';
+        }
+
+        @OBSThemeVars {
+            --ctp_rosewater: ${Rosewater};
+            --ctp_flamingo: ${Flamingo};
+            --ctp_pink: ${Pink};
+            --ctp_mauve: ${Mauve};
+            --ctp_red: ${Red};
+            --ctp_maroon: ${Maroon};
+            --ctp_peach: ${Peach};
+            --ctp_yellow: ${Yellow};
+            --ctp_green: ${Green};
+            --ctp_teal: ${Teal};
+            --ctp_sky: ${Sky};
+            --ctp_sapphire: ${Sapphire};
+            --ctp_blue: ${Blue};
+            --ctp_lavender: ${Lavender};
+            --ctp_text: ${Text};
+            --ctp_subtext1: ${Subtext1};
+            --ctp_subtext0: ${Subtext0};
+            --ctp_overlay2: ${Overlay2};
+            --ctp_overlay1: ${Overlay1};
+            --ctp_overlay0: ${Overlay0};
+            --ctp_surface2: ${Surface2};
+            --ctp_surface1: ${Surface1};
+            --ctp_surface0: ${Surface0};
+            --ctp_base: ${Base};
+            --ctp_mantle: ${Mantle};
+            --ctp_crust: ${Crust};
+            --ctp_selection_background: ${obs-selection};
+        }
+
+        VolumeMeter {
+            qproperty-foregroundNominalColor: ${obs-vol-num};
+            qproperty-foregroundWarningColor: ${obs-vol-warn};
+            qproperty-foregroundErrorColor: ${obs-vol-error};
+        }
       '';
     };
 
@@ -3507,6 +3645,13 @@
       '';
     };
 
+    test = {
+      target = "test.txt";
+      text = ''
+        ${hexToRgb alt-Base}
+        rgb(${hexToRgb alt-Sapphire})
+      '';
+    };
   };
 
   xdg.dataFile = {
@@ -3747,51 +3892,8 @@
   catppuccin = {
     enable = true;
    #cache.enable = true;
-    flavor = myStuff.myCat.myGlobal-Flav;
-    accent = myStuff.myCat.myGlobal-Color;
-
-
-
-   #aerc
-   #anki
-   #atuin
-   #bottom
-   #brave
-   #chromium
-   #delta
-   #element-desktop
-   #eza
-   #fcitx5
-   #floorp
-   #foot
-   #fuzzel
-   #gitui
-   #glamour
-   #halloy
-   #helix
-   #imv
-   #k9s
-   #lazygit
-   #librewolf
-   #lsd
-   #mako
-   #micro
-   #newsboat
-   #nushell
-   #rio
-   #skim
-   #spotify-player
-   #thunderbird
-   #tmux
-   #tofi
-   #vesktop
-   #vicinae
-   #vivaldi
-   #vivid
-   #vscode
-
-
-
+    flavor = flavor;
+    accent = accent;
 
     alacritty.enable = false;
     bat.enable = false;
@@ -3814,6 +3916,7 @@
     mangohud.enable = false;
     mpv.enable = false;
     nvim.enable = false;
+    obs.enable = false;
     polybar.enable = false;
     qutebrowser.enable = false;
     rofi.enable = false;
@@ -3833,9 +3936,44 @@
     zellij.enable = false;
     zsh-syntax-highlighting.enable = false;
 
-    # Only Way (for now)
-    obs.enable = true;
-
   };
+
+   #aerc               #  C
+   #anki               #  C
+   #atuin              #  C
+   #bottom             #  C
+   #brave              #  C
+   #chromium           #  C
+   #delta              #  C
+   #element-desktop    #  C
+   #eza                #  C
+   #fcitx5             #  C
+   #floorp             #  C
+   #foot               #  C
+   #fuzzel             #  C
+   #gitui              #  C
+   #glamour            #  C
+   #halloy             #  C
+   #helix              #  C
+   #imv                #  C
+   #k9s                #  C
+   #lazygit            #  C
+   #librewolf          #  C
+   #lsd                #  C
+   #mako               #  C
+   #micro              #  C
+   #newsboat           #  C
+   #nushell            #  C
+   #rio                #  C
+   #skim               #  C
+   #spotify-player     #  C
+   #thunderbird        #  C
+   #tmux               #  C
+   #tofi               #  C
+   #vesktop            #  C
+   #vicinae            #  C
+   #vivaldi            #  C
+   #vivid              #  C
+   #vscode             #  C
 
 };}

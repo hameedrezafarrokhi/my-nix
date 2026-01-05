@@ -2,13 +2,15 @@
 
   let
 
+    cursor-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+
     plymouth-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}";
     plymouth-package = myPlymouthCatppuccin;
     plymouth-logo = "${pkgs.nixos-icons}/share/icons/hicolor/96x96/apps/nix-snowflake.png";
 
     sddm-theme = "breeze";
     sddm-package = mySDDMCatppuccin;
-    sddm-cursor-theme = "catppuccin-${myStuff.myCat.myGlobal-Flav}-${myStuff.myCat.myGlobal-Color}-cursors";
+    sddm-cursor-theme = cursor-theme;
     sddm-cursor-package = myCursorCatppuccin;
     sddm-cursor-size = 24;
 
@@ -17,7 +19,7 @@
 
     icons-package = myIconCatppuccin;
 
-    MonoSpace = "Comic Sans MS";
+    MonoSpace = "Comic Mono";
     MonoAlt = "Monofur Nerd Font Mono";
     Sans = "Comic Sans MS";
     Serif = "Comic Sans MS";
@@ -29,51 +31,33 @@
     MonoSize = "10";
 
 
-    Rosewater = "#f4dbd6";    rgb-Rosewater = "rgb(244, 219, 214)";
-    Flamingo =  "#f0c6c6";    rgb-Flamingo =  "rgb(240, 198, 198)";
-    Pink =      "#f5bde6";    rgb-Pink =      "rgb(245, 189, 230)";
-    Mauve =     "#c6a0f6";    rgb-Mauve =     "rgb(198, 160, 246)";
-    Red =       "#ed8796";    rgb-Red =       "rgb(237, 135, 150)";
-    Maroon =    "#ee99a0";    rgb-Maroon =    "rgb(238, 153, 160)";
-    Peach =     "#f5a97f";    rgb-Peach =     "rgb(245, 169, 127)";
-    Yellow =    "#eed49f";    rgb-Yellow =    "rgb(238, 212, 159)";
-    Green =     "#a6da95";    rgb-Green =     "rgb(166, 218, 149)";
-    Teal =      "#8bd5ca";    rgb-Teal =      "rgb(139, 213, 202)";
-    Sky =       "#91d7e3";    rgb-Sky =       "rgb(145, 215, 227)";
-    Sapphire =  "#7dc4e4";    rgb-Sapphire =  "rgb(125, 196, 228)";
-    Blue =      "#8aadf4";    rgb-Blue =      "rgb(138, 173, 244)";
-    Lavender =  "#b7bdf8";    rgb-Lavender =  "rgb(183, 189, 248)";
-
-    Text =      "#cad3f5";    rgb-Text =      "rgb(202, 211, 245)";
-    Subtext1 =  "#b8c0e0";    rgb-Subtext1 =  "rgb(184, 192, 224)";
-    Subtext0 =  "#a5adcb";    rgb-Subtext0 =  "rgb(165, 173, 203)";
-    Overlay2 =  "#939ab7";    rgb-Overlay2 =  "rgb(147, 154, 183)";
-    Overlay1 =  "#8087a2";    rgb-Overlay1 =  "rgb(128, 135, 162)";
-    Overlay0 =  "#6e738d";    rgb-Overlay0 =  "rgb(110, 115, 141)";
-    Surface2 =  "#5b6078";    rgb-Surface2 =    "rgb(91, 96, 120)";
-    Surface1 =  "#494d64";    rgb-Surface1 =    "rgb(73, 77, 100)";
-    Surface0 =  "#363a4f";    rgb-Surface0 =     "rgb(54, 58, 79)";
-    Base =      "#24273a";    rgb-Base =         "rgb(36, 39, 58)";
-    Mantle =    "#1e2030";    rgb-Mantle =       "rgb(30, 32, 48)";
-    Crust =     "#181926";    rgb-Crust =        "rgb(24, 25, 38)";
-
-    base00 =     "24273a"; # base
-    base01 =     "1e2030"; # mantle
-    base02 =     "363a4f"; # surface0
-    base03 =     "494d64"; # surface1
-    base04 =     "5b6078"; # surface2
-    base05 =     "cad3f5"; # text
-    base06 =     "f4dbd6"; # rosewater
-    base07 =     "b7bdf8"; # lavender
-    base08 =     "ed8796"; # red
-    base09 =     "f5a97f"; # peach
-    base0A =     "eed49f"; # yellow
-    base0B =     "a6da95"; # green
-    base0C =     "8bd5ca"; # teal
-    base0D =     "8aadf4"; # blue
-    base0E =     "c6a0f6"; # mauve
-    base0F =     "f0c6c6"; # flamingo
-
+    BRosewater = "f4dbd6";  Rosewater = "#${Rosewater}"; base00 =     BBase;
+    BFlamingo =  "f0c6c6";  Flamingo =  "#${Flamingo}";  base01 =     BRed;
+    BPink =      "f5bde6";  Pink =      "#${Pink}";      base02 =     BGreen;
+    BMauve =     "c6a0f6";  Mauve =     "#${Mauve}";     base03 =     BYellow;
+    BRed =       "ed8796";  Red =       "#${Red}";       base04 =     BBlue;
+    BMaroon =    "ee99a0";  Maroon =    "#${Maroon}";    base05 =     BPink;
+    BPeach =     "f5a97f";  Peach =     "#${Peach}";     base06 =     BTeal;
+    BYellow =    "eed49f";  Yellow =    "#${Yellow}";    base07 =     BSubtext1;
+    BGreen =     "a6da95";  Green =     "#${Green}";     base08 =     BSurface2;
+    BTeal =      "8bd5ca";  Teal =      "#${Teal}";      base09 =     BRed;
+    BSky =       "91d7e3";  Sky =       "#${Sky}";       base0A =     BGreen;
+    BSapphire =  "7dc4e4";  Sapphire =  "#${Sapphire}";  base0B =     BYellow;
+    BBlue =      "8aadf4";  Blue =      "#${Blue}";      base0C =     BBlue;
+    BLavender =  "b7bdf8";  Lavender =  "#${Lavender}";  base0D =     BPink;
+                                                         base0E =     BTeal;
+    BText =      "cad3f5";  Text =      "#${Text}";      base0F =     BSubtext0;
+    BSubtext1 =  "b8c0e0";  Subtext1 =  "#${Subtext1}";
+    BSubtext0 =  "a5adcb";  Subtext0 =  "#${Subtext0}";
+    BOverlay2 =  "939ab7";  Overlay2 =  "#${Overlay2}";
+    BOverlay1 =  "8087a2";  Overlay1 =  "#${Overlay1}";
+    BOverlay0 =  "6e738d";  Overlay0 =  "#${Overlay0}";
+    BSurface2 =  "5b6078";  Surface2 =  "#${Surface2}";
+    BSurface1 =  "494d64";  Surface1 =  "#${Surface1}";
+    BSurface0 =  "363a4f";  Surface0 =  "#${Surface0}";
+    BBase =      "24273a";  Base =      "#${Base}";
+    BMantle =    "1e2030";  Mantle =    "#${Mantle}";
+    BCrust =     "181926";  Crust =     "#${Crust}";
 
     myStuff.myCat = {
       myGlobal-Flav   = "macchiato";
@@ -214,65 +198,64 @@
   console = {
     packages = [ ConsolePackage ];  #font, keymap etc packages
     font = lib.mkForce Console;
- #  colors = [
- #    base00
- #    base01
- #    base02
- #    base03
- #    base04
- #    base05
- #    base06
- #    base07
- #    base08
- #    base09
- #    base0A
- #    base0B
- #    base0C
- #    base0D
- #    base0E
- #    base0F
- #  ];
+    colors = [
+      base00
+      base01
+      base02
+      base03
+      base04
+      base05
+      base06
+      base07
+      base08
+      base09
+      base0A
+      base0B
+      base0C
+      base0D
+      base0E
+      base0F
+    ];
   };
 
   services.xserver.desktopManager.lxqt.iconThemePackage = icons-package;
 
+ #programs.dconf.profiles.gdm.databases = [
+ #  {
+ #    lockAll = true;
+ #    settings."org/gnome/desktop/interface" = {
+ #      cursor-theme = cursor-theme;
+ #    };
+ #  }
+ #];
+
   catppuccin = {
     enable = true;
-      flavor = myStuff.myCat.myGlobal-Flav;
-      accent = myStuff.myCat.myGlobal-Color;
+    flavor = myStuff.myCat.myGlobal-Flav;
+    accent = myStuff.myCat.myGlobal-Color;
    #cache.enable = true;
-    grub = {
-      enable = false;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    limine = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    plymouth = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-    };
+
+    cursors.enable = false;
+    plymouth.enable = false;
+    tty.enable = false;
     sddm = {
       enable = false;
-        flavor = myStuff.myCat.myGlobal-Flav;
-       #accentColor = "<color>";
-        assertQt6Sddm = true;
-       #background =
-        loginBackground = true;
-        font = MonoSpace;
-        fontSize = MonoSize;
-       #userIcon = true; #place a file in ~/.face.icon or FacesDir/username.face.icon
-    };
-    tty = {
-      enable = true;
       flavor = myStuff.myCat.myGlobal-Flav;
-    };
-    gitea = {
-      enable = true;
-        flavor = myStuff.myCat.myGlobal-Flav;
-        accent = myStuff.myCat.myGlobal-Color;
+     #accentColor = "<color>";
+      assertQt6Sddm = true;
+     #background =
+      loginBackground = true;
+      font = MonoSpace;
+      fontSize = MonoSize;
+     #userIcon = true; #place a file in ~/.face.icon or FacesDir/username.face.icon
     };
   };
+
+   #fcitx5             #  C
+   #forgejo            #  C
+   #gitea              #  C
+   #grub               #  C
+   #gtk (gdm icons)    #  C
+   #limine             #  C
 
 };}
