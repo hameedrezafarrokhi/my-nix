@@ -731,8 +731,12 @@ super + alt + shift + o
     bsp-manual-order-remove; notify-send "Layout Order Removed"
 
 # Live Wallpaper
-super + ctrl + shift + comma
+super + comma
     live-bg
+
+# Live Wallpaper
+super + ctrl + shift + comma
+    paperview-rofi
 
 # Live Wallpaper Cycle Next
 super + shift + comma

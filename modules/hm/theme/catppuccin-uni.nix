@@ -354,156 +354,6 @@
       betterlockscreen -u "$wallpaper" --fx dimblur --dim 50 --blur 0.5
     '';
 
-    feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
-      ${builtins.readFile ./feh-cycle.sh}
-    '';
-
-    feh-rofi = pkgs.writeShellScriptBin "feh-rofi" ''
-      dir="${config.home.homeDirectory}/Pictures/Wallpapers/${config.my.theme}/" # ends with a /
-      cd $dir
-      wallpaper="none is selected"
-      set="feh --bg-fill"
-      view="feh -F"
-      selectpic(){
-          wallpaper=$(ls $dir | rofi -dmenu -p "select: ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
-
-          if [[ $wallpaper == "qq" ]]; then
-              exit
-          else
-              action
-          fi
-      }
-      action(){
-        whattodo=$(echo -e "view\nset" | rofi -dmenu -p "action ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
-          if [[ $whattodo == "set" ]]; then
-              set_wall
-          else
-              view_wall
-          fi
-      }
-      set_wall(){
-          $set $wallpaper && pkill feh &
-      }
-      view_wall(){
-          $view $wallpaper &
-          set_after_view
-      }
-      set_after_view(){
-        setorno=$(echo -e "set\nback" | rofi -dmenu -p "set it? ($wallpaper)" -theme $HOME/.config/rofi/themes/main.rasi)
-
-        if [[ $setorno == "set" ]]; then
-            set_wall
-        else
-            pkill feh &
-            sleep 1 &
-            feh-rofi &
-        fi
-      }
-      selectpic
-    '';
-
-    live-bg = pkgs.writeShellScriptBin "live-bg" ''
-      LIVE_BG="$HOME/.live-bg"
-      LIVE_DIR="$HOME/Pictures/live-wallpapers"
-      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
-      DEFAULT_FOLDER=1
-      DEFAULT_SPEED=10
-      pkill paperview-rs 2>/dev/null && touch $HOME/.fehbg && exit 0
-      if [[ -f "$LIVE_BG" ]]; then
-          touch $HOME/.live-bg
-          bash "$LIVE_BG"
-          exit 0
-      fi
-      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$DEFAULT_FOLDER/:$DEFAULT_SPEED\""
-      echo "#!/bin/bash" > "$LIVE_BG"
-      echo "$CMD" >> "$LIVE_BG"
-      chmod +x "$LIVE_BG"
-      eval "$CMD"
-    '';
-
-    live-bg-cycle = pkgs.writeShellScriptBin "live-bg-cycle" ''
-      LIVE_BG="$HOME/.live-bg"
-      LIVE_DIR="$HOME/Pictures/live-wallpapers"
-      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
-      DEF_FOLDER=1
-      DEF_SPEED=10
-      ACTION="$1"
-      pkill paperview-rs 2>/dev/null
-      if [[ -f "$LIVE_BG" ]]; then
-          CUR_FOLDER=$(grep -oP 'live-wallpapers/\K[0-9]+' "$LIVE_BG")
-          CUR_SPEED=$(grep -oP ':[0-9]+$' "$LIVE_BG" | tr -d :)
-      fi
-      [[ -z "$CUR_FOLDER" ]] && CUR_FOLDER=$DEF_FOLDER
-      [[ -z "$CUR_SPEED"  ]] && CUR_SPEED=$DEF_SPEED
-      MAX=$(ls -d "$LIVE_DIR"/*/ 2>/dev/null | wc -l)
-      if [[ "$ACTION" == "+" ]]; then
-          ((CUR_FOLDER++))
-          ((CUR_FOLDER > MAX)) && CUR_FOLDER=1
-      elif [[ "$ACTION" == "-" ]]; then
-          ((CUR_FOLDER--))
-          ((CUR_FOLDER < 1)) && CUR_FOLDER=$MAX
-      else
-          exit 1
-      fi
-      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
-      printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
-      chmod +x "$LIVE_BG"
-      eval "$CMD"
-    '';
-
-    live-bg-speed = pkgs.writeShellScriptBin "live-bg-speed" ''
-      LIVE_BG="$HOME/.live-bg"
-      LIVE_DIR="$HOME/Pictures/live-wallpapers"
-      RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
-      DEF_FOLDER=1
-      DEF_SPEED=10
-      ACTION="$1"
-      pkill paperview-rs 2>/dev/null
-      if [[ -f "$LIVE_BG" ]]; then
-          CUR_FOLDER=$(sed -n 's|.*/live-wallpapers/\([0-9]\+\)/.*|\1|p' "$LIVE_BG")
-          CUR_SPEED=$(sed -n 's|.*:\([0-9]\+\)".*|\1|p' "$LIVE_BG")
-      fi
-      [[ -z "$CUR_FOLDER" ]] && CUR_FOLDER=$DEF_FOLDER
-      [[ -z "$CUR_SPEED"  ]] && CUR_SPEED=$DEF_SPEED
-      if [[ "$ACTION" == "+" ]]; then
-          CUR_SPEED=$((CUR_SPEED + 1))
-      elif [[ "$ACTION" == "-" ]]; then
-          CUR_SPEED=$((CUR_SPEED - 1))
-          ((CUR_SPEED < 1)) && CUR_SPEED=1
-      else
-          exit 1
-      fi
-      CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
-      printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
-      chmod +x "$LIVE_BG"
-      eval "$CMD"
-    '';
-
-    live-bg-pause = pkgs.writeShellScriptBin "live-bg-pause" ''
-      PROC="paperview-rs"
-      PID=$(pgrep -n "$PROC")
-      if [ -z "$PID" ]; then
-          echo "Process not running"
-          exit 1
-      fi
-      STATE=$(ps -o state= -p "$PID")
-      if [[ "$STATE" == *T* ]]; then
-          kill -CONT "$PID"
-          echo "Resumed $PROC"
-      else
-          kill -STOP "$PID"
-          echo "Paused $PROC"
-      fi
-    '';
-
-    live-bg-speed-manual = pkgs.writeShellScriptBin "live-bg-speed-manual" ''
-      FILE="$HOME/.live-bg"
-      [ -f "$FILE" ] || exit 0
-      SPEED=$(rofi -dmenu -p "Speed" -theme $HOME/.config/rofi/themes/power.rasi)
-      [ -z "$SPEED" ] && exit 0
-      sed -i "s/:\([0-9]\+\)\"$/:$SPEED\"/" "$FILE"
-      pkill paperview-rs && $HOME/.live-bg
-    '';
 
     bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
       direction=$1
@@ -658,14 +508,6 @@
 
     betterlock-init
     fehw
-    feh-cycle
-    feh-rofi
-
-    live-bg
-    live-bg-speed
-    live-bg-cycle
-    live-bg-pause
-    live-bg-speed-manual
 
     bsp-border-color
     bsp-tabbed
@@ -3641,6 +3483,69 @@
             text-color: ${Blue};
             padding: 10 6 0 10;
             margin: 0 -2 0 0;
+        }
+      '';
+    };
+    rofi-thumbs = {
+      target = "rofi/themes/thumb.rasi";
+      text = ''
+        configuration {
+            modi: "drun";
+            show-icons: true;
+            drun-display-format: "";
+        }
+        * {
+            background-color: transparent;
+        }
+        window {
+            transparency: "real";
+            location: center;
+            anchor: center;
+            width: 600px;
+            height: 400px;
+            margin: 0px;
+            padding: 0px;
+            border: 1px solid;
+            border-radius: 10px;
+        }
+        mainbox {
+            padding: 20px;
+            spacing: 10px;
+            children: [ listview ];
+        }
+        listview {
+            columns: 5;
+            lines: 2;
+            fixed-columns: true;
+            fixed-height: true;
+            spacing: 16px;
+            padding: 0px;
+            layout: vertical;
+            scrollbar: false;
+            cycle: true;
+            background-color: transparent;
+        }
+        element {
+            expand: true;
+            padding: 0px;
+            border-radius: 10px;
+            cursor: pointer;
+            children: [ element-icon ];
+        }
+        element selected.normal {
+            border: 2px solid;
+            border-radius: 10px;
+            border-color: ${Sapphire};
+        }
+        element-icon {
+            expand: true;
+            size: 96px;
+            border-radius: 8px;
+            vertical-align: 0.5;
+            horizontal-align: 0.5;
+        }
+        element-text {
+            enabled: false;
         }
       '';
     };
