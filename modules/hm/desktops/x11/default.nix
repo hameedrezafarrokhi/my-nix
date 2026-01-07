@@ -589,6 +589,7 @@ in
           "100:class_g = 'Brave'"
          #"95:class_g =  'kitty'"
          #"95:class_g =  'dolphin'"
+          "100:class_name = 'dunst'"
         ];
 
         settings = {

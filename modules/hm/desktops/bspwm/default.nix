@@ -172,7 +172,8 @@ in
         if hash tint2 >/dev/null 2>&1; then
         	  pkill tint2
         	  sleep 0.5
-        	  tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+        	  #tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+              tint2 &
         fi
 
         #if hash skippy-xd >/dev/null 2>&1; then

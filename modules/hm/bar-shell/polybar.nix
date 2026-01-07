@@ -308,7 +308,7 @@ in
         interval = 120;
         mount-0 = "/";
         format-mounted-prefix = '' %{O-4pt}'';
-        label-mounted = "%percentage_free%%";
+        label-mounted = "%{T3}%percentage_free%%%{T-}";
         label-unmounted = "%mountpoint% not mounted";
       };
 
@@ -373,7 +373,7 @@ in
         type = "internal/memory";
         interval = 2;
         format-prefix = '' %{O-5pt}'';
-        label = "%percentage_used:2%%";
+        label = "%{T3}%percentage_used:2%%%{T-}";
       };
 
       "module/cpu" = {
@@ -381,7 +381,7 @@ in
         type = "internal/cpu";
         interval = 02;
         format-prefix = '' %{O-6pt}'';
-        label = "%percentage:2%%";
+        label = "%{T3}%percentage:2%%%{T-}";
       };
 
      #"network-base" = {
@@ -509,7 +509,7 @@ in
         unknown-as-up = true;
         interval = 2.0;
         label-connected = ''"%upspeed:4%%{O-5pt}"'';
-        format-connected = "<label-connected>%{O-5pt}";
+        format-connected = "%{T3}<label-connected>%{O-5pt}%{T-}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
       };
@@ -521,7 +521,7 @@ in
         unknown-as-up = true;
         interval = 2.0;
         label-connected = ''"%downspeed:4%%{O-8pt}"'';
-        format-connected = "<label-connected>%{O-2pt}";
+        format-connected = "%{T3}<label-connected>%{O-2pt}%{T-}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
       };

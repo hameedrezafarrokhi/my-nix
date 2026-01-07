@@ -107,12 +107,12 @@ let
   bsp-power = pkgs.writeShellScriptBin "bsp-power" ''
     ROFI_THEME="$HOME/.config/rofi/themes/power.rasi"
 
-    chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM❤️\n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot\n󰆓 Save Session\n󰆔 Restore Session" | \
+    chosen=$(echo -e "[Cancel]\n󰑓 Reload BSPWM \n Lock\n󰍃 Logout\n󰒲 Sleep\n󰤆 Shutdown\n󱄋 Reboot\n󰁱 Polybar\n󰆓 Save Session\n󰆔 Restore Session" | \
         rofi -dmenu -i -p "Power Menu" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
 
     case "$chosen" in
         " Lock") ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default  ;;
-        "󰑓 Reload BSPWM❤️") poly-reset  ;;
+        "󰑓 Reload BSPWM ") poly-reset  ;;
         "󰍃 Logout")
           bspc quit
           pkill dwm
@@ -122,6 +122,7 @@ let
         "󰒲 Sleep") systemctl suspend  ;;
         "󰤆 Shutdown") systemctl poweroff ;;
         "󱄋 Reboot") systemctl reboot ;;
+        "󰁱 Polybar") bsp-poly-hide ;;
         "󰆓 Save Session") yes | xsession-manager -s bspwm ;;
         "󰆔 Restore Session") yes | xsession-manager -pr bspwm ;;
         *) exit 0 ;; # Exit on cancel or invalid input
@@ -156,7 +157,7 @@ let
             echo ""
         else
             #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
-            tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+            tint2 &
         fi
 
         polybar $BAR_NAME &
@@ -176,7 +177,7 @@ let
     else
         "$HOME/.bsp_gaps_bar_cache"
         #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
-        tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+        tint2 &
     fi
   '';
 
@@ -1250,7 +1251,7 @@ let
   bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
 
     if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
-        polybar example & disown & tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc & disown & bspc node -t tiled
+        polybar example & disown & tint2 & disown & bspc node -t tiled
 
     else
         pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen

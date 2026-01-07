@@ -144,59 +144,59 @@ super + alt + shift + Tab
 
 # Expand window width right
 super + ctrl + Right
-	bspc node -z right 40 0
+	bspc node -z right 10 0
 
 # Expand window width left
 super + ctrl + Left
-	bspc node -z left -40 0
+	bspc node -z left -10 0
 
 # Shrink window width right
 super + ctrl + alt + Right
-	bspc node -z left 40 0
+	bspc node -z left 10 0
 
 # Shrink window width left
 super + ctrl + alt + Left
-	bspc node -z right -40 0
+	bspc node -z right -10 0
 
 # Expand window height up
 super + ctrl + Up
-	bspc node -z top 0 -40
+	bspc node -z top 0 -10
 
 # Expand window height down
 super + ctrl + Down
-	bspc node -z bottom 0 40
+	bspc node -z bottom 0 10
 
 # Shrink window height up
 super + ctrl + alt + Up
-	bspc node -z bottom 0 -40
+	bspc node -z bottom 0 -10
 
 # Shrink window height down
 super + ctrl + alt + Down
-	bspc node -z top 0 40
+	bspc node -z top 0 10
 
 # Move Window Border to Right on all sides
 super + ctrl + shift + Right
-	bspc node -z right 40 0; bspc node -z left 40 0
+	bspc node -z right 10 0; bspc node -z left 10 0
 
 # Move Window Border to Left on all sides
 super + ctrl + shift + Left
-	bspc node -z right -40 0; bspc node -z left -40 0
+	bspc node -z right -10 0; bspc node -z left -10 0
 
 # Move Window Border Down on all sides
 super + ctrl + shift + Down
-	bspc node -z top 0 40; bspc node -z bottom 0 40
+	bspc node -z top 0 10; bspc node -z bottom 0 10
 
 # Move Window Border Up on all sides
 super + ctrl + shift + Up
-	bspc node -z top 0 -40; bspc node -z bottom 0 -40
+	bspc node -z top 0 -10; bspc node -z bottom 0 -10
 
 # Expand window all sides
 super + ctrl + alt + shift + Up
-	bspc node -z right 40 0; bspc node -z left -40 0; bspc node -z top 0 -40; bspc node -z bottom 0 40
+	bspc node -z right 10 0; bspc node -z left -10 0; bspc node -z top 0 -10; bspc node -z bottom 0 10
 
 # Shrink window all sides
 super + ctrl + alt + shift + Down
-	bspc node -z right -40 0; bspc node -z left 40 0; bspc node -z top 0 40; bspc node -z bottom 0 -40
+	bspc node -z right -10 0; bspc node -z left 10 0; bspc node -z top 0 10; bspc node -z bottom 0 -10
 
 # Increase Volume
 XF86AudioRaiseVolume
@@ -376,7 +376,7 @@ alt + shift + p
 
 # Keybind Help
 super + h
-      notify-send "I❤️BSPWM"; bsp-help
+      notify-send -u low -e -t 1000 "I  BSPWM"; bsp-help
 
 # Power Menu
 ctrl + alt + Delete

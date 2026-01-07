@@ -152,6 +152,7 @@
 
     MonoSpace = "Comic Mono";
     MonoAlt = "Monofur Nerd Font Mono";
+    MonoAlt2 = "Hack Nerd Font";
     Sans = "Comic Sans MS";
     Serif = "Comic Sans MS";
     Emoji = "Blobmoji";
@@ -166,7 +167,8 @@
     dunstFont = "${MonoSpace} ${toString MonoSize}";
     MonoOnboard = "${MonoAlt} bold";
     Poly1 = "${MonoSpace}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
-    Poly2 = "Hack Nerd Font:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    Poly2 = "${MonoAlt2}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    Poly3 = "${MonoSpace}:size=${toString PolySizeSmall}:weight=${PolyWeight};${toString PolyScaleSmall}";
     PolySymbols = "Symbols Nerd Font:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
     awesome-wmFont = "Comic Sans Bold ${toString SansSize}";
     i3Style = "Bold Semi-Condensed";
@@ -176,7 +178,7 @@
     MonoSize = 10;
     SansSize = MonoSize;
     MonoSizeKitty = 9;
-    MonoSizeAlacritty = 9.5;
+    MonoSizeAlacritty = 9.0;
     MonoSizePlasma = 11;
     MonoSizePlasmaSmall = 8;
     MonoSizeI3 = 9.0;
@@ -184,8 +186,10 @@
     MangohudSize = 24;
     MonoSizeWezterm = 9.0;
     PolySize = 10.5;
+    PolySizeSmall = 5.0;
     PolyWeight = "medium";
     PolyScale = 3;
+    PolyScaleSmall = 1;
 
     sound = "ocean";
 
@@ -630,6 +634,7 @@
     #! white
     "*color7" =       Subtext1;
     "*color15" =      Subtext0;
+    # TODO add 16-21 colors
     "Xft.antialias" = 1;
     "Xft.hinting" = 1;
     "Xft.autohint" = 0;
@@ -642,6 +647,9 @@
     "URxvt.font" = MonoURxvt;
     "dmenu.selbackground" = Base;
     "dmenu.selforeground" = Text;
+    "Sxiv.foreground" = Text;
+    "Sxiv.background" = Base;
+    "Sxiv.font" = Mono-X;
    #"*background" = "[background_opacity]#fafafa";
    #"st.font" = MonoSt;
    #"st.alpha" = 0.80; # For Transparent 0.60
@@ -1215,7 +1223,7 @@
          #glyph_offset = { x = 1, y = 0 }
           size = lib.mkForce MonoSizeAlacritty;
           normal = {
-            family = lib.mkForce MonoSpace;
+            family = lib.mkForce MonoAlt2;
             style = "Regular";
           };
           bold = {
@@ -1225,6 +1233,80 @@
           italic = {
             family = lib.mkForce MonoSpace;
             style = "Italic";
+          };
+        };
+        colors = {
+          primary = {
+            foreground = Text;
+            background = Base;
+            bright_foreground = Text;
+            dim_foreground = Text;
+          };
+          selection = {
+            text = Base;
+            background = Rosewater;
+          };
+          cursor = {
+            text = Base;
+            cursor = Rosewater;
+          };
+          vi_mode_cursor = {
+            text = Base;
+            cursor = Lavender;
+          };
+          search = {
+            matches = {
+              foreground = Base;
+              background = Subtext0;
+            };
+            focused_match = {
+              foreground = Base;
+              background = Green;
+            };
+          };
+          footer_bar = {
+            foreground = Base;
+            background = Subtext0;
+          };
+          hints = {
+            start = {
+              foreground = Base;
+              background = Yellow;
+            };
+            end = {
+              foreground = Base;
+              background = Subtext0;
+            };
+          };
+          normal = {
+            black = Surface1;
+            white = Subtext0;
+            red = Red;
+            green = Green;
+            yellow = Yellow;
+            blue = Blue;
+            magenta = Pink;
+            cyan = Teal;
+          };
+          bright = {
+            black = Surface2;
+            white = Subtext0;
+            red = Red;
+            green = Green;
+            yellow = Yellow;
+            blue = Blue;
+            magenta = Pink;
+            cyan = Teal;
+          };
+          dim = {
+            black = Surface1;
+            red = Red;
+            green = Green;
+            yellow = Yellow;
+            blue = Blue;
+            magenta = Pink;
+            cyan = Teal;
+            white = Subtext1;
           };
         };
       };
@@ -1567,24 +1649,17 @@
     ashell.settings = lib.mkIf config.programs.ashell.enable {
       appearance = {
         style = "Gradient";  # "Islands"
+        background_color = Base;
+        primary_color = Base;
+        secondary_color = Sapphire;
+        success_color = Green;
+        danger_color = Red;
+        text_color = Text;
+        opacity = 1.0;
+        menu.opacity = 1.0;
         font_name = Sans;
-      };
-      primary_color = Base;
-      success_color = Green;
-      text_color = Text;
-      workspace_colors = [ Overlay2 Text ];
-      special_workspace_colors = [ Sapphire Rosewater ];
-      appearance.danger_color = {
-        base = Base;
-        weak = Subtext0;
-      };
-      appearance.background_color = {
-        base = Base;
-        weak = Subtext1;
-        strong = Mantle;
-      };
-      appearance.secondary_color = {
-      base = Overlay2;
+        workspace_colors = [ Overlay2 Text ];
+        special_workspace_colors = [ Sapphire Rosewater ];
       };
     };
     television = lib.mkIf config.programs.television.enable {
@@ -2458,6 +2533,129 @@
       };
      #extraConfig = '' '';
     };
+    cavalier.settings.general = {
+      ColorProfiles = lib.singleton {
+        Name = "nix";
+        FgColors = [ Sapphire ];
+        BgColors = [ Base ];
+      };
+      ActiveProfile = 0;
+    };
+
+    tint2.extraConfig = ''
+      # Hardcoded for 1366px
+      # Backgrounds
+      # Background 1: Panel
+      rounded = 0
+      border_width = 0
+      border_sides =
+      border_content_tint_weight = 0
+      background_content_tint_weight = 0
+      background_color = #000000 0
+      border_color = #000000 0
+      background_color_hover = #000000 0
+      border_color_hover = #000000 0
+      background_color_pressed = #000000 0
+      border_color_pressed = #000000 0
+      # Background 2: Default task, Iconified task
+      rounded = 2
+      border_width = 0
+      border_sides = TBLR
+      border_content_tint_weight = 0
+      background_content_tint_weight = 0
+      background_color = ${Subtext1} 100
+      border_color = #000000 0
+      background_color_hover = ${Rosewater} 22
+      border_color_hover = #000000 0
+      background_color_pressed = ${Sapphire} 100
+      border_color_pressed = #000000 0
+      # Background 3: Active task
+      rounded = 2
+      border_width = 0
+      border_sides = TBLR
+      border_content_tint_weight = 0
+      background_content_tint_weight = 0
+      background_color = ${Sapphire} 100
+      border_color = #000000 0
+      background_color_hover = ${Sapphire} 70
+      border_color_hover = #000000 0
+      background_color_pressed = ${Sapphire} 100
+      border_color_pressed = #000000 0
+      # Background 4: Urgent task
+      rounded = 2
+      border_width = 0
+      border_sides = TBLR
+      border_content_tint_weight = 0
+      background_content_tint_weight = 0
+      background_color = ${Red} 100
+      border_color = #000000 0
+      background_color_hover = ${Red} 70
+      border_color_hover = #000000 0
+      background_color_pressed = ${Red} 100
+      border_color_pressed = #000000 0
+      # Panel
+      panel_items = T
+      panel_size = 50% 2%
+      panel_margin = 0 0
+      panel_padding = 2 1 2
+      panel_background_id = 1
+      wm_menu = 1
+      panel_dock = 0
+      panel_position = bottom center horizontal
+      panel_layer = top
+      panel_monitor = all
+      panel_shrink = 0
+      autohide = 0
+      autohide_show_timeout = 0
+      autohide_hide_timeout = 0.5
+      autohide_height = 2
+      strut_policy = follow_size
+      panel_window_name = tint2
+      disable_transparency = 0
+      mouse_effects = 1
+      font_shadow = 0
+      mouse_hover_icon_asb = 100 0 10
+      mouse_pressed_icon_asb = 100 0 0
+      # Taskbar
+      taskbar_mode = multi_desktop
+      taskbar_hide_if_empty = 0
+      taskbar_padding = 6 4 4
+      taskbar_background_id = 0
+      taskbar_active_background_id = 0
+      taskbar_name = 0
+      taskbar_hide_inactive_tasks = 0
+      taskbar_hide_different_monitor = 0
+      taskbar_hide_different_desktop = 0
+      taskbar_always_show_all_desktop_tasks = 1
+      taskbar_name_padding = 2 2
+      taskbar_name_background_id = 0
+      taskbar_name_active_background_id = 0
+      taskbar_name_font_color = #e3e3e3 0
+      taskbar_name_active_font_color = #ffffff 0
+      taskbar_distribute_size = 0
+      taskbar_sort_order = none
+      task_align = center
+      # Task
+      task_text = 1
+      task_icon = 1
+      task_centered = 1
+      urgent_nb_of_blink = 100000
+      task_maximum_size = 150 35
+      task_padding = 2 2 4
+      task_tooltip = 0
+      task_thumbnail = 0
+      task_thumbnail_size = 210
+      task_font_color = #ffffff 0
+      task_background_id = 2
+      task_active_background_id = 3
+      task_urgent_background_id = 4
+      task_iconified_background_id = 2
+      mouse_left = toggle_iconify
+      mouse_middle = close
+      mouse_right = maximize_restore
+      mouse_scroll_up = next_task
+      mouse_scroll_down = prev_task
+    '';
 
    #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };
   };
@@ -2489,6 +2687,7 @@
           font-0 = Poly1;
           font-1 = PolySymbols;
           font-2 = Poly2;
+          font-3 = Poly3;
          #font-1 = "FontAwesome:size=12;3";
          #font-2 = "Hack Nerd Font:size=12;3";
         };
@@ -3836,49 +4035,118 @@
     wlogout.enable = false;
     xfce4-terminal.enable = false;
     yazi.enable = false;
-    zathura.enable = false;
-    zed.enable = false;
-    zellij.enable = false;
-    zsh-syntax-highlighting.enable = false;
 
   };
 
-   #aerc               #  C
-   #anki               #  C
-   #atuin              #  C
-   #bottom             #  C
-   #brave              #  C
-   #chromium           #  C
-   #delta              #  C
-   #element-desktop    #  C
-   #eza                #  C
-   #fcitx5             #  C
-   #floorp             #  C
-   #foot               #  C
-   #fuzzel             #  C
-   #gitui              #  C
-   #glamour            #  C
-   #halloy             #  C
-   #helix              #  C
-   #imv                #  C
-   #k9s                #  C
-   #lazygit            #  C
-   #librewolf          #  C
-   #lsd                #  C
-   #mako               #  C
-   #micro              #  C
-   #newsboat           #  C
-   #nushell            #  C
-   #rio                #  C
-   #skim               #  C
-   #spotify-player     #  C
-   #thunderbird        #  C
-   #tmux               #  C
-   #tofi               #  C
-   #vesktop            #  C
-   #vicinae            #  C
-   #vivaldi            #  C
-   #vivid              #  C
-   #vscode             #  C
+ #stylix.targets = {
+ #  alacritty.enable = false;
+ #  ashell.enable = false;
+ #  bat.enable = false;
+ #  bspwm.enable = false;
+ #  btop.enable = false;
+ #  cava.enable = false;
+ #  cavalier.enable = false;
+ #  dunst.enable = false;
+ #  feh.enable = false;
+ #  fzf.enable = false;
+ #  ghostty = false;
+ #  gtk.enable = false;  # use if no gtk theme found for style
+ #  hyprland.enable = false;
+ #  hyprlock.enable = false;
+ #  i3.enable = false;
+ #  kde.enable = false;  # use if no kde theme found for style
+ #  kitty.enable = false;
+ #  mangohud.enable = false;
+ #  mpv.enable = false;
+ #  qt.enable = false;  # use if no qt theme found for style
+ #  qutebrowser.enable = false;
+ #  rofi.enable = false;
+ #  starship.enable = false;
+ #  sway.enable = false;
+ #  swaylock.enable = false;
+ #  swaync.enable = false;
+ #  sxiv.enable = false;
+ #  waybar.enable = false;
+ #  wezterm.enable = false;
+ #  xresources.enable = false;
+ #  yazi.enable = false;
+ #};
+
+   #hyprpanel
+
+   #aerc                 C
+   #anki                 C  S
+   #avizo                   S
+   #atuin                C
+   #bemenu                  S
+   #blender                 S
+   #bottom               C
+   #brave                C
+   #chromium             C  S
+   #delta                C
+   #discord                 S
+   #element-desktop      C
+   #emacs                   S
+   #eye of gnome            S
+   #eza                  C
+   #fcitx5               C  S
+   #firefox and dervs    C  S
+   #floorp               C  S
+   #fnott                   S
+   #foliate                 S
+   #foot                 C  S
+   #fuzzel               C  S
+   #gedit                   S
+   #gitui                C  S
+   #glamour              C
+   #glance                  S
+   #gnome text editor       S
+   #gnome                   S
+   #go disk usage           S
+   #gtksourceview           S
+   #halloy               C  S
+   #helix                C  S
+   #hyprpaper               S
+   #i3bar-river             S
+   #imv                  C
+   #k9s                  C  S
+   #kmscon                  S
+   #kubecolor               S
+   #lazygit              C  S
+   #librewolf            C
+   #lsd                  C
+   #mako                 C  S
+   #micro                C  S
+   #ncspot                  S
+   #newsboat             C
+   #noctalia                S
+   #nvim distros            S
+   #nushell              C  S
+   #obsidian                S
+   #opencode                S
+   #rio                  C  S
+   #river                   S
+   #skim                 C
+   #spicetify               S
+   #spotify-player       C  S
+   #thunderbird          C
+   #tmux                 C  S
+   #tofi                 C  S
+   #vesktop              C
+   #vicinae              C  S
+   #vivaldi              C
+   #vivid                C  S
+   #vscode               C  S
+   #wayfire                 S
+   #wayprompt               S
+   #wob                     S
+   #wofi                    S
+   #wpaperd                 S
+   #xfce                    S
+   #zathura              C  S
+   #zed                  C  S
+   #zellij               C  S
+   #zen                     S
+   #zsh                  C
 
 };}

@@ -251,11 +251,18 @@
     };
   };
 
-   #fcitx5             #  C
-   #forgejo            #  C
-   #gitea              #  C
-   #grub               #  C
-   #gtk (gdm icons)    #  C
-   #limine             #  C
+ #stylix.targets = {
+ #  console.enable = false;
+ #  plymouth.enable = false;
+ #};
+
+   #fcitx5           C
+   #forgejo          C  S
+   #gitea            C
+   #grub             C  S
+   #gtk (gdm icons)  C
+   #limine           C  S
+   #lightdm             S
+   #regreet             S
 
 };}
