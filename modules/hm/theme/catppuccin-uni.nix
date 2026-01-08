@@ -213,6 +213,7 @@
 
     alt-Rosewater = "f4dbd6"; Rosewater ="#${alt-Rosewater}"; Calt-Rosewater = lib.strings.toUpper alt-Rosewater; CRosewater = lib.strings.toUpper Rosewater;
     alt-Flamingo =  "f0c6c6"; Flamingo = "#${alt-Flamingo}";  Calt-Flamingo =  lib.strings.toUpper alt-Flamingo;  CFlamingo =  lib.strings.toUpper Flamingo;
+    alt-Orange =    "fab387"; Orange =   "#${alt-Orange}";    Calt-Orange =    lib.strings.toUpper alt-Orange;    COrange =    lib.strings.toUpper Orange;
     alt-Pink =      "f5bde6"; Pink =     "#${alt-Pink}";      Calt-Pink =      lib.strings.toUpper alt-Pink;      CPink =      lib.strings.toUpper Pink;
     alt-Mauve =     "c6a0f6"; Mauve =    "#${alt-Mauve}";     Calt-Mauve =     lib.strings.toUpper alt-Mauve;     CMauve =     lib.strings.toUpper Mauve;
     alt-Red =       "ed8796"; Red =      "#${alt-Red}";       Calt-Red =       lib.strings.toUpper alt-Red;       CRed =       lib.strings.toUpper Red;
@@ -225,6 +226,7 @@
     alt-Sapphire =  "7dc4e4"; Sapphire = "#${alt-Sapphire}";  Calt-Sapphire =  lib.strings.toUpper alt-Sapphire;  CSapphire =  lib.strings.toUpper Sapphire;
     alt-Blue =      "8aadf4"; Blue =     "#${alt-Blue}";      Calt-Blue =      lib.strings.toUpper alt-Blue;      CBlue =      lib.strings.toUpper Blue;
     alt-Lavender =  "b7bdf8"; Lavender = "#${alt-Lavender}";  Calt-Lavender =  lib.strings.toUpper alt-Lavender;  CLavender =  lib.strings.toUpper Lavender;
+    alt-Brown =     "504945"; Brown =    "#${alt-Brown}";     Calt-Brown =     lib.strings.toUpper alt-Brown;     CBrown =     lib.strings.toUpper Brown;
     alt-Text =      "cad3f5"; Text =     "#${alt-Text}";      Calt-Text =      lib.strings.toUpper alt-Text;      CText =      lib.strings.toUpper Text;
     alt-Subtext1 =  "b8c0e0"; Subtext1 = "#${alt-Subtext1}";  Calt-Subtext1 =  lib.strings.toUpper alt-Subtext1;  CSubtext1 =  lib.strings.toUpper Subtext1;
     alt-Subtext0 =  "a5adcb"; Subtext0 = "#${alt-Subtext0}";  Calt-Subtext0 =  lib.strings.toUpper alt-Subtext0;  CSubtext0 =  lib.strings.toUpper Subtext0;
@@ -237,23 +239,26 @@
     alt-Base =      "24273a"; Base =     "#${alt-Base}";      Calt-Base =      lib.strings.toUpper alt-Base;      CBase =      lib.strings.toUpper Base;
     alt-Mantle =    "1e2030"; Mantle =   "#${alt-Mantle}";    Calt-Mantle =    lib.strings.toUpper alt-Mantle;    CMantle =    lib.strings.toUpper Mantle;
     alt-Crust =     "181926"; Crust =    "#${alt-Crust}";     Calt-Crust =     lib.strings.toUpper alt-Crust;     CCrust =     lib.strings.toUpper Crust;
+    alt-Black =     "11111b"; Black =    "#${alt-Black}";     Calt-Black =     lib.strings.toUpper alt-Black;     CBlack =     lib.strings.toUpper Black;
 
     rgb-alt-Rosewater = hexToRgb alt-Rosewater; rgb-Rosewater = "rgb(${rgb-alt-Rosewater})"; base00 = alt-Base;     alt-base00 = "#${alt-Base}";
     rgb-alt-Flamingo =  hexToRgb alt-Flamingo;  rgb-Flamingo =  "rgb(${rgb-alt-Flamingo})";  base01 = alt-Red;      alt-base01 = "#${alt-Red}";
-    rgb-alt-Pink =      hexToRgb alt-Pink;      rgb-Pink =      "rgb(${rgb-alt-Pink})";      base02 = alt-Green;    alt-base02 = "#${alt-Green}";
-    rgb-alt-Mauve =     hexToRgb alt-Mauve;     rgb-Mauve =     "rgb(${rgb-alt-Mauve})";     base03 = alt-Yellow;   alt-base03 = "#${alt-Yellow}";
-    rgb-alt-Red =       hexToRgb alt-Red;       rgb-Red =       "rgb(${rgb-alt-Red})";       base04 = alt-Blue;     alt-base04 = "#${alt-Blue}";
-    rgb-alt-Maroon =    hexToRgb alt-Maroon;    rgb-Maroon =    "rgb(${rgb-alt-Maroon})";    base05 = alt-Pink;     alt-base05 = "#${alt-Pink}";
-    rgb-alt-Peach =     hexToRgb alt-Peach;     rgb-Peach =     "rgb(${rgb-alt-Peach})";     base06 = alt-Teal;     alt-base06 = "#${alt-Teal}";
-    rgb-alt-Yellow =    hexToRgb alt-Yellow;    rgb-Yellow =    "rgb(${rgb-alt-Yellow})";    base07 = alt-Subtext1; alt-base07 = "#${alt-Subtext1}";
-    rgb-alt-Green =     hexToRgb alt-Green;     rgb-Green =     "rgb(${rgb-alt-Green})";     base08 = alt-Surface2; alt-base08 = "#${alt-Surface2}";
-    rgb-alt-Teal =      hexToRgb alt-Teal;      rgb-Teal =      "rgb(${rgb-alt-Teal})";      base09 = alt-Red;      alt-base09 = "#${alt-Red}";
-    rgb-alt-Sky =       hexToRgb alt-Sky;       rgb-Sky =       "rgb(${rgb-alt-Sky})";       base0A = alt-Green;    alt-base0A = "#${alt-Green}";
-    rgb-alt-Sapphire =  hexToRgb alt-Sapphire;  rgb-Sapphire =  "rgb(${rgb-alt-Sapphire})";  base0B = alt-Yellow;   alt-base0B = "#${alt-Yellow}";
-    rgb-alt-Blue =      hexToRgb alt-Blue;      rgb-Blue =      "rgb(${rgb-alt-Blue})";      base0C = alt-Blue;     alt-base0C = "#${alt-Blue}";
-    rgb-alt-Lavender =  hexToRgb alt-Lavender;  rgb-Lavender =  "rgb(${rgb-alt-Lavender})";  base0D = alt-Pink;     alt-base0D = "#${alt-Pink}";
-    rgb-alt-Text =      hexToRgb alt-Text;      rgb-Text =      "rgb(${rgb-alt-Text})";      base0E = alt-Teal;     alt-base0E = "#${alt-Teal}";
-    rgb-alt-Subtext1 =  hexToRgb alt-Subtext1;  rgb-Subtext1 =  "rgb(${rgb-alt-Subtext1})";  base0F = alt-Subtext0; alt-base0F = "#${alt-Subtext0}";
+    rgb-alt-Orange =    hexToRgb alt-Orange;    rgb-Orange =    "rgb(${rgb-alt-Orange})";    base02 = alt-Green;    alt-base02 = "#${alt-Green}";
+    rgb-alt-Pink =      hexToRgb alt-Pink;      rgb-Pink =      "rgb(${rgb-alt-Pink})";      base03 = alt-Yellow;   alt-base03 = "#${alt-Yellow}";
+    rgb-alt-Mauve =     hexToRgb alt-Mauve;     rgb-Mauve =     "rgb(${rgb-alt-Mauve})";     base04 = alt-Blue;     alt-base04 = "#${alt-Blue}";
+    rgb-alt-Red =       hexToRgb alt-Red;       rgb-Red =       "rgb(${rgb-alt-Red})";       base05 = alt-Pink;     alt-base05 = "#${alt-Pink}";
+    rgb-alt-Maroon =    hexToRgb alt-Maroon;    rgb-Maroon =    "rgb(${rgb-alt-Maroon})";    base06 = alt-Teal;     alt-base06 = "#${alt-Teal}";
+    rgb-alt-Peach =     hexToRgb alt-Peach;     rgb-Peach =     "rgb(${rgb-alt-Peach})";     base07 = alt-Subtext1; alt-base07 = "#${alt-Subtext1}";
+    rgb-alt-Yellow =    hexToRgb alt-Yellow;    rgb-Yellow =    "rgb(${rgb-alt-Yellow})";    base08 = alt-Surface2; alt-base08 = "#${alt-Surface2}";
+    rgb-alt-Green =     hexToRgb alt-Green;     rgb-Green =     "rgb(${rgb-alt-Green})";     base09 = alt-Red;      alt-base09 = "#${alt-Red}";
+    rgb-alt-Teal =      hexToRgb alt-Teal;      rgb-Teal =      "rgb(${rgb-alt-Teal})";      base0A = alt-Green;    alt-base0A = "#${alt-Green}";
+    rgb-alt-Sky =       hexToRgb alt-Sky;       rgb-Sky =       "rgb(${rgb-alt-Sky})";       base0B = alt-Yellow;   alt-base0B = "#${alt-Yellow}";
+    rgb-alt-Sapphire =  hexToRgb alt-Sapphire;  rgb-Sapphire =  "rgb(${rgb-alt-Sapphire})";  base0C = alt-Blue;     alt-base0C = "#${alt-Blue}";
+    rgb-alt-Blue =      hexToRgb alt-Blue;      rgb-Blue =      "rgb(${rgb-alt-Blue})";      base0D = alt-Pink;     alt-base0D = "#${alt-Pink}";
+    rgb-alt-Lavender =  hexToRgb alt-Lavender;  rgb-Lavender =  "rgb(${rgb-alt-Lavender})";  base0E = alt-Teal;     alt-base0E = "#${alt-Teal}";
+    rgb-alt-Brown =     hexToRgb alt-Brown;     rgb-Brown =     "rgb(${rgb-alt-Brown})";     base0F = alt-Subtext0; alt-base0F = "#${alt-Subtext0}";
+    rgb-alt-Text =      hexToRgb alt-Text;      rgb-Text =      "rgb(${rgb-alt-Text})";
+    rgb-alt-Subtext1 =  hexToRgb alt-Subtext1;  rgb-Subtext1 =  "rgb(${rgb-alt-Subtext1})";
     rgb-alt-Subtext0 =  hexToRgb alt-Subtext0;  rgb-Subtext0 =  "rgb(${rgb-alt-Subtext0})";
     rgb-alt-Overlay2 =  hexToRgb alt-Overlay2;  rgb-Overlay2 =  "rgb(${rgb-alt-Overlay2})";
     rgb-alt-Overlay1 =  hexToRgb alt-Overlay1;  rgb-Overlay1 =  "rgb(${rgb-alt-Overlay1})";
@@ -264,6 +269,7 @@
     rgb-alt-Base =      hexToRgb alt-Base;      rgb-Base =      "rgb(${rgb-alt-Base})";
     rgb-alt-Mantle =    hexToRgb alt-Mantle;    rgb-Mantle =    "rgb(${rgb-alt-Mantle})";
     rgb-alt-Crust =     hexToRgb alt-Crust;     rgb-Crust =     "rgb(${rgb-alt-Crust})";
+    rgb-alt-Black =     hexToRgb alt-Black;     rgb-Black =     "rgb(${rgb-alt-Black})";
 
 
     starship1 =  "#3B4252";  obs-selection = "#3a3d53";   Transparent = "#FF00000";
@@ -2660,167 +2666,167 @@
     hyprpanel.settings = {
       theme = {
         matugen_settings = {
-          mode = "dark";
+          mode = scheme;
           scheme_type = "tonal-spot";
         };
         bar = {
           menus = {
             menu = {
               notifications = {
-                scrollbar = { color = "#b7bdf8"; };
-                pager = { label = "#939ab7"; button = "#b7bdf8"; background = "#181926"; };
-                switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#b7bdf8"; };
-                clear = "#ed8796"; switch_divider = "#494d64"; border = "#363a4f"; card = "#1e2030"; background = "#181926"; no_notifications_label = "#363a4f"; label = "#b7bdf8"; scaling = 75;
+                scrollbar = { color = Lavender; };
+                pager = { label = Overlay2; button = Lavender; background = Crust; };
+                switch = { puck = Surface1; disabled = Surface0; enabled = Lavender; };
+                clear = Red; switch_divider = Surface1; border = Surface0; card = Mantle; background = Crust; no_notifications_label = Surface0; label = Lavender; scaling = 75;
               };
               power = {
                 buttons = {
-                  sleep = { icon = "#181926"; text = "#91d7e3"; icon_background = "#91d7e3"; background = "#1e2030"; };
-                  logout = { icon = "#181926"; text = "#a6da95"; icon_background = "#a6da95"; background = "#1e2030"; };
-                  restart = { icon = "#181926"; text = "#f5a97f"; icon_background = "#f5a97f"; background = "#1e2030"; };
-                  shutdown = { icon = "#181926"; text = "#ed8796"; icon_background = "#ed8796"; background = "#1e2030"; };
+                  sleep = { icon = Crust; text = Sky; icon_background = Sky; background = Mantle; };
+                  logout = { icon = Crust; text = Yellow; icon_background = Yellow; background = Mantle; };
+                  restart = { icon = Crust; text = Peach; icon_background = Peach; background = Mantle; };
+                  shutdown = { icon = Crust; text = Red; icon_background = Red; background = Mantle; };
                 };
-                card.color = "#2a283e"; border.color = "#363a4f"; background.color = "#181926"; scaling = 75;
+                card.color = Base; border.color = Surface0; background.color = Crust; scaling = 75;
               };
               dashboard = {
                 monitors = {
-                  disk = { label = "#f5bde6"; bar = "#f5bde6"; icon = "#f5bde6"; };
-                  gpu = { label = "#a6da95"; bar = "#a6da95"; icon = "#a6da95"; };
-                  ram = { label = "#eed49f"; bar = "#eed49f"; icon = "#eed49f"; };
-                  cpu = { label = "#ee99a0"; bar = "#ee99a0"; icon = "#ee99a0"; };
-                  bar_background = "#494d64";
+                  disk = { label = Pink; bar = Pink; icon = Pink; };
+                  gpu = { label = Yellow; bar = Yellow; icon = Yellow; };
+                  ram = { label = Yellow; bar = Yellow; icon = Yellow; };
+                  cpu = { label = Maroon; bar = Maroon; icon = Maroon; };
+                  bar_background = Surface1;
                 };
                 directories = {
-                  right = { bottom.color = "#b7bdf8"; middle.color = "#c6a0f6"; top.color = "#8bd5ca"; };
-                  left = { bottom.color = "#ee99a0"; middle.color = "#eed49f"; top.color = "#f5bde6"; };
+                  right = { bottom.color = Lavender; middle.color = Pink; top.color = Teal; };
+                  left = { bottom.color = Maroon; middle.color = Yellow; top.color = Pink; };
                 };
                 controls = {
-                  input = { text = "#181926"; background = "#f5bde6"; };
-                  volume = { text = "#181926"; background = "#ee99a0"; };
-                  notifications = { text = "#181926"; background = "#eed49f"; };
-                  bluetooth = { text = "#181926"; background = "#91d7e3"; };
-                  wifi = { text = "#181926"; background = "#c6a0f6"; };
-                  disabled = "#5b6078";
+                  input = { text = Crust; background = Pink; };
+                  volume = { text = Crust; background = Maroon; };
+                  notifications = { text = Crust; background = Yellow; };
+                  bluetooth = { text = Crust; background = Sky; };
+                  wifi = { text = Crust; background = Pink; };
+                  disabled = Surface2;
                 };
-                shortcuts = { recording = "#a6da95"; text = "#181926"; background = "#b7bdf8"; };
+                shortcuts = { recording = Yellow; text = Crust; background = Lavender; };
                 powermenu = {
                   confirmation = {
-                    button_text = "#181926"; deny = "#ed8796";
-                    confirm = "#a6da95"; body = "#cad3f5"; label = "#b7bdf8";
-                    border = "#363a4f"; background = "#181926"; card = "#1e2030";
+                    button_text = Crust; deny = Red;
+                    confirm = Yellow; body = Text; label = Lavender;
+                    border = Surface0; background = Crust; card = Mantle;
                   };
-                  sleep = "#91d7e3"; logout = "#a6da95"; restart = "#f5a97f"; shutdown = "#ed8796";
+                  sleep = Sky; logout = Yellow; restart = Peach; shutdown = Red;
                 };
-                profile.name = "#f5bde6"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 70; confirmation_scaling = 75;
+                profile.name = Pink; border.color = Surface0; background.color = Crust; card.color = Mantle; scaling = 70; confirmation_scaling = 75;
               };
               clock = {
                 weather = {
-                  hourly = { temperature = "#f5bde6"; icon = "#f5bde6"; time = "#f5bde6"; };
-                  thermometer = { extremelycold = "#91d7e3"; cold = "#8aadf4"; moderate = "#b7bdf8"; hot = "#f5a97f"; extremelyhot = "#ed8796"; };
-                  stats = "#f5bde6"; status = "#8bd5ca"; temperature = "#cad3f5"; icon = "#f5bde6"; scaling = 75;
+                  hourly = { temperature = Pink; icon = Pink; time = Pink; };
+                  thermometer = { extremelycold = Sky; cold = Blue; moderate = Lavender; hot = Peach; extremelyhot = Red; };
+                  stats = Pink; status = Teal; temperature = Text; icon = Pink; scaling = 75;
                 };
-                calendar = { contextdays = "#5b6078"; days = "#cad3f5"; currentday = "#f5bde6"; paginator = "#f5bde6"; weekdays = "#f5bde6"; yearmonth = "#8bd5ca"; };
-                time = { timeperiod = "#8bd5ca"; time = "#f5bde6"; };
-                text = "#cad3f5"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+                calendar = { contextdays = Surface2; days = Text; currentday = Pink; paginator = Pink; weekdays = Pink; yearmonth = Teal; };
+                time = { timeperiod = Teal; time = Pink; };
+                text = Text; border.color = Surface0; background.color = Crust; card.color = Mantle; scaling = 75;
               };
               battery = {
-                slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#eed49f"; };
-                icons = { active = "#eed49f"; passive = "#939ab7"; };
-                listitems = { active = "#eed49f"; passive = "#cad3f5"; };
-                text = "#cad3f5"; label.color = "#eed49f"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+                slider = { puck = Overlay0; backgroundhover = Surface1; background = Surface2; primary = Yellow; };
+                icons = { active = Yellow; passive = Overlay2; };
+                listitems = { active = Yellow; passive = Text; };
+                text = Text; label.color = Yellow; border.color = Surface0; background.color = Crust; card.color = Mantle; scaling = 75;
               };
-              systray = { dropdownmenu = { divider = "#1e2030"; text = "#cad3f5"; background = "#181926"; }; };
+              systray = { dropdownmenu = { divider = Mantle; text = Text; background = Crust; }; };
               bluetooth = {
-                iconbutton = { active = "#91d7e3"; passive = "#cad3f5"; };
-                icons = { active = "#91d7e3"; passive = "#939ab7"; };
-                listitems = { active = "#91d7e3"; passive = "#cad3f5"; };
-                switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#91d7e3"; };
-                switch_divider = "#494d64"; status = "#6e738d"; text = "#cad3f5";
-                label.color = "#91d7e3"; scroller.color = "#91d7e3"; border.color = "#363a4f";
-                background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+                iconbutton = { active = Sky; passive = Text; };
+                icons = { active = Sky; passive = Overlay2; };
+                listitems = { active = Sky; passive = Text; };
+                switch = { puck = Surface1; disabled = Surface0; enabled = Sky; };
+                switch_divider = Surface1; status = Overlay0; text = Text;
+                label.color = Sky; scroller.color = Sky; border.color = Surface0;
+                background.color = Crust; card.color = Mantle; scaling = 75;
               };
               network = {
-                switch = { enabled = "#c6a0f6"; disabled = "#363a4f"; puck = "#494d64"; };
-                iconbuttons = { active = "#c6a0f6"; passive = "#cad3f5"; };
-                icons = { active = "#c6a0f6"; passive = "#939ab7"; };
-                listitems = { active = "#c6a0f6"; passive = "#cad3f5"; };
-                status.color = "#6e738d"; text = "#cad3f5"; label.color = "#c6a0f6"; card.color = "#1e2030";
-                scroller.color = "#c6a0f6"; border.color = "#363a4f"; background.color = "#181926"; scaling = 75;
+                switch = { enabled = Pink; disabled = Surface0; puck = Surface1; };
+                iconbuttons = { active = Pink; passive = Text; };
+                icons = { active = Pink; passive = Overlay2; };
+                listitems = { active = Pink; passive = Text; };
+                status.color = Overlay0; text = Text; label.color = Pink; card.color = Mantle;
+                scroller.color = Pink; border.color = Surface0; background.color = Crust; scaling = 75;
               };
               volume = {
-                input_slider = { puck = "#5b6078"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#ee99a0"; };
-                audio_slider = { puck = "#5b6078"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#ee99a0"; };
-                icons = { active = "#ee99a0"; passive = "#939ab7"; }; iconbutton = { active = "#ee99a0"; passive = "#cad3f5"; };
-                listitems = { active = "#ee99a0"; passive = "#cad3f5"; };
-                text = "#cad3f5"; label.color = "#ee99a0"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+                input_slider = { puck = Surface2; backgroundhover = Surface1; background = Surface2; primary = Maroon; };
+                audio_slider = { puck = Surface2; backgroundhover = Surface1; background = Surface2; primary = Maroon; };
+                icons = { active = Maroon; passive = Overlay2; }; iconbutton = { active = Maroon; passive = Text; };
+                listitems = { active = Maroon; passive = Text; };
+                text = Text; label.color = Maroon; border.color = Surface0; background.color = Crust; card.color = Mantle; scaling = 75;
               };
               media = {
-                slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#f5bde6"; };
-                buttons = { text = "#181926"; background = "#b7bdf8"; enabled = "#8bd5ca"; inactive = "#5b6078"; };
-                border.color = "#363a4f"; card.color = "#1e2030"; background.color = "#181926";
-                album = "#f5bde6"; timestamp = "#cad3f5"; artist = "#8bd5ca"; song = "#b7bdf8"; scaling = 75;
+                slider = { puck = Overlay0; backgroundhover = Surface1; background = Surface2; primary = Pink; };
+                buttons = { text = Crust; background = Lavender; enabled = Teal; inactive = Surface2; };
+                border.color = Surface0; card.color = Mantle; background.color = Crust;
+                album = Pink; timestamp = Text; artist = Teal; song = Lavender; scaling = 75;
               };
             };
-            tooltip = { text = "#cad3f5"; background = "#181926"; };
-            dropdownmenu = { divider = "#1e2030"; text = "#cad3f5"; background = "#181926"; };
-            slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#b7bdf8"; };
-            progressbar = { background = "#494d64"; foreground = "#b7bdf8"; };
-            iconbuttons = { active = "#b7bdf8"; passive = "#cad3f5"; };
-            buttons = { text = "#181926"; disabled = "#5b6078"; active = "#f5bde6"; default = "#b7bdf8"; };
-            check_radio_button = { active = "#b7bcf8"; background = "#181826"; };
-            switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#b7bdf8"; };
-            icons = { active = "#b7bdf8"; passive = "#5b6078"; };
-            listitems = { active = "#b7bdf8"; passive = "#cad3f5"; };
-            popover = { border = "#181926"; background = "#181926"; text = "#b7bdf8"; scaling = 75; };
-            label = "#b7bdf8"; feinttext = "#363a4f"; dimtext = "#5b6078"; text = "#cad3f5";
-            border.color = "#363a4f"; cards = "#1e2030"; background = "#181926";
+            tooltip = { text = Text; background = Crust; };
+            dropdownmenu = { divider = Mantle; text = Text; background = Crust; };
+            slider = { puck = Overlay0; backgroundhover = Surface1; background = Surface2; primary = Lavender; };
+            progressbar = { background = Surface1; foreground = Lavender; };
+            iconbuttons = { active = Lavender; passive = Text; };
+            buttons = { text = Crust; disabled = Surface2; active = Pink; default = Lavender; };
+            check_radio_button = { active = Subtext1; background = Crust; };
+            switch = { puck = Surface1; disabled = Surface0; enabled = Lavender; };
+            icons = { active = Lavender; passive = Surface2; };
+            listitems = { active = Lavender; passive = Text; };
+            popover = { border = Crust; background = Crust; text = Lavender; scaling = 75; };
+            label = Lavender; feinttext = Surface0; dimtext = Surface2; text = Text;
+            border.color = Surface0; cards = Mantle; background = Crust;
           };
           buttons = {
+            style = "split"; background = Base; borderColor = Lavender;
             modules = {
-              power = { icon_background = "#ed8796"; icon = "#181825"; background = "#24273a"; border = "#ed8796"; };
-              weather = { icon_background = "#b7bdf8"; icon = "#24273a"; text = "#b7bdf8"; background = "#24273a"; border = "#b7bdf8"; };
-              updates = { icon_background = "#c6a0f6"; icon = "#181825"; text = "#c6a0f6"; background = "#24273a"; border = "#c6a0f6"; };
-              kbLayout = { icon_background = "#91d7e3"; icon = "#181825"; text = "#91d7e3"; background = "#24273a"; border = "#91d7e3"; };
-              netstat = { icon_background = "#a6da95"; icon = "#181825"; text = "#a6da95"; background = "#24273a"; border = "#a6da95"; };
-              storage = { icon_background = "#ed8796"; icon = "#181825"; text = "#ed8796"; background = "#24273a"; border = "#ed8796"; };
-              cpu = { icon_background = "#ed8796"; icon = "#181825"; text = "#ed8796"; background = "#24273a"; border = "#ed8796"; };
-              ram = { icon_background = "#eed49f"; icon = "#181825"; text = "#eed49f"; background = "#24273a"; border = "#eed49f"; };
-              submap = { icon = "#181825"; background = "#24273a"; icon_background = "#8bd5ca"; text = "#8bd5ca"; border = "#8bd5ca"; };
-              hyprsunset = { icon = "#181825"; background = "#24273a"; icon_background = "#eed49f"; text = "#eed49f"; border = "#eed49f"; };
-              hypridle = { icon = "#181825"; background = "#24273a"; icon_background = "#ed8796"; text = "#ed8796"; border = "#ed8796"; };
-              cava = { text = "#8bd5ca"; background = "#24273a"; icon_background = "#8bd5ca"; icon = "#181825"; border = "#8bd5ca"; };
-              worldclock = { text = "#f5bde6"; background = "#24273a"; icon_background = "#f5bde6"; icon = "#24273a"; border = "#f5bde6"; };
-              microphone = { border = "#a6da95"; background = "#24273a"; text = "#a6da95"; icon = "#24273a"; icon_background = "#a6da95"; };
-              cpuTemp = { icon_background = "#fab387"; icon = "#fab387"; text = "#fab387"; border = "#fab387"; hover = "#45475a"; };
+              power = { icon_background = Red; icon = Crust; background = Base; border = Red; };
+              weather = { icon_background = Lavender; icon = Base; text = Lavender; background = Base; border = Lavender; };
+              updates = { icon_background = Pink; icon = Crust; text = Pink; background = Base; border = Pink; };
+              kbLayout = { icon_background = Sky; icon = Crust; text = Sky; background = Base; border = Sky; };
+              netstat = { icon_background = Yellow; icon = Crust; text = Yellow; background = Base; border = Yellow; };
+              storage = { icon_background = Red; icon = Crust; text = Red; background = Base; border = Red; };
+              cpu = { icon_background = Red; icon = Crust; text = Red; background = Base; border = Red; };
+              ram = { icon_background = Yellow; icon = Crust; text = Yellow; background = Base; border = Yellow; };
+              submap = { icon = Crust; background = Base; icon_background = Teal; text = Teal; border = Teal; };
+              hyprsunset = { icon = Crust; background = Base; icon_background = Yellow; text = Yellow; border = Yellow; };
+              hypridle = { icon = Crust; background = Base; icon_background = Red; text = Red; border = Red; };
+              cava = { text = Teal; background = Base; icon_background = Teal; icon = Crust; border = Teal; };
+              worldclock = { text = Pink; background = Base; icon_background = Pink; icon = Base; border = Pink; };
+              microphone = { border = Yellow; background = Base; text = Yellow; icon = Base; icon_background = Yellow; };
+              cpuTemp = { icon_background = Orange; icon = Orange; text = Orange; border = Orange; hover = Surface1; };
             };
-            notifications = { total = "#b7bdf8"; icon_background = "#b7bcf8"; icon = "#24273a"; background = "#24273a"; border = "#b7bdf8"; hover = "#504945"; };
-            clock = { icon_background = "#f5bde6"; icon = "#24273a"; text = "#f5bde6"; background = "#24273a"; border = "#f5bde6"; hover = "#504945"; };
-            battery = { icon_background = "#eed49f"; icon = "#24273a"; text = "#eed49f"; background = "#24273a"; border = "#eed49f"; hover = "#504945"; };
-            systray = { background = "#24273a"; border = "#494d64"; customIcon = "#cad3f5"; hover = "#504945"; };
-            bluetooth = { icon_background = "#91d7e3"; icon = "#24273a"; text = "#91d7e3"; background = "#24273a"; border = "#91d7e3"; hover = "#504945"; };
-            network = { icon_background = "#c5a0f6"; icon = "#24273a"; text = "#c6a0f6"; background = "#24273a"; border = "#c6a0f6"; hover = "#504945"; };
-            volume = { icon_background = "#ee999f"; icon = "#24273a"; text = "#ee99a0"; background = "#24273a"; border = "#ee99a0"; hover = "#504945"; };
-            media = { icon_background = "#b7bcf8"; icon = "#24273a"; text = "#b7bdf8"; background = "#24273a"; border = "#b7bdf8"; hover = "#504945"; };
-            windowtitle = { icon_background = "#f5bde6"; icon = "#24273a"; text = "#f5bde6"; border = "#f5bde6"; background = "#24273a"; hover = "#504945"; };
-            workspaces = { numbered_active_underline_color = "#f5c2e7"; numbered_active_highlighted_text_color = "#181825"; numbered_active_text_color = "#24283b";
-              hover = "#f5c2e7"; active = "#f5c2e7"; occupied = "#f2cdcd"; available = "#89dceb"; border = "#f5c2e7"; background = "#242438";
+            notifications = { total = Lavender; icon_background = Subtext1; icon = Base; background = Base; border = Lavender; hover = Brown; };
+            clock = { icon_background = Pink; icon = Base; text = Pink; background = Base; border = Pink; hover = Brown; };
+            battery = { icon_background = Yellow; icon = Base; text = Yellow; background = Base; border = Yellow; hover = Brown; };
+            systray = { background = Base; border = Surface1; customIcon = Text; hover = Brown; };
+            bluetooth = { icon_background = Sky; icon = Base; text = Sky; background = Base; border = Sky; hover = Brown; };
+            network = { icon_background = Mauve; icon = Base; text = Pink; background = Base; border = Pink; hover = Brown; };
+            volume = { icon_background = Pink; icon = Base; text = Maroon; background = Base; border = Maroon; hover = Brown; };
+            media = { icon_background = Subtext1; icon = Base; text = Lavender; background = Base; border = Lavender; hover = Brown; };
+            windowtitle = { icon_background = Pink; icon = Base; text = Pink; border = Pink; background = Base; hover = Brown; };
+            workspaces = { numbered_active_underline_color = Pink; numbered_active_highlighted_text_color = Crust; numbered_active_text_color = Base;
+              hover = Pink; active = Pink; occupied = Rosewater; available = Teal; border = Pink; background = Base;
             };
-            dashboard = { icon = "#24273a"; border = "#7dc4e4"; background = "#7dc4e4"; hover = "#504945"; };
-            icon = "#242438"; text = "#b7bdf8"; hover = "#494d64"; icon_background = "#b7bdf8";
-            background = "#24273a"; borderColor = "#b7bdf8"; style = "split";
-            volume = { output_icon = "#11111b"; output_text = "#eba0ac"; input_icon = "#11111b"; input_text = "#eba0ac"; separator = "#45475a"; };
+            dashboard = { icon = Base; border = Sapphire; background = Sapphire; hover = Brown; };
+            icon = Base; text = Lavender; hover = Surface1; icon_background = Lavender;
+            volume = { output_icon = Black; output_text = Pink; input_icon = Black; input_text = Pink; separator = Surface1; };
           };
-          osd = { background = "#181926"; label = "#b7bdf8"; icon = "#181926"; bar_overflow_color = "#ed8796"; scaling = 75;
-            bar_empty_color = "#363a4f"; bar_color = "#b7bdf8"; icon_container = "#b7bdf8"; bar_container = "#181926"; border.color = "#8ff0a4";
+          osd = { background = Crust; label = Lavender; icon = Crust; bar_overflow_color = Red; scaling = 75;
+            bar_empty_color = Surface0; bar_color = Lavender; icon_container = Lavender; bar_container = Crust; border.color = Green;
           };
           nofication = {
-            close_button = { label = "#181926"; background = "#ed8796"; };
-            labelicon = "#b7bdf8"; background = "#181926"; text = "#cad3f5";
-            time = "#8087a2"; border = "#363a4f"; label = "#b7bdf8";
-            actions = { text = "#181926"; background = "#b7bdf8"; };
+            close_button = { label = Crust; background = Red; };
+            labelicon = Lavender; background = Crust; text = Text;
+            time = Overlay1; border = Surface0; label = Lavender;
+            actions = { text = Crust; background = Lavender; };
           };
-          border.color = "#b7bdf8"; scaling = 75; notification.scaling = 75;
+          border.color = Lavender; scaling = 75; notification.scaling = 75;
         };
-        font = { name = "Comic Sans MS"; label = "Comic Sans MS Bold"; };
+        font = { name = Sans; label = "${Sans} Bold"; };
         tooltip = { scaling = 75; };
       };
     };
