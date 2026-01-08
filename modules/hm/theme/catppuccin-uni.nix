@@ -2657,6 +2657,174 @@
       mouse_scroll_down = prev_task
     '';
 
+    hyprpanel.settings = {
+      theme = {
+        matugen_settings = {
+          mode = "dark";
+          scheme_type = "tonal-spot";
+        };
+        bar = {
+          menus = {
+            menu = {
+              notifications = {
+                scrollbar = { color = "#b7bdf8"; };
+                pager = { label = "#939ab7"; button = "#b7bdf8"; background = "#181926"; };
+                switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#b7bdf8"; };
+                clear = "#ed8796"; switch_divider = "#494d64"; border = "#363a4f"; card = "#1e2030"; background = "#181926"; no_notifications_label = "#363a4f"; label = "#b7bdf8"; scaling = 75;
+              };
+              power = {
+                buttons = {
+                  sleep = { icon = "#181926"; text = "#91d7e3"; icon_background = "#91d7e3"; background = "#1e2030"; };
+                  logout = { icon = "#181926"; text = "#a6da95"; icon_background = "#a6da95"; background = "#1e2030"; };
+                  restart = { icon = "#181926"; text = "#f5a97f"; icon_background = "#f5a97f"; background = "#1e2030"; };
+                  shutdown = { icon = "#181926"; text = "#ed8796"; icon_background = "#ed8796"; background = "#1e2030"; };
+                };
+                card.color = "#2a283e"; border.color = "#363a4f"; background.color = "#181926"; scaling = 75;
+              };
+              dashboard = {
+                monitors = {
+                  disk = { label = "#f5bde6"; bar = "#f5bde6"; icon = "#f5bde6"; };
+                  gpu = { label = "#a6da95"; bar = "#a6da95"; icon = "#a6da95"; };
+                  ram = { label = "#eed49f"; bar = "#eed49f"; icon = "#eed49f"; };
+                  cpu = { label = "#ee99a0"; bar = "#ee99a0"; icon = "#ee99a0"; };
+                  bar_background = "#494d64";
+                };
+                directories = {
+                  right = { bottom.color = "#b7bdf8"; middle.color = "#c6a0f6"; top.color = "#8bd5ca"; };
+                  left = { bottom.color = "#ee99a0"; middle.color = "#eed49f"; top.color = "#f5bde6"; };
+                };
+                controls = {
+                  input = { text = "#181926"; background = "#f5bde6"; };
+                  volume = { text = "#181926"; background = "#ee99a0"; };
+                  notifications = { text = "#181926"; background = "#eed49f"; };
+                  bluetooth = { text = "#181926"; background = "#91d7e3"; };
+                  wifi = { text = "#181926"; background = "#c6a0f6"; };
+                  disabled = "#5b6078";
+                };
+                shortcuts = { recording = "#a6da95"; text = "#181926"; background = "#b7bdf8"; };
+                powermenu = {
+                  confirmation = {
+                    button_text = "#181926"; deny = "#ed8796";
+                    confirm = "#a6da95"; body = "#cad3f5"; label = "#b7bdf8";
+                    border = "#363a4f"; background = "#181926"; card = "#1e2030";
+                  };
+                  sleep = "#91d7e3"; logout = "#a6da95"; restart = "#f5a97f"; shutdown = "#ed8796";
+                };
+                profile.name = "#f5bde6"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 70; confirmation_scaling = 75;
+              };
+              clock = {
+                weather = {
+                  hourly = { temperature = "#f5bde6"; icon = "#f5bde6"; time = "#f5bde6"; };
+                  thermometer = { extremelycold = "#91d7e3"; cold = "#8aadf4"; moderate = "#b7bdf8"; hot = "#f5a97f"; extremelyhot = "#ed8796"; };
+                  stats = "#f5bde6"; status = "#8bd5ca"; temperature = "#cad3f5"; icon = "#f5bde6"; scaling = 75;
+                };
+                calendar = { contextdays = "#5b6078"; days = "#cad3f5"; currentday = "#f5bde6"; paginator = "#f5bde6"; weekdays = "#f5bde6"; yearmonth = "#8bd5ca"; };
+                time = { timeperiod = "#8bd5ca"; time = "#f5bde6"; };
+                text = "#cad3f5"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+              };
+              battery = {
+                slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#eed49f"; };
+                icons = { active = "#eed49f"; passive = "#939ab7"; };
+                listitems = { active = "#eed49f"; passive = "#cad3f5"; };
+                text = "#cad3f5"; label.color = "#eed49f"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+              };
+              systray = { dropdownmenu = { divider = "#1e2030"; text = "#cad3f5"; background = "#181926"; }; };
+              bluetooth = {
+                iconbutton = { active = "#91d7e3"; passive = "#cad3f5"; };
+                icons = { active = "#91d7e3"; passive = "#939ab7"; };
+                listitems = { active = "#91d7e3"; passive = "#cad3f5"; };
+                switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#91d7e3"; };
+                switch_divider = "#494d64"; status = "#6e738d"; text = "#cad3f5";
+                label.color = "#91d7e3"; scroller.color = "#91d7e3"; border.color = "#363a4f";
+                background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+              };
+              network = {
+                switch = { enabled = "#c6a0f6"; disabled = "#363a4f"; puck = "#494d64"; };
+                iconbuttons = { active = "#c6a0f6"; passive = "#cad3f5"; };
+                icons = { active = "#c6a0f6"; passive = "#939ab7"; };
+                listitems = { active = "#c6a0f6"; passive = "#cad3f5"; };
+                status.color = "#6e738d"; text = "#cad3f5"; label.color = "#c6a0f6"; card.color = "#1e2030";
+                scroller.color = "#c6a0f6"; border.color = "#363a4f"; background.color = "#181926"; scaling = 75;
+              };
+              volume = {
+                input_slider = { puck = "#5b6078"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#ee99a0"; };
+                audio_slider = { puck = "#5b6078"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#ee99a0"; };
+                icons = { active = "#ee99a0"; passive = "#939ab7"; }; iconbutton = { active = "#ee99a0"; passive = "#cad3f5"; };
+                listitems = { active = "#ee99a0"; passive = "#cad3f5"; };
+                text = "#cad3f5"; label.color = "#ee99a0"; border.color = "#363a4f"; background.color = "#181926"; card.color = "#1e2030"; scaling = 75;
+              };
+              media = {
+                slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#f5bde6"; };
+                buttons = { text = "#181926"; background = "#b7bdf8"; enabled = "#8bd5ca"; inactive = "#5b6078"; };
+                border.color = "#363a4f"; card.color = "#1e2030"; background.color = "#181926";
+                album = "#f5bde6"; timestamp = "#cad3f5"; artist = "#8bd5ca"; song = "#b7bdf8"; scaling = 75;
+              };
+            };
+            tooltip = { text = "#cad3f5"; background = "#181926"; };
+            dropdownmenu = { divider = "#1e2030"; text = "#cad3f5"; background = "#181926"; };
+            slider = { puck = "#6e738d"; backgroundhover = "#494d64"; background = "#5b6078"; primary = "#b7bdf8"; };
+            progressbar = { background = "#494d64"; foreground = "#b7bdf8"; };
+            iconbuttons = { active = "#b7bdf8"; passive = "#cad3f5"; };
+            buttons = { text = "#181926"; disabled = "#5b6078"; active = "#f5bde6"; default = "#b7bdf8"; };
+            check_radio_button = { active = "#b7bcf8"; background = "#181826"; };
+            switch = { puck = "#494d64"; disabled = "#363a4f"; enabled = "#b7bdf8"; };
+            icons = { active = "#b7bdf8"; passive = "#5b6078"; };
+            listitems = { active = "#b7bdf8"; passive = "#cad3f5"; };
+            popover = { border = "#181926"; background = "#181926"; text = "#b7bdf8"; scaling = 75; };
+            label = "#b7bdf8"; feinttext = "#363a4f"; dimtext = "#5b6078"; text = "#cad3f5";
+            border.color = "#363a4f"; cards = "#1e2030"; background = "#181926";
+          };
+          buttons = {
+            modules = {
+              power = { icon_background = "#ed8796"; icon = "#181825"; background = "#24273a"; border = "#ed8796"; };
+              weather = { icon_background = "#b7bdf8"; icon = "#24273a"; text = "#b7bdf8"; background = "#24273a"; border = "#b7bdf8"; };
+              updates = { icon_background = "#c6a0f6"; icon = "#181825"; text = "#c6a0f6"; background = "#24273a"; border = "#c6a0f6"; };
+              kbLayout = { icon_background = "#91d7e3"; icon = "#181825"; text = "#91d7e3"; background = "#24273a"; border = "#91d7e3"; };
+              netstat = { icon_background = "#a6da95"; icon = "#181825"; text = "#a6da95"; background = "#24273a"; border = "#a6da95"; };
+              storage = { icon_background = "#ed8796"; icon = "#181825"; text = "#ed8796"; background = "#24273a"; border = "#ed8796"; };
+              cpu = { icon_background = "#ed8796"; icon = "#181825"; text = "#ed8796"; background = "#24273a"; border = "#ed8796"; };
+              ram = { icon_background = "#eed49f"; icon = "#181825"; text = "#eed49f"; background = "#24273a"; border = "#eed49f"; };
+              submap = { icon = "#181825"; background = "#24273a"; icon_background = "#8bd5ca"; text = "#8bd5ca"; border = "#8bd5ca"; };
+              hyprsunset = { icon = "#181825"; background = "#24273a"; icon_background = "#eed49f"; text = "#eed49f"; border = "#eed49f"; };
+              hypridle = { icon = "#181825"; background = "#24273a"; icon_background = "#ed8796"; text = "#ed8796"; border = "#ed8796"; };
+              cava = { text = "#8bd5ca"; background = "#24273a"; icon_background = "#8bd5ca"; icon = "#181825"; border = "#8bd5ca"; };
+              worldclock = { text = "#f5bde6"; background = "#24273a"; icon_background = "#f5bde6"; icon = "#24273a"; border = "#f5bde6"; };
+              microphone = { border = "#a6da95"; background = "#24273a"; text = "#a6da95"; icon = "#24273a"; icon_background = "#a6da95"; };
+              cpuTemp = { icon_background = "#fab387"; icon = "#fab387"; text = "#fab387"; border = "#fab387"; hover = "#45475a"; };
+            };
+            notifications = { total = "#b7bdf8"; icon_background = "#b7bcf8"; icon = "#24273a"; background = "#24273a"; border = "#b7bdf8"; hover = "#504945"; };
+            clock = { icon_background = "#f5bde6"; icon = "#24273a"; text = "#f5bde6"; background = "#24273a"; border = "#f5bde6"; hover = "#504945"; };
+            battery = { icon_background = "#eed49f"; icon = "#24273a"; text = "#eed49f"; background = "#24273a"; border = "#eed49f"; hover = "#504945"; };
+            systray = { background = "#24273a"; border = "#494d64"; customIcon = "#cad3f5"; hover = "#504945"; };
+            bluetooth = { icon_background = "#91d7e3"; icon = "#24273a"; text = "#91d7e3"; background = "#24273a"; border = "#91d7e3"; hover = "#504945"; };
+            network = { icon_background = "#c5a0f6"; icon = "#24273a"; text = "#c6a0f6"; background = "#24273a"; border = "#c6a0f6"; hover = "#504945"; };
+            volume = { icon_background = "#ee999f"; icon = "#24273a"; text = "#ee99a0"; background = "#24273a"; border = "#ee99a0"; hover = "#504945"; };
+            media = { icon_background = "#b7bcf8"; icon = "#24273a"; text = "#b7bdf8"; background = "#24273a"; border = "#b7bdf8"; hover = "#504945"; };
+            windowtitle = { icon_background = "#f5bde6"; icon = "#24273a"; text = "#f5bde6"; border = "#f5bde6"; background = "#24273a"; hover = "#504945"; };
+            workspaces = { numbered_active_underline_color = "#f5c2e7"; numbered_active_highlighted_text_color = "#181825"; numbered_active_text_color = "#24283b";
+              hover = "#f5c2e7"; active = "#f5c2e7"; occupied = "#f2cdcd"; available = "#89dceb"; border = "#f5c2e7"; background = "#242438";
+            };
+            dashboard = { icon = "#24273a"; border = "#7dc4e4"; background = "#7dc4e4"; hover = "#504945"; };
+            icon = "#242438"; text = "#b7bdf8"; hover = "#494d64"; icon_background = "#b7bdf8";
+            background = "#24273a"; borderColor = "#b7bdf8"; style = "split";
+            volume = { output_icon = "#11111b"; output_text = "#eba0ac"; input_icon = "#11111b"; input_text = "#eba0ac"; separator = "#45475a"; };
+          };
+          osd = { background = "#181926"; label = "#b7bdf8"; icon = "#181926"; bar_overflow_color = "#ed8796"; scaling = 75;
+            bar_empty_color = "#363a4f"; bar_color = "#b7bdf8"; icon_container = "#b7bdf8"; bar_container = "#181926"; border.color = "#8ff0a4";
+          };
+          nofication = {
+            close_button = { label = "#181926"; background = "#ed8796"; };
+            labelicon = "#b7bdf8"; background = "#181926"; text = "#cad3f5";
+            time = "#8087a2"; border = "#363a4f"; label = "#b7bdf8";
+            actions = { text = "#181926"; background = "#b7bdf8"; };
+          };
+          border.color = "#b7bdf8"; scaling = 75; notification.scaling = 75;
+        };
+        font = { name = "Comic Sans MS"; label = "Comic Sans MS Bold"; };
+        tooltip = { scaling = 75; };
+      };
+    };
+
    #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };
   };
 
@@ -4053,6 +4221,7 @@
  #  gtk.enable = false;  # use if no gtk theme found for style
  #  hyprland.enable = false;
  #  hyprlock.enable = false;
+ #  hyprpanel.enable = false;
  #  i3.enable = false;
  #  kde.enable = false;  # use if no kde theme found for style
  #  kitty.enable = false;
@@ -4071,8 +4240,6 @@
  #  xresources.enable = false;
  #  yazi.enable = false;
  #};
-
-   #hyprpanel
 
    #aerc                 C
    #anki                 C  S

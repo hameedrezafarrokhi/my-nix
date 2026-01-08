@@ -3,6 +3,7 @@
 let
 
   cfg = config.my.hypr;
+  jsonFormat = pkgs.formats.json { };
  #confPath = toString ./hyprland.conf;
 
  #ax-shell = pkgs.fetchFromGitHub {
@@ -31,20 +32,20 @@ in
      #finalPackage = [object Object];
      #finalPortalPackage = [object Object];
       plugins = with pkgs.hyprlandPlugins; [
-        hy3
-        hyprexpo
-        hyprbars
-        hyprsplit
-        hyprspace
-        hyprgrass
-        hyprfocus
-        hyprtrails
-        hyprwinwrap
-        hyprscrolling
-       #csgo-vulkan-fix
-        xtra-dispatchers
-        borders-plus-plus
-        hypr-dynamic-cursors
+      # hy3
+      # hyprexpo
+      # hyprbars
+      # hyprsplit
+      # hyprspace
+      # hyprgrass
+      # hyprfocus
+      # hyprtrails
+      # hyprwinwrap
+      # hyprscrolling
+      ##csgo-vulkan-fix
+      # xtra-dispatchers
+      # borders-plus-plus
+      # hypr-dynamic-cursors
       ];
       xwayland.enable = true;
       systemd = {
@@ -159,6 +160,17 @@ in
        #settings = { };
       };
 
+    };
+
+    xdg.configFile.hyprpanel = lib.mkIf (config.programs.hyprpanel.settings != { }) {
+      target = "hyprpanel/config.json";
+      source = jsonFormat.generate "hyprpanel-config" (
+        if config.programs.hyprpanel.settings ? theme && config.programs.hyprpanel.settings.theme ? name then
+          lib.warn '' hello '' config.programs.hyprpanel.settings
+        else
+          config.programs.hyprpanel.settings
+      );
+      force = true;
     };
 
     systemd.user.services = {
