@@ -122,8 +122,13 @@ in
         bspc rule -a scratchpad state=floating layer=normal
         bspc rule -a ".blueman-manager-wrapped" state=floating
         bspc rule -a pavucontrol state=floating
-        bspc rule -a "copyq" state=floatin
+        bspc rule -a copyq state=floating
         bspc rule -a ".protonvpn-app-wrapped" state=floating
+        bspc rule -a protonvpn-app state=floating
+        bspc rule -a Protonvpn-app state=floating
+        bspc rule -a kruler state=floating
+        bspc rule -a kitty-picker state=floating
+        bspc rule -a tetris state=floating rectangle=370x450+500+150
 
         # zoom apps float and size (xzoom and magnify)
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300
@@ -241,6 +246,9 @@ in
         if [ -f "$HOME/.bsp_conf" ]; then
             "$HOME/.bsp_conf"
         fi
+        if [ -f "$HOME/.bsp_conf_color" ]; then
+            "$HOME/.bsp_conf_color"
+        fi
 
         pkill bsp-icon-bar
         bsp-icon-bar &
@@ -257,12 +265,12 @@ in
 
       settings = {
 
-        border_width = 8;
-        window_gap = 8;
-        left_padding = 0;
-        right_padding = 0;
-        top_padding = 0;
-        bottom_padding = 0;
+        #border_width = 8;
+        #window_gap = 8;
+        #left_padding = 0;
+        #right_padding = 0;
+        #top_padding = 0;
+        #bottom_padding = 0;
 
         split_ratio = 0.5;
         single_monocle = false;
@@ -376,7 +384,7 @@ in
       };
       Service = {
         Type = "oneshot";
-        ExecStart = ''/bin/bash -c "bsp-conf"'';
+        ExecStart = ''/bin/bash -c "bsp-conf && bsp-conf-color"'';
       };
     };
 

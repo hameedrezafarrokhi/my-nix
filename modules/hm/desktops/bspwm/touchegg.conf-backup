@@ -41,15 +41,13 @@
   -->
   <application name="All">
     <gesture type="SWIPE" fingers="3" direction="UP">
-      <action type="RUN_COMMAND">
-        <command>rofi -show run -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme "$HOME/.config/rofi/themes/main.rasi"</command>
+      <action type="MAXIMIZE_RESTORE_WINDOW">
         <animate>true</animate>
       </action>
     </gesture>
 
     <gesture type="SWIPE" fingers="3" direction="DOWN">
-      <action type="RUN_COMMAND">
-        <command>rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme "$HOME/.config/rofi/themes/main.rasi"</command>
+      <action type="MINIMIZE_WINDOW">
         <animate>true</animate>
       </action>
     </gesture>
@@ -77,44 +75,42 @@
     </gesture>
 
     <gesture type="SWIPE" fingers="4" direction="UP">
-      <action type="RUN_COMMAND">
-        <command>bsp-full-screen</command>
+      <action type="CHANGE_DESKTOP">
+        <direction>auto</direction>
         <animate>true</animate>
+        <animationPosition>auto</animationPosition>
       </action>
     </gesture>
 
     <gesture type="SWIPE" fingers="4" direction="DOWN">
-      <action type="RUN_COMMAND">
-        <command>bsp-bar-hide</command>
+      <action type="CHANGE_DESKTOP">
+        <direction>auto</direction>
         <animate>true</animate>
-      </action>
-    </gesture>
-
-    <gesture type="SWIPE" fingers="4" direction="LEFT">
-      <action type="RUN_COMMAND">
-        <command>bspad toggle</command>
-        <animate>true</animate>
+        <animationPosition>auto</animationPosition>
       </action>
     </gesture>
 
     <gesture type="SWIPE" fingers="4" direction="RIGHT">
-      <action type="RUN_COMMAND">
-        <command>bspad cycle</command>
-        <animate>true</animate>
+      <action type="SEND_KEYS">
+        <repeat>false</repeat>
+        <modifiers>Super_L</modifiers>
+        <keys>S</keys>
+        <on>begin</on>
       </action>
     </gesture>
 
     <gesture type="PINCH" fingers="4" direction="OUT">
-      <action type="RUN_COMMAND">
-        <command>bsp-unhide-last-hidden</command>
+      <action type="SHOW_DESKTOP">
         <animate>true</animate>
       </action>
     </gesture>
 
     <gesture type="PINCH" fingers="4" direction="IN">
-      <action type="RUN_COMMAND">
-        <command>bspc node -g hidden=on</command>
-        <animate>true</animate>
+      <action type="SEND_KEYS">
+        <repeat>false</repeat>
+        <modifiers>Super_L</modifiers>
+        <keys>A</keys>
+        <on>begin</on>
       </action>
     </gesture>
 
@@ -153,23 +149,6 @@
         <modifiers>Control_L</modifiers>
         <keys>KP_Add</keys>
         <decreaseKeys>KP_Subtract</decreaseKeys>
-      </action>
-    </gesture>
-  </application>
-
-
-  <application name="kitty">
-    <gesture type="SWIPE" fingers="2" direction="LEFT">
-      <action type="SEND_KEYS">
-        <modifiers>Control_Shift</modifiers>
-        <keys>Left</keys>
-      </action>
-    </gesture>
-
-    <gesture type="SWIPE" fingers="2" direction="RIGHT">
-      <action type="SEND_KEYS">
-        <modifiers>Control_Shift</modifiers>
-        <keys>Right</keys>
       </action>
     </gesture>
   </application>

@@ -61,10 +61,10 @@ in
      #'';
 
       optimise = {
-        automatic = true;
-        dates = [ "weekly" "03:45" ];
-        persistent = true;
-        randomizedDelaySec = "1800";
+        automatic = false;
+       #dates = [ "weekly" "03:45" ];
+       #persistent = true;
+       #randomizedDelaySec = "1800";
       };
 
      #gc = {                                  # turn off if nh.clean is enabled

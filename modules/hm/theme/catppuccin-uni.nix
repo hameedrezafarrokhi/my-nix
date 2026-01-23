@@ -65,6 +65,8 @@
     marknote-theme = "Catppuccin ${flavorC} ${accentC}";
     okular-theme = "Catppuccin ${flavorC} ${accentC}";
     dolphin-theme = "Catppuccin ${flavorC} ${accentC}";
+    kdenlive-theme = "Catppuccin${flavorC}${accentC}.colors";
+
     alacritty-theme = "catppuccin_${flavor}";
     ghostty-theme = "light:catppuccin-${flavor},dark:catppuccin-${flavor}";
     ghostty-theme-name = "catppuccin-${flavor}";
@@ -74,22 +76,17 @@
     freetube-sec = "CatppuccinMochaBlue";
 
     superfile-theme = "catppuccin-${flavor}";
-
     fish-theme = "Catppuccin ${flavorC}";
     fish-theme-name = "Catppuccin ${flavorC}";
-
     tv-theme = "catppuccin-${flavor}-${accent}";
     tv-preview = "TwoDark";
-
     bat-theme = "Catppuccin ${flavorC}";
     bat-source = pkgs.fetchurl {
       url = "https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20${flavorC}.tmTheme";
       sha256 = "sha256-8BKmij32yf+/3N92pKTLpDSOAz1yWd1I/+pNQ4ewu0c=";
     };
     yazi-bat = "catppuccin-${flavor}-yazi";
-
     btop-theme = "catppuccin_${flavor}";
-
     cava-theme = "catppuccin_${flavor}";
 
     dunst-theme = "catppuccin_${flavor}";
@@ -105,7 +102,6 @@
     onboard-key = "dish";
 
     nvim-package = pkgs.vimPlugins.catppuccin-nvim;
-    nvim-theme = "catppuccin-nvim";
     nvim-config = ''
       lua << EOF
         local compile_path = vim.fn.stdpath("cache") .. "/catppuccin-nvim"
@@ -211,36 +207,39 @@
       in
         "${toString r},${toString g},${toString b}";
 
-    alt-Rosewater = "f4dbd6"; Rosewater ="#${alt-Rosewater}"; Calt-Rosewater = lib.strings.toUpper alt-Rosewater; CRosewater = lib.strings.toUpper Rosewater;
-    alt-Flamingo =  "f0c6c6"; Flamingo = "#${alt-Flamingo}";  Calt-Flamingo =  lib.strings.toUpper alt-Flamingo;  CFlamingo =  lib.strings.toUpper Flamingo;
-    alt-Orange =    "fab387"; Orange =   "#${alt-Orange}";    Calt-Orange =    lib.strings.toUpper alt-Orange;    COrange =    lib.strings.toUpper Orange;
-    alt-Pink =      "f5bde6"; Pink =     "#${alt-Pink}";      Calt-Pink =      lib.strings.toUpper alt-Pink;      CPink =      lib.strings.toUpper Pink;
-    alt-Mauve =     "c6a0f6"; Mauve =    "#${alt-Mauve}";     Calt-Mauve =     lib.strings.toUpper alt-Mauve;     CMauve =     lib.strings.toUpper Mauve;
-    alt-Red =       "ed8796"; Red =      "#${alt-Red}";       Calt-Red =       lib.strings.toUpper alt-Red;       CRed =       lib.strings.toUpper Red;
-    alt-Maroon =    "ee99a0"; Maroon =   "#${alt-Maroon}";    Calt-Maroon =    lib.strings.toUpper alt-Maroon;    CMaroon =    lib.strings.toUpper Maroon;
-    alt-Peach =     "f5a97f"; Peach =    "#${alt-Peach}";     Calt-Peach =     lib.strings.toUpper alt-Peach;     CPeach =     lib.strings.toUpper Peach;
-    alt-Yellow =    "eed49f"; Yellow =   "#${alt-Yellow}";    Calt-Yellow =    lib.strings.toUpper alt-Yellow;    CYellow =    lib.strings.toUpper Yellow;
-    alt-Green =     "a6da95"; Green =    "#${alt-Green}";     Calt-Green =     lib.strings.toUpper alt-Green;     CGreen =     lib.strings.toUpper Green;
-    alt-Teal =      "8bd5ca"; Teal =     "#${alt-Teal}";      Calt-Teal =      lib.strings.toUpper alt-Teal;      CTeal =      lib.strings.toUpper Teal;
-    alt-Sky =       "91d7e3"; Sky =      "#${alt-Sky}";       Calt-Sky =       lib.strings.toUpper alt-Sky;       CSky =       lib.strings.toUpper Sky;
-    alt-Sapphire =  "7dc4e4"; Sapphire = "#${alt-Sapphire}";  Calt-Sapphire =  lib.strings.toUpper alt-Sapphire;  CSapphire =  lib.strings.toUpper Sapphire;
-    alt-Blue =      "8aadf4"; Blue =     "#${alt-Blue}";      Calt-Blue =      lib.strings.toUpper alt-Blue;      CBlue =      lib.strings.toUpper Blue;
-    alt-Lavender =  "b7bdf8"; Lavender = "#${alt-Lavender}";  Calt-Lavender =  lib.strings.toUpper alt-Lavender;  CLavender =  lib.strings.toUpper Lavender;
-    alt-Brown =     "504945"; Brown =    "#${alt-Brown}";     Calt-Brown =     lib.strings.toUpper alt-Brown;     CBrown =     lib.strings.toUpper Brown;
-    alt-Text =      "cad3f5"; Text =     "#${alt-Text}";      Calt-Text =      lib.strings.toUpper alt-Text;      CText =      lib.strings.toUpper Text;
-    alt-Subtext1 =  "b8c0e0"; Subtext1 = "#${alt-Subtext1}";  Calt-Subtext1 =  lib.strings.toUpper alt-Subtext1;  CSubtext1 =  lib.strings.toUpper Subtext1;
-    alt-Subtext0 =  "a5adcb"; Subtext0 = "#${alt-Subtext0}";  Calt-Subtext0 =  lib.strings.toUpper alt-Subtext0;  CSubtext0 =  lib.strings.toUpper Subtext0;
-    alt-Overlay2 =  "939ab7"; Overlay2 = "#${alt-Overlay2}";  Calt-Overlay2 =  lib.strings.toUpper alt-Overlay2;  COverlay2 =  lib.strings.toUpper Overlay2;
-    alt-Overlay1 =  "8087a2"; Overlay1 = "#${alt-Overlay1}";  Calt-Overlay1 =  lib.strings.toUpper alt-Overlay1;  COverlay1 =  lib.strings.toUpper Overlay1;
-    alt-Overlay0 =  "6e738d"; Overlay0 = "#${alt-Overlay0}";  Calt-Overlay0 =  lib.strings.toUpper alt-Overlay0;  COverlay0 =  lib.strings.toUpper Overlay0;
-    alt-Surface2 =  "5b6078"; Surface2 = "#${alt-Surface2}";  Calt-Surface2 =  lib.strings.toUpper alt-Surface2;  CSurface2 =  lib.strings.toUpper Surface2;
-    alt-Surface1 =  "494d64"; Surface1 = "#${alt-Surface1}";  Calt-Surface1 =  lib.strings.toUpper alt-Surface1;  CSurface1 =  lib.strings.toUpper Surface1;
-    alt-Surface0 =  "363a4f"; Surface0 = "#${alt-Surface0}";  Calt-Surface0 =  lib.strings.toUpper alt-Surface0;  CSurface0 =  lib.strings.toUpper Surface0;
-    alt-Base =      "24273a"; Base =     "#${alt-Base}";      Calt-Base =      lib.strings.toUpper alt-Base;      CBase =      lib.strings.toUpper Base;
-    alt-Mantle =    "1e2030"; Mantle =   "#${alt-Mantle}";    Calt-Mantle =    lib.strings.toUpper alt-Mantle;    CMantle =    lib.strings.toUpper Mantle;
-    alt-Crust =     "181926"; Crust =    "#${alt-Crust}";     Calt-Crust =     lib.strings.toUpper alt-Crust;     CCrust =     lib.strings.toUpper Crust;
-    alt-Black =     "11111b"; Black =    "#${alt-Black}";     Calt-Black =     lib.strings.toUpper alt-Black;     CBlack =     lib.strings.toUpper Black;
+    alt-Accent = alt-Sapphire; Accent =    "#${alt-Accent}";    Calt-Accent =    lib.strings.toUpper alt-Accent;    CAccent =    lib.strings.toUpper Accent;
+    alt-Rosewater =  "f4dbd6"; Rosewater = "#${alt-Rosewater}"; Calt-Rosewater = lib.strings.toUpper alt-Rosewater; CRosewater = lib.strings.toUpper Rosewater;
+    alt-Flamingo =   "f0c6c6"; Flamingo =  "#${alt-Flamingo}";  Calt-Flamingo =  lib.strings.toUpper alt-Flamingo;  CFlamingo =  lib.strings.toUpper Flamingo;
+    alt-Orange =     "fab387"; Orange =    "#${alt-Orange}";    Calt-Orange =    lib.strings.toUpper alt-Orange;    COrange =    lib.strings.toUpper Orange;
+    alt-Pink =       "f5bde6"; Pink =      "#${alt-Pink}";      Calt-Pink =      lib.strings.toUpper alt-Pink;      CPink =      lib.strings.toUpper Pink;
+    alt-Mauve =      "c6a0f6"; Mauve =     "#${alt-Mauve}";     Calt-Mauve =     lib.strings.toUpper alt-Mauve;     CMauve =     lib.strings.toUpper Mauve;
+    alt-Red =        "ed8796"; Red =       "#${alt-Red}";       Calt-Red =       lib.strings.toUpper alt-Red;       CRed =       lib.strings.toUpper Red;
+    alt-Maroon =     "ee99a0"; Maroon =    "#${alt-Maroon}";    Calt-Maroon =    lib.strings.toUpper alt-Maroon;    CMaroon =    lib.strings.toUpper Maroon;
+    alt-Peach =      "f5a97f"; Peach =     "#${alt-Peach}";     Calt-Peach =     lib.strings.toUpper alt-Peach;     CPeach =     lib.strings.toUpper Peach;
+    alt-Yellow =     "eed49f"; Yellow =    "#${alt-Yellow}";    Calt-Yellow =    lib.strings.toUpper alt-Yellow;    CYellow =    lib.strings.toUpper Yellow;
+    alt-Green =      "a6da95"; Green =     "#${alt-Green}";     Calt-Green =     lib.strings.toUpper alt-Green;     CGreen =     lib.strings.toUpper Green;
+    alt-Teal =       "8bd5ca"; Teal =      "#${alt-Teal}";      Calt-Teal =      lib.strings.toUpper alt-Teal;      CTeal =      lib.strings.toUpper Teal;
+    alt-Sky =        "91d7e3"; Sky =       "#${alt-Sky}";       Calt-Sky =       lib.strings.toUpper alt-Sky;       CSky =       lib.strings.toUpper Sky;
+    alt-Sapphire =   "7dc4e4"; Sapphire =  "#${alt-Sapphire}";  Calt-Sapphire =  lib.strings.toUpper alt-Sapphire;  CSapphire =  lib.strings.toUpper Sapphire;
+    alt-Blue =       "8aadf4"; Blue =      "#${alt-Blue}";      Calt-Blue =      lib.strings.toUpper alt-Blue;      CBlue =      lib.strings.toUpper Blue;
+    alt-Lavender =   "b7bdf8"; Lavender =  "#${alt-Lavender}";  Calt-Lavender =  lib.strings.toUpper alt-Lavender;  CLavender =  lib.strings.toUpper Lavender;
+    alt-Brown =      "504945"; Brown =     "#${alt-Brown}";     Calt-Brown =     lib.strings.toUpper alt-Brown;     CBrown =     lib.strings.toUpper Brown;
+    alt-Text =       "cad3f5"; Text =      "#${alt-Text}";      Calt-Text =      lib.strings.toUpper alt-Text;      CText =      lib.strings.toUpper Text;
+    alt-Subtext1 =   "b8c0e0"; Subtext1 =  "#${alt-Subtext1}";  Calt-Subtext1 =  lib.strings.toUpper alt-Subtext1;  CSubtext1 =  lib.strings.toUpper Subtext1;
+    alt-Subtext0 =   "a5adcb"; Subtext0 =  "#${alt-Subtext0}";  Calt-Subtext0 =  lib.strings.toUpper alt-Subtext0;  CSubtext0 =  lib.strings.toUpper Subtext0;
+    alt-Overlay2 =   "939ab7"; Overlay2 =  "#${alt-Overlay2}";  Calt-Overlay2 =  lib.strings.toUpper alt-Overlay2;  COverlay2 =  lib.strings.toUpper Overlay2;
+    alt-Overlay1 =   "8087a2"; Overlay1 =  "#${alt-Overlay1}";  Calt-Overlay1 =  lib.strings.toUpper alt-Overlay1;  COverlay1 =  lib.strings.toUpper Overlay1;
+    alt-Overlay0 =   "6e738d"; Overlay0 =  "#${alt-Overlay0}";  Calt-Overlay0 =  lib.strings.toUpper alt-Overlay0;  COverlay0 =  lib.strings.toUpper Overlay0;
+    alt-Surface2 =   "5b6078"; Surface2 =  "#${alt-Surface2}";  Calt-Surface2 =  lib.strings.toUpper alt-Surface2;  CSurface2 =  lib.strings.toUpper Surface2;
+    alt-Surface1 =   "494d64"; Surface1 =  "#${alt-Surface1}";  Calt-Surface1 =  lib.strings.toUpper alt-Surface1;  CSurface1 =  lib.strings.toUpper Surface1;
+    alt-Surface0 =   "363a4f"; Surface0 =  "#${alt-Surface0}";  Calt-Surface0 =  lib.strings.toUpper alt-Surface0;  CSurface0 =  lib.strings.toUpper Surface0;
+    alt-Base =       "24273a"; Base =      "#${alt-Base}";      Calt-Base =      lib.strings.toUpper alt-Base;      CBase =      lib.strings.toUpper Base;
+    alt-Mantle =     "1e2030"; Mantle =    "#${alt-Mantle}";    Calt-Mantle =    lib.strings.toUpper alt-Mantle;    CMantle =    lib.strings.toUpper Mantle;
+    alt-Crust =      "181926"; Crust =     "#${alt-Crust}";     Calt-Crust =     lib.strings.toUpper alt-Crust;     CCrust =     lib.strings.toUpper Crust;
+    alt-Black =      "11111b"; Black =     "#${alt-Black}";     Calt-Black =     lib.strings.toUpper alt-Black;     CBlack =     lib.strings.toUpper Black;
 
+
+    rgb-alt-Accent =    hexToRgb alt-Accent;    rgb-Accent =    "rgb(${rgb-alt-Accent})";
     rgb-alt-Rosewater = hexToRgb alt-Rosewater; rgb-Rosewater = "rgb(${rgb-alt-Rosewater})"; base00 = alt-Base;     alt-base00 = "#${alt-Base}";
     rgb-alt-Flamingo =  hexToRgb alt-Flamingo;  rgb-Flamingo =  "rgb(${rgb-alt-Flamingo})";  base01 = alt-Red;      alt-base01 = "#${alt-Red}";
     rgb-alt-Orange =    hexToRgb alt-Orange;    rgb-Orange =    "rgb(${rgb-alt-Orange})";    base02 = alt-Green;    alt-base02 = "#${alt-Green}";
@@ -785,10 +784,10 @@
           size = MonoSizeI3Bar;
         };
         colors = {
-          separator = Sapphire;
+          separator = Accent;
           focusedBackground = Base;
           focusedWorkspace = {
-            background = Sapphire;
+            background = Accent;
             border = Base;
             text = Crust;
           };
@@ -849,9 +848,15 @@
       fehw &
   '';
     settings = {
+      border_width = 4;
+      window_gap = 6;
+      left_padding = 0;
+      right_padding = 0;
+      top_padding = 0;
+      bottom_padding = 0;
       presel_feedback_color = Overlay1;
       active_border_color = Lavender;
-      focused_border_color = Lavender;
+      focused_border_color = Accent;
       normal_border_color = Overlay0;
     };
     startupPrograms = [
@@ -976,6 +981,11 @@
         };
         "UiSettings" = {
           "ColorScheme" = marknote-theme;
+        };
+      };
+      "/.config/kdenliverc" = {
+        "UiSettings" = {
+          "ColorSchemePath" = kdenlive-theme;
         };
       };
      #"/.config/kdedefaults/kdegloblas" = {
@@ -1199,7 +1209,7 @@
         mark2_foreground = Base;
         mark2_background = Mauve;
         mark3_foreground = Base;
-        mark3_background = Sapphire;
+        mark3_background = Accent;
         color0  = Surface1;   # black
         color8  = Surface2;
         color1  = Red;        # red
@@ -1401,6 +1411,7 @@
         @define-color base      ${Base};
         @define-color mantle    ${Mantle};
         @define-color crust     ${Crust};
+        @define-color accent    ${Accent};
         * {
           min-height: 0;
           margin: 1;
@@ -1447,7 +1458,7 @@
         #workspaces button.active {
             padding: 0 0px 0 0px;
             color: @base;
-            background-color: @sapphire;
+            background-color: @accent;
         }
         #workspaces button.urgent {
         	color: @red;
@@ -1626,7 +1637,7 @@
         #taskbar button.active {
             padding-left: 10px;
             padding-right: 0px;
-            background-color: @sapphire;
+            background-color: @accent;
             color: @base;
         }
         #mode {
@@ -1647,7 +1658,7 @@
         margin: 0px 0px 0px 0px;
         padding: 3px 4px 0px 4px;
         background-color: @base;
-        color: @sapphire;
+        color: @accent;
         }
 
       '';
@@ -1657,7 +1668,7 @@
         style = "Gradient";  # "Islands"
         background_color = Base;
         primary_color = Base;
-        secondary_color = Sapphire;
+        secondary_color = Accent;
         success_color = Green;
         danger_color = Red;
         text_color = Text;
@@ -1665,7 +1676,7 @@
         menu.opacity = 1.0;
         font_name = Sans;
         workspace_colors = [ Overlay2 Text ];
-        special_workspace_colors = [ Sapphire Rosewater ];
+        special_workspace_colors = [ Accent Rosewater ];
       };
     };
     television = lib.mkIf config.programs.television.enable {
@@ -1941,7 +1952,7 @@
           colors = {
             text = {
               primary = Text;
-              secondary = Sapphire;
+              secondary = Accent;
               inverted = Crust;
               faint = Subtext1;
               warning = Yellow;
@@ -1952,7 +1963,7 @@
               selected = Surface0;
             };
             border = {
-              primary = Sapphire;
+              primary = Accent;
               secondary = Surface1;
               faint = Surface0;
             };
@@ -1998,15 +2009,15 @@
         "script-opts-append=stats-plot_bg_border_color" = alt-Yellow;
         "script-opts-append=stats-plot_bg_color" = alt-Mauve;
         "script-opts-append=stats-plot_color" = alt-Yellow;
-        "script-opts-append=uosc-color" = "foreground=${alt-Sapphire},foreground_text=${alt-Surface0},background=${alt-Base},background_text=${alt-Text},curtain=${alt-Mantle},success=${alt-Green},error=${alt-Red}";
+        "script-opts-append=uosc-color" = "foreground=${alt-Accent},foreground_text=${alt-Surface0},background=${alt-Base},background_text=${alt-Text},curtain=${alt-Mantle},success=${alt-Green},error=${alt-Red}";
 
       };
       scriptOpts = {
         uosc.color = "background=${alt-Base},background_text=${alt-Text},foreground=${alt-Text},foreground_text=${alt-Base},success=${alt-Green},error=${alt-Red}";
         modernz = {
           seekbarfg_color = Peach;
-          seekbarbg_color = Sapphire;
-          seekbar_cache_color = Sapphire;
+          seekbarbg_color = Accent;
+          seekbar_cache_color = Accent;
           window_title_color = Blue;
           window_controls_color = Blue;
 
@@ -2127,9 +2138,9 @@
         tabs = {
           bar.bg = Crust;
           even = { bg = Surface2; fg = Overlay2; };
-          indicator = { error = Red; start = Sapphire; stop = Text; };
+          indicator = { error = Red; start = Accent; stop = Text; };
           odd = { bg = Surface1; fg = Overlay2; };
-          pinned = { even = { bg = Sapphire; fg = Base; }; odd = { bg = Sky; fg = Crust; };
+          pinned = { even = { bg = Accent; fg = Base; }; odd = { bg = Sky; fg = Crust; };
             selected = { even = { bg = Crust; fg = Overlay0; }; odd = { bg = Mantle; fg = Text; }; }; };
           selected = { even = { bg = Base; fg = Text; }; odd = { bg = Base; fg = Text; }; };
         };
@@ -2139,25 +2150,25 @@
     yazi.theme = {
       mgr = {
         cwd = { fg = Teal; };
-        hovered = { fg = Base; bg = Sapphire; };
+        hovered = { fg = Base; bg = Accent; };
         preview_hovered = { fg = Base; bg = Text; };
         find_keyword = { fg = Yellow; italic = true; };
         find_position = { fg = Pink; bg = "reset"; italic = true; };
         marker_copied = { fg = Green; bg = Green; };
         marker_cut = { fg = Red; bg = Red; };
         marker_marked = { fg = Teal; bg = Teal; };
-        marker_selected = { fg = Sapphire; bg = Sapphire; };
+        marker_selected = { fg = Accent; bg = Accent; };
         count_copied = { fg = Base; bg = Green; };
         count_cut = { fg = Base; bg = Red; };
-        count_selected = { fg = Base; bg = Sapphire; };
+        count_selected = { fg = Base; bg = Accent; };
         border_symbol = "│";
         border_style = { fg = Overlay1; };
         syntect_theme = "${nix-path}/modules/hm/theme/bat-themes/${yazi-bat}.tmTheme";
       };
       tabs = { active = { fg = Base; bg = Text; bold = true; }; inactive = { fg = Text; bg = Surface1; }; };
       mode = {
-        normal_main = { fg = Base; bg = Sapphire; bold = true; };
-        normal_alt = { fg = Sapphire; bg = Surface0; };
+        normal_main = { fg = Base; bg = Accent; bold = true; };
+        normal_alt = { fg = Accent; bg = Surface0; };
         select_main = { fg = Base; bg = Green; bold = true; };
         select_alt = { fg = Green; bg = Surface0; };
         unset_main = { fg = Base; bg = Flamingo; bold = true; };
@@ -2175,18 +2186,18 @@
         perm_exec = { fg = Green; };
         perm_sep = { fg = Overlay1; };
       };
-      input = { border = { fg = Sapphire; }; title = {}; value = {}; selected = { reversed = true; }; };
-      pick = { border = { fg = Sapphire; }; active = { fg = Pink; }; inactive = {}; };
+      input = { border = { fg = Accent; }; title = {}; value = {}; selected = { reversed = true; }; };
+      pick = { border = { fg = Accent; }; active = { fg = Pink; }; inactive = {}; };
       confirm = {
-        border = { fg = Sapphire; };
-        title = { fg = Sapphire; };
+        border = { fg = Accent; };
+        title = { fg = Accent; };
         content = {};
         list = {};
         btn_yes = { reversed = true; };
         btn_no = {};
       };
-      cmp = { border = { fg = Sapphire; }; };
-      tasks = { border = { fg = Sapphire; }; title = {}; hovered = { underline = true; }; };
+      cmp = { border = { fg = Accent; }; };
+      tasks = { border = { fg = Accent; }; title = {}; hovered = { underline = true; }; };
       which = {
       mask = { bg = Surface0; };
       cand = { fg = Teal; };
@@ -2219,42 +2230,42 @@
           { mime = "application/{pdf,doc,rtf}"; fg = Green; }
           # Fallback
           { name = "*"; fg = Text; }
-          { name = "*/"; fg = Sapphire; }
+          { name = "*/"; fg = Accent; }
         ];
       };
       spot = {
-        border = { fg = Sapphire; };
-        title = { fg = Sapphire; };
-        tbl_cell = { fg = Sapphire; reversed = true; };
+        border = { fg = Accent; };
+        title = { fg = Accent; };
+        tbl_cell = { fg = Accent; reversed = true; };
         tbl_col = { bold = true; };
       };
       icon = {
         files = let m = name: text: fg: { inherit name text fg; }; in [
-          (m "kritadisplayrc" "" Mauve) (m ".gtkrc-2.0" "" Rosewater) (m "bspwmrc" "" Mantle) (m "webpack" "󰜫" Sapphire) (m "tsconfig.json" "" Sapphire)
+          (m "kritadisplayrc" "" Mauve) (m ".gtkrc-2.0" "" Rosewater) (m "bspwmrc" "" Mantle) (m "webpack" "󰜫" Accent) (m "tsconfig.json" "" Accent)
           (m ".vimrc" "" Green) (m "gemfile$" "" Crust) (m "xmobarrc" "" Red) (m "avif" "" Overlay1)
           (m "fp-info-cache" "" Rosewater) (m ".zshrc" "" Green) (m "robots.txt" "󰚩" Overlay0) (m "dockerfile" "󰡨" Blue)
           (m ".git-blame-ignore-revs" "" Peach) (m ".nvmrc" "" Green) (m "hyprpaper.conf" "" Teal) (m ".prettierignore" "" Blue)
           (m "rakefile" "" Crust) (m "code_of_conduct" "" Red) (m "cmakelists.txt" "" Text) (m ".env" "" Yellow)
           (m "copying.lesser" "" Yellow) (m "readme" "󰂺" Rosewater) (m "settings.gradle" "" Surface2) (m "gruntfile.coffee" "" Peach)
           (m ".eslintignore" "" Surface1) (m "kalgebrarc" "" Blue) (m "kdenliverc" "" Blue) (m ".prettierrc.cjs" "" Blue)
-          (m "cantorrc" "" Blue) (m "rmd" "" Sapphire) (m "vagrantfile$" "" Overlay0) (m ".Xauthority" "" Peach)
+          (m "cantorrc" "" Blue) (m "rmd" "" Accent) (m "vagrantfile$" "" Overlay0) (m ".Xauthority" "" Peach)
           (m "prettier.config.ts" "" Blue) (m "node_modules" "" Red) (m ".prettierrc.toml" "" Blue) (m "build.zig.zon" "" Peach)
           (m ".ds_store" "" Surface1) (m "PKGBUILD" "" Blue) (m ".prettierrc" "" Blue) (m ".bash_profile" "" Green)
           (m ".npmignore" "" Red) (m ".mailmap" "󰊢" Peach) (m ".codespellrc" "󰓆" Green) (m "svelte.config.js" "" Peach)
           (m "eslint.config.ts" "" Surface1) (m "config" "" Overlay1) (m ".gitlab-ci.yml" "" Red) (m ".gitconfig" "" Peach)
           (m "_gvimrc" "" Green) (m ".xinitrc" "" Peach) (m "checkhealth" "󰓙" Blue) (m "sxhkdrc" "" Mantle)
-          (m ".bashrc" "" Green) (m "tailwind.config.mjs" "󱏿" Sapphire) (m "ext_typoscript_setup.txt" "" Peach) (m "commitlint.config.ts" "󰜘" Teal)
+          (m ".bashrc" "" Green) (m "tailwind.config.mjs" "󱏿" Accent) (m "ext_typoscript_setup.txt" "" Peach) (m "commitlint.config.ts" "󰜘" Teal)
           (m "py.typed" "" Yellow) (m ".nanorc" "" Base) (m "commit_editmsg" "" Peach) (m ".luaurc" "" Blue)
           (m "fp-lib-table" "" Rosewater) (m ".editorconfig" "" Rosewater) (m "justfile" "" Overlay1) (m "kdeglobals" "" Blue)
           (m "license.md" "" Yellow) (m ".clang-format" "" Overlay1) (m "docker-compose.yaml" "󰡨" Blue) (m "copying" "" Yellow)
-          (m "go.mod" "" Sapphire) (m "lxqt.conf" "" Blue) (m "brewfile" "" Crust) (m "gulpfile.coffee" "" Red)
-          (m ".dockerignore" "󰡨" Blue) (m ".settings.json" "" Surface2) (m "tailwind.config.js" "󱏿" Sapphire) (m ".clang-tidy" "" Overlay1)
+          (m "go.mod" "" Accent) (m "lxqt.conf" "" Blue) (m "brewfile" "" Crust) (m "gulpfile.coffee" "" Red)
+          (m ".dockerignore" "󰡨" Blue) (m ".settings.json" "" Surface2) (m "tailwind.config.js" "󱏿" Accent) (m ".clang-tidy" "" Overlay1)
           (m ".gvimrc" "" Green) (m "nuxt.config.cjs" "󱄆" Teal) (m "xsettingsd.conf" "" Peach) (m "nuxt.config.js" "󱄆" Teal)
           (m "eslint.config.cjs" "" Surface1) (m "sym-lib-table" "" Rosewater) (m ".condarc" "" Green) (m "xmonad.hs" "" Red)
           (m "tmux.conf" "" Green) (m "xmobarrc.hs" "" Red) (m ".prettierrc.yaml" "" Blue) (m ".pre-commit-config.yaml" "󰛢" Yellow)
           (m "i3blocks.conf" "" Text) (m "xorg.conf" "" Peach) (m ".zshenv" "" Green) (m "vlcrc" "󰕼" Peach)
           (m "license" "" Yellow) (m "unlicense" "" Yellow) (m "tmux.conf.local" "" Green) (m ".SRCINFO" "󰣇" Blue)
-          (m "tailwind.config.ts" "󱏿" Sapphire) (m "security.md" "󰒃" Subtext1) (m "security" "󰒃" Subtext1) (m ".eslintrc" "" Surface1)
+          (m "tailwind.config.ts" "󱏿" Accent) (m "security.md" "󰒃" Subtext1) (m "security" "󰒃" Subtext1) (m ".eslintrc" "" Surface1)
           (m "gradle.properties" "" Surface2) (m "code_of_conduct.md" "" Red) (m "PrusaSlicerGcodeViewer.ini" "" Peach) (m "PrusaSlicer.ini" "" Peach)
           (m "procfile" "" Overlay1) (m "mpv.conf" "" Base) (m ".prettierrc.json5" "" Blue) (m "i3status.conf" "" Text)
           (m "prettier.config.mjs" "" Blue) (m ".pylintrc" "" Overlay1) (m "prettier.config.cjs" "" Blue) (m ".luacheckrc" "" Blue)
@@ -2276,10 +2287,10 @@
           (m ".Xresources" "" Peach) (m ".gitignore" "" Peach) (m ".justfile" "" Overlay1)
         ];
         exts = let m = name: text: fg: { inherit name text fg; }; in [
-          (m "otf" "" Rosewater) (m "import" "" Rosewater) (m "krz" "" Mauve) (m "adb" "" Teal) (m "ttf" "" Rosewater) (m "webpack" "󰜫" Sapphire) (m "dart" "" Surface2) (m "vsh" "" Overlay1) (m "doc" "󰈬" Surface2) (m "zsh" "" Green) (m "ex" "" Overlay1) (m "hx" "" Peach) (m "fodt" "" Sapphire) (m "mojo" "" Peach) (m "templ" "" Yellow) (m "nix" "" Sapphire) (m "cshtml" "󱦗" Surface1) (m "fish" "" Surface2) (m "ply" "󰆧" Overlay1) (m "sldprt" "󰻫" Green) (m "gemspec" "" Crust) (m "mjs" "" Yellow) (m "csh" "" Surface2) (m "cmake" "" Text) (m "fodp" "" Peach) (m "vi" "" Yellow) (m "msf" "" Blue) (m "blp" "󰺾" Blue) (m "less" "" Surface1) (m "sh" "" Surface2) (m "odg" "" Yellow) (m "mint" "󰌪" Green) (m "dll" "" Crust) (m "odf" "" Red) (m "sqlite3" "" Rosewater) (m "Dockerfile" "󰡨" Blue) (m "ksh" "" Surface2) (m "rmd" "" Sapphire) (m "wv" "" Sapphire) (m "xml" "󰗀" Peach) (m "markdown" "" Text) (m "qml" "" Green) (m "3gp" "" Peach) (m "pxi" "" Blue) (m "flac" "" Overlay0) (m "gpr" "" Mauve) (m "huff" "󰡘" Surface1) (m "json" "" Yellow) (m "gv" "󱁉" Surface2) (m "bmp" "" Overlay1) (m "lock" "" Subtext1) (m "sha384" "󰕥" Overlay1) (m "cobol" "⚙" Surface2) (m "cob" "⚙" Surface2) (m "java" "" Red) (m "cjs" "" Yellow) (m "qm" "" Sapphire) (m "ebuild" "" Surface1) (m "mustache" "" Peach) (m "terminal" "" Green) (m "ejs" "" Yellow) (m "brep" "󰻫" Green) (m "rar" "" Yellow) (m "gradle" "" Surface2) (m "gnumakefile" "" Overlay1) (m "applescript" "" Overlay1) (m "elm" "" Sapphire) (m "ebook" "" Peach) (m "kra" "" Mauve) (m "tf" "" Surface2) (m "xls" "󰈛" Surface2) (m "fnl" "" Yellow) (m "kdbx" "" Green) (m "kicad_pcb" "" Rosewater) (m "cfg" "" Overlay1) (m "ape" "" Sapphire) (m "org" "" Teal) (m "yml" "" Overlay1) (m "swift" "" Peach) (m "eln" "" Overlay0) (m "sol" "" Sapphire) (m "awk" "" Surface2) (m "7z" "" Yellow) (m "apl" "⍝" Peach) (m "epp" "" Peach) (m "app" "" Surface1) (m "dot" "󱁉" Surface2) (m "kpp" "" Mauve) (m "eot" "" Rosewater) (m "hpp" "" Overlay1) (m "spec.tsx" "" Surface2) (m "hurl" "" Red) (m "cxxm" "" Sapphire) (m "c" "" Blue) (m "fcmacro" "" Red) (m "sass" "" Red) (m "yaml" "" Overlay1) (m "xz" "" Yellow) (m "material" "󰔉" Overlay0) (m "json5" "" Yellow) (m "signature" "λ" Peach) (m "3mf" "󰆧" Overlay1) (m "jpg" "" Overlay1) (m "xpi" "" Peach) (m "fcmat" "" Red) (m "pot" "" Sapphire) (m "bin" "" Surface1) (m "xlsx" "󰈛" Surface2) (m "aac" "" Sapphire) (m "kicad_sym" "" Rosewater) (m "xcstrings" "" Sapphire) (m "lff" "" Rosewater) (m "xcf" "" Surface2) (m "azcli" "" Overlay0) (m "license" "" Yellow) (m "jsonc" "" Yellow) (m "xaml" "󰙳" Surface1) (m "md5" "󰕥" Overlay1) (m "xm" "" Sapphire) (m "sln" "" Surface2) (m "jl" "" Overlay1) (m "ml" "" Peach) (m "http" "" Blue) (m "x" "" Blue) (m "wvc" "" Sapphire) (m "wrz" "󰆧" Overlay1) (m "csproj" "󰪮" Surface1)
-          (m "wrl" "󰆧" Overlay1) (m "wma" "" Sapphire) (m "woff2" "" Rosewater) (m "woff" "" Rosewater) (m "tscn" "" Overlay1) (m "webmanifest" "" Yellow) (m "webm" "" Peach) (m "fcbak" "" Red) (m "log" "󰌱" Text) (m "wav" "" Sapphire) (m "wasm" "" Surface2) (m "styl" "" Green) (m "gif" "" Overlay1) (m "resi" "" Red) (m "aiff" "" Sapphire) (m "sha256" "󰕥" Overlay1) (m "igs" "󰻫" Green) (m "vsix" "" Surface2) (m "vim" "" Green) (m "diff" "" Surface1) (m "drl" "" Maroon) (m "erl" "" Overlay0) (m "vhdl" "󰍛" Green) (m "🔥" "" Peach) (m "hrl" "" Overlay0) (m "fsi" "" Sapphire) (m "mm" "" Sapphire) (m "bz" "" Yellow) (m "vh" "󰍛" Green) (m "kdb" "" Green) (m "gz" "" Yellow) (m "cpp" "" Sapphire) (m "ui" "" Surface2) (m "txt" "󰈙" Green) (m "spec.ts" "" Sapphire) (m "ccm" "" Red) (m "typoscript" "" Peach) (m "typ" "" Teal) (m "txz" "" Yellow) (m "test.ts" "" Sapphire) (m "tsx" "" Surface2) (m "mk" "" Overlay1) (m "webp" "" Overlay1) (m "opus" "" Overlay0) (m "bicep" "" Sapphire) (m "ts" "" Sapphire) (m "tres" "" Overlay1) (m "torrent" "" Teal) (m "cxx" "" Sapphire) (m "iso" "" Flamingo) (m "ixx" "" Sapphire) (m "hxx" "" Overlay1) (m "gql" "" Red) (m "tmux" "" Green) (m "ini" "" Overlay1) (m "m3u8" "󰲹" Red) (m "image" "" Flamingo) (m "tfvars" "" Surface2) (m "tex" "" Surface1) (m "cbl" "⚙" Surface2) (m "flc" "" Rosewater) (m "elc" "" Overlay0) (m "test.tsx" "" Surface2) (m "twig" "" Green) (m "sql" "" Rosewater) (m "test.jsx" "" Sapphire) (m "htm" "" Peach) (m "gcode" "󰐫" Overlay0) (m "test.js" "" Yellow) (m "ino" "" Sapphire) (m "tcl" "󰛓" Surface2) (m "cljs" "" Sapphire) (m "tsconfig" "" Peach) (m "img" "" Flamingo) (m "t" "" Sapphire) (m "fcstd1" "" Red) (m "out" "" Surface1) (m "jsx" "" Sapphire) (m "bash" "" Green) (m "edn" "" Sapphire) (m "rss" "" Peach) (m "flf" "" Rosewater) (m "cache" "" Rosewater) (m "sbt" "" Red) (m "cppm" "" Sapphire) (m "svelte" "" Peach) (m "mo" "∞" Overlay1) (m "sv" "󰍛" Green) (m "ko" "" Rosewater) (m "suo" "" Surface2) (m "sldasm" "󰻫" Green) (m "icalendar" "" Surface0) (m "go" "" Sapphire) (m "sublime" "" Peach) (m "stl" "󰆧" Overlay1) (m "mobi" "" Peach) (m "graphql" "" Red) (m "m3u" "󰲹" Red) (m "cpy" "⚙" Surface2) (m "kdenlive" "" Blue) (m "pyo" "" Yellow) (m "po" "" Sapphire) (m "scala" "" Red) (m "exs" "" Overlay1) (m "odp" "" Peach) (m "dump" "" Rosewater) (m "stp" "󰻫" Green) (m "step" "󰻫" Green) (m "ste" "󰻫" Green) (m "aif" "" Sapphire) (m "strings" "" Sapphire) (m "cp" "" Sapphire) (m "fsscript" "" Sapphire) (m "mli" "" Peach) (m "bak" "󰁯" Overlay1) (m "ssa" "󰨖" Yellow) (m "toml" "" Red) (m "makefile" "" Overlay1) (m "php" "" Overlay1) (m "zst" "" Yellow) (m "spec.jsx" "" Sapphire) (m "kbx" "󰯄" Overlay0) (m "fbx" "󰆧" Overlay1) (m "blend" "󰂫" Peach) (m "ifc" "󰻫" Green) (m "spec.js" "" Yellow) (m "so" "" Rosewater)
-          (m "desktop" "" Surface1) (m "sml" "λ" Peach) (m "slvs" "󰻫" Green) (m "pp" "" Peach) (m "ps1" "󰨊" Overlay0) (m "dropbox" "" Overlay0) (m "kicad_mod" "" Rosewater) (m "bat" "" Green) (m "slim" "" Peach) (m "skp" "󰻫" Green) (m "css" "" Blue) (m "xul" "" Peach) (m "ige" "󰻫" Green) (m "glb" "" Peach) (m "ppt" "󰈧" Red) (m "sha512" "󰕥" Overlay1) (m "ics" "" Surface0) (m "mdx" "" Sapphire) (m "sha1" "󰕥" Overlay1) (m "f3d" "󰻫" Green) (m "ass" "󰨖" Yellow) (m "godot" "" Overlay1) (m "ifb" "" Surface0) (m "cson" "" Yellow) (m "lib" "" Crust) (m "luac" "" Sapphire) (m "heex" "" Overlay1) (m "scm" "󰘧" Rosewater) (m "psd1" "󰨊" Overlay0) (m "sc" "" Red) (m "scad" "" Yellow) (m "kts" "" Overlay0) (m "svh" "󰍛" Green) (m "mts" "" Sapphire) (m "nfo" "" Yellow) (m "pck" "" Overlay1) (m "rproj" "󰗆" Green) (m "rlib" "" Peach) (m "cljd" "" Sapphire) (m "ods" "" Green) (m "res" "" Red) (m "apk" "" Green) (m "haml" "" Rosewater) (m "d.ts" "" Peach) (m "razor" "󱦘" Surface1) (m "rake" "" Crust) (m "patch" "" Surface1) (m "cuh" "" Overlay1) (m "d" "" Red) (m "query" "" Green) (m "psb" "" Sapphire) (m "nu" ">" Green) (m "mov" "" Peach) (m "lrc" "󰨖" Yellow) (m "pyx" "" Blue) (m "pyw" "" Blue) (m "cu" "" Green) (m "bazel" "" Green) (m "obj" "󰆧" Overlay1) (m "pyi" "" Yellow) (m "pyd" "" Yellow) (m "exe" "" Surface1) (m "pyc" "" Yellow) (m "fctb" "" Red) (m "part" "" Teal) (m "blade.php" "" Red) (m "git" "" Peach) (m "psd" "" Sapphire) (m "qss" "" Green) (m "csv" "" Green) (m "psm1" "󰨊" Overlay0) (m "dconf" "" Rosewater) (m "config.ru" "" Crust) (m "prisma" "" Overlay0) (m "conf" "" Overlay1) (m "clj" "" Green) (m "o" "" Surface1) (m "mp4" "" Peach) (m "cc" "" Red) (m "kicad_prl" "" Rosewater) (m "bz3" "" Yellow) (m "asc" "󰦝" Surface2) (m "png" "" Overlay1) (m "android" "" Green) (m "pm" "" Sapphire) (m "h" "" Overlay1) (m "pls" "󰲹" Red) (m "ipynb" "" Peach) (m "pl" "" Sapphire) (m "ads" "" Rosewater) (m "sqlite" "" Rosewater) (m "pdf" "" Red) (m "pcm" "" Overlay0) (m "ico" "" Yellow) (m "a" "" Rosewater) (m "R" "󰟔" Surface2) (m "ogg" "" Overlay0) (m "pxd" "" Blue) (m "kdenlivetitle" "" Blue) (m "jxl" "" Overlay1) (m "nswag" "" Green) (m "nim" "" Yellow) (m "bqn" "⎉" Surface2) (m "cts" "" Sapphire) (m "fcparam" "" Red) (m "rs" "" Peach) (m "mpp" "" Sapphire) (m "fdmdownload" "" Teal) (m "pptx" "󰈧" Red) (m "jpeg" "" Overlay1) (m "bib" "󱉟" Yellow) (m "vhd" "󰍛" Green) (m "m" "" Blue) (m "js" "" Yellow) (m "eex" "" Overlay1) (m "tbc" "󰛓" Surface2) (m "astro" "" Red) (m "sha224" "󰕥" Overlay1) (m "xcplayground" "" Peach) (m "el" "" Overlay0) (m "m4v" "" Peach) (m "m4a" "" Sapphire) (m "cs" "󰌛" Green) (m "hs" "" Overlay1) (m "tgz" "" Yellow) (m "fs" "" Sapphire) (m "luau" "" Blue)
-          (m "dxf" "󰻫" Green) (m "download" "" Teal) (m "cast" "" Peach) (m "qrc" "" Green) (m "lua" "" Sapphire) (m "lhs" "" Overlay1) (m "md" "" Text) (m "leex" "" Overlay1) (m "ai" "" Yellow) (m "lck" "" Subtext1) (m "kt" "" Overlay0) (m "bicepparam" "" Overlay1) (m "hex" "" Overlay0) (m "zig" "" Peach) (m "bzl" "" Green) (m "cljc" "" Green) (m "kicad_dru" "" Rosewater) (m "fctl" "" Red) (m "f#" "" Sapphire) (m "odt" "" Sapphire) (m "conda" "" Green) (m "vala" "" Surface2) (m "erb" "" Crust) (m "mp3" "" Sapphire) (m "bz2" "" Yellow) (m "coffee" "" Yellow) (m "cr" "" Rosewater) (m "f90" "󱈚" Surface2) (m "jwmrc" "" Overlay0) (m "c++" "" Red) (m "fcscript" "" Red) (m "fods" "" Green) (m "cue" "󰲹" Red) (m "srt" "󰨖" Yellow) (m "info" "" Yellow) (m "hh" "" Overlay1) (m "sig" "λ" Peach) (m "html" "" Peach) (m "iges" "󰻫" Green) (m "kicad_wks" "" Rosewater) (m "hbs" "" Peach) (m "fcstd" "" Red) (m "gresource" "" Rosewater) (m "sub" "󰨖" Yellow) (m "ical" "" Surface0) (m "crdownload" "" Teal) (m "pub" "󰷖" Yellow) (m "vue" "" Green) (m "gd" "" Overlay1) (m "fsx" "" Sapphire) (m "mkv" "" Peach) (m "py" "" Yellow) (m "kicad_sch" "" Rosewater) (m "epub" "" Peach) (m "env" "" Yellow) (m "magnet" "" Surface1) (m "elf" "" Surface1) (m "fodg" "" Yellow) (m "svg" "󰜡" Peach) (m "dwg" "󰻫" Green) (m "docx" "󰈬" Surface2) (m "pro" "" Yellow) (m "db" "" Rosewater) (m "rb" "" Crust) (m "r" "󰟔" Surface2) (m "scss" "" Red) (m "cow" "󰆚" Peach) (m "gleam" "" Pink) (m "v" "󰍛" Green) (m "kicad_pro" "" Rosewater) (m "liquid" "" Green) (m "zip" "" Yellow)
+          (m "otf" "" Rosewater) (m "import" "" Rosewater) (m "krz" "" Mauve) (m "adb" "" Teal) (m "ttf" "" Rosewater) (m "webpack" "󰜫" Accent) (m "dart" "" Surface2) (m "vsh" "" Overlay1) (m "doc" "󰈬" Surface2) (m "zsh" "" Green) (m "ex" "" Overlay1) (m "hx" "" Peach) (m "fodt" "" Accent) (m "mojo" "" Peach) (m "templ" "" Yellow) (m "nix" "" Accent) (m "cshtml" "󱦗" Surface1) (m "fish" "" Surface2) (m "ply" "󰆧" Overlay1) (m "sldprt" "󰻫" Green) (m "gemspec" "" Crust) (m "mjs" "" Yellow) (m "csh" "" Surface2) (m "cmake" "" Text) (m "fodp" "" Peach) (m "vi" "" Yellow) (m "msf" "" Blue) (m "blp" "󰺾" Blue) (m "less" "" Surface1) (m "sh" "" Surface2) (m "odg" "" Yellow) (m "mint" "󰌪" Green) (m "dll" "" Crust) (m "odf" "" Red) (m "sqlite3" "" Rosewater) (m "Dockerfile" "󰡨" Blue) (m "ksh" "" Surface2) (m "rmd" "" Accent) (m "wv" "" Accent) (m "xml" "󰗀" Peach) (m "markdown" "" Text) (m "qml" "" Green) (m "3gp" "" Peach) (m "pxi" "" Blue) (m "flac" "" Overlay0) (m "gpr" "" Mauve) (m "huff" "󰡘" Surface1) (m "json" "" Yellow) (m "gv" "󱁉" Surface2) (m "bmp" "" Overlay1) (m "lock" "" Subtext1) (m "sha384" "󰕥" Overlay1) (m "cobol" "⚙" Surface2) (m "cob" "⚙" Surface2) (m "java" "" Red) (m "cjs" "" Yellow) (m "qm" "" Sapphire) (m "ebuild" "" Surface1) (m "mustache" "" Peach) (m "terminal" "" Green) (m "ejs" "" Yellow) (m "brep" "󰻫" Green) (m "rar" "" Yellow) (m "gradle" "" Surface2) (m "gnumakefile" "" Overlay1) (m "applescript" "" Overlay1) (m "elm" "" Accent) (m "ebook" "" Peach) (m "kra" "" Mauve) (m "tf" "" Surface2) (m "xls" "󰈛" Surface2) (m "fnl" "" Yellow) (m "kdbx" "" Green) (m "kicad_pcb" "" Rosewater) (m "cfg" "" Overlay1) (m "ape" "" Accent) (m "org" "" Teal) (m "yml" "" Overlay1) (m "swift" "" Peach) (m "eln" "" Overlay0) (m "sol" "" Sapphire) (m "awk" "" Surface2) (m "7z" "" Yellow) (m "apl" "⍝" Peach) (m "epp" "" Peach) (m "app" "" Surface1) (m "dot" "󱁉" Surface2) (m "kpp" "" Mauve) (m "eot" "" Rosewater) (m "hpp" "" Overlay1) (m "spec.tsx" "" Surface2) (m "hurl" "" Red) (m "cxxm" "" Accent) (m "c" "" Blue) (m "fcmacro" "" Red) (m "sass" "" Red) (m "yaml" "" Overlay1) (m "xz" "" Yellow) (m "material" "󰔉" Overlay0) (m "json5" "" Yellow) (m "signature" "λ" Peach) (m "3mf" "󰆧" Overlay1) (m "jpg" "" Overlay1) (m "xpi" "" Peach) (m "fcmat" "" Red) (m "pot" "" Accent) (m "bin" "" Surface1) (m "xlsx" "󰈛" Surface2) (m "aac" "" Accent) (m "kicad_sym" "" Rosewater) (m "xcstrings" "" Accent) (m "lff" "" Rosewater) (m "xcf" "" Surface2) (m "azcli" "" Overlay0) (m "license" "" Yellow) (m "jsonc" "" Yellow) (m "xaml" "󰙳" Surface1) (m "md5" "󰕥" Overlay1) (m "xm" "" Accent) (m "sln" "" Surface2) (m "jl" "" Overlay1) (m "ml" "" Peach) (m "http" "" Blue) (m "x" "" Blue) (m "wvc" "" Accent) (m "wrz" "󰆧" Overlay1) (m "csproj" "󰪮" Surface1)
+          (m "wrl" "󰆧" Overlay1) (m "wma" "" Accent) (m "woff2" "" Rosewater) (m "woff" "" Rosewater) (m "tscn" "" Overlay1) (m "webmanifest" "" Yellow) (m "webm" "" Peach) (m "fcbak" "" Red) (m "log" "󰌱" Text) (m "wav" "" Accent) (m "wasm" "" Surface2) (m "styl" "" Green) (m "gif" "" Overlay1) (m "resi" "" Red) (m "aiff" "" Accent) (m "sha256" "󰕥" Overlay1) (m "igs" "󰻫" Green) (m "vsix" "" Surface2) (m "vim" "" Green) (m "diff" "" Surface1) (m "drl" "" Maroon) (m "erl" "" Overlay0) (m "vhdl" "󰍛" Green) (m "🔥" "" Peach) (m "hrl" "" Overlay0) (m "fsi" "" Sapphire) (m "mm" "" Accent) (m "bz" "" Yellow) (m "vh" "󰍛" Green) (m "kdb" "" Green) (m "gz" "" Yellow) (m "cpp" "" Accent) (m "ui" "" Surface2) (m "txt" "󰈙" Green) (m "spec.ts" "" Accent) (m "ccm" "" Red) (m "typoscript" "" Peach) (m "typ" "" Teal) (m "txz" "" Yellow) (m "test.ts" "" Accent) (m "tsx" "" Surface2) (m "mk" "" Overlay1) (m "webp" "" Overlay1) (m "opus" "" Overlay0) (m "bicep" "" Sapphire) (m "ts" "" Accent) (m "tres" "" Overlay1) (m "torrent" "" Teal) (m "cxx" "" Accent) (m "iso" "" Flamingo) (m "ixx" "" Accent) (m "hxx" "" Overlay1) (m "gql" "" Red) (m "tmux" "" Green) (m "ini" "" Overlay1) (m "m3u8" "󰲹" Red) (m "image" "" Flamingo) (m "tfvars" "" Surface2) (m "tex" "" Surface1) (m "cbl" "⚙" Surface2) (m "flc" "" Rosewater) (m "elc" "" Overlay0) (m "test.tsx" "" Surface2) (m "twig" "" Green) (m "sql" "" Rosewater) (m "test.jsx" "" Accent) (m "htm" "" Peach) (m "gcode" "󰐫" Overlay0) (m "test.js" "" Yellow) (m "ino" "" Sapphire) (m "tcl" "󰛓" Surface2) (m "cljs" "" Accent) (m "tsconfig" "" Peach) (m "img" "" Flamingo) (m "t" "" Accent) (m "fcstd1" "" Red) (m "out" "" Surface1) (m "jsx" "" Accent) (m "bash" "" Green) (m "edn" "" Sapphire) (m "rss" "" Peach) (m "flf" "" Rosewater) (m "cache" "" Rosewater) (m "sbt" "" Red) (m "cppm" "" Accent) (m "svelte" "" Peach) (m "mo" "∞" Overlay1) (m "sv" "󰍛" Green) (m "ko" "" Rosewater) (m "suo" "" Surface2) (m "sldasm" "󰻫" Green) (m "icalendar" "" Surface0) (m "go" "" Sapphire) (m "sublime" "" Peach) (m "stl" "󰆧" Overlay1) (m "mobi" "" Peach) (m "graphql" "" Red) (m "m3u" "󰲹" Red) (m "cpy" "⚙" Surface2) (m "kdenlive" "" Blue) (m "pyo" "" Yellow) (m "po" "" Sapphire) (m "scala" "" Red) (m "exs" "" Overlay1) (m "odp" "" Peach) (m "dump" "" Rosewater) (m "stp" "󰻫" Green) (m "step" "󰻫" Green) (m "ste" "󰻫" Green) (m "aif" "" Accent) (m "strings" "" Accent) (m "cp" "" Accent) (m "fsscript" "" Accent) (m "mli" "" Peach) (m "bak" "󰁯" Overlay1) (m "ssa" "󰨖" Yellow) (m "toml" "" Red) (m "makefile" "" Overlay1) (m "php" "" Overlay1) (m "zst" "" Yellow) (m "spec.jsx" "" Accent) (m "kbx" "󰯄" Overlay0) (m "fbx" "󰆧" Overlay1) (m "blend" "󰂫" Peach) (m "ifc" "󰻫" Green) (m "spec.js" "" Yellow) (m "so" "" Rosewater)
+          (m "desktop" "" Surface1) (m "sml" "λ" Peach) (m "slvs" "󰻫" Green) (m "pp" "" Peach) (m "ps1" "󰨊" Overlay0) (m "dropbox" "" Overlay0) (m "kicad_mod" "" Rosewater) (m "bat" "" Green) (m "slim" "" Peach) (m "skp" "󰻫" Green) (m "css" "" Blue) (m "xul" "" Peach) (m "ige" "󰻫" Green) (m "glb" "" Peach) (m "ppt" "󰈧" Red) (m "sha512" "󰕥" Overlay1) (m "ics" "" Surface0) (m "mdx" "" Accent) (m "sha1" "󰕥" Overlay1) (m "f3d" "󰻫" Green) (m "ass" "󰨖" Yellow) (m "godot" "" Overlay1) (m "ifb" "" Surface0) (m "cson" "" Yellow) (m "lib" "" Crust) (m "luac" "" Accent) (m "heex" "" Overlay1) (m "scm" "󰘧" Rosewater) (m "psd1" "󰨊" Overlay0) (m "sc" "" Red) (m "scad" "" Yellow) (m "kts" "" Overlay0) (m "svh" "󰍛" Green) (m "mts" "" Accent) (m "nfo" "" Yellow) (m "pck" "" Overlay1) (m "rproj" "󰗆" Green) (m "rlib" "" Peach) (m "cljd" "" Accent) (m "ods" "" Green) (m "res" "" Red) (m "apk" "" Green) (m "haml" "" Rosewater) (m "d.ts" "" Peach) (m "razor" "󱦘" Surface1) (m "rake" "" Crust) (m "patch" "" Surface1) (m "cuh" "" Overlay1) (m "d" "" Red) (m "query" "" Green) (m "psb" "" Accent) (m "nu" ">" Green) (m "mov" "" Peach) (m "lrc" "󰨖" Yellow) (m "pyx" "" Blue) (m "pyw" "" Blue) (m "cu" "" Green) (m "bazel" "" Green) (m "obj" "󰆧" Overlay1) (m "pyi" "" Yellow) (m "pyd" "" Yellow) (m "exe" "" Surface1) (m "pyc" "" Yellow) (m "fctb" "" Red) (m "part" "" Teal) (m "blade.php" "" Red) (m "git" "" Peach) (m "psd" "" Accent) (m "qss" "" Green) (m "csv" "" Green) (m "psm1" "󰨊" Overlay0) (m "dconf" "" Rosewater) (m "config.ru" "" Crust) (m "prisma" "" Overlay0) (m "conf" "" Overlay1) (m "clj" "" Green) (m "o" "" Surface1) (m "mp4" "" Peach) (m "cc" "" Red) (m "kicad_prl" "" Rosewater) (m "bz3" "" Yellow) (m "asc" "󰦝" Surface2) (m "png" "" Overlay1) (m "android" "" Green) (m "pm" "" Accent) (m "h" "" Overlay1) (m "pls" "󰲹" Red) (m "ipynb" "" Peach) (m "pl" "" Accent) (m "ads" "" Rosewater) (m "sqlite" "" Rosewater) (m "pdf" "" Red) (m "pcm" "" Overlay0) (m "ico" "" Yellow) (m "a" "" Rosewater) (m "R" "󰟔" Surface2) (m "ogg" "" Overlay0) (m "pxd" "" Blue) (m "kdenlivetitle" "" Blue) (m "jxl" "" Overlay1) (m "nswag" "" Green) (m "nim" "" Yellow) (m "bqn" "⎉" Surface2) (m "cts" "" Accent) (m "fcparam" "" Red) (m "rs" "" Peach) (m "mpp" "" Accent) (m "fdmdownload" "" Teal) (m "pptx" "󰈧" Red) (m "jpeg" "" Overlay1) (m "bib" "󱉟" Yellow) (m "vhd" "󰍛" Green) (m "m" "" Blue) (m "js" "" Yellow) (m "eex" "" Overlay1) (m "tbc" "󰛓" Surface2) (m "astro" "" Red) (m "sha224" "󰕥" Overlay1) (m "xcplayground" "" Peach) (m "el" "" Overlay0) (m "m4v" "" Peach) (m "m4a" "" Accent) (m "cs" "󰌛" Green) (m "hs" "" Overlay1) (m "tgz" "" Yellow) (m "fs" "" Accent) (m "luau" "" Blue)
+          (m "dxf" "󰻫" Green) (m "download" "" Teal) (m "cast" "" Peach) (m "qrc" "" Green) (m "lua" "" Accent) (m "lhs" "" Overlay1) (m "md" "" Text) (m "leex" "" Overlay1) (m "ai" "" Yellow) (m "lck" "" Subtext1) (m "kt" "" Overlay0) (m "bicepparam" "" Overlay1) (m "hex" "" Overlay0) (m "zig" "" Peach) (m "bzl" "" Green) (m "cljc" "" Green) (m "kicad_dru" "" Rosewater) (m "fctl" "" Red) (m "f#" "" Accent) (m "odt" "" Accent) (m "conda" "" Green) (m "vala" "" Surface2) (m "erb" "" Crust) (m "mp3" "" Accent) (m "bz2" "" Yellow) (m "coffee" "" Yellow) (m "cr" "" Rosewater) (m "f90" "󱈚" Surface2) (m "jwmrc" "" Overlay0) (m "c++" "" Red) (m "fcscript" "" Red) (m "fods" "" Green) (m "cue" "󰲹" Red) (m "srt" "󰨖" Yellow) (m "info" "" Yellow) (m "hh" "" Overlay1) (m "sig" "λ" Peach) (m "html" "" Peach) (m "iges" "󰻫" Green) (m "kicad_wks" "" Rosewater) (m "hbs" "" Peach) (m "fcstd" "" Red) (m "gresource" "" Rosewater) (m "sub" "󰨖" Yellow) (m "ical" "" Surface0) (m "crdownload" "" Teal) (m "pub" "󰷖" Yellow) (m "vue" "" Green) (m "gd" "" Overlay1) (m "fsx" "" Accent) (m "mkv" "" Peach) (m "py" "" Yellow) (m "kicad_sch" "" Rosewater) (m "epub" "" Peach) (m "env" "" Yellow) (m "magnet" "" Surface1) (m "elf" "" Surface1) (m "fodg" "" Yellow) (m "svg" "󰜡" Peach) (m "dwg" "󰻫" Green) (m "docx" "󰈬" Surface2) (m "pro" "" Yellow) (m "db" "" Rosewater) (m "rb" "" Crust) (m "r" "󰟔" Surface2) (m "scss" "" Red) (m "cow" "󰆚" Peach) (m "gleam" "" Pink) (m "v" "󰍛" Green) (m "kicad_pro" "" Rosewater) (m "liquid" "" Green) (m "zip" "" Yellow)
         ];
       };
     };
@@ -2295,7 +2306,7 @@
 
       button {
       	border-radius: 0;
-      	border-color: ${Sapphire};
+      	border-color: ${Accent};
       	text-decoration-color: ${Text};
       	color: ${Text};
       	background-color: ${Mantle};
@@ -2343,11 +2354,11 @@
               active_titlebar_bg = "${Base}",
               active_titlebar_fg = "${Text}",
               font_size = ${toString MonoSizeWezterm},
-              active_titlebar_border_bottom = "${Sapphire}",
-              border_left_color = "${Sapphire}",
-              border_right_color = "${Sapphire}",
-              border_bottom_color = "${Sapphire}",
-              border_top_color = "${Sapphire}",
+              active_titlebar_border_bottom = "${Accent}",
+              border_left_color = "${Accent}",
+              border_right_color = "${Accent}",
+              border_bottom_color = "${Accent}",
+              border_top_color = "${Accent}",
               button_bg = "${Overlay0}",
               button_fg = "${Text}",
               button_hover_bg = "${Rosewater}",
@@ -2411,10 +2422,10 @@
           ];
           background = Base;
           cursor_bg = Rosewater;
-          cursor_fg = Sapphire;
+          cursor_fg = Accent;
           compose_cursor = Flamingo;
           foreground = Text;
-          scrollbar_thumb = Sapphire;
+          scrollbar_thumb = Accent;
           selection_bg = Rosewater;
           selection_fg = Crust;
           split = Overlay1;
@@ -2423,7 +2434,7 @@
             background = Crust;
             inactive_tab_edge = Surface0;
             active_tab = {
-              bg_color = Sapphire;
+              bg_color = Accent;
               fg_color = Crust;
             };
             inactive_tab = {
@@ -2507,7 +2518,7 @@
             monitor = "";
             path = "$HOME/.face";
             size = 100;
-            border_color = rgb-Sapphire;
+            border_color = rgb-Accent;
             position = "0, 75";
             halign = "center";
             valign = "center";
@@ -2521,13 +2532,13 @@
             dots_size = 0.2;
             dots_spacing = 0.2;
             dots_center = true;
-            outer_color = rgb-Sapphire;
+            outer_color = rgb-Accent;
             inner_color = rgb-Surface0;
             font_color = rgb-Text;
             fade_on_empty = false;
-            placeholder_text = ''<span foreground="##${alt-Text}"><i>󰌾 Logged in as </i><span foreground="##${alt-Sapphire}">$USER</span></span>'';
+            placeholder_text = ''<span foreground="##${alt-Text}"><i>󰌾 Logged in as </i><span foreground="##${alt-Accent}">$USER</span></span>'';
             hide_input = false;
-            check_color = rgb-Sapphire;
+            check_color = rgb-Accent;
             fail_color = rgb-Red;
             fail_text = ''<i>$FAIL <b>($ATTEMPTS)</b></i>'';
             capslock_color = rgb-Yellow;
@@ -2542,7 +2553,7 @@
     cavalier.settings.general = {
       ColorProfiles = lib.singleton {
         Name = "nix";
-        FgColors = [ Sapphire ];
+        FgColors = [ Accent ];
         BgColors = [ Base ];
       };
       ActiveProfile = 0;
@@ -2573,7 +2584,7 @@
       border_color = #000000 0
       background_color_hover = ${Rosewater} 22
       border_color_hover = #000000 0
-      background_color_pressed = ${Sapphire} 100
+      background_color_pressed = ${Accent} 100
       border_color_pressed = #000000 0
       # Background 3: Active task
       rounded = 2
@@ -2581,11 +2592,11 @@
       border_sides = TBLR
       border_content_tint_weight = 0
       background_content_tint_weight = 0
-      background_color = ${Sapphire} 100
+      background_color = ${Accent} 100
       border_color = #000000 0
-      background_color_hover = ${Sapphire} 70
+      background_color_hover = ${Accent} 70
       border_color_hover = #000000 0
-      background_color_pressed = ${Sapphire} 100
+      background_color_pressed = ${Accent} 100
       border_color_pressed = #000000 0
       # Background 4: Urgent task
       rounded = 2
@@ -2811,7 +2822,7 @@
             workspaces = { numbered_active_underline_color = Pink; numbered_active_highlighted_text_color = Crust; numbered_active_text_color = Base;
               hover = Pink; active = Pink; occupied = Rosewater; available = Teal; border = Pink; background = Base;
             };
-            dashboard = { icon = Base; border = Sapphire; background = Sapphire; hover = Brown; };
+            dashboard = { icon = Base; border = Accent; background = Accent; hover = Brown; };
             icon = Base; text = Lavender; hover = Surface1; icon_background = Lavender;
             volume = { output_icon = Black; output_text = Pink; input_icon = Black; input_text = Pink; separator = Surface1; };
           };
@@ -2866,14 +2877,14 @@
          #font-2 = "Hack Nerd Font:size=12;3";
         };
         "module/xwindow" = {
-          format-prefix-foreground = Sapphire;
+          format-prefix-foreground = Accent;
         };
         "module/xworkspaces" = {
           label = {
             active = {
              #foreground = Base;
-              foreground = Sapphire;
-             #background = Sapphire;
+              foreground = Accent;
+             #background = Accent;
               background = Base;
              #underline= Blue;
               underline= Base;
@@ -2958,7 +2969,7 @@
           label-foreground = Red;
         };
         "module/apps" = {
-          label-foreground = Sapphire;
+          label-foreground = Accent;
         };
         "module/picom" = {
           label-foreground = Mauve;
@@ -3000,7 +3011,7 @@
         urgency_normal = {
          #foreground = Text;
          #background = Base;
-         #frame_color = Sapphire;
+         #frame_color = Accent;
         };
         urgency_critical = {
          #background = Red;
@@ -3061,7 +3072,7 @@
         }
         .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
           box-shadow: inset 0 0 0 1px ${Subtext1};
-          background-color: ${Sapphire};
+          background-color: ${Accent};
           color: ${Text};
         }
         .floating-notifications.background .notification-row .notification-background .close-button {
@@ -3102,7 +3113,7 @@
         }
         .control-center .widget-title button:active {
           box-shadow: inset 0 0 0 1px ${Subtext1};
-          background-color: ${Sapphire};
+          background-color: ${Accent};
           color: ${Base};
         }
         .control-center .notification-row .notification-background {
@@ -3133,7 +3144,7 @@
         }
         .control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
           box-shadow: inset 0 0 0 1px ${Subtext1};
-          background-color: ${Sapphire};
+          background-color: ${Accent};
           color: ${Text};
         }
         .control-center .notification-row .notification-background .close-button {
@@ -3159,7 +3170,7 @@
         }
         .control-center .notification-row .notification-background:active {
           box-shadow: inset 0 0 0 1px ${Subtext1};
-          background-color: ${Sapphire};
+          background-color: ${Accent};
           color: ${Text};
         }
         .notification.critical progress { background-color: ${Red}; }
@@ -3202,8 +3213,8 @@
         .widget-buttons-grid { padding-top: 1rem; }
         .widget-buttons-grid > flowbox > flowboxchild > button label { font-size: 2.5rem; }
         .widget-volume { padding-top: 1rem; }
-        .widget-volume label { font-size: 1.5rem; color: ${Sapphire}; }
-        .widget-volume trough highlight { background: ${Sapphire}; }
+        .widget-volume label { font-size: 1.5rem; color: ${Accent}; }
+        .widget-volume trough highlight { background: ${Accent}; }
         .widget-backlight trough highlight { background: ${Yellow}; }
         .widget-backlight label { font-size: 1.5rem; color: ${Yellow}; }
         .widget-backlight .KB { padding-bottom: 1rem; }
@@ -3304,8 +3315,8 @@
       text_fg = '${Text}'
       dimmed_text_fg = '${Overlay0}'
       # input
-      input_text_fg = '${Sapphire}'
-      result_count_fg = '${Sapphire}'
+      input_text_fg = '${Accent}'
+      result_count_fg = '${Accent}'
       # results
       result_name_fg = '${Blue}'
       result_line_number_fg = '${Yellow}'
@@ -3314,10 +3325,10 @@
       selection_bg = '${Surface0}'
       match_fg = '${Green}'
       # preview
-      preview_title_fg = '${Sapphire}'
+      preview_title_fg = '${Accent}'
       # modes
       channel_mode_fg = '${Base}'
-      channel_mode_bg = '${Sapphire}'
+      channel_mode_bg = '${Accent}'
       remote_control_mode_fg = '${Base}'
       remote_control_mode_bg = '${Green}'
     '';
@@ -3430,7 +3441,7 @@
         theme.gh_cyan      = "${Teal}"   -- Tags, tokens
         theme.gh_selection = "${Surface1}"   -- Selection background
         theme.gh_highlight = "${Rosewater}"   -- Highlighted text
-        theme.gh_caret     = "#${Sapphire}"   -- Cursor/caret color
+        theme.gh_caret     = "#${Accent}"   -- Cursor/caret color
         theme.gh_invisibles= "${Crust}"  -- Invisible characters
         theme.gh_mantle    = "${Mantle}"  -- Invisible characters
         theme.bg_normal     = theme.gh_bg        -- Normal background
@@ -3587,7 +3598,7 @@
         }
         element {
             padding: 4 8;
-            text-color: ${Sapphire};
+            text-color: ${Accent};
             background-color: ${Crust};
             border-radius: 5px;
         }
@@ -3665,7 +3676,7 @@
         * {
             bg: ${Mantle};
             fg: ${Text};
-            selection: ${Sapphire};
+            selection: ${Accent};
             border: ${Crust};
             urgent: ${Red};
             text-dark: ${Crust};
@@ -3788,7 +3799,7 @@
         }
         element {
             padding: 4 8;
-            text-color: ${Sapphire};
+            text-color: ${Accent};
             background-color: ${Crust};
             border-radius: 5px;
         }
@@ -3908,7 +3919,7 @@
         element selected.normal {
             border: 2px solid;
             border-radius: 10px;
-            border-color: ${Sapphire};
+            border-color: ${Accent};
         }
         element-icon {
             expand: true;
@@ -3927,7 +3938,7 @@
       target = "test.txt";
       text = ''
         ${hexToRgb alt-Base}
-        rgb(${hexToRgb alt-Sapphire})
+        rgb(${hexToRgb alt-Accent})
       '';
     };
   };
@@ -4243,6 +4254,7 @@
  #  sxiv.enable = false;
  #  waybar.enable = false;
  #  wezterm.enable = false;
+ #  xfce.enable = false; # use if no xfce theme found for style
  #  xresources.enable = false;
  #  yazi.enable = false;
  #};
@@ -4315,7 +4327,6 @@
    #wob                     S
    #wofi                    S
    #wpaperd                 S
-   #xfce                    S
    #zathura              C  S
    #zed                  C  S
    #zellij               C  S

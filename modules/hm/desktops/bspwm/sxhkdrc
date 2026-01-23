@@ -35,8 +35,8 @@ super + ctrl + shift + Tab
       skippy-xd --paging
 
 # Skippy toggle
-super + shift + p
-      bsp-skippy; notify-send "Skippy"
+super + shift + ctrl + alt + Tab
+      notify-send "Skippy"; bsp-skippy
 
 # Reload sxhkd (Hotkey Daemon)
 super + Escape
@@ -135,11 +135,11 @@ super + alt + shift + e; {1-9,0}
       bsp-desktop-switch-follow ^{1-9,10}
 
 # Send Focused Desktop to Next or Previous Monitor
-super + alt + shift + ctrl + Tab
+super + alt + shift + ctrl + period
 	bspc desktop focused -m next --follow
 
 # Send Focused Window to Next or Previous Monitor
-super + alt + shift + Tab
+super + alt + shift + period
 	bspc node focused -m next --follow
 
 # Expand window width right
@@ -331,8 +331,12 @@ super + alt + 6
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once even; notify-send "(one-shot) Even Layout"
 
 # Resize All Windows Equally Manually (OneShot)
-super + ctrl + alt + 6
+super + ctrl + F6
 	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Equal Size Windows"
+
+# Resize All Windows of Parent
+super + ctrl + alt + 6
+	bspc node @parent -B
 
 # Vertical Columns Layout (OneShot)
 super + alt + 8
@@ -393,6 +397,14 @@ super + alt + g
 # Hide Polybar
 super + shift + g
       bsp-poly-hide
+
+# Polybar Modules
+super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus}
+      ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired}
+
+# Polybar Modules
+super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b}
+      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm}
 
 # Hide Dock
 super + shift + alt + g
@@ -567,11 +579,11 @@ super + alt + equal
     bspc node @parent -R 90
 
 # Next Workspace
-super + alt + shift + Right
+super + alt + shift + ctrl + Right
     bspc desktop -f next
 
 # Next Workspace
-super + alt + shift + Left
+super + alt + shift + ctrl + Left
     bspc desktop -f prev
 
 # Swap Window With Largest Window and back (Zoom)
@@ -754,7 +766,7 @@ super + ctrl + comma
 super + ctrl + alt + comma
     live-bg-speed -
 
-# Live Wallpaper Speed Decrease
+# Live Wallpaper Pause
 super + alt + comma
     live-bg-pause
 
@@ -764,11 +776,11 @@ super + shift + ctrl + alt + comma
 
 # BSPWM Manual Config Save
 super + alt + r
-    bsp-conf; notify-send "Config Saved"
+    bsp-conf; bsp-conf-color; notify-send "Config Saved"
 
 # BSPWM Manual Config Load
 super + ctrl + shift + r
-    $HOME/.bsp_conf; notify-send "Config Loaded"
+    $HOME/.bsp_conf; $HOME/.bsp_conf_color; notify-send "Config Loaded"
 
 # BSPWM Window Rule Apply
 super + shift + t

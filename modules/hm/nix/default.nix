@@ -85,7 +85,7 @@ in
        #extra-sandbox-paths = [ "" "" ];
         max-jobs = "auto";
         max-substitution-jobs = 20;
-        auto-optimise-store = true;
+        auto-optimise-store = false;
         allow-dirty = true;
         warn-dirty = true;
 
@@ -197,7 +197,7 @@ in
         enable = true;
         flake = "${nix-path}";
         clean = {
-          enable = true;
+          enable = false;
           extraArgs = "--keep-since 10d --keep 10";
           dates = "weekly";
         };

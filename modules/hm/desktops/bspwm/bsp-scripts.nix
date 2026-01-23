@@ -870,7 +870,7 @@ let
         if pgrep polybar > /dev/null; then
             bspc config top_padding $TOP_HEIGHT
             pkill polybar
-            polybar example &
+            polybar &
         else
             bspc config top_padding 0
         fi
@@ -893,7 +893,7 @@ let
     if pgrep polybar > /dev/null; then
         bspc config top_padding $TOP_HEIGHT
         pkill polybar
-        polybar example &
+        polybar &
     else
         bspc config top_padding ${toString config.xsession.windowManager.bspwm.settings.top_padding}
     fi
@@ -1251,7 +1251,7 @@ let
   bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
 
     if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
-        polybar example & disown & tint2 & disown & bspc node -t tiled
+        polybar & disown & tint2 & disown & bspc node -t tiled
 
     else
         pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
@@ -1261,24 +1261,22 @@ let
   '';
 
   bsp-skippy = pkgs.writeShellScriptBin "bsp-skippy" ''
-    #if hash skippy-xd >/dev/null 2>&1; then
-    #      pkill skippy-xd  && pkill skippy-xd && sleep 0.5 &&
-    #      #sleep 0.5
-    #      #skippy-xd --start-daemon &
-    #      notify-send "Skippy Stopped"
-    #      exit
-    #   else
-    #      skippy-xd --start-daemon & disown
-    #      notify-send "Skippy Started"
-    #      exit
-    #fi
+    if pgrep skippy-xd >/dev/null 2>&1; then
+          pkill skippy-xd
+       else
+          skippy-xd --start-daemon
+    fi
 
-    skippy-xd --start-daemon
+    #skippy-xd --start-daemon
 
   '';
 
    bsp-conf = pkgs.writeShellScriptBin "bsp-conf" ''
     ${builtins.readFile ./bspconf}
+  '';
+
+   bsp-conf-color = pkgs.writeShellScriptBin "bsp-conf-color" ''
+    ${builtins.readFile ./bspconfcolor}
   '';
 
    bsp-gaps-cache = pkgs.writeShellScriptBin "bsp-gaps-cache" ''
@@ -1365,6 +1363,7 @@ in
       bsp-plank-reset
       bsp-help
       bsp-conf
+      bsp-conf-color
       bsp-volume
       bsp-layout-manager
       bsp-xkb-layout

@@ -473,6 +473,8 @@ in
                               launch: [ "jgmenu_run" ]
                             f:
                               launch: [ "feh-rofi" ]
+                            p:
+                              launch: [ "poly-modules-rofi" ]
 
                     p:
                       remap:

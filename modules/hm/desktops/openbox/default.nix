@@ -27,7 +27,7 @@ in
           if hash polybar >/dev/null 2>&1; then
           	  pkill polybar
           	  sleep 1
-          	  ${config.services.polybar.package}/bin/polybar example &
+          	  ${config.services.polybar.package}/bin/polybar &
           	  polybar-msg action bspwm module_hide
           fi &
 

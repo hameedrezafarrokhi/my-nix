@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Auto-generated Polybar module toggle script
+# This file is managed by the toggle-polybar-module script
+
+polybar-msg action picom module_show
+polybar-msg action apps module_show
+polybar-msg action pp module_show
+polybar-msg action memory module_show
+polybar-msg action cpu module_show
+polybar-msg action filesystem module_show
+polybar-msg action player module_show
+polybar-msg action xworkspaces module_show
+polybar-msg action lock module_show
+polybar-msg action tray module_show
+polybar-msg action notif module_show
+polybar-msg action idle module_show
+polybar-msg action keyboard-layout module_hide
+polybar-msg action pulseaudio module_show
+polybar-msg action hour module_show
+polybar-msg action power module_show
+polybar-msg action bspwm module_hide

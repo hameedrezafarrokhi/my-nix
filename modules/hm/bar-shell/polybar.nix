@@ -208,6 +208,32 @@ let
     fi
   '';
 
+  poly-modules = pkgs.writeShellScriptBin "poly-modules" ''
+    ${builtins.readFile ./poly-modules}
+  '';
+
+  poly-modules-rofi = pkgs.writeShellScriptBin "poly-modules-rofi" ''
+    MODULE_FILE="$HOME/.polybar_modules"
+    # Check if file exists
+    if [ ! -f "$MODULE_FILE" ]; then
+        echo "No modules configured" | rofi -dmenu -p "Polybar" -l 1 -theme $HOME/.config/rofi/themes/main.rasi
+        exit 0
+    fi
+    # Extract module names from commands in the file
+    MODULES=$(grep -o "action \([^ ]*\) module_" "$MODULE_FILE" | cut -d' ' -f2 | sort -u)
+    if [ -z "$MODULES" ]; then
+        echo "No modules found" | rofi -dmenu -p "Polybar" -l 1 -theme $HOME/.config/rofi/themes/main.rasi
+        exit 0
+    fi
+    # Show rofi menu with modules
+    SELECTED=$(echo "$MODULES" | rofi -dmenu -p "Toggle module" -i -theme $HOME/.config/rofi/themes/main.rasi)
+    # If a module was selected, run the toggle script
+    if [ -n "$SELECTED" ]; then
+        # Assuming my-script is in PATH, otherwise use full path
+        poly-modules "$SELECTED"
+    fi
+  '';
+
 in
 
 { options.my.poly-height = lib.mkOption { type = lib.types.str; };
@@ -234,6 +260,8 @@ in
     poly-color-picker
     poly-magnifier
     poly-dnd
+    poly-modules
+    poly-modules-rofi
   ];
 
   my.poly-height = "18";
@@ -247,7 +275,12 @@ in
    #config = {};  # For path usage, otherwise use "settings"
    #extraConfig = '' '';
 
-    script = "polybar example &";  # Script to run polybar like "polybar bar &"
+   #script = "polybar example &";  # Script to run polybar like "polybar bar &"
+
+    script = ''
+      polybar example &
+      $HOME/.polybar_modules
+    '';
 
     settings = {
 
@@ -412,7 +445,7 @@ in
         label = "%date%";
         label-padding = 1;
         label-font = 1;
-        format-prefix = ''"󰥔%{O-6pt}"'';
+        format-prefix = ''"󰥔%{O-5pt}"'';
       };
 
       "module/date" = {
@@ -484,7 +517,8 @@ in
         click-left = "poly-power";
         click-right = "gnome-clocks";
         double-click-left = "timeswitch";
-        double-click-right = "resources";
+       #double-click-right = "resources";
+        double-click-right = "poly-modules-rofi";
         double-click-middle = "kalarm";
         click-middle = "gnome-calendar";
       };

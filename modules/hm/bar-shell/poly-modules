@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# Check if module argument is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <module_name>"
+    echo "Example: $0 clock"
+    exit 1
+fi
+
+MODULE="$1"
+MODULE_FILE="$HOME/.polybar_modules"
+
+# Function to check if module command exists in file
+module_exists_in_file() {
+    grep -q "polybar-msg action $MODULE module_" "$MODULE_FILE" 2>/dev/null
+}
+
+# Function to get current state from file
+get_current_state() {
+    if [ -f "$MODULE_FILE" ]; then
+        grep "polybar-msg action $MODULE module_" "$MODULE_FILE" | grep -o "module_[a-z]*"
+    fi
+}
+
+# Function to create or modify the module file
+manage_module() {
+    local current_state
+    current_state=$(get_current_state)
+
+    if [ -z "$current_state" ]; then
+        # Module command doesn't exist - create with hide command
+        echo "polybar-msg action $MODULE module_hide" >> "$MODULE_FILE"
+    else
+        # Module exists - toggle the state
+        if [[ "$current_state" == "module_hide" ]]; then
+            # Replace hide with show
+            sed -i "s/polybar-msg action $MODULE module_hide/polybar-msg action $MODULE module_show/g" "$MODULE_FILE"
+        elif [[ "$current_state" == "module_show" ]]; then
+            # Replace show with hide
+            sed -i "s/polybar-msg action $MODULE module_show/polybar-msg action $MODULE module_hide/g" "$MODULE_FILE"
+        fi
+    fi
+}
+
+# Main execution
+if [ ! -f "$MODULE_FILE" ]; then
+    # File doesn't exist - create it as a bash script
+    {
+        echo '#!/usr/bin/env bash'
+        echo '# Auto-generated Polybar module toggle script'
+        echo '# This file is managed by the toggle-polybar-module script'
+        echo ''
+        echo "polybar-msg action $MODULE module_hide"
+    } > "$MODULE_FILE"
+    chmod +x "$MODULE_FILE"
+else
+    # Check if file already has shebang
+    if ! head -1 "$MODULE_FILE" | grep -q "^#!"; then
+        # Add shebang to existing file if missing
+        {
+            echo '#!/usr/bin/env bash'
+            cat "$MODULE_FILE"
+        } > "$MODULE_FILE.tmp"
+        mv "$MODULE_FILE.tmp" "$MODULE_FILE"
+        chmod +x "$MODULE_FILE"
+    fi
+
+    # Manage the module
+    manage_module
+fi
+
+# Run the module file
+"$MODULE_FILE"
