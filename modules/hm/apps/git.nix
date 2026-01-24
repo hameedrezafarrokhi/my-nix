@@ -17,8 +17,9 @@ let
     cd ${nix-path} &&
     git add . &&
     git commit -m "$(date +%F_%H-%M-%S)" &&
-    git branch -M main &&
-    git push -u origin main
+    #git branch -M main &&
+    #git push -u origin main
+    git push
   '';
 
   git-nix-commit = pkgs.writeShellScriptBin "git-nix-commit" ''
