@@ -160,7 +160,8 @@ let
             tint2 &
         fi
 
-        polybar $BAR_NAME &
+        polybar &
+        $HOME/.polybar_modules
         #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         #plank &
         #dockx &
@@ -193,7 +194,8 @@ let
     else
         "$HOME/.bsp_gaps_bar_cache"
         #bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) + $TOP_HEIGHT ))
-        polybar $BAR_NAME &
+        polybar &
+        $HOME/.polybar_modules
     fi
   '';
 
@@ -871,6 +873,7 @@ let
             bspc config top_padding $TOP_HEIGHT
             pkill polybar
             polybar &
+            $HOME/.polybar_modules
         else
             bspc config top_padding 0
         fi
@@ -894,6 +897,7 @@ let
         bspc config top_padding $TOP_HEIGHT
         pkill polybar
         polybar &
+        $HOME/.polybar_modules
     else
         bspc config top_padding ${toString config.xsession.windowManager.bspwm.settings.top_padding}
     fi
@@ -1252,6 +1256,7 @@ let
 
     if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
         polybar & disown & tint2 & disown & bspc node -t tiled
+        $HOME/.polybar_modules
 
     else
         pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen

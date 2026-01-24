@@ -69,5 +69,9 @@ else
     manage_module
 fi
 
+# sort (hide commands first)
+(head -n1 "$MODULE_FILE"; tail -n +2 "$MODULE_FILE" | grep hide; tail -n +2 "$MODULE_FILE" | grep -v hide) > "$MODULE_FILE.tmp" && mv -f "$MODULE_FILE.tmp" "$MODULE_FILE"
+chmod +x "$MODULE_FILE"
+
 # Run the module file
 "$MODULE_FILE"

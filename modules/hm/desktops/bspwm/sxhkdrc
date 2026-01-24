@@ -399,12 +399,12 @@ super + shift + g
       bsp-poly-hide
 
 # Polybar Modules
-super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus}
-      ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired}
+super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
+      ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
 
 # Polybar Modules
-super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b}
-      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm}
+super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h}
+      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date}
 
 # Hide Dock
 super + shift + alt + g

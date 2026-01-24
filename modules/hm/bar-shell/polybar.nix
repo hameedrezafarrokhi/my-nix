@@ -214,24 +214,32 @@ let
 
   poly-modules-rofi = pkgs.writeShellScriptBin "poly-modules-rofi" ''
     MODULE_FILE="$HOME/.polybar_modules"
-    # Check if file exists
+
     if [ ! -f "$MODULE_FILE" ]; then
         echo "No modules configured" | rofi -dmenu -p "Polybar" -l 1 -theme $HOME/.config/rofi/themes/main.rasi
         exit 0
     fi
-    # Extract module names from commands in the file
-    MODULES=$(grep -o "action \([^ ]*\) module_" "$MODULE_FILE" | cut -d' ' -f2 | sort -u)
-    if [ -z "$MODULES" ]; then
+
+    MENU_ITEMS=$(grep "action" "$MODULE_FILE" | while read -r line; do
+        module=$(echo "$line" | sed -E 's/.*action ([^ ]+).*/\1/')
+        if echo "$line" | grep -q "hide"; then
+            echo "❌0 $module"
+        else
+            echo "✔️ $module"
+        fi
+    done | sort -u)
+
+    if [ -z "$MENU_ITEMS" ]; then
         echo "No modules found" | rofi -dmenu -p "Polybar" -l 1 -theme $HOME/.config/rofi/themes/main.rasi
         exit 0
     fi
-    # Show rofi menu with modules
-    SELECTED=$(echo "$MODULES" | rofi -dmenu -p "Toggle module" -i -theme $HOME/.config/rofi/themes/main.rasi)
-    # If a module was selected, run the toggle script
-    if [ -n "$SELECTED" ]; then
-        # Assuming my-script is in PATH, otherwise use full path
-        poly-modules "$SELECTED"
-    fi
+
+    SELECTED=$(echo "$MENU_ITEMS" | rofi -dmenu -p "Toggle module" -i -theme $HOME/.config/rofi/themes/main.rasi)
+
+    # Remove "(Hidden)" or "(Shown)" from the selected item
+    SELECTED_CLEANED=$(echo "$SELECTED" | sed 's/❌0 //; s/✔️ //')
+
+    [[ -n "$SELECTED_CLEANED" ]] && poly-modules "$SELECTED_CLEANED"
   '';
 
 in
@@ -290,9 +298,9 @@ in
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup networkspeeddown-wired networkspeedup-wired player"; # xwindow
+          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup networkspeeddown-wired networkspeedup-wired player xwindow";
           center = "xworkspaces";
-          right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio hour power"; # date
+          right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio date hour power";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
