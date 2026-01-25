@@ -196,7 +196,7 @@
               inputs.nix-index-database.homeModules.nix-index
               inputs.xremap-flake.homeManagerModules.default
               inputs.catppuccin.homeModules.catppuccin
-              inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+              inputs.dankMaterialShell.homeModules.dank-material-shell
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
              #inputs.ax-shell.homeManagerModules.default
               inputs.mango.hmModules.mango
@@ -260,7 +260,7 @@
             inputs.nix-index-database.homeModules.nix-index
             inputs.xremap-flake.homeManagerModules.default
             inputs.catppuccin.homeModules.catppuccin
-            inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+            inputs.dankMaterialShell.homeModules.dank-material-shell
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
            #inputs.ax-shell.homeManagerModules.default
             inputs.mango.hmModules.mango
