@@ -99,6 +99,10 @@
 
     wmctrl
 
+    showmethekey
+
+    busybox
+
    #ueberzug
 
   ] ) config.my.software.tools.exclude)
