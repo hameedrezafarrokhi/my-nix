@@ -1,31 +1,31 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.gaming.cli-games.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
 
-    vitetris
+    pkgs.vitetris
 
-    gorched
-    curseofwar
-    pokete
+    pkgs.gorched
+    pkgs.curseofwar
+    pkgs.pokete
 
-    raylib-games
-    tty-solitaire
-    solitaire-tui
-    solicurses
-    ninvaders
-    bastet
-   #pacman-game   # DARWIN Only
-    nsnake
-    greed
-   #bsdgames      # WARNING MESSES WITH INTERAVTIVE SHELL (Use With Comma)
-    moon-buggy
-    nudoku
-    nethack
-    n2048
-    _2048-in-terminal
-    tcl2048
+    pkgs.raylib-games
+    pkgs.tty-solitaire
+    pkgs.solitaire-tui
+    pkgs.solicurses
+    pkgs.ninvaders
+    pkgs.bastet
+   #pkgs.pacman-game   # DARWIN Only
+    pkgs.nsnake
+    mypkgs.stable.greed
+   #pkgs.bsdgames      # WARNING MESSES WITH INTERAVTIVE SHELL (Use With Comma)
+    pkgs.moon-buggy
+    pkgs.nudoku
+    pkgs.nethack
+    pkgs.n2048
+    pkgs._2048-in-terminal
+    pkgs.tcl2048
 
 
 

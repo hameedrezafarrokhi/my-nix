@@ -12,7 +12,7 @@
 
     programs = {
 
-      adb.enable = true;
+     #adb.enable = true;  # WARNING DEPRICATED
 
       kdeconnect = {
         enable = true;
@@ -33,6 +33,7 @@
 
       scrcpy                        ##Andriod screen mirror
       qtscrcpy
+      android-tools
 
     ];
 

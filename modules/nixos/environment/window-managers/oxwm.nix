@@ -3,7 +3,7 @@
 { config = lib.mkIf (builtins.elem "oxwm" config.my.window-managers) {
 
   services.xserver.windowManager.oxwm = {
-    enable = false;
+   #enable = false;
     package = inputs.oxwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 

@@ -12,13 +12,13 @@ in
     systemd.enable = false;
   };
 
-  programs.dankMaterialShell = {
+  programs.dank-material-shell = {
     enable = true;
     systemd.enable = true;
-    enableClipboard = true;
+   #enableClipboard = true;   # WARNING DEPRICATED
     enableVPN = true;
-    enableBrightnessControl = true;
-   #enableNightMode = true;          # Removed Option
+   #enableBrightnessControl = true;   # WARNING DEPRICATED
+   #enableNightMode = true;          # WARNING DEPRICATED
     enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = true;

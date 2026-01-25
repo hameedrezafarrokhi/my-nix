@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
 let
 
@@ -28,7 +28,7 @@ in
         nika-fonts behdad-fonts shabnam-fonts samim-fonts sahel-fonts
         parastoo-fonts nahid-fonts gandom-fonts
 
-        corefonts   # ms unfree fonts
+       #corefonts   # ms unfree fonts
         comic-mono
 
         fira-sans
@@ -53,7 +53,13 @@ in
         nerd-fonts.ubuntu nerd-fonts.hurmit nerd-fonts.lekton nerd-fonts.lilex nerd-fonts.agave
         nerd-fonts.tinos nerd-fonts.arimo nerd-fonts._3270 nerd-fonts.hack nerd-fonts.noto nerd-fonts."m+"
 
-    ];
+    ]
+
+    ++
+
+    [ mypkgs.fallback.corefonts ]
+
+    ;
 
     home.activation = {
       FontLink2 = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -64,7 +70,7 @@ in
         mkdir -p "$HOME/.local/share/fonts"
         cp -rn "${pkgs.noto-fonts}/share/fonts/noto" "$HOME/.local/share/fonts"
         mkdir -p "$HOME/.local/share/fonts/corefonts"
-        cp -rn "${pkgs.corefonts}/share/fonts/truetype" "$HOME/.local/share/fonts/corefonts"
+        cp -rn "${mypkgs.fallback.corefonts}/share/fonts/truetype" "$HOME/.local/share/fonts/corefonts"
         mkdir -p "$HOME/.local/share/fonts/junction-font"
         cp -rn "${pkgs.junction-font}/share/fonts/opentype" "$HOME/.local/share/fonts/junction-font"
         mkdir -p "$HOME/.local/share/fonts/roboto"

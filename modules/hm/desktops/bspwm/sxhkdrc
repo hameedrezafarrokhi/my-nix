@@ -106,21 +106,45 @@ super + shift + button3
 super + {1-9,0}
 	bspc desktop --focus ^{1-9,10}
 
+# Switch to Next Free Workspace
+super + {backslash}
+	bspc desktop --focus 'next.!occupied'
+
+# Switch Previous Workspace
+super + {minus}
+	bspc desktop -f last
+
 # Move Focused Window to Workspace 1-10
 super + shift + {1-9,0}
 	bspc node --to-desktop ^{1-9,10}
+
+# Move Focused Window to Next Free Workspace
+super + shift + {backslash}
+	bspc node --to-desktop 'next.!occupied'
 
 # Move Focused Window to Workspace 1-10 AND Follow
 super + shift + ctrl + {1-9,0}
       bsp-send-follow {1-9,10}
 
+# Move Focused Window to Next Free Workspace AND Follow
+super + shift + ctrl + {backslash}
+      bsp-send-follow 'next.!occupied'
+
 # Move Focused Desktop to Desktop 1-10
 super + shift + alt + {1-9,0}
 	bspc node @/ -d ^{1-9,10}
 
+# Move Focused Desktop to Next Free Workspace
+super + shift + alt + {backslash}
+	bspc node @/ -d 'next.!occupied'
+
 # Move Focused Desktop to Desktop 1-10 AND Follow
 super + shift + ctrl + alt + {1-9,0}
       bspc node @/ -d ^{1-9,10} --follow
+
+# Move Focused Desktop to Next Free Workspace AND Follow
+super + shift + ctrl + alt + {backslash}
+      bspc node @/ -d 'next.!occupied' --follow
 
 # Swap Focused Desktop with 1-10
 super + alt + e; {1-9,0}
@@ -247,7 +271,7 @@ super + equal
       bsp-master-node-increase
 
 # Master Node Decrease
-super + minus
+super + shift + equal
       bsp-master-node-decrease
 
 # Monocle Layout
@@ -405,6 +429,10 @@ super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
 # Polybar Modules
 super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h}
       ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date}
+
+# Polybar Stast/Window-Title
+super + ctrl + y ; {space}
+      poly-modules cpu; poly-modules memory; poly-modules filesystem; poly-modules networkspeeddown; poly-modules networkspeedup; poly-modules xwindow;
 
 # Hide Dock
 super + shift + alt + g

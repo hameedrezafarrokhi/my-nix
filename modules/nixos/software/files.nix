@@ -1,51 +1,51 @@
-{ config, lib, pkgs, utils, ... }:
+{ config, lib, pkgs, utils, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.software.files.enable) {
 
   environment.systemPackages =
 
-  (utils.removePackagesByName ( with pkgs; [
+  (utils.removePackagesByName ( [
 
-    kdePackages.dolphin
-    kdePackages.dolphin-plugins
+    pkgs.kdePackages.dolphin
+    pkgs.kdePackages.dolphin-plugins
 
-   #nemo                          ##Cinnamon filemanager
-   #nemo-with-extensions          ##Cinnamon filemanager
+   #pkgs.nemo                          ##Cinnamon filemanager
+   #pkgs.nemo-with-extensions          ##Cinnamon filemanager
 
-   #nautilus                      ##Gnome filemanager
+   #pkgs.nautilus                      ##Gnome filemanager
 
-   #xfce.thunar
+   #pkgs.xfce.thunar
    #(xfce.thunar.override {
    #  thunarPlugins = [
-   #    xfce.thunar-media-tags-plugin
-   #    xfce.thunar-archive-plugin
-   #    xfce.thunar-vcs-plugin
-   #    xfce.thunar-volman
+   #    pkgs.thunar-media-tags-plugin
+   #    pkgs.thunar-archive-plugin
+   #    pkgs.thunar-vcs-plugin
+   #    pkgs.thunar-volman
    #  ];
    #})
 
-   #krusader                      ##Complex filemanager
+   #pkgs.krusader                      ##Complex filemanager
 
-   #pcmanfm                       ##LXQT filemanager
+   #pkgs.pcmanfm                       ##LXQT filemanager
 
-   #lf                            ##CLI filemanager
-   #fff                           ##CLI filemanager
+   #pkgs.lf                            ##CLI filemanager
+   #pkgs.fff                           ##CLI filemanager
 
-   #filezilla                     ##FTP file transfer
-    warp                          ##File secure transfer app
-   #dropbox                       ##Dropbox client (unofficial)
+   #pkgs.filezilla                     ##FTP file transfer
+    pkgs.warp                          ##File secure transfer app
+   #pkgs.dropbox                       ##Dropbox client (unofficial)
 
-   #fsearch                       ##Search tool
-   #kdePackages.kfind             ##Search tool (kde)
-   #metadata-cleaner              ##File metadata cleaner
+   #pkgs.fsearch                       ##Search tool
+   #pkgs.kdePackages.kfind             ##Search tool (kde)
+   #pkgs.metadata-cleaner              ##File metadata cleaner
 
-    kdePackages.ark               ##KDE archive manager
-    file-roller                   ##Archive manager Gnome
-   #peazip                        ##Archive manager (insecure in stable)
-    rar                           ##RAR protocol
-   #unrar                         ##RAR protocol extra
-    unzip                         ##ZIP protocol
-    file                          ##file utility like mime type finder
+    pkgs.kdePackages.ark               ##KDE archive manager
+    pkgs.file-roller                   ##Archive manager Gnome
+   #pkgs.peazip                        ##Archive manager (insecure in stable)
+    mypkgs.fallback.rar                           ##RAR protocol
+   #pkgs.unrar                         ##RAR protocol extra
+    pkgs.unzip                         ##ZIP protocol
+    pkgs.file                          ##file utility like mime type finder
 
   ] ) config.my.software.files.exclude)
 
@@ -70,7 +70,7 @@
 
     thunar = {
       enable = true;
-      plugins = with pkgs.xfce; [
+      plugins = with pkgs; [
         thunar-media-tags-plugin
         thunar-archive-plugin
         thunar-vcs-plugin

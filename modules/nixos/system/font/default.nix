@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, mypkgs, ... }:
 
 let
 
@@ -81,7 +81,7 @@ in
         nika-fonts behdad-fonts shabnam-fonts samim-fonts sahel-fonts
         parastoo-fonts nahid-fonts gandom-fonts
 
-        corefonts   # ms unfree fonts
+       #corefonts   # ms unfree fonts
         comic-mono
 
         fira-sans
@@ -105,7 +105,13 @@ in
         nerd-fonts.go-mono nerd-fonts.iosevka nerd-fonts.monofur nerd-fonts.profont nerd-fonts.monoid
         nerd-fonts.ubuntu nerd-fonts.hurmit nerd-fonts.lekton nerd-fonts.lilex nerd-fonts.agave
         nerd-fonts.tinos nerd-fonts.arimo nerd-fonts._3270 nerd-fonts.hack nerd-fonts.noto nerd-fonts."m+"
-      ];
+      ]
+
+      ++
+
+      [ mypkgs.fallback.corefonts ]
+
+      ;
     };
 
 

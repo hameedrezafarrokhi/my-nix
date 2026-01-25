@@ -1,4 +1,4 @@
-{ config, pkgs, lib, admin, ... }:
+{ config, pkgs, lib, admin, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.gaming.steam.enable) {
 
@@ -15,14 +15,14 @@
 
   programs.steam = {
     enable = true;
-
+    package = mypkgs.fallback.steam;
     remotePlay.openFirewall = true;                       # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true;                  # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true;        # Open ports in the firewall for Steam Local Network Game Transfers
 
     extraCompatPackages = with pkgs; [
-      proton-ge-bin
-      proton-cachyos
+   #  proton-ge-bin   # WARNING Removed?
+   #  proton-cachyos  # WARNING Removed?
      #proton-ge-custom
     ];
     protontricks = {

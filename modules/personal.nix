@@ -106,7 +106,7 @@
      #"windowlab" "windowmaker"
       "i3"
      #"spectrwm" "herbstluftwm" "dk"
-      "drew-wm" "titus-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
+      "drew-wm" #"titus-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
       "bspwm"
       "awesome"
      #"xmonad"
@@ -114,7 +114,7 @@
      #"fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
      #"twm" "jwm" "ratpoison" "e16"
      #"hypr"
-       "oxwm"
+     #"oxwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
@@ -373,7 +373,7 @@
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"
-            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
+            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
 
           ];
 

@@ -19,7 +19,7 @@
       old-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
   #   old-stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-  #     fallback.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
+        fallback.url = "github:NixOS/nixpkgs/f61125a668a320878494449750330ca58b78c557";
 
   # NIX_COMMUNITY
 
@@ -153,7 +153,7 @@
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};
-#     fallback = import inputs.fallback   {system=system;config=pkgsConf;};
+      fallback = import inputs.fallback   {system=system;config=pkgsConf;};
     };
     myOverlays = [
      #inputs.nur.overlays.default
@@ -227,7 +227,7 @@
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
             inputs.mango.nixosModules.mango
-            inputs.oxwm.nixosModules.default
+           #inputs.oxwm.nixosModules.default
            #inputs.xremap-flake.nixosModules.default
            #(import "${inputs.windscribe}/windscribe/default.nix")
 

@@ -1,70 +1,70 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.network.vpn.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
 
-   #echoip                        ##Show ip cli
+   #pkgs.echoip                        ##Show ip cli
 
-    networkmanager-openvpn
-    openvpn
-   #networkmanager-l2tp
-   #xl2tpd
-   #networkmanager-iodine
-   #iodine
-   #networkmanager-fortisslvpn
-   #openfortivpn
-   #networkmanager-sstp
-   #sstp
-   #networkmanager-vpnc
-   #vpnc
-   #networkmanager-openconnect
-   #openconnect
-   #ocserv
-   #ocproxy
-   #openconnect_openssl
-   #globalprotect-openconnect
-   #gpclient
-   #gpauth
+    pkgs.networkmanager-openvpn
+    pkgs.openvpn
+   #pkgs.networkmanager-l2tp
+   #pkgs.xl2tpd
+   #pkgs.networkmanager-iodine
+   #pkgs.iodine
+   #pkgs.networkmanager-fortisslvpn
+   #pkgs.openfortivpn
+   #pkgs.networkmanager-sstp
+   #pkgs.sstp
+   #pkgs.networkmanager-vpnc
+   #pkgs.vpnc
+   #pkgs.networkmanager-openconnect
+   #pkgs.openconnect
+   #pkgs.ocserv
+   #pkgs.ocproxy
+   #pkgs.openconnect_openssl
+   #pkgs.globalprotect-openconnect
+   #pkgs.gpclient
+   #pkgs.gpauth
 
-    protonvpn-gui                 ##Unofficial proton gui
-   #protonvpn-cli                 ##Unofficial pronton cli
-   #protonvpn-cli_2               ##Unofficial pronton cli (Another)
+    mypkgs.stable.protonvpn-gui                 ##Unofficial proton gui
+   #pkgs.protonvpn-cli                 ##Unofficial pronton cli
+   #pkgs.protonvpn-cli_2               ##Unofficial pronton cli (Another)
 
-   #mieru
-   #spoofdpi
-   #obfs4
-   #tractor
-   #softether
-   #geph
-   #cloak-pt
-   #riseup-vpn
-   #calyx-vpn
-   #brook
-   #sshuttle
-   #eduvpn-client
-   #tor-browser
-   #tor
+   #pkgs.mieru
+   #pkgs.spoofdpi
+   #pkgs.obfs4
+   #pkgs.tractor
+   #pkgs.softether
+   #pkgs.geph
+   #pkgs.cloak-pt
+   #pkgs.riseup-vpn
+   #pkgs.calyx-vpn
+   #pkgs.brook
+   #pkgs.sshuttle
+   #pkgs.eduvpn-client
+   #pkgs.tor-browser
+   #pkgs.tor
 
-   #v2ray
-    v2rayn
-   #v2raya
-   #v2ray-domain-list-community
-   #xray
+   #pkgs.v2ray
+    pkgs.v2rayn
+   #pkgs.v2raya
+   #pkgs.v2ray-domain-list-community
+   #pkgs.xray
 
 
-    warp-plus
-   #ivpn
-   #ivpn-ui
-   #ivpn-service
-   #openfortivpn
-   #openfortivpn-webview
-   #openfortivpn-webview-qt
-   #expressvpn
-   #mullvad-vpn                   ##Mullvad (not free)
-   #geph.gui                      ##Geph vpn gui (not working)
-   #geph.cli                      ##Geph vpn cli (not working)
-   #carburetor                    ##Another vpn (not working)
+    pkgs.warp-plus
+   #pkgs.ivpn
+   #pkgs.ivpn-ui
+   #pkgs.ivpn-service
+   #pkgs.openfortivpn
+   #pkgs.openfortivpn-webview
+   #pkgs.openfortivpn-webview-qt
+   #pkgs.expressvpn
+   #pkgs.mullvad-vpn                   ##Mullvad (not free)
+   #pkgs.geph.gui                      ##Geph vpn gui (not working)
+   #pkgs.geph.cli                      ##Geph vpn cli (not working)
+   #pkgs.carburetor                    ##Another vpn (not working)
 
   ];
 
@@ -93,7 +93,7 @@
    #mullvad-vpn.enable = true;
     cloudflare-warp = {
       enable = true;
-      package = pkgs.cloudflare-warp;
+      package = mypkgs.fallback.cloudflare-warp;
       rootDir = "/var/lib/cloudflare-warp";
       openFirewall = true;
       udpPort = 2408;

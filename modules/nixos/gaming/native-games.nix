@@ -1,45 +1,45 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, mypkgs, ... }:
 
 { config = lib.mkIf (config.my.gaming.native-games.enable) {
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
 
-   #crosswords                    ##Crosswords game
-    space-cadet-pinball           ##Classic pinball
-   #pinball                       ##Another pinball
+   #pkgs.crosswords                    ##Crosswords game
+    mypkgs.fallback.space-cadet-pinball  ##Classic pinball
+   #pkgs.pinball                       ##Another pinball
 
-   #gnome-sudoku                  ##Gnome games
-   #gnome-mahjongg                ##Gnome games
-    gnome-mines                   ##Gnome games
-   #gnome-chess                   ##Gnome games
-    gnome-nibbles                 ##Gnome games
+   #pkgs.gnome-sudoku                  ##Gnome games
+   #pkgs.gnome-mahjongg                ##Gnome games
+    pkgs.gnome-mines                   ##Gnome games
+   #pkgs.gnome-chess                   ##Gnome games
+    pkgs.gnome-nibbles                 ##Gnome games
 
-   #kdePackages.kapman            ##KDE games
-   #kdePackages.kbreakout         ##KDE games
-   #kdePackages.kmahjongg         ##KDE games
-   #kdePackages.knights           ##KDE games
-   #kdePackages.kpat              ##KDE games
-   #kdePackages.knavalbattle      ##KDE games
-   #kdePackages.minuet            ##KDE games (music game)
+   #pkgs.kdePackages.kapman            ##KDE games
+   #pkgs.kdePackages.kbreakout         ##KDE games
+   #pkgs.kdePackages.kmahjongg         ##KDE games
+   #pkgs.kdePackages.knights           ##KDE games
+   #pkgs.kdePackages.kpat              ##KDE games
+   #pkgs.kdePackages.knavalbattle      ##KDE games
+   #pkgs.kdePackages.minuet            ##KDE games (music game)
 
-   #extremetuxracer
-   #superTuxKart
+   #pkgs.extremetuxracer
+   #pkgs.superTuxKart
 
-   #zeroad
-   #zeroad-data
-   #wesnoth
-   #hedgewars
-   #hase
-   #bzflag
-   #freeciv                       ## LOOOTS of Options
-   #megaglest
-   #warzone2100
-   #fish-fillets-ng
+   #pkgs.zeroad
+   #pkgs.zeroad-data
+   #pkgs.wesnoth
+   #pkgs.hedgewars
+   #pkgs.hase
+   #pkgs.bzflag
+   #pkgs.freeciv                       ## LOOOTS of Options
+   #pkgs.megaglest
+   #pkgs.warzone2100
+   #pkgs.fish-fillets-ng
 
-   #minecraft
-   #prismlauncher
+   #pkgs.minecraft
+   #pkgs.prismlauncher
 
-   #brogue-ce
+   #pkgs.brogue-ce
 
   ];
 

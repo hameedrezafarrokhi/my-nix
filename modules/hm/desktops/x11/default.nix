@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, mypkgs, ... }:
 
 let
 
@@ -377,7 +377,7 @@ in
       pkgs.skippy-xd
       pkgs.xcolor
 
-      pkgs.xmagnify
+      mypkgs.stable.xmagnify
       pkgs.xzoom
       pkgs.sxcs
 
