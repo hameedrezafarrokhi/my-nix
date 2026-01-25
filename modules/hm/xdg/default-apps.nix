@@ -55,7 +55,7 @@ in
       default = null;
     };
 
-    image-viewer-alt-name = lib.mkOption {
+    image-alt = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;
     };
