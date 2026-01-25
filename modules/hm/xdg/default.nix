@@ -33,7 +33,7 @@ in
       (pkgs.writeShellScriptBin "mkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.audio-player} "$(kitten choose-files)"' '')
       (pkgs.writeShellScriptBin "fkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.pdf-viewer} "$(kitten choose-files)"' '')
       (pkgs.writeShellScriptBin "akcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.archive-manager} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "pkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.image-alt} "$(kitten choose-files)"' '')
+      (pkgs.writeShellScriptBin "pkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.image-viewer} "$(kitten choose-files)"' '')
       (pkgs.writeShellScriptBin "pkcr"  ''kitty --name kitty-picker --class kitty-picker sh -c 'kitten icat $(kitten choose-files) & sleep infinity' '')
       (pkgs.writeShellScriptBin "pkck"  ''kitten icat $(kitten choose-files)'')
       (pkgs.writeShellScriptBin "kicat" ''kitten icat $1'')

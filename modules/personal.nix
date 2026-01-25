@@ -465,7 +465,7 @@
             browser-alt-name = "brave";
             browser-package = pkgs.brave;
             image-viewer = "org.kde.gwenview";
-            image-alt = "gwenview";
+           #image-viewer-alt-name = "gwenview";
             video-player = "mpv"; #"org.gnome.Showtime";
             audio-player = "io.bassi.Amberol";
             pdf-viewer = "org.kde.okular";
