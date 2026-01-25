@@ -860,4 +860,4 @@ super + alt + c
 
 # Hide Kitty Picker
 super + i
-    bspc node $(xdotool search --classname "kitty-picker") --flag hidden=on
+    xdotool search --classname picker > /dev/null && bspc node $(xdotool search --classname picker) --flag hidden=on
