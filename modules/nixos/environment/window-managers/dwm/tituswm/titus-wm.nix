@@ -58,6 +58,8 @@ stdenv.mkDerivation rec {
     sed -i "s@/usr/share/xsessions@$out/share/xsessions@g" Makefile
 
     sed -i '/xinitrc/d' Makefile
+
+    sed -i '/polybar/d' Makefile
   '';
 
   # Allow users set their own list of patches

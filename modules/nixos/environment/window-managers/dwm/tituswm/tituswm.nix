@@ -1,11 +1,11 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, mypkgs, ... }:
 
 with lib;
 
 let
 
   cfg = config.services.xserver.windowManager.titus-wm;
-  titus-wm = pkgs.callPackage ./titus-wm.nix { inputs = inputs; };
+  titus-wm = mypkgs.fallback.callPackage ./titus-wm.nix { inputs = inputs; };
 
 in
 

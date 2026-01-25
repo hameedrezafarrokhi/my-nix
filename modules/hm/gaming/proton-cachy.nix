@@ -12,7 +12,7 @@ in
     CachyLink = lib.hm.dag.entryAfter ["writeBoundary"] ''
       rm -rf "$HOME/.steam/steam/compatibilitytools.d/proton-cachy-ln"
       mkdir -p "$HOME/.steam/steam/compatibilitytools.d/proton-cachy-ln"
-      ln -sf ${proton-cachyos.steamcompattool}/bin/* "$HOME/.steam/steam/compatibilitytools.d/proton-cachy-ln"
+      ln -sf ${proton-cachyos.steamcompattool}/* "$HOME/.steam/steam/compatibilitytools.d/proton-cachy-ln"
     '';
   };
 
