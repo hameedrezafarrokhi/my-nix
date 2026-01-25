@@ -857,3 +857,7 @@ super + ctrl + shift + button1
 # Group Delete Cache Rofi Menu
 super + alt + c
     bsp-rofi-group-delete-cache
+
+# Hide Kitty Picker
+super + i
+    bspc node $(xdotool search --classname "kitty-picker") --flag hidden=on

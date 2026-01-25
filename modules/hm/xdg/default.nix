@@ -21,22 +21,54 @@ in
    #home.homeDirectory = "/home/${config.home.username}"; # SET PER USER!!!
 
     home.packages = [
-      (pkgs.writeShellScriptBin "fehb"  ''feh --bg-fill "$1"'')
-      (pkgs.writeShellScriptBin "ekc"   ''${config.my.default.gui-editor-alt-name} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "vkc"   ''${config.my.default.video-player} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "mkc"   ''${config.my.default.audio-alt} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "fkc"   ''${config.my.default.pdf-alt} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "akc"   ''${config.my.default.archive-alt} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "pkc"   ''${config.my.default.image-alt} $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "ekcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.gui-editor-alt-name} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "vkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.video-player} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "mkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.audio-alt} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "fkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.pdf-alt} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "akcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.archive-alt} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "pkcs"  ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.image-alt} "$(kitten choose-files)"' '')
-      (pkgs.writeShellScriptBin "pkcr"  ''kitty --name kitty-picker --class kitty-picker sh -c 'kitten icat $(kitten choose-files) & sleep infinity' '')
-      (pkgs.writeShellScriptBin "pkck"  ''kitten icat $(kitten choose-files)'')
-      (pkgs.writeShellScriptBin "kicat" ''kitten icat $1'')
+      (pkgs.writeShellScriptBin "fehb" ''
+        feh --bg-fill "$1"
+      '')
+      (pkgs.writeShellScriptBin "ekc" ''
+        ${config.my.default.gui-editor-alt-name} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "vkc" ''
+        ${config.my.default.video-player} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "mkc" ''
+        ${config.my.default.audio-alt} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "fkc" ''
+        ${config.my.default.pdf-alt} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "akc" ''
+        ${config.my.default.archive-alt} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "pkc" ''
+        ${config.my.default.image-alt} $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "ekcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.gui-editor-alt-name} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "vkcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.video-player} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "mkcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.audio-alt} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "fkcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.pdf-alt} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "akcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.archive-alt} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "pkcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.image-alt} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "pkcr" ''
+        kitty --name kitty-picker --class kitty-picker sh -c 'kitten icat $(kitten choose-files) & sleep infinity'
+      '')
+      (pkgs.writeShellScriptBin "pkck" ''
+        kitten icat $(kitten choose-files)
+      '')
+      (pkgs.writeShellScriptBin "kicat" ''
+        kitten icat $1
+      '')
     ];
 
     xdg = {
