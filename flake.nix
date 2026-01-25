@@ -45,7 +45,7 @@
 
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
 
-             chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; };
+#            chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; };    # WARNING DEAD PROJECT
 
 #        flake-utils = { url = "github:numtide/flake-utils";};
 
@@ -189,7 +189,7 @@
             sharedModules = [
               { home.stateVersion = state;             }
               { home.enableNixpkgsReleaseCheck = true; }
-              inputs.chaotic.homeManagerModules.default
+             #inputs.chaotic.homeManagerModules.default
               inputs.nix-flatpak.homeManagerModules.nix-flatpak
               inputs.plasma-manager.homeModules.plasma-manager
               inputs.cosmic-manager.homeManagerModules.cosmic-manager
@@ -223,7 +223,7 @@
             inputs.nix-flatpak.nixosModules.nix-flatpak
             inputs.nur.modules.nixos.default
            #inputs.nur.legacyPackages."${system}".repos.iopq.modules.xraya  # example
-            inputs.chaotic.nixosModules.default
+           #inputs.chaotic.nixosModules.default
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
             inputs.mango.nixosModules.mango
@@ -253,7 +253,7 @@
             { home.enableNixpkgsReleaseCheck = true; }
             { nixpkgs.hostPlatform = system;         }
             { nixpkgs.overlays = myOverlays;         }
-            inputs.chaotic.homeManagerModules.default
+           #inputs.chaotic.homeManagerModules.default
             inputs.nix-flatpak.homeManagerModules.nix-flatpak
             inputs.plasma-manager.homeModules.plasma-manager
             inputs.cosmic-manager.homeManagerModules.cosmic-manager

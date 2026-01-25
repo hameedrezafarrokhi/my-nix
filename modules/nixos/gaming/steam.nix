@@ -21,8 +21,8 @@
     localNetworkGameTransfers.openFirewall = true;        # Open ports in the firewall for Steam Local Network Game Transfers
 
     extraCompatPackages = with pkgs; [
-   #  proton-ge-bin   # WARNING Removed?
-   #  proton-cachyos  # WARNING Removed?
+      proton-ge-bin
+     #proton-cachyos  # WARNING Removed?
      #proton-ge-custom
     ];
     protontricks = {

@@ -32,7 +32,7 @@ in
 #     "nix-artwork-readme".source = "${inputs.nix-artwork}/README.md";
        "catppuccin-readme".source = "${inputs.catppuccin}/README.md";
       "nix-flatpak-readme".source = "${inputs.nix-flatpak}/README.md";
-          "chaotic-readme".source = "${inputs.chaotic}/README.md";
+#         "chaotic-readme".source = "${inputs.chaotic}/README.md";
  #    "flake-utils-readme".source = "${inputs.flake-utils}/README.md";
      "xremap-flake-readme".source = "${inputs.xremap-flake}/README.md";
  #         "fabric-readme".source = "${inputs.fabric}/README.md";
