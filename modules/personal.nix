@@ -465,11 +465,14 @@
             browser-alt-name = "brave";
             browser-package = pkgs.brave;
             image-viewer = "org.kde.gwenview";
-           #image-viewer-alt-name = "gwenview";
+            image-alt = "gwenview";
             video-player = "mpv"; #"org.gnome.Showtime";
             audio-player = "io.bassi.Amberol";
+            audio-alt = "amberol";
             pdf-viewer = "org.kde.okular";
+            pdf-alt = "okular";
             archive-manager = "org.kde.ark";
+            archive-alt = "ark";
           };
 
           firefox.enable = true;

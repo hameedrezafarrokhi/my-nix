@@ -434,6 +434,10 @@ super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h}
 super + ctrl + y ; {space}
       poly-modules cpu; poly-modules memory; poly-modules filesystem; poly-modules networkspeeddown; poly-modules networkspeedup; poly-modules xwindow;
 
+# Polybar Manual Modules
+super + ctrl + y ; {Return}
+      $HOME/.polybar_modules
+
 # Hide Dock
 super + shift + alt + g
       bsp-dock-hide

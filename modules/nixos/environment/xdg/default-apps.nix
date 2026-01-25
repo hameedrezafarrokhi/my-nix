@@ -55,6 +55,11 @@ in
       default = null;
     };
 
+    image-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
     video-player = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;
@@ -65,7 +70,17 @@ in
       default = null;
     };
 
+    audio-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
     pdf-viewer = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
+    pdf-alt = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;
     };
@@ -75,6 +90,10 @@ in
       default = null;
     };
 
+    archive-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
 
   };
 

@@ -70,12 +70,27 @@ in
       default = null;
     };
 
+    audio-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
     pdf-viewer = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;
     };
 
+    pdf-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
     archive-manager = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
+    archive-alt = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;
     };

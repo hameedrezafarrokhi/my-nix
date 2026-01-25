@@ -143,6 +143,7 @@ in
 
     tcbonsai = "${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li'";
 
+    gigi = ''nixos && git add . && git commit -m "$(date +%F_%H-%M-%S)" && git push'';
 
   };
 
