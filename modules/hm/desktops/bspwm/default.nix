@@ -156,6 +156,8 @@ in
         	  polybar ${config.my.poly-name} &
         fi
 
+        $HOME/.polybar_modules
+
         #if hash conky >/dev/null 2>&1; then
         #	  pkill conky
         #	  sleep 0.5
