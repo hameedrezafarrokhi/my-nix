@@ -145,6 +145,8 @@
       sha256 = "sha256-JEpr5Du5/WUlOFQ9nZtXWmHS3xLXnq47AUwEM9NBzno=";
     };
 
+    cmatrix = "blue";
+
 
     MonoSpace = "Comic Mono";
     MonoAlt = "Monofur Nerd Font Mono";
@@ -521,6 +523,8 @@
     bsp-border-color
     bsp-tabbed
     bsptab
+
+    (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
 
   ];
 
@@ -4162,6 +4166,10 @@
   programs.fish.shellInit = ''
     fish_config theme choose "${fish-theme}"
   '';
+
+  home.shellAliases = {
+    tcmatrix = "${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}'";
+  };
 
  #xdg.dataFile = {
  #  icons = {

@@ -141,6 +141,8 @@ in
 
     ttetris = "${config.my.default.terminal} --name tetris --class tetris sh -c 'tetris'";
 
+    tcbonsai = "${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li'";
+
 
   };
 
