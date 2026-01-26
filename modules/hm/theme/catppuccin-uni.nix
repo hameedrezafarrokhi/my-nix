@@ -2008,16 +2008,9 @@
         osd-border-color = Crust;
         osd-color = Text;
         osd-shadow-color = Base;
-        "script-opts-append=stats-border_color" = alt-Mauve;
-        "script-opts-append=stats-font_color" = alt-Pink;
-        "script-opts-append=stats-plot_bg_border_color" = alt-Yellow;
-        "script-opts-append=stats-plot_bg_color" = alt-Mauve;
-        "script-opts-append=stats-plot_color" = alt-Yellow;
-        "script-opts-append=uosc-color" = "foreground=${alt-Accent},foreground_text=${alt-Surface0},background=${alt-Base},background_text=${alt-Text},curtain=${alt-Mantle},success=${alt-Green},error=${alt-Red}";
-
       };
       scriptOpts = {
-        uosc.color = "background=${alt-Base},background_text=${alt-Text},foreground=${alt-Text},foreground_text=${alt-Base},success=${alt-Green},error=${alt-Red}";
+        uosc.color = "background=${alt-Base},background_text=${alt-Text},foreground=${alt-Accent},foreground_text=${alt-Base},success=${alt-Green},error=${alt-Red},curtain=${alt-Mantle}";
         modernz = {
           seekbarfg_color = Peach;
           seekbarbg_color = Accent;
@@ -2034,6 +2027,13 @@
           side_buttons_color = Mauve;
           playpause_color = Green;
           hover_effect_color = Pink;
+        };
+        stats = {
+          border_color = alt-Mauve;
+          font_color = alt-Pink;
+          plot_bg_border_color = alt-Yellow;
+          plot_bg_color = alt-Mauve;
+          plot_color = alt-Yellow;
         };
       };
     };

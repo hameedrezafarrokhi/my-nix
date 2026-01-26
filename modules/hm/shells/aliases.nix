@@ -121,19 +121,21 @@ in
 
     fehb = "feh --bg-fill";
 
-    ekc = "${config.my.default.gui-editor-alt-name} $(kitten choose-files)";
-    vkc = "${config.my.default.video-player} $(kitten choose-files)";
-    mkc = "${config.my.default.audio-player} $(kitten choose-files)";
-    fkc = "${config.my.default.pdf-viewer} $(kitten choose-files)";
-    akc = "${config.my.default.archive-manager} $(kitten choose-files)";
-    pkc = "${config.my.default.image-viewer} $(kitten choose-files)";
+    ekc = "${config.my.default.gui-editor-alt-name} $(kitten choose-files) & disown";
+    vkc = "${config.my.default.video-player} $(kitten choose-files) & disown";
+    mkc = "${config.my.default.audio-player} $(kitten choose-files) & disown";
+    fkc = "${config.my.default.pdf-viewer} $(kitten choose-files) & disown";
+    akc = "${config.my.default.archive-manager} $(kitten choose-files) & disown";
+    pkc = "${config.my.default.image-viewer} $(kitten choose-files) & disown";
+    bkc = "${config.my.default.browser-alt-name} $(cat $(kitten choose-files)) & disown";
 
     ekcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.gui-editor-alt-name} "$(kitten choose-files)"' '';
-    vkcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.video-player} "$(kitten choose-files)"' '';
-    mkcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.audio-player} "$(kitten choose-files)"' '';
-    fkcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.pdf-viewer} "$(kitten choose-files)"' '';
-    akcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.archive-manager} "$(kitten choose-files)' '';
-    pkcs = ''kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.image-viewer} "$(kitten choose-files)"' '';
+    vkcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.video-player} "$(kitten choose-files)"' && rm -f nohup.out '';
+    mkcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.audio-player} "$(kitten choose-files)"' && rm -f nohup.out '';
+    fkcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.pdf-viewer} "$(kitten choose-files)"' && rm -f nohup.out '';
+    akcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.archive-manager} "$(kitten choose-files)' && rm -f nohup.out '';
+    pkcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.image-viewer} "$(kitten choose-files)"' && rm -f nohup.out '';
+    bkcs = ''kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.browser-alt-name} $(cat "$(kitten choose-files)")' && rm -f nohup.out '';
 
     pkcr = "kitty --name kitty-picker --class kitty-picker sh -c 'kitten icat $(kitten choose-files) & sleep infinity'";
     pkck = "kitten icat $(kitten choose-files)";

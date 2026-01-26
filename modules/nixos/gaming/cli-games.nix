@@ -27,8 +27,8 @@
     pkgs._2048-in-terminal
     pkgs.tcl2048
 
-
-
+    (pkgs.writeShellScriptBin "ttetris" ''${config.my.default.terminal} --name tetris --class tetris sh -c 'tetris' '')
+    (pkgs.writeShellScriptBin "tcbonsai" ''${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li' '')
 
   ];
 

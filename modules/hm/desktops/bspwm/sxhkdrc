@@ -427,8 +427,8 @@ super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
       ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
 
 # Polybar Modules
-super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h}
-      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date}
+super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,z}
+      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,aaa}
 
 # Polybar Stast/Window-Title
 super + ctrl + y ; {space}
@@ -857,6 +857,10 @@ super + ctrl + shift + button1
 # Group Delete Cache Rofi Menu
 super + alt + c
     bsp-rofi-group-delete-cache
+
+# Kitty Picker
+super + p ; {e,v,s,d,r,p,i,b}
+    {ekcs,vkcs,mkcs,fkcs,akcs,pkcs,pkcr,bkcs}
 
 # Hide Kitty Picker
 super + i
