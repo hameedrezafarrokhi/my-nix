@@ -296,7 +296,7 @@ super + ctrl + 6
 
 # Floating Layout
 super + ctrl + 7
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
 
 # Columns Layout
 super + ctrl + 8
@@ -314,7 +314,7 @@ super + ctrl + 9
 super + ctrl + alt + 9
 	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rtv-layout; notify-send "Reverese TV Layout"
 
-# TV Layout
+# Double Stack Layout
 super + ctrl + 0
 	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-double-stack-layout; notify-send "Double Stack Layout"
 
@@ -338,7 +338,7 @@ super + ctrl + alt + 2
 super + alt + 3
 	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
 
-# Monocle Layout
+# Tiled Layout
 super + alt + 4
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout set tiled; notify-send "Tile Layout"
 
@@ -393,6 +393,14 @@ super + ctrl + grave
 # Floating Layout
 super + shift + f
 	bsp-float
+
+# Layout Menu Selection
+super + l
+      bsp-layout-rofi
+
+# Layout Menu Selection (OneShot)
+super + alt + l
+      bsp-layout-oneshot-rofi
 
 # Keyboard layout change
 alt + Caps_Lock

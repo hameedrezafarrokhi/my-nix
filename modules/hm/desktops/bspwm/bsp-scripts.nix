@@ -1357,6 +1357,66 @@ let
     ${builtins.readFile ./bsp-rofi-group-delete-cache}
   '';
 
+  bsp-layout-rofi = pkgs.writeScriptBin "bsp-layout-rofi" ''
+    ROFI_THEME="$HOME/.config/rofi/themes/main.rasi"
+
+    chosen=$(echo -e "[Cancel]\n Remove\n Master\n rMaster\n wMaster\n rwMaster\n cMaster\n rcMaster\n dMaster\n Grid\n rGrid\n Even\n Floating\n Columns\n Rows\n TV\n rTV\n Monocle\n Tiled" | \
+        rofi -dmenu -i -p "Dynamic Layouts" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
+
+    case "$chosen" in
+        " Remove") bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove ;;
+        " Master") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set tall  ;;
+        " rMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set rtall  ;;
+        " wMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set wide  ;;
+        " rwMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set rwide  ;;
+        " cMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-cmaster-layout ;;
+        " rcMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-rcmaster-layout ;;
+        " dMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-double-stack-layout ;;
+        " Grid") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set grid ;;
+        " rGrid") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set rgrid ;;
+        " Even") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set even ;;
+        " Floating") bsp-cmaster-remove & bsp-layout remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-float ;;
+        " Columns") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns ;;
+        " Rows") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-layout remove & bsp-layout-ext remove & bsp-rows ;;
+        " TV") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-tv-layout ;;
+        " rTV") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-rtv-layout ;;
+        " Monocle") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set monocle ;;
+        " Tiled") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout set tiled ;;
+
+
+        *) exit 0 ;; # Exit on cancel or invalid input
+    esac
+  '';
+
+  bsp-layout-oneshot-rofi = pkgs.writeScriptBin "bsp-layout-oneshot-rofi" ''
+    ROFI_THEME="$HOME/.config/rofi/themes/main.rasi"
+
+    chosen=$(echo -e "[Cancel]\n Master\n rMaster\n wMaster\n rwMaster\n cMaster\n rcMaster\n dMaster\n rdMaster\n Grid\n rGrid\n Even\n Floating\n Columns\n Rows\n TV\n rTV" | \
+        rofi -dmenu -i -p "OneShot Layouts" -line-padding 4 -hide-scrollbar -theme "$ROFI_THEME")
+
+    case "$chosen" in
+        " Master") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once tall  ;;
+        " rMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once rtall  ;;
+        " wMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once wide  ;;
+        " rwMaster") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once rwide  ;;
+        " cMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-cmaster-oneshot ;;
+        " rcMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-rcmaster-oneshot ;;
+        " dMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-cmaster-oneshot & bspc node @parent -R 180 ;;
+        " rdMaster") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-rcmaster-oneshot & bspc node @parent -R 180 ;;
+        " Grid") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once grid ;;
+        " rGrid") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once rgrid ;;
+        " Even") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-layout once even ;;
+        " Floating") bsp-cmaster-remove & bsp-layout remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-float ;;
+        " Columns") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-layout remove & bsp-layout-ext remove & bsp-vertical-layout-oneshot ;;
+        " Rows") bsp-cmaster-remove & bsp-culomns-rows-layout-remove & bsp-layout remove & bsp-layout-ext remove & bsp-horizontal-layout-oneshot ;;
+        " TV") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-cmaster-oneshot & bspc node @parent -R -90 ;;
+        " rTV") bsp-cmaster-remove & bsp-layout remove & bsp-layout-ext remove & bsp-culomns-rows-layout-remove & bsp-cache-layout & bsp-cmaster-oneshot & bspc node @parent -R 90 ;;
+
+
+        *) exit 0 ;; # Exit on cancel or invalid input
+    esac
+  '';
+
 in
 
 {
@@ -1437,6 +1497,8 @@ in
       bsp-window-rules-remove
       bsp-group-delete
       bsp-rofi-group-delete-cache
+      bsp-layout-rofi
+      bsp-layout-oneshot-rofi
       bspswallow
       bspwmswallow
       pidswallow
