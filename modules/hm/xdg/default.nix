@@ -27,8 +27,11 @@ in
       '')
 
 
-      (pkgs.writeShellScriptBin "ekc" ''
+      (pkgs.writeShellScriptBin "tkc" ''
         ${config.my.default.gui-editor-alt-name} $(kitten choose-files) & disown
+      '')
+      (pkgs.writeShellScriptBin "ekc" ''
+        ${config.my.default.file-alt} $(kitten choose-files) & disown
       '')
       (pkgs.writeShellScriptBin "vkc" ''
         ${config.my.default.video-player} $(kitten choose-files) & disown
@@ -50,8 +53,11 @@ in
       '')
 
 
-      (pkgs.writeShellScriptBin "ekcs" ''
+      (pkgs.writeShellScriptBin "tkcs" ''
         kitty --name kitty-picker --class kitty-picker sh -c '${config.my.default.gui-editor-alt-name} "$(kitten choose-files)"'
+      '')
+      (pkgs.writeShellScriptBin "ekcs" ''
+        kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.file-alt} "$(kitten choose-files)"' && rm -f nohup.out
       '')
       (pkgs.writeShellScriptBin "vkcs" ''
         kitty --name kitty-picker --class kitty-picker sh -c 'nohup ${config.my.default.video-player} "$(kitten choose-files)"' && rm -f nohup.out

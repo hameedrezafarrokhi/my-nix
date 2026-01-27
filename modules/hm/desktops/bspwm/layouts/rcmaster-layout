@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 DESKTOP=$(bspc query -D -d focused)
 LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
 
@@ -19,6 +20,61 @@ PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
 kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
 rm -f "$PID_FILE_LISTEN"
 
+jget() {
+    key=$1
+    shift
+    var=${*#*\"$key\":}
+    var=${var%%[,\}]*}
+    echo "$var"
+}
+
+rotate() {
+  # Amend the split type so we are arranged correctly.
+  node=$1
+  want=$2
+  have=$(jget splitType "$(bspc query -T -n "$node")")
+  have=${have:1:${#have}-2}
+  angle=$3
+
+  [ "$have" != "$want" ] && bspc node "$node" -R "$angle"
+}
+
+master_size=55
+
+equalize() {
+  rotate '@/' horizontal 90
+  rotate '@/2' vertical 90
+  local bottom_stack_node=$(bspc query -N '@/2' -n)
+  for parent in $(bspc query -N '@/2' -n .descendant_of.!window.!hidden.!floating | grep -v $bottom_stack_node); do
+  rotate $parent vertical 90
+  done
+
+  rotate '@/1/1' vertical 90
+  local top_stack_node=$(bspc query -N '@/1/1' -n)
+  for parent in $(bspc query -N '@/1/1' -n .descendant_of.!window.!hidden.!floating | grep -v $top_stack_node); do
+  rotate $parent vertical 90
+  done
+
+  bspc node @/2 -B
+  bspc node @/1/1 -B
+
+  local mon_height=$(jget height "$(bspc query -T -m)")
+  local want=$(( master_size * mon_height / 100 ))
+  local have=$(jget height "$(bspc query -T -n $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating))")
+  local diff=$(( want - have ))
+
+  if (( diff > 0 )); then
+      if (( window_count % 2 == 1 )); then
+          bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating) -z top 0 -$((diff / 2))
+          bspc node  $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating) -z bottom 0 $((diff / 2))
+      else
+          bias=$(( diff / window_count ))
+          bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating) -z top 0 -$((diff / 2 + bias))
+          bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating) -z bottom 0 $((diff / 2 - bias))
+      fi
+  fi
+}
+
 bsp-rcmaster-oneshot
 
 {
@@ -31,7 +87,10 @@ bsp-rcmaster-oneshot
             case "$event" in
                 node_add)
                     FOCUSED_WIN=$(bspc query -N -n focused)
-                    window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
+                    window_count=$(bspc query -N -n .window.!floating.!hidden.!floating -d focused | wc -l)
+                    TOP_STACK_COUNT=$(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | wc -l)
+                    BOTTOM_STACK_COUNT=$(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | wc -l)
+                    MASTER_NODE_COUNT=$(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | wc -l)
 
                     if (( window_count == 1 )); then
                           if pgrep -x bsp-icon-bar >/dev/null; then
@@ -47,118 +106,130 @@ bsp-rcmaster-oneshot
                     fi
 
                     if (( window_count == 2 || window_count == 3 )); then
-                          bsp-rcmaster-layout
+                          bsp-rcmaster-oneshot
                     fi
 
-                    if (( window_count % 2 == 1 && window_count >= 3 )); then
-
-                          icon_bar_was_running=false
-                          if pgrep -x bsp-icon-bar >/dev/null; then
-                              icon_bar_was_running=true
-                              if (( window_count >= 1 )); then
-                                  pkill -x bsp-icon-bar
-                              fi
-                          fi
-                          bspc node -f north
-                          bspc node -f north
-                          bspc node -f north
-                          bspc node -f north
-                          for ((i=0; i<window_count; i++)); do
-                              bspc node -f east
-                          done
-                          bspc node --presel-dir \~east
-                          bspc node -f "$FOCUSED_WIN"
-                          bspc node -n last.!automatic
-                          bsp-layout once even
-                          bspc node -s south
-                          jget() {
-                              key=$1
-                              shift
-                              var=${*#*\"$key\":}
-                              var=${var%%[,\}]*}
-                              echo "$var"
-                          }
-                          master_size=55
-                          mon_height=$(jget height "$(bspc query -T -m)")
-                          want=$(( master_size * mon_height / 100 ))
-                          have=$(jget height "$(bspc query -T -n focused)")
-                          diff=$(( want - have ))
-                          if (( diff > 0 )); then
-                              if (( window_count % 2 == 1 )); then
-                                  bspc node -z top  0 -$((diff / 2))
-                                  bspc node -z bottom 0 $((diff / 2))
-                              else
-                                  bias=$(( diff / window_count ))
-                                  bspc node -z top  0 -$((diff / 2 + bias))
-                                  bspc node -z bottom 0 $((diff / 2 - bias))
-                              fi
-                          fi
-                          if $icon_bar_was_running; then
-                                bsp-icon-bar &
-                          fi
+                    if (( window_count >= 3 )); then
+                        if [[ $MASTER_NODE_COUNT -eq 1 ]]; then
+                            if [[ $TOP_STACK_COUNT -eq $BOTTOM_STACK_COUNT  ]]; then
+                                equalize
+                            fi
+                            if [[ $TOP_STACK_COUNT -lt $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $FOCUSED_WIN -n @/1/1
+                                equalize
+                            fi
+                            if [[ $TOP_STACK_COUNT -gt $BOTTOM_STACK_COUNT  ]]; then
+                                if (( TOP_STACK_COUNT - 1 == BOTTOM_STACK_COUNT )); then
+                                    equalize
+                                else
+                                    bspc node $FOCUSED_WIN -n @/2
+                                    equalize
+                                fi
+                            fi
+                        fi
+                        if [[ $MASTER_NODE_COUNT -gt 1 ]]; then
+                            if [[ $TOP_STACK_COUNT -eq $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $FOCUSED_WIN -n @/1/1
+                                equalize
+                            fi
+                            if [[ $TOP_STACK_COUNT -lt $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $FOCUSED_WIN -n @/1/1
+                                equalize
+                            fi
+                            if [[ $TOP_STACK_COUNT -gt $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $FOCUSED_WIN -n @/2
+                                equalize
+                            fi
+                        fi
                     fi
-
-
-                    if (( window_count % 2 == 0 && window_count >= 4 )); then
-
-                          icon_bar_was_running=false
-                          if pgrep -x bsp-icon-bar >/dev/null; then
-                              icon_bar_was_running=true
-                              if (( window_count >= 1 )); then
-                                  pkill -x bsp-icon-bar
-                              fi
-                          fi
-                          bspc node -f south
-                          bspc node -f south
-                          bspc node -f south
-                          for ((i=0; i<window_count; i++)); do
-                              bspc node -f west
-                          done
-                          bspc node --presel-dir \~west
-                          bspc node -f "$FOCUSED_WIN"
-                          bspc node -n last.!automatic
-                          bsp-layout once even
-                          bspc node -s north
-                          jget() {
-                              key=$1
-                              shift
-                              var=${*#*\"$key\":}
-                              var=${var%%[,\}]*}
-                              echo "$var"
-                          }
-                          master_size=55
-                          mon_height=$(jget height "$(bspc query -T -m)")
-                          want=$(( master_size * mon_height / 100 ))
-                          have=$(jget height "$(bspc query -T -n focused)")
-                          diff=$(( want - have ))
-                          if (( diff > 0 )); then
-                              if (( window_count % 2 == 1 )); then
-                                  bspc node -z top  0 -$((diff / 2))
-                                  bspc node -z bottom 0 $((diff / 2))
-                              else
-                                  bias=$(( diff / window_count ))
-                                  bspc node -z top  0 -$((diff / 2 + bias))
-                                  bspc node -z bottom 0 $((diff / 2 - bias))
-                              fi
-                          fi
-                          if $icon_bar_was_running; then
-                                bsp-icon-bar &
-                          fi
-
-                    fi
+                    bsp-zoom
                     ;;
-
 
 
                 node_remove)
-                    # Commands for node_remove
-                    echo "Node removed from desktop $desktop"
-                    bsp-rcmaster-layout
+                    FOCUSED_WIN=$(bspc query -N -n focused)
+                    window_count=$(bspc query -N -n .window.!floating.!hidden.!floating -d focused | wc -l)
+                    TOP_STACK_COUNT=$(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | wc -l)
+                    BOTTOM_STACK_COUNT=$(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | wc -l)
+                    MASTER_NODE_COUNT=$(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | wc -l)
+
+                    if (( window_count == 1 )); then
+                          if pgrep -x bsp-icon-bar >/dev/null; then
+                              icon_bar_was_running=true
+                              if (( window_count >= 1 )); then
+                                  pkill -x bsp-icon-bar
+                              fi
+                          fi
+
+                          if $icon_bar_was_running; then
+                                bsp-icon-bar &
+                          fi
+                    fi
+
+                    if (( window_count == 2 || window_count == 3 )); then
+                          bsp-rcmaster-oneshot
+                    fi
+
+                    if (( window_count > 3 )); then
+                        if [[ $MASTER_NODE_COUNT -eq 1 ]]; then
+                            if [[ $TOP_STACK_COUNT -eq $BOTTOM_STACK_COUNT  ]]; then
+                                equalize
+                            fi
+                        rotate '@/1' horizontal 90
+                        bspc node @/ -B
+                        equalize
+                            if [[ $TOP_STACK_COUNT -lt $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1) -n @/1/1
+                                equalize
+                            fi
+                            if [[ $TOP_STACK_COUNT -gt $BOTTOM_STACK_COUNT  ]]; then
+                                if (( TOP_STACK_COUNT - 1 == BOTTOM_STACK_COUNT )); then
+                                    equalize
+                                else
+                                    bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | tail -n 1) -n @/2
+                                    equalize
+                                fi
+                            fi
+                        fi
+                        if [[ $MASTER_NODE_COUNT -gt 1 ]]; then
+
+                            for wid in $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating); do
+                            bspc node "$wid" -n '@/1'
+                            done
+                            if [[ $TOP_STACK_COUNT -lt $BOTTOM_STACK_COUNT  ]]; then
+                                bspc node $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1) -n @/1/1
+                                equalize
+                            fi
+                            equalize
+                        fi
+
+                        rotate '@/1' horizontal 90
+                        bspc node @/ -B
+                        equalize
+                        bspc node -f $(bspc query -N '@/1/2' -n)
+
+
+
+                            if [[ $TOP_STACK_COUNT -gt $BOTTOM_STACK_COUNT  ]]; then
+                                if (( TOP_STACK_COUNT - 1 == BOTTOM_STACK_COUNT )); then
+                                    equalize
+                                else
+                                    bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | tail -n 1) -n @/2
+                                    equalize
+                                fi
+                            fi
+
+
+
+
+                    fi
                     ;;
-                *)
-                    # Ignore other events
+
+                    *)
+                        # Ignore other events
                     ;;
             esac
+           #bspc node -f $(bspc query -N '@/1/2' -n)
         fi
     done < <(bspc subscribe node_add node_remove)
 } &

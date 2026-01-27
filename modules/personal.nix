@@ -461,6 +461,7 @@
             gui-editor = "org.kde.kate";
             gui-editor-alt-name = "kate";
             file-manager = "org.kde.dolphin";
+            file-alt = "dolphin";
             browser = "brave-browser";
             browser-alt-name = "brave";
             browser-package = pkgs.brave;

@@ -472,24 +472,24 @@ let
     ${builtins.readFile ./layouts/rcmaster-layout}
   '';
 
-  bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-    kill $(cat "$PID_FILE_LISTEN")
-    rm -f "$PID_FILE_LISTEN"
-
-    bsp-cmaster-layout
-
-    {
-        while read -r line; do
-            read -r event monitor desktop node action <<< "$line"
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-cmaster-layout
-            fi
-        done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-  '';
+ #bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
+ #  DESKTOP=$(bspc query -D -d focused)
+ #  PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
+ #  kill $(cat "$PID_FILE_LISTEN")
+ #  rm -f "$PID_FILE_LISTEN"
+ #
+ #  bsp-cmaster-layout
+ #
+ #  {
+ #      while read -r line; do
+ #          read -r event monitor desktop node action <<< "$line"
+ #          if [[ "$desktop" == "$DESKTOP" ]]; then
+ #              bsp-cmaster-layout
+ #          fi
+ #      done
+ #  } < <(bspc subscribe node_add node_remove) &
+ #  echo $! > "$PID_FILE_LISTEN"
+ #'';
 
   bsp-cmaster-remove = pkgs.writeShellScriptBin "bsp-cmaster-remove" ''
     DESKTOP=$(bspc query -D -d focused)
@@ -498,9 +498,9 @@ let
     rm -f "$PID_FILE_LISTEN"
   '';
 
-  bsp-ctall-layout = pkgs.writeShellScriptBin "bsp-ctall-layout" ''
-    ${builtins.readFile ./layouts/ctall.sh}
-  '';
+ #bsp-ctall-layout = pkgs.writeShellScriptBin "bsp-ctall-layout" ''
+ #  ${builtins.readFile ./layouts/ctall.sh}
+ #'';
 
   bsp-tv-layout = pkgs.writeShellScriptBin "bsp-tv-layout" ''
     DESKTOP=$(bspc query -D -d focused)
@@ -1392,12 +1392,12 @@ in
       bsp-zoom
       bsp-zoom-second_biggest
       bsp-cmaster-layout
-      bsp-cmaster
+     #bsp-cmaster
       bsp-cmaster-oneshot
       bsp-rcmaster-oneshot
       bsp-rcmaster-layout
       bsp-cmaster-remove
-      bsp-ctall-layout
+     #bsp-ctall-layout
       bsp-rtv-layout
       bsp-tv-layout
       bsp-double-stack-layout

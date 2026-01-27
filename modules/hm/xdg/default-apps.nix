@@ -35,6 +35,11 @@ in
       default = null;
     };
 
+    file-alt = lib.mkOption {
+      type = lib.types.nullOr (lib.types.str);
+      default = null;
+    };
+
     browser = lib.mkOption {
       type = lib.types.nullOr (lib.types.str);
       default = null;

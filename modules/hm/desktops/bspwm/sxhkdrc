@@ -859,8 +859,8 @@ super + alt + c
     bsp-rofi-group-delete-cache
 
 # Kitty Picker
-super + p ; {e,v,s,d,r,p,i,b}
-    {ekcs,vkcs,mkcs,fkcs,akcs,pkcs,pkcr,bkcs}
+super + p ; {t,e,v,s,d,r,p,i,b}
+    {tkcs,ekcs,vkcs,mkcs,fkcs,akcs,pkcs,pkcr,bkcs}
 
 # Hide Kitty Picker
 super + i
