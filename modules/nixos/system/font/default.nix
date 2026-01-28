@@ -81,7 +81,7 @@ in
         nika-fonts behdad-fonts shabnam-fonts samim-fonts sahel-fonts
         parastoo-fonts nahid-fonts gandom-fonts
 
-       #corefonts   # ms unfree fonts
+        corefonts   # ms unfree fonts
         comic-mono
 
         fira-sans
@@ -107,9 +107,7 @@ in
         nerd-fonts.tinos nerd-fonts.arimo nerd-fonts._3270 nerd-fonts.hack nerd-fonts.noto nerd-fonts."m+"
       ]
 
-      ++
-
-      [ mypkgs.fallback.corefonts ]
+     #++ [ mypkgs.fallback.corefonts ]
 
       ;
     };

@@ -19,7 +19,7 @@ in
 
   boot = {
    #kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
-    kernelPackages = lib.mkForce mypkgs.fallback.linuxPackages_6_17;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_6_18;
    #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];  # DOES NOTHING
     kernelModules = [   # HANDLED BY NIXOS AND NVIDIA OPTIONS
    #  "nvidia"

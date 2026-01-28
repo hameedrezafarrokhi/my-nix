@@ -28,7 +28,7 @@ in
         nika-fonts behdad-fonts shabnam-fonts samim-fonts sahel-fonts
         parastoo-fonts nahid-fonts gandom-fonts
 
-       #corefonts   # ms unfree fonts
+        corefonts   # ms unfree fonts
         comic-mono
 
         fira-sans
@@ -55,9 +55,7 @@ in
 
     ]
 
-    ++
-
-    [ mypkgs.fallback.corefonts ]
+   #++ [ mypkgs.fallback.corefonts ]
 
     ;
 
@@ -70,7 +68,7 @@ in
         mkdir -p "$HOME/.local/share/fonts"
         cp -rn "${pkgs.noto-fonts}/share/fonts/noto" "$HOME/.local/share/fonts"
         mkdir -p "$HOME/.local/share/fonts/corefonts"
-        cp -rn "${mypkgs.fallback.corefonts}/share/fonts/truetype" "$HOME/.local/share/fonts/corefonts"
+        cp -rn "${pkgs.corefonts}/share/fonts/truetype" "$HOME/.local/share/fonts/corefonts"
         mkdir -p "$HOME/.local/share/fonts/junction-font"
         cp -rn "${pkgs.junction-font}/share/fonts/opentype" "$HOME/.local/share/fonts/junction-font"
         mkdir -p "$HOME/.local/share/fonts/roboto"

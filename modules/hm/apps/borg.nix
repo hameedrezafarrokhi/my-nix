@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nix-path, nix-path-alt, ... }:
+{ config, pkgs, lib, nix-path, nix-path-alt, admin, ... }:
 
 { config = lib.mkIf (config.my.apps.borg.enable) {
 
@@ -14,6 +14,8 @@
            #"/data/data/com.termux.nix/files/home/nixos"
             "${nix-path}"
             "${nix-path-alt}"
+            "~/.local/share/fish"
+            "~/Documents/bookmarks"
           ];
           repositories = [
              {

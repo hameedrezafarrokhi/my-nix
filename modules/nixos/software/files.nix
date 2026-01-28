@@ -42,7 +42,7 @@
     pkgs.kdePackages.ark               ##KDE archive manager
     pkgs.file-roller                   ##Archive manager Gnome
    #pkgs.peazip                        ##Archive manager (insecure in stable)
-    mypkgs.fallback.rar                           ##RAR protocol
+    pkgs.rar                           ##RAR protocol
    #pkgs.unrar                         ##RAR protocol extra
     pkgs.unzip                         ##ZIP protocol
     pkgs.file                          ##file utility like mime type finder

@@ -127,7 +127,7 @@
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
     ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
     ++ [(pkgs.callPackage ../myPackages/xsession-manager.nix { })]
-    ++ [(mypkgs.fallback.callPackage ../myPackages/paperview-rs.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/paperview-rs.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]

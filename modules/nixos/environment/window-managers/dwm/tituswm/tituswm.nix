@@ -5,7 +5,7 @@ with lib;
 let
 
   cfg = config.services.xserver.windowManager.titus-wm;
-  titus-wm = mypkgs.fallback.callPackage ./titus-wm.nix { inputs = inputs; };
+  titus-wm = pkgs.callPackage ./titus-wm.nix { inputs = inputs; };
 
 in
 

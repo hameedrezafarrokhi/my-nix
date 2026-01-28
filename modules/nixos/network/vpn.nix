@@ -93,7 +93,7 @@
    #mullvad-vpn.enable = true;
     cloudflare-warp = {
       enable = true;
-      package = mypkgs.fallback.cloudflare-warp;
+      package = pkgs.cloudflare-warp;
       rootDir = "/var/lib/cloudflare-warp";
       openFirewall = true;
       udpPort = 2408;

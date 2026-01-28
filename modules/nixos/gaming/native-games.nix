@@ -5,7 +5,7 @@
   environment.systemPackages = [
 
    #pkgs.crosswords                    ##Crosswords game
-    mypkgs.fallback.space-cadet-pinball  ##Classic pinball
+    pkgs.space-cadet-pinball  ##Classic pinball
    #pkgs.pinball                       ##Another pinball
 
    #pkgs.gnome-sudoku                  ##Gnome games
