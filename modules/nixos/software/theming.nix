@@ -56,6 +56,8 @@
     # GRUB Themes
    #catppuccin-grub
 
+    gowall
+
   ] ) config.my.software.theming.exclude)
 
    ++
