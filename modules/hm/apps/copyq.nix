@@ -10,6 +10,12 @@
   };
 
   systemd.user.services.copyq = {
+    Service = {
+      MemoryHigh = "350M";
+      MemoryMax = "400M";
+      TimeoutStopSec = "30s";
+      RestartSec = "5s";
+    };
     Unit = {
       ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
     };

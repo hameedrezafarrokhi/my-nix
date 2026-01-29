@@ -224,19 +224,19 @@ super + ctrl + alt + shift + Down
 
 # Increase Volume
 XF86AudioRaiseVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
 
 # Decrease Volume
 XF86AudioLowerVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; ; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
 
 # Increase Volume (notify)
 super + Insert
-      bsp-volume up
+      bsp-volume up; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
 
 # Decrease Volume (notify)
 super + Delete
-	bsp-volume down
+	bsp-volume down; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
 
 # Mute Volume (notify)
 super + Home
@@ -294,9 +294,13 @@ super + ctrl + 5
 super + ctrl + 6
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set even; notify-send "Even Layout"
 
-# Floating Layout
+# Deck Layout
 super + ctrl + 7
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-deck-layout; notify-send "Deck Layout"
+
+# Deck Cycle
+super + alt + 7
+	bsp-deck-cycle
 
 # Columns Layout
 super + ctrl + 8
@@ -362,6 +366,10 @@ super + ctrl + F6
 super + ctrl + alt + 6
 	bspc node @parent -B
 
+# Floating Layout
+super + ctrl + alt + 7
+	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+
 # Vertical Columns Layout (OneShot)
 super + alt + 8
 	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-vertical-layout-oneshot; notify-send "Vertical Columns Layout (OneShot)"
@@ -384,7 +392,7 @@ super + ctrl + BackSpace
 
 # Remove Current Layout
 super + BackSpace
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
+	bsp-remove-deck; bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
 
 # Reload Current Layout
 super + ctrl + grave
@@ -454,9 +462,9 @@ super + shift + alt + g
 super + ctrl + Return
       {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && kitty}
 
-# Scratchpad Sticky Audio/Pavucontrol
+# Audio/Pavucontrol
 super + v
-      {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && pavucontrol}
+      {bspc rule -a \* -o state=floating sticky=off layer=above rectangle=720x360+320+60 && pavucontrol}
 
 # Scratchpad Terminal
 super + ctrl + space
@@ -674,6 +682,10 @@ super + shift + b
 super + shift + alt + b
     bsp-border-color prev
 
+# Per App Border Colors
+super + alt + b
+    bsp-auto-color
+
 # Fehbg
 super + w
     pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
@@ -783,8 +795,12 @@ super + alt + shift + o
     bsp-manual-order-remove; notify-send "Layout Order Removed"
 
 # Live Wallpaper
-super + comma
+super + comma ; {space}
     live-bg
+
+# Live Wallpaper Auto Pause
+super + comma ; {Return}
+    live-bg-pause-script
 
 # Live Wallpaper
 super + ctrl + shift + comma
@@ -873,3 +889,7 @@ super + p ; {t,e,v,s,d,r,p,i,b}
 # Hide Kitty Picker
 super + i
     xdotool search --classname picker > /dev/null && bspc node $(xdotool search --classname picker) --flag hidden=on
+
+# Dekstop Sounds Toggle
+super + ctrl + v
+    bsp-sounds-toggle

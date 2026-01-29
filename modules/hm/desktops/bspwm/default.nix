@@ -127,6 +127,7 @@ in
         bspc rule -a protonvpn-app state=floating
         bspc rule -a Protonvpn-app state=floating
         bspc rule -a kruler state=floating
+        bspc rule -a kruler border=off
         bspc rule -a kitty-picker state=floating
         bspc rule -a tetris state=floating rectangle=370x450+500+150
 
@@ -188,6 +189,8 @@ in
         #	  sleep 0.5
         #	  skippy-xd --start-daemon &
         #fi
+
+         mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/startup"
 
          # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
         #pgrep bspswallow || bspswallow &
@@ -255,6 +258,23 @@ in
         pkill bsp-icon-bar
         bsp-icon-bar &
 
+        pkill -f "live-bg-auto"
+        sleep 0.5
+        if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
+            $HOME/.config/bspwm/bsp-live-auto-pause
+        fi
+
+        pkill -f "bsp-app-border"
+        sleep 0.5
+        if [ -f "$HOME/.config/bspwm/bsp-auto-color" ]; then
+            $HOME/.config/bspwm/bsp-auto-color
+        fi
+
+        pkill -f "bsp-sounds"
+        sleep 0.5
+        if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
+            $HOME/.config/bspwm/bsp-sounds-toggle
+        fi
       '';
 
       startupPrograms = [

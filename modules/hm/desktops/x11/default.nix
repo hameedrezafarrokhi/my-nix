@@ -316,6 +316,41 @@ let
     fi
   '';
 
+  live-bg-auto = pkgs.writeShellScriptBin "live-bg-auto" ''
+      {
+          while read -r line; do
+              # Split the line into fields
+              read -r event monitor desktop node action <<< "$line"
+
+                  pp() {
+                      PROC="paperview-rs"
+                      PID=$(pgrep -n "$PROC")
+                      pgrep -n "$PROC" &&
+                      WINCOUNT=$(bspc query -N '@/' -n .descendant_of.window.!hidden.!floating | wc -l)
+                      if [[ $WINCOUNT -eq 0 ]]; then
+                        kill -CONT "$PID"
+                      fi
+                      if [[ $WINCOUNT -gt 0 ]]; then
+                        kill -STOP "$PID"
+                      fi
+                  }
+
+                  case "$event" in
+      		    node_focus) pp;;
+      		    node_remove) pp;;
+      		    node_state) pp;;
+      		    node_transfer) pp;;
+      		    desktop_focus) pp;;
+                  esac
+
+          done < <(bspc subscribe node_focus desktop_focus)
+      } &
+  '';
+
+  live-bg-pause-script = pkgs.writeShellScriptBin "live-bg-pause-script" ''
+    ${builtins.readFile ./live-bg-pause-script}
+  '';
+
   live-bg-speed-manual = pkgs.writeShellScriptBin "live-bg-speed-manual" ''
     FILE="$HOME/.live-bg"
     [ -f "$FILE" ] || exit 0
@@ -395,6 +430,8 @@ in
       live-bg-cycle
       live-bg-pause
       live-bg-speed-manual
+      live-bg-auto
+      live-bg-pause-script
       paperview-rofi
 
     ];
@@ -564,13 +601,23 @@ in
         shadowOpacity = 0.80;
        #shadowOffsets = [ 15 15 ];
         shadowExclude = [
-          "name = 'Notification'"
-          "class_g ?= 'Notify-osd'"
-          "_GTK_FRAME_EXTENTS@:c"
+         #"name = 'Notification'"
+         #"class_g ?= 'Notify-osd'"
+
+          "_GTK_FRAME_EXTENTS@:c && (window_type = 'menu' || window_type = 'dropdown_menu')" # this is for brave
+
           "class_g = 'ulauncher'"
           "class_g = 'Ulauncher'"
+
           "class_g = 'dockx'"
           "class_g = 'Dockx'"
+
+          # only way for gtk4 menu stuff
+          #class_g = 'firefox' && (window_type = 'menu' || window_type = 'dropdown_menu' || window_type = 'popup_menu' || window_type = 'utility' || window_type = 'unknown' || window_type = 'toolbar' || window_type = 'tooltip' || window_type = 'dialog')"
+          "class_g = 'iotas' && (window_type = 'menu' || window_type = 'dropdown_menu')"
+          "class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu')"
+          "class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu')"
+          "class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu')"
         ];
 
         fade = true;
@@ -581,15 +628,17 @@ in
         activeOpacity = 1.0;
         menuOpacity = 1.0;
         inactiveOpacity = 0.85;
-        opacityRules = [
-          "100:class_g = 'firefox'"
-          "100:class_g = 'chromium'"
-          "100:class_g = 'brave-browser'"
-          "100:class_g = 'brave'"
-          "100:class_g = 'Brave'"
+        opacityRules = [ # doesnt work
+         #"100:class_g = 'firefox'"
+         #"100:class_g = 'chromium'"
+         #"100:class_g = 'brave-browser'"
+         #"100:class_g *= 'Brave-browser'"
+         #"100:class_g = 'brave'"
+         #"100:class_g = 'Brave'"
          #"95:class_g =  'kitty'"
          #"95:class_g =  'dolphin'"
-          "100:class_name = 'dunst'"
+         #"100:class_name *= 'Dunst'"
+         #"100:class_name *= 'iotas'"
         ];
 
         settings = {
@@ -600,10 +649,11 @@ in
             deviation = 6.0;
             background-frame = false;
             kern = "3x3box";
-            background-exclude = [
+            background-exclude = [ # use the oher option for exclude blurs
               "window_type = 'Polybar'"
               "window_type = 'desktop'"
               "window_type = 'dock'"
+
              #"window_type = 'tooltip'"
              #"window_type = 'popup_menu'"
              #"window_type = 'toolbar'"
@@ -612,18 +662,24 @@ in
              #"window_type = 'dropdown_menu'"
              #"window_type = 'unknown'"
              #"window_type = 'utility'"
+
              #"role = 'xborder'"
               "class_g = 'Conky'"
               "class_g = 'conky'"
-             #"name = 'Notification'"
-              "class_g = 'Dunst'"
-              "_GTK_FRAME_EXTENTS"
-              "_GTK_FRAME_EXTENTS@:c"
-              "class_g = 'GtkFrame'"
-              "class_g = 'ulauncher'"
-              "class_g = 'Ulauncher'"
+
+             #"name = 'Notification'" # doesnt work
+             #"class_g = 'Dunst'" # doesnt work
+
+             #"_GTK_FRAME_EXTENTS"
+             #"_GTK_FRAME_EXTENTS@:c"
+             #"class_g = 'GtkFrame'"
+
+             #"class_g = 'ulauncher'" # doesnt work
+             #"class_g = 'Ulauncher'" # doesnt work
               "class_g = 'dockx'"
               "class_g = 'Dockx'"
+             #"class_g = 'Gtk'" # works for gtk3
+             #"class_g = 'iotas'" # gtk4 apps dont work at all
             ];
           };
          #blur-kern = "3x3box";
@@ -638,7 +694,26 @@ in
           blur-background-exclude = [
             "window_type = 'dock'"
             "window_type = 'desktop'"
-            "_GTK_FRAME_EXTENTS@:c"
+
+           #"_GTK_FRAME_EXTENTS@:c" # wroks (for brave)
+
+           #"GtkFrame@:c"
+
+           #"window_type = 'tooltip'"
+           #"window_type = 'toolbar'"
+           #"window_type = 'dialog'"
+           #"window_type = 'unknown'"
+           #"window_type = 'utility'"
+
+           # works:
+           #"window_type = 'popup_menu'" # affects things like copyq popus menu
+            "window_type = 'menu'"
+            "window_type = 'dropdown_menu'"
+
+            "class_g = 'ulauncher'"
+            "class_g = 'Ulauncher'"
+
+           #"class_g = 'iotas'"  # this is correct
           ];
           rounded-corners-exclude = [
             "window_type = 'dock'"

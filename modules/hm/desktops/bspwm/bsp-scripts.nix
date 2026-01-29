@@ -1417,6 +1417,92 @@ let
     esac
   '';
 
+  bsp-auto-color = pkgs.writeShellScriptBin "bsp-auto-color" ''
+    ${builtins.readFile ./bsp-auto-color}
+  '';
+
+  bsp-sounds = pkgs.writeShellScriptBin "bsp-sounds" ''
+    ${builtins.readFile ./sounds}
+  '';
+
+  bsp-sounds-toggle = pkgs.writeShellScriptBin "bsp-sounds-toggle" ''
+    ${builtins.readFile ./bsp-sounds}
+  '';
+
+  bsp-deck-layout = pkgs.writeShellScriptBin "bsp-deck-layout" ''
+    bsp-deck-oneshot
+    {
+        while read -r line; do
+            # Split the line into fields
+            read -r event monitor desktop node action <<< "$line"
+
+              bsp-deck-oneshot
+
+        done < <(bspc subscribe node_add node_remove)
+    } &
+  '';
+
+  bsp-deck-oneshot = pkgs.writeShellScriptBin "bsp-deck-oneshot" ''
+    f="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
+
+    wcount=$(bspc query -N -n .window.!floating.!hidden.!sticky -d focused | wc -l)
+    mcount=$(bspc query -N '@/1' -n .descendant_of.window.!sticky.!floating | wc -l )
+    scount=$(bspc query -N '@/2' -n .descendant_of.window.!sticky.!floating | wc -l )
+
+    if [ "$mcount" -gt 1 ]; then
+      for wid in $(bspc query -N '@/1' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
+        bspc node "$wid" -n '@/2'
+      done
+    fi
+
+    if [ "$scount" -gt 1 ]; then
+      for h in $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
+        bspc node "$h" -g hidden=on
+      done
+    fi
+  '';
+
+  bsp-deck-cycle = pkgs.writeShellScriptBin "bsp-deck-cycle" ''
+    if pgrep bsp-deck-layout > /dev/null; then
+      lf="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
+
+      bspc node -f east
+
+      f="$(bspc query -N @/2 -n focused.!floating.!sticky 2>/dev/null)"
+      set -- $(bspc query -N @/2 -n .descendant_of.window.!floating.!sticky)
+      [ "$#" -lt 2 ] && exit 0
+
+      next="$1"
+      prev=""
+
+      for n; do
+        if [ "$prev" = "$f" ]; then
+          next="$n"
+          break
+        fi
+        prev="$n"
+      done
+
+      for n; do
+        bspc node "$n" -g hidden=on
+      done
+
+      bspc node "$next" -g hidden=off
+      bspc node "$next" -f
+
+      bspc node "$lf" -f
+    fi
+  '';
+
+  bsp-remove-deck = pkgs.writeShellScriptBin "bsp-remove-deck" ''
+    if pgrep bsp-deck-layout > /dev/null; then
+      pkill -f bsp-deck-layout
+      for h in $(bspc query -N '@/2' -n .descendant_of.window.!floating.!sticky); do
+        bspc node "$h" -g hidden=off
+      done
+    fi
+  '';
+
 in
 
 {
@@ -1499,6 +1585,13 @@ in
       bsp-rofi-group-delete-cache
       bsp-layout-rofi
       bsp-layout-oneshot-rofi
+      bsp-auto-color
+      bsp-sounds
+      bsp-sounds-toggle
+      bsp-deck-layout
+      bsp-deck-oneshot
+      bsp-deck-cycle
+      bsp-remove-deck
       bspswallow
       bspwmswallow
       pidswallow

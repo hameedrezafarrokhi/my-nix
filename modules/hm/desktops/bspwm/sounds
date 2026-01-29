@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Sound files
+OPEN_SOUND="$HOME/.local/share/desktop-sounds/open"
+CLOSE_SOUND="$HOME/.local/share/desktop-sounds/close"
+SWITCH_SOUND="$HOME/.local/share/desktop-sounds/desktop"
+FOCUS_SOUND="$HOME/.local/share/desktop-sounds/focus"
+
+# Rate limiting
+RATE_LIMIT=0.5
+declare -A last_played
+last_other_event=0  # Track when ANY non-node_focus event happened
+
+bspc subscribe node_add node_remove desktop_focus node_focus | \
+while read -r event monitor desktop node_id; do
+    current_time=$(date +%s.%N)
+    
+    # Update last_other_event for ANY event except node_focus
+    if [[ "$event" != "node_focus" ]]; then
+        last_other_event="$current_time"
+    fi
+    
+    case $event in
+        node_add)
+            sound="$OPEN_SOUND"
+            event_key="add"
+            ;;
+        node_remove)
+            sound="$CLOSE_SOUND"
+            event_key="remove"
+            ;;
+        desktop_focus)
+            sound="$SWITCH_SOUND"
+            event_key="desktop_${monitor}_${desktop}"
+            ;;
+        node_focus)
+            # Skip focus sound if ANY other event happened in the last 0.05 seconds
+            time_since_other=$(echo "$current_time - $last_other_event" | bc)
+            if (( $(echo "$time_since_other < 0.05" | bc -l) )); then
+                continue
+            fi
+            
+            sound="$FOCUS_SOUND"
+            event_key="focus_${node_id}"
+            ;;
+    esac
+    
+    # Rate limiting
+    if [[ -n "${last_played[$event_key]}" ]]; then
+        time_diff=$(echo "$current_time - ${last_played[$event_key]}" | bc)
+        if (( $(echo "$time_diff < $RATE_LIMIT" | bc -l) )); then
+            continue
+        fi
+    fi
+    
+    # Play sound
+    if [[ -f "$sound" ]]; then
+        last_played[$event_key]="$current_time"
+        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$sound" &
+    fi
+done

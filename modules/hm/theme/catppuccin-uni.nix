@@ -426,6 +426,64 @@
       echo "$index" > "$TMPFILE"
     '';
 
+    bsp-app-border = pkgs.writeShellScriptBin "bsp-app-border" ''
+      {
+        while read -r line; do
+          read -r event monitor desktop node node_id action <<< "$line"
+            wid=$(bspc query -T -n $node_id)
+            classname=$(printf '%s\n' "$wid" | jq -r '.client.className')
+            sticky=$(printf '%s\n' "$wid" | jq -r '.sticky')
+            state=$(printf '%s\n' "$wid" | jq -r '.client.state')
+            popup=$(xprop -id "$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}')" | grep _NET_WM_WINDOW_TYPE | sed 's/.*= //' | jq -Rr 'split(", ")[0] | sub("^_NET_WM_WINDOW_TYPE_"; "")')
+
+            case "$classname" in
+              firefox) color="${Orange}" ;;
+              Brave-browser) color="${Orange}" ;;
+              spotify) color="${Green}" ;;
+              vlc) color="${Orange}" ;;
+              heroic) color="${Blue}" ;;
+              steam) color="${Blue}" ;;
+              obs) color="${Red}" ;;
+              freetube) color="${Red}" ;;
+              uget-gtk) color="${Green}" ;;
+              *)
+                if [ -f "$HOME/.bsp_conf_color" ]; then
+                  color="$(cat "$HOME/.bsp_conf_color" | grep focused_border_color | awk -F'"' '{print $2}')"
+                else
+                  color="${config.xsession.windowManager.bspwm.settings.focused_border_color}"
+                fi
+              ;;
+            esac
+
+            case "$state" in
+              floating) color="${Yellow}" ;;
+            esac
+
+            case "$classname" in
+              cbonsai) color="${Green}" ;;
+              ".blueman-manager-wrapped") color="${Blue}" ;;
+              scratchpad) color="${Green}" ;;
+              ".protonvpn-app-wrapped") color="${Mauve}" ;;
+              eyedropper) color="${Mauve}" ;;
+              pavucontrol) color="${Yellow}" ;;
+              tetris) color="${Peach}" ;;
+              kitty-picker) color="${Red}" ;;
+            esac
+
+            case "$popup" in
+              DIALOG) color="${Red}" ;;
+            esac
+
+            case "$sticky" in
+              true) color="${Maroon}" ;;
+            esac
+
+            bspc config focused_border_color "$color"
+
+        done < <(bspc subscribe node_focus node_state)
+      } &
+    '';
+
     bsp-tabbed = pkgs.callPackage ../desktops/bspwm/tabbed/bsp-tabbed.nix {
       customConfig = ''
         static char *font         = "${bspTabFont}";
@@ -521,6 +579,7 @@
     fehw
 
     bsp-border-color
+    bsp-app-border
     bsp-tabbed
     bsptab
 
@@ -4161,6 +4220,13 @@
       TabActivityColor=${Peach}
       ColorPalette=${Surface1};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext1};${Surface2};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext0}
     '';
+
+    "desktop-sounds/open".source = "${inputs.assets}/sounds/pen-2";
+    "desktop-sounds/close".source = "${inputs.assets}/sounds/pen-1";
+    "desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
+    "desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
+    "desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
+
   };
 
   programs.fish.shellInit = ''
