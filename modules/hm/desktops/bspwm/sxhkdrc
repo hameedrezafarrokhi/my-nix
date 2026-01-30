@@ -266,9 +266,9 @@ super + ctrl + 1
 super + ctrl + 2
       bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
 
-# Master Node Increase
+# Master Node Increase / Deck Toggle
 super + equal
-      bsp-master-node-increase
+      bsp-master-node-increase; bsp-deck-cycle
 
 # Master Node Decrease
 super + shift + equal
@@ -297,10 +297,6 @@ super + ctrl + 6
 # Deck Layout
 super + ctrl + 7
 	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-deck-layout; notify-send "Deck Layout"
-
-# Deck Cycle
-super + alt + 7
-	bsp-deck-cycle
 
 # Columns Layout
 super + ctrl + 8

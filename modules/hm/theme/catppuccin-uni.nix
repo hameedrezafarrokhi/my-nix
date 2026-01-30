@@ -4221,11 +4221,11 @@
       ColorPalette=${Surface1};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext1};${Surface2};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext0}
     '';
 
-    "desktop-sounds/open".source = "${inputs.assets}/sounds/pen-2";
-    "desktop-sounds/close".source = "${inputs.assets}/sounds/pen-1";
-    "desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
-    "desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
-    "desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
+   #"desktop-sounds/open".source = "${inputs.assets}/sounds/pen-2";
+   #"desktop-sounds/close".source = "${inputs.assets}/sounds/pen-1";
+   #"desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
+   #"desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
+   #"desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
 
   };
 

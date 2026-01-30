@@ -1421,7 +1421,7 @@ let
     ${builtins.readFile ./bsp-auto-color}
   '';
 
-  bsp-sounds = pkgs.writeShellScriptBin "bsp-sounds" ''
+  bsp-de-sounds = pkgs.writeShellScriptBin "bsp-de-sounds" ''
     ${builtins.readFile ./sounds}
   '';
 
@@ -1430,16 +1430,37 @@ let
   '';
 
   bsp-deck-layout = pkgs.writeShellScriptBin "bsp-deck-layout" ''
+    DESKTOP=$(bspc query -D -d focused)
+    LOCKFILE="$HOME/.cache/bspwm-deck-$DESKTOP.lock"
+
+    # Prevent multiple instances
+    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
+        exit 0
+    fi
+
+    # Record current PID in lock file
+    echo $$ > "$LOCKFILE"
+
+    # Ensure lock file is removed when script exits
+    trap 'rm -f "$LOCKFILE"' EXIT
+
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
+
+    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
+    rm -f "$PID_FILE_LISTEN"
+
     bsp-deck-oneshot
     {
         while read -r line; do
             # Split the line into fields
             read -r event monitor desktop node action <<< "$line"
-
-              bsp-deck-oneshot
-
+              if [[ "$desktop" == "$DESKTOP" ]]; then
+                bsp-deck-oneshot
+              fi
         done < <(bspc subscribe node_add node_remove)
     } &
+
+    echo $! > "$PID_FILE_LISTEN"
   '';
 
   bsp-deck-oneshot = pkgs.writeShellScriptBin "bsp-deck-oneshot" ''
@@ -1463,40 +1484,48 @@ let
   '';
 
   bsp-deck-cycle = pkgs.writeShellScriptBin "bsp-deck-cycle" ''
+    DESKTOP=$(bspc query -D -d focused)
+    PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
     if pgrep bsp-deck-layout > /dev/null; then
-      lf="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
+      if [ -f "$HOME/.cache/bspwm-deck-$DESKTOP.pid" ]; then
+        lf="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
 
-      bspc node -f east
+        bspc node -f east
 
-      f="$(bspc query -N @/2 -n focused.!floating.!sticky 2>/dev/null)"
-      set -- $(bspc query -N @/2 -n .descendant_of.window.!floating.!sticky)
-      [ "$#" -lt 2 ] && exit 0
+        f="$(bspc query -N @/2 -n focused.!floating.!sticky 2>/dev/null)"
+        set -- $(bspc query -N @/2 -n .descendant_of.window.!floating.!sticky)
+        [ "$#" -lt 2 ] && exit 0
 
-      next="$1"
-      prev=""
+        next="$1"
+        prev=""
 
-      for n; do
-        if [ "$prev" = "$f" ]; then
-          next="$n"
-          break
-        fi
-        prev="$n"
-      done
+        for n; do
+          if [ "$prev" = "$f" ]; then
+            next="$n"
+            break
+          fi
+          prev="$n"
+        done
 
-      for n; do
-        bspc node "$n" -g hidden=on
-      done
+        for n; do
+          bspc node "$n" -g hidden=on
+        done
 
-      bspc node "$next" -g hidden=off
-      bspc node "$next" -f
+        bspc node "$next" -g hidden=off
+        bspc node "$next" -f
 
-      bspc node "$lf" -f
+        bspc node "$lf" -f
+      fi
     fi
   '';
 
   bsp-remove-deck = pkgs.writeShellScriptBin "bsp-remove-deck" ''
     if pgrep bsp-deck-layout > /dev/null; then
-      pkill -f bsp-deck-layout
+      DESKTOP=$(bspc query -D -d focused)
+      PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
+      kill $(cat "$PID_FILE_LISTEN")
+      rm -f "$PID_FILE_LISTEN"
+     #pkill -f bsp-deck-layout
       for h in $(bspc query -N '@/2' -n .descendant_of.window.!floating.!sticky); do
         bspc node "$h" -g hidden=off
       done
@@ -1586,7 +1615,7 @@ in
       bsp-layout-rofi
       bsp-layout-oneshot-rofi
       bsp-auto-color
-      bsp-sounds
+      bsp-de-sounds
       bsp-sounds-toggle
       bsp-deck-layout
       bsp-deck-oneshot

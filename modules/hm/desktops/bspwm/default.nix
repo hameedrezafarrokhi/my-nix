@@ -229,22 +229,6 @@ in
         rm -f ~/.cache/bspwm_zoom_last_1
         rm -f ~/.cache/bspwm_zoom_last_2
         rm -f ~/.cache/bspwm_zoom_last_3
-        rm -f ~/.cache/bspwm_zoom_last_4
-        rm -f ~/.cache/bspwm_zoom_last_5
-        rm -f ~/.cache/bspwm_zoom_last_6
-        rm -f ~/.cache/bspwm_zoom_last_7
-        rm -f ~/.cache/bspwm_zoom_last_8
-        rm -f ~/.cache/bspwm_zoom_last_9
-        rm -f ~/.cache/bspwm_zoom_last_10
-        rm -f ~/.cache/bspwm_zoom_last_12
-        rm -f ~/.cache/bspwm_zoom_last_13
-        rm -f ~/.cache/bspwm_zoom_last_14
-        rm -f ~/.cache/bspwm_zoom_last_15
-        rm -f ~/.cache/bspwm_zoom_last_16
-        rm -f ~/.cache/bspwm_zoom_last_17
-        rm -f ~/.cache/bspwm_zoom_last_18
-        rm -f ~/.cache/bspwm_zoom_last_19
-        rm -f ~/.cache/bspwm_zoom_last_20
 
         rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
@@ -270,7 +254,7 @@ in
             $HOME/.config/bspwm/bsp-auto-color
         fi
 
-        pkill -f "bsp-sounds"
+        pkill -f "bsp-de-sounds"
         sleep 0.5
         if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
             $HOME/.config/bspwm/bsp-sounds-toggle
