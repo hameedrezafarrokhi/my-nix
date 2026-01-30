@@ -338,11 +338,13 @@
               pkill paperview-rs & sh -c "$FEHBG"
               exit 0
           else
-              pkill paperview-rs & sh -c "$FEHBG" && sleep 3 && sh -c "$LIVEBG"
+              pkill paperview-rs & sh -c "$FEHBG" && sleep 3 && cd $HOME/.cache && sh -c "$LIVEBG"
+              cd
               exit 0
           fi
       elif [[ -f "$LIVEBG" ]]; then
-          pkill paperview-rs & sh -c "$LIVEBG"
+          pkill paperview-rs & cd $HOME/.cache && sh -c "$LIVEBG"
+          cd
           exit 0
       elif [[ -f "$FEHBG" ]]; then
           pkill paperview-rs & sh -c "$FEHBG"
@@ -547,6 +549,20 @@
       '';
     };
     bsptab = pkgs.callPackage ../desktops/bspwm/tabbed/bsptab.nix { tabbed = bsp-tabbed; };
+
+    dunst-sound = pkgs.writeShellScriptBin "dunst-sound" ''
+      NORMAL="$HOME/.local/share/desktop-sounds/notif"
+      CRIT="$HOME/.local/share/desktop-sounds/notif-critical"
+      VOL="$HOME/.local/share/desktop-sounds/focus"
+
+      if [[ "$DUNST_URGENCY" = "CRITICAL" ]]; then
+        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$CRIT"
+      elif [[ "$DUNST_BODY" =~ "Volume" ]]; then
+        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$VOL"
+      elif  [[ "$DUNST_BODY" != "^Volume" ]] && [[ "$DUNST_BODY" != "^Brightness" ]]; then
+        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$NORMAL"
+      fi
+    '';
 
   in
 
@@ -3081,6 +3097,10 @@
          #foreground = Crust;
          #frame_color = Yellow;
         };
+        play_sound = {
+          summary = "*";
+          script = "${dunst-sound}/bin/dunst-sound";
+        };
       };
      #iconTheme = {
      #  package = ;
@@ -4226,6 +4246,8 @@
    #"desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
    #"desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
    #"desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
+   #"desktop-sounds/notif".source = "${inputs.assets}/sounds/message-new-instant";
+   #"desktop-sounds/notif-critical".source = "${inputs.assets}/sounds/message-highlight";
 
   };
 

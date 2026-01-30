@@ -214,12 +214,37 @@ let
             -p "Wallpaper"
     )
     [ -z "$choice" ] && exit 0
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    kill -CONT "$PID"
     pkill paperview-rs
+
     CMD="paperview-rs --bg \"$RES:$choice:$DEFAULT_SPEED\""
     echo "#!/bin/bash" > "$LIVE_BG"
     echo "$CMD" >> "$LIVE_BG"
     chmod +x "$LIVE_BG"
-    eval "$CMD"
+    cd $HOME/.cache && eval "$CMD"
+  '';
+
+  live-bg-manual = pkgs.writeShellScriptBin "live-bg-manual" ''
+    LIVE_BG="$HOME/.live-bg"
+    ROFI_THEME="$HOME/.config/rofi/themes/main.rasi"
+    DEFAULT_SPEED=10
+    RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
+    choice=$(rofi -dmenu -theme "$ROFI_THEME" -p "Live Wallpaper Path:")
+    [[ -z "$choice" ]] && exit 0
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    kill -CONT "$PID"
+    pkill paperview-rs
+
+    CMD="paperview-rs --bg \"$RES:$choice:$DEFAULT_SPEED\""
+    echo "#!/bin/bash" > "$LIVE_BG"
+    echo "$CMD" >> "$LIVE_BG"
+    chmod +x "$LIVE_BG"
+    cd $HOME/.cache && eval "$CMD"
   '';
 
   live-bg = pkgs.writeShellScriptBin "live-bg" ''
@@ -228,17 +253,29 @@ let
     RES="${config.my.display.primary.x}:${config.my.display.primary.y}:0:0"
     DEFAULT_FOLDER=1
     DEFAULT_SPEED=10
-    pkill paperview-rs 2>/dev/null && touch $HOME/.fehbg && exit 0
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    if [ -z "$PID" ]; then
+      echo "not running"
+    else
+      kill -CONT "$PID"
+      pkill paperview-rs
+      exit 0
+    fi
+    #pkill paperview-rs 2>/dev/null && touch $HOME/.fehbg && exit 0
+
     if [[ -f "$LIVE_BG" ]]; then
         touch $HOME/.live-bg
-        bash "$LIVE_BG"
+        cd $HOME/.cache && bash "$LIVE_BG"
         exit 0
     fi
+
     CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$DEFAULT_FOLDER/:$DEFAULT_SPEED\""
     echo "#!/bin/bash" > "$LIVE_BG"
     echo "$CMD" >> "$LIVE_BG"
     chmod +x "$LIVE_BG"
-    eval "$CMD"
+    cd $HOME/.cache && eval "$CMD"
   '';
 
   live-bg-cycle = pkgs.writeShellScriptBin "live-bg-cycle" ''
@@ -248,11 +285,16 @@ let
     DEF_FOLDER=1
     DEF_SPEED=10
     ACTION="$1"
-    pkill paperview-rs 2>/dev/null
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    pkill paperview-rs 2>/dev/null && kill -CONT "$PID"
+
     if [[ -f "$LIVE_BG" ]]; then
         CUR_FOLDER=$(grep -oP 'live-wallpapers/\K[0-9]+' "$LIVE_BG")
         CUR_SPEED=$(grep -oP ':[0-9]+$' "$LIVE_BG" | tr -d :)
     fi
+
     [[ -z "$CUR_FOLDER" ]] && CUR_FOLDER=$DEF_FOLDER
     [[ -z "$CUR_SPEED"  ]] && CUR_SPEED=$DEF_SPEED
     MAX=$(ls -d "$LIVE_DIR"/*/ 2>/dev/null | wc -l)
@@ -268,7 +310,7 @@ let
     CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
     printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
     chmod +x "$LIVE_BG"
-    eval "$CMD"
+    cd $HOME/.cache && eval "$CMD"
   '';
 
   live-bg-speed = pkgs.writeShellScriptBin "live-bg-speed" ''
@@ -278,7 +320,11 @@ let
     DEF_FOLDER=1
     DEF_SPEED=10
     ACTION="$1"
-    pkill paperview-rs 2>/dev/null
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    pkill paperview-rs 2>/dev/null && kill -CONT "$PID"
+
     if [[ -f "$LIVE_BG" ]]; then
         CUR_FOLDER=$(sed -n 's|.*/live-wallpapers/\([0-9]\+\)/.*|\1|p' "$LIVE_BG")
         CUR_SPEED=$(sed -n 's|.*:\([0-9]\+\)".*|\1|p' "$LIVE_BG")
@@ -296,7 +342,7 @@ let
     CMD="paperview-rs --bg \"$RES:$LIVE_DIR/$CUR_FOLDER/:$CUR_SPEED\""
     printf '#!/bin/bash\n%s\n' "$CMD" > "$LIVE_BG"
     chmod +x "$LIVE_BG"
-    eval "$CMD"
+    cd $HOME/.cache && eval "$CMD"
   '';
 
   live-bg-pause = pkgs.writeShellScriptBin "live-bg-pause" ''
@@ -357,7 +403,10 @@ let
     SPEED=$(rofi -dmenu -p "Speed" -theme $HOME/.config/rofi/themes/power.rasi)
     [ -z "$SPEED" ] && exit 0
     sed -i "s/:\([0-9]\+\)\"$/:$SPEED\"/" "$FILE"
-    pkill paperview-rs && $HOME/.live-bg
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    pkill paperview-rs && kill -CONT "$PID" && $HOME/.live-bg
   '';
 
 in
@@ -432,6 +481,7 @@ in
       live-bg-speed-manual
       live-bg-auto
       live-bg-pause-script
+      live-bg-manual
       paperview-rofi
 
     ];

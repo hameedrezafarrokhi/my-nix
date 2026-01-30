@@ -798,9 +798,13 @@ super + comma ; {space}
 super + comma ; {Return}
     live-bg-pause-script
 
-# Live Wallpaper
+# Live Wallpaper Menu
 super + ctrl + shift + comma
     paperview-rofi
+
+# Live Wallpaper Manual
+super + comma ; {m}
+    live-bg-manual
 
 # Live Wallpaper Cycle Next
 super + shift + comma
