@@ -1,6 +1,24 @@
 { config, pkgs, lib, ... }:
 
+let
+
+  dunst-sound-toggle = pkgs.writeShellScriptBin "dunst-sound-toggle" ''
+    if [ -f $HOME/.cache/dunst-mute ]; then
+      rm $HOME/.cache/dunst-mute
+      notify-send -e -u low -t 2000 "Notification Sounds" "On"
+    else
+      touch $HOME/.cache/dunst-mute
+      notify-send -e -u low -t 2000 "Notification Sounds" "Off"
+    fi
+  '';
+
+in
+
 { config = lib.mkIf (config.my.apps.dunst.enable) {
+
+  home.packages = [
+    dunst-sound-toggle
+  ];
 
   services.dunst = {
 

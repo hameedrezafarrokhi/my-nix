@@ -34,7 +34,7 @@ get_terminal() {
     done
 
     # If no terminal found, notify user and exit
-    notify-send "Error" "No terminal emulator found. Please install st or set BSPWM_SCRATCHPAD_TERMINAL environment variable."
+    notify-send -e -u critical -t 5000 "Error" "No terminal emulator found. Please install st or set BSPWM_SCRATCHPAD_TERMINAL environment variable."
     exit 1
 }
 

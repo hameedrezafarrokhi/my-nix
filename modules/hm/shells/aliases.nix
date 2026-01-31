@@ -144,8 +144,8 @@ in
     kicat = "kitten icat";
 
     ttetris = "${config.my.default.terminal} --name tetris --class tetris sh -c 'tetris'";
-
     tcbonsai = "${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li'";
+    tpipes-rs = "${config.my.default.terminal} --name pipes-rs --class pipes-rs sh -c 'pipes-rs'";
 
     gigi = ''nixos && git add . && git commit -m "$(date +%F_%H-%M-%S)" && git push'';
 

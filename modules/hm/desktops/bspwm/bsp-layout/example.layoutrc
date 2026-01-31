@@ -1,0 +1,21 @@
+
+# Tall layout config
+TALL_RATIO=0.6;
+
+# Wide layout config
+WIDE_RATIO=0.6;
+
+# CMaster layout config
+CENTER_RATIO=0.6;
+
+# RCMaster layout config
+RCENTER_RATIO=0.6;
+
+# DMaster layout config
+DCENTER_RATIO=0.5;
+
+# HDCMaster layout config
+HDCENTER_RATIO=0.5;
+
+# Use desktop names(1) or ids(0)
+USE_NAMES=1;

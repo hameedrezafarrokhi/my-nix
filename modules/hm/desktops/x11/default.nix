@@ -77,14 +77,14 @@ let
         fi
     done
 
-    notify-send "Session saved" "Stored in ~/.cache/xsession-restore"
+    notify-send -e -u critical -t 5000 "Session saved" "Stored in ~/.cache/xsession-restore"
   '';
 
   xsession-load = pkgs.writeShellScriptBin "xsession-load" ''
     IN="$HOME/.cache/xsession-restore"
 
     if [ ! -f "$IN" ]; then
-        notify-send "Restore failed" "No saved session file found."
+        notify-send -e -u critical -t 5000 "Restore failed" "No saved session file found."
         exit 1
     fi
 
@@ -96,7 +96,7 @@ let
         fi
     done
 
-    notify-send "Session restored" "Applications launched."
+    notify-send -e -u critical -t 5000 "Session restored" "Applications launched."
   '';
 
   feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''

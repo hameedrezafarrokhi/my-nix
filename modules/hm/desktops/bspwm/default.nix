@@ -8,6 +8,7 @@ let
  #bsptab = pkgs.callPackage ./tabbed/bsptab.nix { tabbed = bsp-tabbed; };
  #
   bsp-layout-ext = pkgs.callPackage ./bsp-layout-ext/bsp-layout-ext.nix { };
+  bsp-layout = pkgs.callPackage ./bsp-layout/bsp-layout.nix { };
 
 in
 
@@ -190,7 +191,7 @@ in
         #	  skippy-xd --start-daemon &
         #fi
 
-         mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/startup"
+         pw-play "$HOME/.local/share/desktop-sounds/startup"
 
          # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
         #pgrep bspswallow || bspswallow &
@@ -340,7 +341,11 @@ in
       pkgs.xkblayout-state
       pkgs.skippy-xd
       pkgs.xorg.xprop
-      pkgs.bsp-layout
+
+
+     #pkgs.bsp-layout
+      bsp-layout
+
      #pkgs.touchegg
      #pkgs.tabbed
 
@@ -362,6 +367,17 @@ in
      #  '';
      #}))
     ];
+
+    xdg.configFile."bsp-layout/layoutrc".text = ''
+      TALL_RATIO=0.6;
+      WIDE_RATIO=0.6;
+      CENTER_RATIO=0.6;
+      RCENTER_RATIO=0.6;
+      DCENTER_RATIO=0.5;
+      HDCENTER_RATIO=0.5;
+      # Use desktop names(1) or ids(0)
+      USE_NAMES=0;
+    '';
 
     home.sessionVariables = {
 

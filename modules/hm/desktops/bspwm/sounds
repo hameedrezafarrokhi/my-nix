@@ -56,6 +56,6 @@ while read -r event monitor desktop node_id; do
     # Play sound
     if [[ -f "$sound" ]]; then
         last_played[$event_key]="$current_time"
-        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$sound" &
+        pw-play "$sound" &
     fi
 done

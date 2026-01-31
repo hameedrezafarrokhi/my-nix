@@ -95,19 +95,19 @@ let
 
   bsp-next = pkgs.writeShellScriptBin "bsp-next" ''
     bsp-layout next
-    notify-send "$(bsp-layout get)"
+    notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-prev = pkgs.writeShellScriptBin "bsp-prev" ''
     bsp-layout previous
-    notify-send "$(bsp-layout get)"
+    notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-reload = pkgs.writeShellScriptBin "bsp-reload" ''
     bsp-layout reload
-    notify-send "$(bsp-layout get)"
+    notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-og = pkgs.writeShellScriptBin "bsp-og" ''
     bsp-layout remove
-    notify-send "BSPWM Layout"
+    notify-send -e -u low -t 2000 "BSPWM Layout"
   '';
 
   poly-xkb-layout = pkgs.writeShellScriptBin "poly-xkb-layout" ''
@@ -115,7 +115,7 @@ let
   '';
   poly-xkb-change = pkgs.writeShellScriptBin "poly-xkb-change" ''
     xkb-switch -n
-    notify-send "$(poly-xkb-layout)"
+    notify-send -e -u low -t 2000 "$(poly-xkb-layout)"
   '';
 
   poly-picom-status = pkgs.writeShellScriptBin "poly-picom-status" ''
@@ -135,7 +135,7 @@ let
 
   poly-bsp-float = pkgs.writeShellScriptBin "poly-bsp-float" ''
     bspc query -N -d focused | while read -r n; do s=$(bspc query -T -n "$n" | grep -q '"state":"floating"' && echo tiled || echo floating); bspc node "$n" -t "$s"; done
-    notify-send "Floating Toggle"
+    notify-send -e -u low -t 2000 "Floating Toggle"
   '';
 
   poly-player = pkgs.writeShellScriptBin "poly-player" ''
@@ -169,22 +169,22 @@ let
         # Switch to Power Saver mode
         powerprofilesctl set power-saver
         echo "Switched to Power Saver mode."
-        notify-send "Power-Saver Mode"
+        notify-send -e -u critical -t 3000 "Power-Saver Mode"
     elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
         # Switch to Balanced mode
         powerprofilesctl set balanced
         echo "Switched to Balanced mode."
-        notify-send "Balanced Mode"
+        notify-send -e -u critical -t 3000 "Balanced Mode"
     else
         # Switch to Performance mode
         powerprofilesctl set performance
         echo "Switched to Performance mode."
-        notify-send "Performance Mode"
+        notify-send -e -u critical -t 3000 "Performance Mode"
     fi
   '';
 
   poly-color-picker = pkgs.writeShellScriptBin "poly-color-picker" ''
-    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
+    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send -t 0 "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
   '';
 
   poly-magnifier = pkgs.writeShellScriptBin "poly-magnifier" ''

@@ -38,7 +38,7 @@ let
 
       function send_notification() {
       	volume=$(pamixer --get-volume)
-      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 2000
+      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
       }
 
       case $1 in
@@ -56,7 +56,7 @@ let
       mute)
       	pamixer -t
       	if $(pamixer --get-mute); then
-      		dunstify -i volume-mute -a "changevolume" -t 2000 -r 9993 -u low "Muted"
+      		dunstify -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
       	else
       		send_notification up
       	fi
@@ -632,11 +632,11 @@ let
     if [[ -f "$CACHE_FILE" ]]; then
         bsp-horizontal-layout-oneshot
         rm "$CACHE_FILE"
-        notify-send "Horizontal Rows Layout (OneShot)"
+        notify-send -e -u low -t 2000 "Horizontal Rows Layout (OneShot)"
     else
         bsp-vertical-layout-oneshot
         touch "$CACHE_FILE"
-        notify-send "Vertical Columns Layout (OneShot)"
+        notify-send -e -u low -t 2000 "Vertical Columns Layout (OneShot)"
     fi
   '';
 
@@ -1141,44 +1141,44 @@ let
 
   bsp-master-node-increase = pkgs.writeShellScriptBin "bsp-master-node-increase" ''
     # Get current layout
-    current=$(bsp-layout-ext get)
+    current=$(bsp-layout get)
 
     case "$current" in
         tall)
-            bsp-layout-ext set tall2
+            bsp-layout set tall2
             ;;
         tall2)
-            bsp-layout-ext set tall3
+            bsp-layout set tall3
             ;;
         tall3)
-            bsp-layout-ext set tall4
+            bsp-layout set tall4
             ;;
         rtall)
-            bsp-layout-ext set rtall2
+            bsp-layout set rtall2
             ;;
         rtall2)
-            bsp-layout-ext set rtall3
+            bsp-layout set rtall3
             ;;
         rtall3)
-            bsp-layout-ext set rtall4
+            bsp-layout set rtall4
             ;;
         wide)
-            bsp-layout-ext set wide2
+            bsp-layout set wide2
             ;;
         wide2)
-            bsp-layout-ext set wide3
+            bsp-layout set wide3
             ;;
         wide3)
-            bsp-layout-ext set wide4
+            bsp-layout set wide4
             ;;
         rwide)
-            bsp-layout-ext set rwide2
+            bsp-layout set rwide2
             ;;
         rwide2)
-            bsp-layout-ext set rwide3
+            bsp-layout set rwide3
             ;;
         rwide3)
-            bsp-layout-ext set rwide4
+            bsp-layout set rwide4
             ;;
         *)
             echo "Unknown layout: $current"
@@ -1188,41 +1188,41 @@ let
 
   bsp-master-node-decrease = pkgs.writeShellScriptBin "bsp-master-node-decrease" ''
     # Get current layout
-    current=$(bsp-layout-ext get)
+    current=$(bsp-layout get)
 
     case "$current" in
         tall4)
-            bsp-layout-ext set tall3
+            bsp-layout set tall3
             ;;
         tall3)
-            bsp-layout-ext set tall2
+            bsp-layout set tall2
             ;;
         tall2)
             bsp-layout set tall
             ;;
         rtall4)
-            bsp-layout-ext set rtall3
+            bsp-layout set rtall3
             ;;
         rtall3)
-            bsp-layout-ext set rtall2
+            bsp-layout set rtall2
             ;;
         rtall2)
             bsp-layout set rtall
             ;;
         wide4)
-            bsp-layout-ext set wide3
+            bsp-layout set wide3
             ;;
         wide3)
-            bsp-layout-ext set wide2
+            bsp-layout set wide2
             ;;
         wide2)
             bsp-layout set wide
             ;;
         rwide4)
-            bsp-layout-ext set rwide3
+            bsp-layout set rwide3
             ;;
         rwide3)
-            bsp-layout-ext set rwide2
+            bsp-layout set rwide2
             ;;
         rwide2)
             bsp-layout set rwide
@@ -1320,7 +1320,7 @@ let
   '';
 
   bsp-icon-bar = pkgs.writeShellScriptBin "bsp-icon-bar" ''
-    bspc subscribe all | while read -r line; do
+    bspc subscribe node_add node_remove node_transfer desktop_layout | while read -r line; do
         case $line in
           node_add*|node_remove*|node_transfer*|desktop_layout*)
                 bspi --config ${nix-path}/modules/hm/desktops/bspwm/bspi.ini
@@ -1532,6 +1532,20 @@ let
     fi
   '';
 
+  bsp-remove-layout = pkgs.writeShellScriptBin "bsp-remove-layout" ''
+    bsp-remove-deck
+    bsp-cmaster-remove
+    bsp-culomns-rows-layout-remove
+    bsp-layout remove
+    #bsp-layout-ext remove
+  '';
+
+  bsp-remove-layout-me = pkgs.writeShellScriptBin "bsp-remove-layout-me" ''
+    bsp-remove-deck
+    bsp-cmaster-remove
+    bsp-culomns-rows-layout-remove
+  '';
+
 in
 
 {
@@ -1546,6 +1560,8 @@ in
       bsp-conf-color
       bsp-volume
       bsp-layout-manager
+      bsp-remove-layout
+      bsp-remove-layout-me
       bsp-xkb-layout
       bsp-float
       bsp-power

@@ -3,7 +3,7 @@ super + space
    	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi
 
 # Set Window State: Floating Mode
-super + f
+super + shift + f
 	bspc node -t ~floating
 
 # Set Window State: Fullscreen Mode
@@ -36,15 +36,15 @@ super + ctrl + shift + Tab
 
 # Skippy toggle
 super + shift + ctrl + alt + Tab
-      notify-send "Skippy"; bsp-skippy
+      notify-send -e -u low -t 2000 "Skippy"; bsp-skippy
 
 # Reload sxhkd (Hotkey Daemon)
 super + Escape
-	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
+	pkill -USR1 -x sxhkd; notify-send -e -u low -t 2000 'sxhkd' 'Reloaded config'
 
 # Reload bspwm (Window Manager)
 alt + shift + r
-	bspc wm -r; notify-send 'bspwm' 'Restarted'
+	bspc wm -r; notify-send -e -u critical -t 5000 'bspwm' 'Restarted'
 
 # Quit bspwm (Exit Window Manager)
 alt + shift + e
@@ -224,19 +224,19 @@ super + ctrl + alt + shift + Down
 
 # Increase Volume
 XF86AudioRaiseVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
 # Decrease Volume
 XF86AudioLowerVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; ; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; ; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
 # Increase Volume (notify)
 super + Insert
-      bsp-volume up; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
+      bsp-volume up; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
 # Decrease Volume (notify)
 super + Delete
-	bsp-volume down; mpv --no-loop --keep-open=no --no-terminal --scripts=no "$HOME/.local/share/desktop-sounds/focus"
+	bsp-volume down; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
 # Mute Volume (notify)
 super + Home
@@ -260,11 +260,11 @@ Print
 
 # Master Stack Layout
 super + ctrl + 1
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send "Master-Stack Layout"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send -e -u low -t 2000 "Master Layout"
 
 # Wide Layout
 super + ctrl + 2
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send "Master-Stack Layout (Horizontal)"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send -e -u low -t 2000 "Master H Layout"
 
 # Master Node Increase / Deck Toggle
 super + equal
@@ -276,87 +276,83 @@ super + shift + equal
 
 # Monocle Layout
 super + ctrl + 4
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set monocle; notify-send "Monocle Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout set monocle; notify-send -e -u low -t 2000 "Monocle Layout"
 
 # Center Master Layout
 super + ctrl + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-layout; notify-send "Center Master Layout"
-
-# Center Master Layout
-super + ctrl + alt + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rcmaster-oneshot; notify-send "Reverse Center Master Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts cmaster,rcmaster; notify-send -e -u low -t 2000 "Center Master Layout"
 
 # Grid Layout
 super + ctrl + 5
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send "Grid Layout"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send -e -u low -t 2000 "Grid Layout"
 
 # Even Layout
 super + ctrl + 6
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-layout set even; notify-send "Even Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout set even; notify-send -e -u low -t 2000 "Even Layout"
 
 # Deck Layout
 super + ctrl + 7
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-deck-layout; notify-send "Deck Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-deck-layout; notify-send -e -u low -t 2000 "Deck Layout"
 
-# Columns Layout
+# Columns/Rows Layout
 super + ctrl + 8
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns; notify-send "Vertical Columns Layout"
-
-# Rows Layout
-super + ctrl + alt + 8
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-layout-ext remove; bsp-rows; notify-send "Horizontal Rows Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts col,row; notify-send -e -u low -t 2000 "Columns/Rows Layout"
 
 # TV Layout
 super + ctrl + 9
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-tv-layout; notify-send "TV Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-tv-layout; notify-send -e -u low -t 2000 "TV Layout"
 
 # Reverse TV Layout
 super + ctrl + alt + 9
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rtv-layout; notify-send "Reverese TV Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-rtv-layout; notify-send -e -u low -t 2000 "Reverese TV Layout"
 
 # Double Stack Layout
 super + ctrl + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-double-stack-layout; notify-send "Double Stack Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts dmaster,hdmaster; notify-send -e -u low -t 2000 "Double Stack Layout"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once tall; notify-send "(one-shot) Master-Stack Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once tall; notify-send -e -u low -t 2000 "Master Layout (OneShot)"
 
 # Reverse Master Stack Layout (OneShot)
 super + ctrl + alt + 1
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once rtall; notify-send "(one-shot) Master-Stack Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rtall; notify-send -e -u low -t 2000 "Reverese Master Layout (OneShot)"
 
 # Master Stack Layout (Horizontal) (OneShot)
 super + alt + 2
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once wide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once wide; notify-send -e -u low -t 2000 "Master H Layout (OneShot)"
 
 # Reverse Master Stack Layout (Horizontal) (OneShot)
 super + ctrl + alt + 2
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once rwide; notify-send "(one-shot) Master-Stack Layout (Horizontal)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rwide; notify-send -e -u low -t 2000 "Reverese Master H Layout (OneShot)"
 
 # Center Master Layout (OneShot)
 super + alt + 3
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; notify-send "Center Master Layout (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once cmaster; notify-send -e -u low -t 2000 "Center Master Layout (OneShot)"
+
+# Center Master (OneShot)
+super + ctrl + alt + 3
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rcmaster; notify-send -e -u low -t 2000 "Reverse Center Master Layout"
 
 # Tiled Layout
 super + alt + 4
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout set tiled; notify-send "Tile Layout"
+      bsp-remove-layout; bsp-layout set tiled; notify-send -e -u low -t 2000 "Tile Layout"
 
 # Grid Layout (OneShot)
 super + alt + 5
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once grid; notify-send "(one-shot) Grid Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once grid; notify-send -e -u low -t 2000 "Grid Layout (OneShot)"
 
 # Reverese Grid Layout (OneShot)
 super + ctrl + alt + 5
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once rgrid; notify-send "(one-shot) Grid Layout (Reverse)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rgrid; notify-send -e -u low -t 2000 "Reverese Grid (OneShot)"
 
 # Even Layout (OneShot)
 super + alt + 6
-      bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout once even; notify-send "(one-shot) Even Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once even; notify-send -e -u low -t 2000 "Even (OneShot)"
 
-# Resize All Windows Equally Manually (OneShot)
+# Resize All Windows Equally
 super + ctrl + F6
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bspc query -N -d | xargs -I % bspc node % -B; notify-send "Equal Size Windows"
+	bspc query -N -d | xargs -I % bspc node % -B; notify-send -e -u low -t 2000 "Equal Size Windows"
 
 # Resize All Windows of Parent
 super + ctrl + alt + 6
@@ -364,39 +360,51 @@ super + ctrl + alt + 6
 
 # Floating Layout
 super + ctrl + alt + 7
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout remove; bsp-cache-layout; bsp-float; notify-send "Floating Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
 
-# Vertical Columns Layout (OneShot)
+# Columns Layout (OneShot)
 super + alt + 8
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-vertical-layout-oneshot; notify-send "Vertical Columns Layout (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once col; notify-send -e -u low -t 2000 "Columns (OneShot)"
+
+# Rows Layout (OneShot)
+super + ctrl + alt + 8
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once row; notify-send -e -u low -t 2000 "Rows (OneShot)"
 
 # TV Layout (OneShot)
 super + alt + 9
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send "TV Layout (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send -e -u low -t 2000 "TV Layout (OneShot)"
 
-# Double Stack Layout (OneShot)
+# Double Stack (OneShot)
 super + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R 180; notify-send "Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once dmaster; notify-send -e -u low -t 2000 "Double Stack (OneShot)"
 
-# Reverse Double Stack Layout (OneShot)
+# Horizontal Double Stack (OneShot)
 super + ctrl + alt + 0
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-cache-layout; bsp-rcmaster-oneshot; bspc node @parent -R 180; notify-send "Reverse Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once hdmaster; notify-send -e -u low -t 2000 "HDouble Stack (OneShot)"
 
-# Remove Current Layout and Restore Original Layout
+# Remove Current Layout and Restore Original
 super + ctrl + BackSpace
-	bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; bsp-restore-cached-layout; notify-send "Layout Restored"
+	bsp-remove-layout; bsp-restore-cached-layout; notify-send -e -u low -t 2000 "Layout Restored"
 
 # Remove Current Layout
 super + BackSpace
-	bsp-remove-deck; bsp-cmaster-remove; bsp-layout remove; bsp-layout-ext remove; bsp-culomns-rows-layout-remove; notify-send "Layout Removed"
+	bsp-remove-layout; notify-send -e -u low -t 2000 "Layout Removed"
 
 # Reload Current Layout
 super + ctrl + grave
-	bsp-cmaster-remove; bsp-culomns-rows-layout-remove; bsp-layout reload; notify-send "Reloaded Layouts"
+	bsp-layout reload; notify-send -e -u low -t 2000 "Reloaded Layouts"
 
 # Floating Layout
-super + shift + f
-	bsp-float
+super + shift + alt + f
+	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
+
+# Simple Full Screen
+super + f
+	bspc node -t fullscreen; polybar-msg cmd toggle
+
+# Simple Full Screen Exit
+super + alt + f
+	bspc node -t tiled; polybar-msg cmd toggle
 
 # Layout Menu Selection
 super + l
@@ -408,11 +416,11 @@ super + alt + l
 
 # Keyboard layout change
 alt + Caps_Lock
-      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"; notify-send "$(bsp-xkb-layout)"
+      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"; notify-send -e -u low -t 2000 "$(bsp-xkb-layout)"
 
 # Reset Plank
 alt + shift + p
-      pkill plank && plank; notify-send 'Plank Reloaded'
+      pkill plank && plank; notify-send -e -u low -t 2000 'Plank Reloaded'
 
 # Keybind Help
 super + h
@@ -564,7 +572,7 @@ super + alt + grave
 
 # Multiple Workspaces View Revert
 super + alt + shift + grave
-    bsp-tag-view-revert; notify-send "Sticky Tag View Reverted"
+    bsp-tag-view-revert; notify-send -e -u low -t 2000 "Sticky Tag View Reverted"
 
 # Spawn Preselection Point Up
 super + alt + Up
@@ -648,7 +656,7 @@ alt + ctrl + Tab
 
 # Delete BSP Cache
 super + shift + ctrl + Escape
-    rm -f "$HOME/.cache/bsp"* 2>/dev/null; notify-send "BSP Cache Removed"
+    rm -f "$HOME/.cache/bsp"* 2>/dev/null; notify-send -e -u critical -t 3000 "BSP Cache Removed"
 
 # Toggle Gaps On/Off
 super + ctrl + shift + equal
@@ -696,7 +704,7 @@ super + shift + alt + w
 
 # Color Picker
 super + y
-    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
+    sh -c 'color=$(xcolor); printf "%s" "$color" | xclip -selection clipboard; notify-send -t 0 "Color" "$color" -h string:bgcolor:"$color" -h string:fgcolor:"#fff"'
 
 # Circle Zoom (sxcs)
 super + u
@@ -770,6 +778,10 @@ super + ctrl + shift + n
 super + ctrl + shift + alt + n
     dunstctl history-clear
 
+# Toggle Dunst (Notification) Sounds
+super + alt + n
+    dunst-sound-toggle
+
 # Swallow Focused Windows Terminal Parent
 super + slash
     xdo id | pidswallow -gt
@@ -780,15 +792,15 @@ super + alt + slash
 
 # Manual Layout Order Save (Per Workspace)
 super + o
-    bsp-manual-order-save; notify-send "Layout Order Saved"
+    bsp-manual-order-save; notify-send -e -u low -t 2000 "Layout Order Saved"
 
 # Manual Layout Order load (Per Workspace)
 super + shift + o
-    bsp-manual-order-load; notify-send "Layout Order Restored"
+    bsp-manual-order-load; notify-send -e -u low -t 2000 "Layout Order Restored"
 
 # Manual Layout Order Remove (Per Workspace)
 super + alt + shift + o
-    bsp-manual-order-remove; notify-send "Layout Order Removed"
+    bsp-manual-order-remove; notify-send -e -u low -t 2000 "Layout Order Removed"
 
 # Live Wallpaper
 super + comma ; {space}
@@ -832,19 +844,19 @@ super + shift + ctrl + alt + comma
 
 # BSPWM Manual Config Save
 super + alt + r
-    bsp-conf; bsp-conf-color; notify-send "Config Saved"
+    bsp-conf; bsp-conf-color; notify-send -e -u low -t 2000 "Config Saved"
 
 # BSPWM Manual Config Load
 super + ctrl + shift + r
-    $HOME/.bsp_conf; $HOME/.bsp_conf_color; notify-send "Config Loaded"
+    $HOME/.bsp_conf; $HOME/.bsp_conf_color; notify-send -e -u low -t 2000 "Config Loaded"
 
 # BSPWM Window Rule Apply
 super + shift + t
-    bsp-window-rules-add; notify-send "Window Rules Applied"
+    bsp-window-rules-add; notify-send -e -u low -t 2000 "Window Rules Applied"
 
 # BSPWM Window Rule Remove
 super + alt + shift + t
-    bsp-window-rules-remove; notify-send "Window Rules Removed"
+    bsp-window-rules-remove; notify-send -e -u low -t 2000 "Window Rules Removed"
 
 # Icon Bar Start
 alt + shift + i
@@ -860,7 +872,7 @@ alt + shift + o
 
 # Group Delete Cachce
 super + ctrl + c
-    bspc query -N -n focused >> ~/.cache/bsp-delete; notify-send "Window Added to Group Delete Cache"
+    bspc query -N -n focused >> ~/.cache/bsp-delete; notify-send -e -u low -t 2000 "Window Added to Group Delete Cache"
 
 # Group Delete
 super + ctrl + shift + c
@@ -868,11 +880,11 @@ super + ctrl + shift + c
 
 # Group Delete Reset
 super + ctrl + shift + alt + c
-    rm -f "$HOME/.cache/bsp-delete"; notify-send "Group Delete Cache Removed"
+    rm -f "$HOME/.cache/bsp-delete"; notify-send -e -u low -t 2000 "Group Delete Cache Removed"
 
 # Group Delete Cachce (Mouse)
 super + ctrl + button1
-    bspc query -N -n focused >> ~/.cache/bsp-delete; notify-send "Window Added to Group Delete Cache"
+    bspc query -N -n focused >> ~/.cache/bsp-delete; notify-send -e -u low -t 2000 "Window Added to Group Delete Cache"
 
 # Group Delete (Mouse)
 super + ctrl + shift + button1

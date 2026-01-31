@@ -29,6 +29,7 @@
 
     (pkgs.writeShellScriptBin "ttetris" ''${config.my.default.terminal} --name tetris --class tetris sh -c 'tetris' '')
     (pkgs.writeShellScriptBin "tcbonsai" ''${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li' '')
+    (pkgs.writeShellScriptBin "tpipes-rs" ''${config.my.default.terminal} --name pipes-rs --class pipes-rs sh -c 'pipes-rs' '')
 
   ];
 

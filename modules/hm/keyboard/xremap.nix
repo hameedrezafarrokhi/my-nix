@@ -3,11 +3,11 @@
 let
 
   girm-full = pkgs.writeShellScriptBin "grim-full" ''
-    grim ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
+    grim ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send -t 7000 "Screenshot saved" "Saved to ~/Pictures"
   '';
 
   grim-slurp = pkgs.writeShellScriptBin "grim-slurp" ''
-    grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send "Screenshot saved" "Saved to ~/Pictures"
+    grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send -t 7000 "Screenshot saved" "Saved to ~/Pictures"
   '';
 
   xlock = pkgs.writeShellScriptBin "xlock" ''
@@ -18,7 +18,7 @@ let
     pkill .xscreensaver-w
     pkill xscreensaver-sy
     pkill .xscreensaver-s
-    notify-send "XScreenSaver Disabled"
+    notify-send -e -u low -t 2000 "XScreenSaver Disabled"
   '';
 
     # Usefull Commands to debug sleep/lock
@@ -42,7 +42,7 @@ let
     xset s 0 0
     xset -dpms
     xset dpms 0 0 0
-    notify-send "Idle Inhibited "
+    notify-send -e -u critical -t 3000 "Idle Inhibited "
   '';
 
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
@@ -61,7 +61,7 @@ let
     #xset dpms 2100 2400 2700
     #xset dpms 6000 6000 6000
     xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 ))
-    notify-send "Lock Activated "
+    notify-send -e -u critical -t 3000 "Lock Activated "
   '';
 
   xremap-x-lock-sleep = pkgs.writeShellScriptBin "xremap-x-lock-sleep" ''
@@ -88,10 +88,10 @@ let
   xremap-picom-toggle = pkgs.writeShellScriptBin "xremap-picom-toggle" ''
     if systemctl --user is-active --quiet picom.service; then
         systemctl --user stop picom.service
-        notify-send "Picom Stopped"
+        notify-send -e -u low -t 2000 "Picom Stopped"
     else
         systemctl --user restart picom.service
-        notify-send "Picom Activated"
+        notify-send -e -u low -t 2000 "Picom Activated"
     fi
   '';
 
@@ -101,7 +101,7 @@ let
 
       function send_notification() {
       	volume=$(pamixer --get-volume)
-      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 2000
+      	dunstify -a "changevolume" -r "9993" -u low -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
       }
 
       case $1 in
@@ -119,7 +119,7 @@ let
       mute)
       	pamixer -t
       	if $(pamixer --get-mute); then
-      		dunstify -i volume-mute -a "changevolume" -t 2000 -r 9993 -u low "Muted"
+      		dunstify -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
       	else
       		send_notification up
       	fi
@@ -147,26 +147,26 @@ let
         # Switch to Power Saver mode
         powerprofilesctl set power-saver
         echo "Switched to Power Saver mode."
-        notify-send "Power-Saver Mode"
+        notify-send -e -u critical -t 3000 "Power-Saver Mode"
     elif [ "$CURRENT_PROFILE" = "power-saver" ]; then
         # Switch to Balanced mode
         powerprofilesctl set balanced
         echo "Switched to Balanced mode."
-        notify-send "Balanced Mode"
+        notify-send -e -u critical -t 3000 "Balanced Mode"
     else
         # Switch to Performance mode
         powerprofilesctl set performance
         echo "Switched to Performance mode."
-        notify-send "Performance Mode"
+        notify-send -e -u critical -t 3000 "Performance Mode"
     fi
   '';
 
   xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
-    notify-send "⏲️ "$(date "+%I:%M:%S" )" "$(date "+%p" ) "📅 "$(date "+%a")" "$(date "+%d-%b-%y")
+    notify-send -t 0 "⏲️ "$(date "+%I:%M:%S" )" "$(date "+%p" ) "📅 "$(date "+%a")" "$(date "+%d-%b-%y")
   '';
 
   xremap-motd = pkgs.writeShellScriptBin "xremap-motd" ''
-    notify-send "$(bullshit)"
+    notify-send -u low -t 0 "$(bullshit)"
   '';
 
   xremap-help = pkgs.writeShellScriptBin "xremap-help" ''
@@ -174,17 +174,17 @@ let
   '';
 
   xremap-weather = pkgs.writeShellScriptBin "xremap-weather" ''
-    notify-send "$(curl -s "wttr.in/Tehran?format=%c+%C+%t+%f+%h+%w+%m+%l+%S+%s")"
+    notify-send -t 0 "$(curl -s "wttr.in/Tehran?format=%c+%C+%t+%f+%h+%w+%m+%l+%S+%s")"
   '';
 
   xremap-xsession-save = pkgs.writeShellScriptBin "xremap-xsession-save" ''
     echo "y" | xsession-manager -s temp &&
-    notify-send "Session Saved as Temp"
+    notify-send -e -u critical -t 3000 "Session Saved as Temp"
   '';
 
   xremap-xsession-load = pkgs.writeShellScriptBin "xremap-xsession-load" ''
     echo "y" | xsession-manager -pr temp &&
-    notify-send "Temp Session Restored"
+    notify-send -e -u critical -t 3000 "Temp Session Restored"
   '';
 
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''

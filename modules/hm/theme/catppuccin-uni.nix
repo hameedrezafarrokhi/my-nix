@@ -555,12 +555,14 @@
       CRIT="$HOME/.local/share/desktop-sounds/notif-critical"
       VOL="$HOME/.local/share/desktop-sounds/focus"
 
+      [ -f $HOME/.cache/dunst-mute ] && exit 0
+
       if [[ "$DUNST_URGENCY" = "CRITICAL" ]]; then
-        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$CRIT"
+        pw-play "$CRIT"
       elif [[ "$DUNST_BODY" =~ "Volume" ]]; then
-        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$VOL"
+        pw-play "$VOL"
       elif  [[ "$DUNST_BODY" != "^Volume" ]] && [[ "$DUNST_BODY" != "^Brightness" ]]; then
-        mpv --no-loop --keep-open=no --no-terminal --scripts=no "$NORMAL"
+        pw-play "$NORMAL"
       fi
     '';
 
@@ -3489,6 +3491,7 @@
         [urgency_low]
         background = "${Base}"
         foreground = "${Text}"
+        frame_color = "${Green}"
 
         [urgency_normal]
         background = "${Base}"
