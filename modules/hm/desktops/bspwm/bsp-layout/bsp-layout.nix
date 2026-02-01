@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation {
   pname = "bsp-layout";
-  version = "0.11.1";
+  version = "0.11.4";
 
   src = ./.;
 

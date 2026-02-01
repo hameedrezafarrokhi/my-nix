@@ -1,56 +1,69 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/common.sh"
-source "$ROOT/utils/layout.sh"
-source "$ROOT/utils/config.sh"
+# import the lib.
+source "$ROOT/utils/common.sh";
+source "$ROOT/utils/layout.sh";
+source "$ROOT/utils/config.sh";
 
-master_size=$TALL_RATIO
-node_filter="!hidden"
+master_size=$TALL_RATIO;
+node_filter=$FLAGS;
 
+# List[args] -> ()
 execute_layout() {
-while [[ ! "$#" == 0 ]]; do
+  while [[ ! "$#" == 0 ]]; do
     case "$1" in
-        --master-size) master_size="$2"; shift ;;
-        *) echo "$x" ;;
-    esac
-    shift
-done
+      --master-size) master_size="$2"; shift; ;;
+      *) echo "$x" ;;
+    esac;
+    shift;
+  done;
 
-local nodes=$(bspc query -N '@/1' -n .descendant_of.window.$node_filter)
-local win_count=$(echo "$nodes" | wc -l)
-local desired=2
+  local mast_count=$(bspc query -N '@/1' -n .descendant_of.window.$node_filter | wc -l);   #WARNING ADDED NEW SECTION
+  if [ $mast_count -eq 0 ]; then
+    bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | head -n 1) -n '@/1';
+  fi                                                                                       #END OF NEW SECTION
 
-if [ $win_count -lt $desired ]; then
+  # ensure the count of the master child is 2, or make it so
+  local nodes=$(bspc query -N '@/1' -n .descendant_of.window.$node_filter)
+  local win_count=$(echo "$nodes" | wc -l)
+  local desired=2
+
+  if [ $win_count -lt $desired ]; then
     for wid in $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n $((desired - win_count))); do
-        bspc node "$wid" -n '@/1'
+      bspc node "$wid" -n '@/1'
     done
-elif [ $win_count -gt $desired ]; then
+  elif [ $win_count -gt $desired ]; then
     local excess=$(echo "$nodes" | tail -n +$((desired + 1)))
     for wid in $excess; do
-        bspc node "$wid" -n '@/2'
+      bspc node "$wid" -n '@/2'
     done
-fi
+  fi
 
-rotate '@/' vertical 90
-rotate '@/2' horizontal 90
-#rotate '@/1' vertical 90
+  rotate '@/' vertical 90
+  rotate '@/2' horizontal 90
+  #rotate '@/1' vertical 90
 
-for parent in $(bspc query -N '@/2' -n .descendant_of.!window.$node_filter | grep -v $(bspc query -N '@/2' -n)); do
-    rotate $parent horizontal 90
-done
+  local stack_node=$(bspc query -N '@/2' -n);
+  for parent in $(bspc query -N '@/2' -n .descendant_of.!window.$node_filter | grep -v $stack_node); do
+    rotate $parent horizontal 90;
+  done
+  local master_stack_node=$(bspc query -N '@/1' -n);
+  for parent in $(bspc query -N '@/1' -n .descendant_of.!window.$node_filter | grep -v $stack_node); do
+    rotate $parent horizontal 90;
+  done
 
-auto_balance '@/2'
-auto_balance '@/1'
+  auto_balance '@/2';
+  auto_balance '@/1';
 
-local mon_width=$(jget width "$(bspc query -T -m)")
-local want=$(( master_size * mon_width ))
-local have=$(jget width "$(bspc query -T -n '@/1')")
+  local mon_width=$(jget width "$(bspc query -T -m)");
+  local want=$(echo "$master_size * $mon_width" | bc | sed 's/\..*//');
+  local have=$(jget width "$(bspc query -T -n $(bspc query -N '@/1' -n .descendant_of.window.$node_filter | head -n 1))");  #WARNING CHANGED
 
-bspc node '@/1' --resize right $((want - have)) 0
+  bspc node $(bspc query -N '@/1' -n .descendant_of.window.$node_filter | head -n 1) --resize right $((want - have)) 0;  #WARNING CHANGED
 }
 
-cmd=$1
-shift
+cmd=$1; shift;
 case "$cmd" in
-    run) execute_layout "$@" ;;
-esac
+  run) execute_layout "$@" ;;
+  *) ;;
+esac;

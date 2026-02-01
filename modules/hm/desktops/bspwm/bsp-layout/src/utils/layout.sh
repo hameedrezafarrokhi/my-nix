@@ -1,5 +1,8 @@
 # import the lib.
 source "$ROOT/utils/common.sh";
+source "$ROOT/utils/config.sh";
+
+node_filter=$FLAGS;
 
 # (node, want, angle) -> ()
 rotate() {
@@ -18,5 +21,5 @@ rotate() {
 # node -> ()
 auto_balance() {
   # Balance the tree rooted at some node automatically.
-  bspc node "$1" -B;
+  bspc node "$1" -B -n .descendant_of.window.$node_filter;    #WARNING CHANGED
 }

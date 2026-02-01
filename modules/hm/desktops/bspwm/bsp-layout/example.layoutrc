@@ -17,5 +17,8 @@ DCENTER_RATIO=0.5;
 # HDCMaster layout config
 HDCENTER_RATIO=0.5;
 
+# Windows To Ignore
+FLAGS="!hidden.!floating";
+
 # Use desktop names(1) or ids(0)
 USE_NAMES=1;

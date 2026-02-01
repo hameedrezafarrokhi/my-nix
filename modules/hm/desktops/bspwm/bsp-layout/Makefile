@@ -10,7 +10,7 @@ SRC_PATH = ${DESTDIR}${SRCPREFIX}/bsp-layout
 
 MANPAGE = ${MAN_PATH}/bsp-layout.1
 
-VERSION = 0.11.1
+VERSION = 0.11.4
 
 uninstall:
 	rm -f ${BINARY_PATH}/bsp-layout ${MAN_PATH}/bsp-layout.1

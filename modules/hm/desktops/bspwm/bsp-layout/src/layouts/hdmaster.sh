@@ -4,7 +4,8 @@ source "$ROOT/utils/common.sh";
 source "$ROOT/utils/layout.sh";
 source "$ROOT/utils/config.sh";
 
-node_filter="!hidden.!floating";
+node_filter=$FLAGS;
+
 master_ratio=$HDCENTER_RATIO;
 #master_ratio=0.5
 master_size=$(awk "BEGIN {print $master_ratio * 100}")
@@ -46,6 +47,18 @@ equalize() {
 }
 
 calculate() {
+  local mast_count=$(bspc query -N '@/1' -n .descendant_of.window.$node_filter | wc -l);   #WARNING ADDED NEW SECTION
+  local first_stack_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
+  local total_win_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l);
+  if [ $total_win_count -gt 2 ]; then
+    if [ $mast_count -eq 0 ]; then
+      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | head -n 1) -n '@/1';
+    fi
+    if [ $first_stack_count -eq 0 ]; then
+      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | tail -n 1) -n '@/1/2';
+    fi
+  fi                                                                                   #END OF NEW SECTION
+
   [ -z $(bspc query -N -n @/1/1) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
   if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
     for node in $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n +2); do

@@ -369,12 +369,17 @@ in
     ];
 
     xdg.configFile."bsp-layout/layoutrc".text = ''
+      # Layout Ratios
       TALL_RATIO=0.6;
       WIDE_RATIO=0.6;
       CENTER_RATIO=0.6;
       RCENTER_RATIO=0.6;
       DCENTER_RATIO=0.5;
       HDCENTER_RATIO=0.5;
+
+      # Windows To Ignore
+      FLAGS="!hidden.!floating";
+
       # Use desktop names(1) or ids(0)
       USE_NAMES=0;
     '';

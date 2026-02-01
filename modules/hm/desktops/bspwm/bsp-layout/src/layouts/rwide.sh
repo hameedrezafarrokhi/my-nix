@@ -6,8 +6,7 @@ source "$ROOT/utils/layout.sh";
 source "$ROOT/utils/config.sh";
 
 master_size=$WIDE_RATIO;
-
-node_filter="!hidden";
+node_filter=$FLAGS;
 
 # List[args] -> ()
 execute_layout() {
@@ -18,6 +17,14 @@ execute_layout() {
     esac;
     shift;
   done;
+
+  local mast_count=$(bspc query -N '@/2' -n .descendant_of.window.$node_filter | wc -l);   #WARNING ADDED NEW SECTION
+  local total_win_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l);
+  if [ $total_win_count -gt 1 ]; then
+    if [ $mast_count -eq 0 ]; then
+      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | head -n 1) -n '@/2';
+    fi                                                                                       #END OF NEW SECTION
+  fi
 
   # ensure the count of the master child is 1, or make it so
   local nodes=$(bspc query -N '@/2' -n .descendant_of.window.$node_filter);
@@ -51,11 +58,10 @@ execute_layout() {
   auto_balance '@/1';
 
   local mon_height=$(jget height "$(bspc query -T -m)");
-
   local want=$(echo "$master_size * $mon_height" | bc | sed 's/\..*//');
-  local have=$(jget height "$(bspc query -T -n '@/2')");
+  local have=$(jget height "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1))");  #WARNING CHANGED
 
-  bspc node '@/2' --resize top 0 $((have - want));
+  bspc node $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1) --resize top 0 $((have - want));  #WARNING CHANGED
 }
 
 cmd=$1; shift;

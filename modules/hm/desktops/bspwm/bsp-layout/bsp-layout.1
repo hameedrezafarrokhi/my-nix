@@ -191,8 +191,8 @@ _______________
 
 
 
-.SS tall
-A master--double-stack layout with nodes stacked vertically to the left and the right of master
+.SS cmaster
+A center-double-stack layout with nodes stacked vertically to the left and the right of master
 .nf
 _______________
 |__|       |__|
@@ -203,6 +203,76 @@ _______________
 .TP
 .B --master-size <percentage>
 The percentage width taken up by the master window in the layout
+
+
+
+.SS rcmaster
+A horizontal center-double-stack layout with nodes stacked vertically to the top and the bottom of master
+.nf
+_______________
+|____|____|___|
+|             |
+|_____________|
+|____|____|___|
+.fi
+.TP
+.B --master-size <percentage>
+The percentage width taken up by the master window in the layout
+
+
+
+.SS dmaster
+A double-stack layout with two stacks vertically to the right of master
+.nf
+_______________
+|       |__|__|
+|       |__|__|
+|       |__|__|
+|_______|__|__|
+.fi
+.TP
+.B --master-size <percentage>
+The percentage width taken up by the master window in the layout
+
+
+
+.SS hdmaster
+A double-stack layout with two stacks vertically to the bottom of master
+.nf
+_______________
+|             |
+|_____________|
+|____|____|___|
+|____|____|___|
+.fi
+.TP
+.B --master-size <percentage>
+The percentage width taken up by the master window in the layout
+
+
+
+.SS row
+horizontal rows layout
+.nf
+_______________
+|_____________|
+|_____________|
+|_____________|
+|_____________|
+|_____________|
+.fi
+
+
+.SS col
+vertical columns layout
+.nf
+_________________
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|___|___|___|___|
+.fi
+
 
 
 

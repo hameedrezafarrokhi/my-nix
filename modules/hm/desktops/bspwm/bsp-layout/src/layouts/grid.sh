@@ -2,6 +2,9 @@
 
 # import the lib.
 source "$ROOT/utils/layout.sh";
+source "$ROOT/utils/config.sh";
+
+node_filter=$FLAGS;
 
 # () -> ()
 setup_layout() {
@@ -13,7 +16,7 @@ setup_layout() {
 execute_layout() {
   local target='first';
 
-  for node in $(bspc query -N -n .local.window | sort); do
+  for node in $(bspc query -N -n .local.window.$node_filter | sort); do
     bspc node $node -n "$(bspc query -N -n @/${target})";
     [[ "$target" == 'first' ]] && target='second' || target='first';
   done;
