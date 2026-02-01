@@ -164,13 +164,17 @@ start_listener() {
     desktop_id=$(echo "$line" | awk "{print \$$arg_index}");
     desktop_name=$(get_desktop_name_from_id "$desktop_id");
 
+    local floating_node=$(echo "$line" | awk '{print $4}')
+    [ "$event" != "node_add" ] && node_is_floating "$floating_node" && continue #WARNING ADDED LINE
+
+   #notify-send "${line[@]}"
+
     if [[ "$desktop_name" = "$selected_desktop" ]]; then
       __initialize_layout;
 
       if [[ "$event" == "node_transfer" ]]; then
         local source=$(echo "$line" | awk '{print $3}');
         local dest=$(echo "$line" | awk '{print $6}');
-
         [[ "$source" != "$dest" ]] && __recalculate_layout;
       else
         __recalculate_layout;
