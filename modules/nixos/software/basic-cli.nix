@@ -51,6 +51,8 @@
     eza
     lsd
 
+    figlet
+
   ] ) config.my.software.basic-cli.exclude)
 
    ++
