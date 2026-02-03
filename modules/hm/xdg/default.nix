@@ -155,15 +155,15 @@ in
           pkgs.xdg-desktop-portal                  # General
           pkgs.xdg-desktop-portal-gtk              # For WMs/Gnome
           pkgs.kdePackages.xdg-desktop-portal-kde  # For KDE Plasma
-          pkgs.xdg-desktop-portal-gnome            # For Gnome
+       #  pkgs.xdg-desktop-portal-gnome            # For Gnome
           pkgs.xdg-desktop-portal-hyprland         # For Hyprland
-          pkgs.xdg-desktop-portal-wlr              # For Wayland WMs like Sway
-          pkgs.xdg-desktop-portal-xapp             # For Cinnamon Mate XFCE
-          pkgs.lxqt.xdg-desktop-portal-lxqt        # For LXQT
-          pkgs.xdg-desktop-portal-cosmic           # For Cosmic
+       #  pkgs.xdg-desktop-portal-wlr              # For Wayland WMs like Sway
+       #  pkgs.xdg-desktop-portal-xapp             # For Cinnamon Mate XFCE
+       #  pkgs.lxqt.xdg-desktop-portal-lxqt        # For LXQT
+       #  pkgs.xdg-desktop-portal-cosmic           # For Cosmic
           pkgs.xdg-desktop-portal-shana            # For General Purpose (Portal of Portals / needs config)
-          pkgs.xdg-desktop-portal-termfilechooser  # For Terminal Filepicker
-          pkgs.xdg-desktop-portal-luminous
+       #  pkgs.xdg-desktop-portal-termfilechooser  # For Terminal Filepicker
+       #  pkgs.xdg-desktop-portal-luminous
          #pantheon.xdg-desktop-portal-pantheon     # For Pantheon
           pkgs.gnome-keyring
         ];

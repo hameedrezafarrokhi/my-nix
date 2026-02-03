@@ -17,6 +17,8 @@
    #floorp                        ##Firefox spin
    #qutebrowser
 
+    browsh
+
    #thunderbird
    #evolution                     ##Email Client
     freetube                      ##YouTube Client
