@@ -12,6 +12,7 @@
    #komorebi
     mpvpaper
     paperview
+    xwinwrap
 
   ] ) config.my.software.wallpaper.exclude)
 
