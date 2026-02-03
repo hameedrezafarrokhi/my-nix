@@ -77,6 +77,7 @@ in
     "...." = "cd ../../..";
     "....." = "cd ../../../..";
     bd = "cd $OLDPWD";
+    cd-r = "cd $(pwd)";
 
     ls-a = "ls -aFh --color=always";
     ls-x = "ls -lXBh";
