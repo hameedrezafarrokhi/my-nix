@@ -64,7 +64,7 @@
    #pkgs.mullvad-vpn                   ##Mullvad (not free)
    #pkgs.geph.gui                      ##Geph vpn gui (not working)
    #pkgs.geph.cli                      ##Geph vpn cli (not working)
-   #pkgs.carburetor                    ##Another vpn (not working)
+    pkgs.carburetor                    ##Another vpn (not working)
 
   ];
 
