@@ -13,6 +13,9 @@
     mpvpaper
     paperview
     xwinwrap
+    waypaper
+    wallutils
+    xwallpaper
 
   ] ) config.my.software.wallpaper.exclude)
 
