@@ -11,7 +11,6 @@ master_ratio=$RCENTER_RATIO;
 master_size=$(awk "BEGIN {print $master_ratio * 100}")
 
 
-
 equalize() {
   window_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l)
   rotate '@/' horizontal 90
@@ -59,10 +58,16 @@ calculate() {
   fi
 
   [ -z $(bspc query -N -n @/1/2) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
-  if (( $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
+  if (( $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l) > 2 )); then
     for node in $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | tail -n +2); do
       bspc node $node -n @/1/1
     done
+  fi
+  if [ $total_win_count -gt 3 ]; then
+    local new_mast_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 2 )); then
+      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/2
+    fi
   fi
 
   local A='@/2'

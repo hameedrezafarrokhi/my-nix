@@ -22,7 +22,7 @@ in
       openbox-autostart = {
         target = "openbox/autostart";
         text = ''
-          fehw &
+          #fehw &
 
           if hash polybar >/dev/null 2>&1; then
           	  pkill polybar

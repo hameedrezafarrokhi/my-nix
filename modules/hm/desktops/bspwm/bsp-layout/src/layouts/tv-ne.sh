@@ -115,6 +115,8 @@ execute_layout() {
   equalize
  #equalize
 
+  rotate '@/1' vertical 90
+
 }
 
 cmd=$1; shift;

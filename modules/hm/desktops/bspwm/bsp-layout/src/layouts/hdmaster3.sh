@@ -11,6 +11,7 @@ master_ratio=$HDCENTER_RATIO;
 master_size=$(awk "BEGIN {print $master_ratio * 100}")
 
 
+
 equalize() {
   window_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l)
   rotate '@/' horizontal 90
@@ -26,8 +27,15 @@ equalize() {
   rotate $parent vertical 90
   done
 
+  rotate '@/1/1' vertical 90
+  local left_stack_node=$(bspc query -N '@/1/1' -n)
+  for parent in $(bspc query -N '@/1/1' -n .descendant_of.$node_filter | grep -v $left_stack_node); do
+  rotate $parent vertical 90
+  done
+
   auto_balance '@/2'
   auto_balance '@/1/2'
+  auto_balance '@/1/1'
 
   local mon_height=$(jget height "$(bspc query -T -m)")
   local want_master=$(( master_size * mon_height / 100 ))
@@ -67,10 +75,22 @@ calculate() {
   fi                                                                                   #END OF NEW SECTION
 
   [ -z $(bspc query -N -n @/1/1) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
-  if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
+  if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 3 )); then
     for node in $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n +2); do
       bspc node $node -n @/1/2
     done
+  fi
+  if [ $total_win_count -gt 3 ]; then
+    local new_mast_count=$(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 2 )); then
+      bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/1
+    fi
+  fi
+  if [ $total_win_count -gt 4 ]; then
+    local new_mast_count=$(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 3 )); then
+      bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/1
+    fi
   fi
 
   local A='@/2'

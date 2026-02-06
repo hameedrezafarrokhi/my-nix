@@ -4,4 +4,4 @@
 #dunst -config ~/.config/awesome/dunst/dunstrc &
 #picom --config ~/.config/awesome/picom/picom.conf --animations -b &
 #feh --bg-fill ~/.config/awesome/wallpaper/astronaut-macchiato.png &
-fehw
+#fehw

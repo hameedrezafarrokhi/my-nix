@@ -111,7 +111,7 @@ super + {backslash}
 	bspc desktop --focus 'next.!occupied'
 
 # Switch Previous Workspace
-super + {minus}
+super + minus
 	bspc desktop -f last
 
 # Move Focused Window to Workspace 1-10
@@ -266,13 +266,17 @@ super + ctrl + 1
 super + ctrl + 2
       bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send -e -u low -t 2000 "Master H Layout"
 
-# Master Node Increase / Deck Toggle
+# Master Node Increase / Deck Cycle
 super + equal
-      bsp-master-node-increase; bsp-deck-cycle
+      bsp-master-node-increase; bsp-layout deck-cycle
 
 # Master Node Decrease
 super + shift + equal
       bsp-master-node-decrease
+
+# Master Node Position Cycle
+super + shift + alt + equal
+      bsp-move-master
 
 # Monocle Layout
 super + ctrl + 4
@@ -292,23 +296,19 @@ super + ctrl + 6
 
 # Deck Layout
 super + ctrl + 7
-	bsp-remove-layout; bsp-cache-layout; bsp-deck-layout; notify-send -e -u low -t 2000 "Deck Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout set deck; notify-send -e -u low -t 2000 "Deck Layout"
 
 # Columns/Rows Layout
 super + ctrl + 8
 	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts col,row; notify-send -e -u low -t 2000 "Columns/Rows Layout"
 
-# TV Layout
-super + ctrl + 9
-	bsp-remove-layout; bsp-cache-layout; bsp-tv-layout; notify-send -e -u low -t 2000 "TV Layout"
-
-# Reverse TV Layout
-super + ctrl + alt + 9
-	bsp-remove-layout; bsp-cache-layout; bsp-rtv-layout; notify-send -e -u low -t 2000 "Reverese TV Layout"
-
 # Double Stack Layout
+super + ctrl + 9
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts dmaster,rdmaster; notify-send -e -u low -t 2000 "Double Stack Layout"
+
+# H Double Stack Layout
 super + ctrl + 0
-	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts dmaster,hdmaster; notify-send -e -u low -t 2000 "Double Stack Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts hdmaster,rhdmaster; notify-send -e -u low -t 2000 "H Double Stack Layout"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
@@ -362,6 +362,10 @@ super + ctrl + alt + 6
 super + ctrl + alt + 7
 	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
 
+# Deck Layout (OneShot)
+super + alt + 7
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once deck; notify-send -e -u low -t 2000 "Deck (OneShot)"
+
 # Columns Layout (OneShot)
 super + alt + 8
 	bsp-remove-layout; bsp-cache-layout; bsp-layout once col; notify-send -e -u low -t 2000 "Columns (OneShot)"
@@ -370,17 +374,21 @@ super + alt + 8
 super + ctrl + alt + 8
 	bsp-remove-layout; bsp-cache-layout; bsp-layout once row; notify-send -e -u low -t 2000 "Rows (OneShot)"
 
-# TV Layout (OneShot)
+# Double Stack Layout (OneShot)
 super + alt + 9
-	bsp-remove-layout; bsp-cache-layout; bsp-cmaster-oneshot; bspc node @parent -R -90; notify-send -e -u low -t 2000 "TV Layout (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once dmaster; notify-send -e -u low -t 2000 "Double Stack (OneShot)"
+
+# Reverese Double Stack Layout (OneShot)
+super + ctrl + alt + 9
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rdmaster; notify-send -e -u low -t 2000 "Reverse Double Stack (OneShot)"
 
 # Double Stack (OneShot)
 super + alt + 0
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once dmaster; notify-send -e -u low -t 2000 "Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once hdmaster; notify-send -e -u low -t 2000 "H Double Stack (OneShot)"
 
 # Horizontal Double Stack (OneShot)
 super + ctrl + alt + 0
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once hdmaster; notify-send -e -u low -t 2000 "HDouble Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rhdmaster; notify-send -e -u low -t 2000 "Reverese H Double Stack (OneShot)"
 
 # Remove Current Layout and Restore Original
 super + ctrl + BackSpace
@@ -413,6 +421,10 @@ super + l
 # Layout Menu Selection (OneShot)
 super + alt + l
       bsp-layout-oneshot-rofi
+
+# Get Current Layout
+super + shift + alt + l
+      notify-send -e -u low -t 2000 "$(bsp-layout get)"
 
 # Keyboard layout change
 alt + Caps_Lock

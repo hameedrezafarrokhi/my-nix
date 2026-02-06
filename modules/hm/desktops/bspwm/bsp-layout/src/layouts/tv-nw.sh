@@ -6,40 +6,41 @@ source "$ROOT/utils/config.sh";
 
 node_filter=$FLAGS;
 
-master_ratio=$RCENTER_RATIO;
-#master_ratio=0.6;
+master_ratio=$HDCENTER_RATIO;
+#master_ratio=0.5
 master_size=$(awk "BEGIN {print $master_ratio * 100}")
 
 
 
 equalize() {
   window_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l)
-  rotate '@/' horizontal 90
-  rotate '@/2' vertical 90
+
+  rotate '@/' vertical 90
+  rotate '@/2' horizontal 90
   local right_stack_node=$(bspc query -N '@/2' -n)
   for parent in $(bspc query -N '@/2' -n .descendant_of.$node_filter | grep -v $right_stack_node); do
-  rotate $parent vertical 90
+    rotate $parent horizontal 90
   done
 
-  rotate '@/1/1' vertical 90
+  rotate '@/1/1' horizontal 90
   local left_stack_node=$(bspc query -N '@/1/1' -n)
   for parent in $(bspc query -N '@/1/1' -n .descendant_of.$node_filter | grep -v $left_stack_node); do
-  rotate $parent vertical 90
+    rotate $parent horizontal 90
   done
 
   auto_balance '@/2'
   auto_balance '@/1/1'
 
-  local mon_height=$(jget height "$(bspc query -T -m)")
+  local mon_width=$(jget width "$(bspc query -T -m)")
   local total_stack_size=$(( 100 - master_size ))
   local stack_size=$(( total_stack_size / 2 ))
-  local want=$(( stack_size * mon_height / 100 ))
-  local have_right=$(jget height "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1))")
-  local have_left=$(jget height "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1))")
+  local want=$(( stack_size * mon_width / 100 ))
+  local have_right=$(jget width "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1))")
+  local have_left=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1))")
 
   if (( window_count > 2 )); then
-      bspc node $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1) -z top 0 $((have_right - want));
-      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter| head -n 1) -z bottom 0 $((want - have_left));
+      bspc node $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1) -z left $((have_right - want)) 0;
+      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter| head -n 1) -z right $((want - have_left)) 0;
   else
      auto_balance '@/'
   fi
@@ -96,11 +97,13 @@ execute_layout() {
     shift;
   done;
   calculate
-  rotate '@/' horizontal 90
-  rotate '@/1' horizontal -90
-  rotate '@/1/1' vertical 90
+  rotate '@/' vertical 90
+  rotate '@/1' vertical -90
+  rotate '@/1/1' horizontal 90
   calculate
   equalize
+
+  rotate '@/1' horizontal -90
 }
 
 cmd=$1; shift;

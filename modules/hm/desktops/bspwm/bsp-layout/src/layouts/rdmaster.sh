@@ -15,8 +15,9 @@ equalize() {
   window_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l)
   rotate '@/' vertical 90
   rotate '@/2' horizontal 90
-  local right_stack_node=$(bspc query -N '@/2' -n)
-  for parent in $(bspc query -N '@/2' -n .descendant_of.$node_filter | grep -v $right_stack_node); do
+  rotate '@/1/1' horizontal 90
+  local right_stack_node=$(bspc query -N '@/1/1' -n)
+  for parent in $(bspc query -N '@/1/1' -n .descendant_of.$node_filter | grep -v $right_stack_node); do
   rotate $parent horizontal 90
   done
 
@@ -26,54 +27,63 @@ equalize() {
   rotate $parent horizontal 90
   done
 
-  auto_balance '@/2'
+  auto_balance '@/1/1'
   auto_balance '@/1/2'
 
   local mon_width=$(jget width "$(bspc query -T -m)")
   local want_master=$(( master_size * mon_width / 100 ))
-  local have=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1))")
+  local have=$(jget width "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1))")
+  local mast_diff=$((want_master - have))
 
-  if (( window_count > 2 )); then
-      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1) -z right $((want_master - have)) 0;
+  if (( mast_diff > 0 )); then
+    if (( window_count > 2 )); then
+        bspc node $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1) -z left $((have - want_master)) 0;
+    else
+       auto_balance '@/'
+    fi
   else
-     auto_balance '@/'
+    bspc node $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | head -n 1) -z left $((have - want_master)) 0;
   fi
-  local left_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
-  local right_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
+  local left_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | head -n 1))")
+  local right_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
   local total_stack=$(( right_stack + left_stack ))
   local half_stack=$(( total_stack / 2 ))
   if (( right_stack > left_stack )); then
     local diff_right=$(( right_stack - left_stack ))
     local diff_needed=$(( diff_right / 2 ))
-      bspc node $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize left $diff_needed 0
+      bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize left $diff_needed 0
   else
     local diff_left=$(( left_stack - right_stack ))
     local diff_needed=$(( diff_left / 2 ))
-    bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize right -$diff_needed 0
+    bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize right -$diff_needed 0
   fi
 }
 
 calculate() {
-  local mast_count=$(bspc query -N '@/1' -n .descendant_of.window.$node_filter | wc -l);   #WARNING ADDED NEW SECTION
-  local first_stack_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
+  local mast_count=$(bspc query -N '@/2' -n .descendant_of.window.$node_filter | wc -l);   #WARNING ADDED NEW SECTION
+  local first_stack_count=$(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l);
+  local second_stack_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
   local total_win_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l);
   if [ $total_win_count -gt 2 ]; then
     if [ $mast_count -eq 0 ]; then
-      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | head -n 1) -n '@/1';
+      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | head -n 1) -n '@/2';
     fi
-    if [ $first_stack_count -eq 0 ]; then
-      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | tail -n 1) -n '@/1/2';
+    if [ $secon_stack_count -eq 0 ]; then
+      bspc node $(bspc query -N '@/' -n last.descendant_of.window.$node_filter | tail -n 1) -n '@/1';
+    fi
+    if [ $secon_stack_count -eq 0 ]; then
+      bspc node $(bspc query -N '@/1' -n last.descendant_of.window.$node_filter | tail -n 1) -n '@/1/2';
     fi
   fi                                                                                   #END OF NEW SECTION
 
-  [ -z $(bspc query -N -n @/1/1) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
-  if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
-    for node in $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n +2); do
-      bspc node $node -n @/1/2
+  [ -z $(bspc query -N -n @/2) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/2
+  if (( $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
+    for node in $(bspc query -N '@/2' -n .descendant_of.window.$node_filter | tail -n +2); do
+      bspc node $node -n @/1
     done
   fi
 
-  local A='@/2'
+  local A='@/1/1'
   local B='@/1/2'
   mapfile -t a < <(bspc query -N "$A" -n .descendant_of.window.$node_filter)
   mapfile -t b < <(bspc query -N "$B" -n .descendant_of.window.$node_filter)

@@ -27,8 +27,15 @@ equalize() {
   rotate $parent vertical 90
   done
 
+  rotate '@/1/2' vertical 90
+  local left_stack_node=$(bspc query -N '@/1/2' -n)
+  for parent in $(bspc query -N '@/1/2' -n .descendant_of.$node_filter | grep -v $left_stack_node); do
+  rotate $parent vertical 90
+  done
+
   auto_balance '@/2'
   auto_balance '@/1/1'
+  auto_balance '@/1/2'
 
   local mon_height=$(jget height "$(bspc query -T -m)")
   local total_stack_size=$(( 100 - master_size ))
@@ -59,10 +66,22 @@ calculate() {
   fi
 
   [ -z $(bspc query -N -n @/1/2) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
-  if (( $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
+  if (( $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l) > 3 )); then
     for node in $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | tail -n +2); do
       bspc node $node -n @/1/1
     done
+  fi
+  if [ $total_win_count -gt 3 ]; then
+    local new_mast_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 2 )); then
+      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/2
+    fi
+  fi
+  if [ $total_win_count -gt 4 ]; then
+    local new_mast_count=$(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 3 )); then
+      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/2
+    fi
   fi
 
   local A='@/2'
@@ -100,6 +119,7 @@ execute_layout() {
   rotate '@/1' horizontal -90
   rotate '@/1/1' vertical 90
   calculate
+  equalize
   equalize
 }
 

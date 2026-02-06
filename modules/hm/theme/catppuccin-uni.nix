@@ -333,6 +333,7 @@
       FEHBG="$HOME/.fehbg"
       LIVEBG="$HOME/.live-bg"
 
+      #pkill paperview-rs
       if [[ -f "$FEHBG" && -f "$LIVEBG" ]]; then
           if [[ "$FEHBG" -nt "$LIVEBG" ]]; then
               pkill paperview-rs & sh -c "$FEHBG"
@@ -807,7 +808,7 @@
       style = i3Style;
       size = MonoSizeI3;
     };
-    startup = [ { command = "fehw"; always = true; } ];
+   #startup = [ { command = "fehw"; always = true; } ];
     colors = {
       urgent = {
         background = Base;
@@ -926,7 +927,7 @@
     extraConfig = ''
       #bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
       bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
-      fehw &
+      #fehw &
   '';
     settings = {
       border_width = 4;

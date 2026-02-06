@@ -1144,45 +1144,60 @@ let
     current=$(bsp-layout get)
 
     case "$current" in
+        row)
+            bsp-layout set tall ;;
         tall)
-            bsp-layout set tall2
-            ;;
+            bsp-layout set tall2 ;;
         tall2)
-            bsp-layout set tall3
-            ;;
+            bsp-layout set tall3 ;;
         tall3)
-            bsp-layout set tall4
-            ;;
+            bsp-layout set tall4 ;;
         rtall)
-            bsp-layout set rtall2
-            ;;
+            bsp-layout set rtall2 ;;
         rtall2)
-            bsp-layout set rtall3
-            ;;
+            bsp-layout set rtall3 ;;
         rtall3)
-            bsp-layout set rtall4
-            ;;
+            bsp-layout set rtall4 ;;
+        col)
+            bsp-layout set wide ;;
         wide)
-            bsp-layout set wide2
-            ;;
+            bsp-layout set wide2 ;;
         wide2)
-            bsp-layout set wide3
-            ;;
+            bsp-layout set wide3 ;;
         wide3)
-            bsp-layout set wide4
-            ;;
+            bsp-layout set wide4 ;;
         rwide)
-            bsp-layout set rwide2
-            ;;
+            bsp-layout set rwide2 ;;
         rwide2)
-            bsp-layout set rwide3
-            ;;
+            bsp-layout set rwide3 ;;
         rwide3)
-            bsp-layout set rwide4
-            ;;
+            bsp-layout set rwide4 ;;
+        cmaster)
+            bsp-layout set cmaster2 ;;
+        cmaster2)
+            bsp-layout set cmaster3 ;;
+        rcmaster)
+            bsp-layout set rcmaster2 ;;
+        rcmaster2)
+            bsp-layout set rcmaster3 ;;
+        dmaster)
+            bsp-layout set dmaster2 ;;
+        dmaster2)
+            bsp-layout set dmaster3 ;;
+        rdmaster)
+            bsp-layout set rdmaster2 ;;
+        rdmaster2)
+            bsp-layout set rdmaster3 ;;
+        hdmaster)
+            bsp-layout set hdmaster2 ;;
+        hdmaster2)
+            bsp-layout set hdmaster3 ;;
+        rhdmaster)
+            bsp-layout set rhdmaster2 ;;
+        rhdmaster2)
+            bsp-layout set rhdmaster3 ;;
         *)
-            echo "Unknown layout: $current"
-            ;;
+            echo "Unknown layout: $current" ;;
     esac
   '';
 
@@ -1192,44 +1207,87 @@ let
 
     case "$current" in
         tall4)
-            bsp-layout set tall3
-            ;;
+            bsp-layout set tall3 ;;
         tall3)
-            bsp-layout set tall2
-            ;;
+            bsp-layout set tall2 ;;
         tall2)
-            bsp-layout set tall
-            ;;
+            bsp-layout set tall ;;
+        tall)
+            bsp-layout set row ;;
         rtall4)
-            bsp-layout set rtall3
-            ;;
+            bsp-layout set rtall3 ;;
         rtall3)
-            bsp-layout set rtall2
-            ;;
+            bsp-layout set rtall2 ;;
         rtall2)
-            bsp-layout set rtall
-            ;;
+            bsp-layout set rtall ;;
         wide4)
-            bsp-layout set wide3
-            ;;
+            bsp-layout set wide3 ;;
         wide3)
-            bsp-layout set wide2
-            ;;
+            bsp-layout set wide2 ;;
         wide2)
-            bsp-layout set wide
-            ;;
+            bsp-layout set wide ;;
+        wide)
+            bsp-layout set col ;;
         rwide4)
-            bsp-layout set rwide3
-            ;;
+            bsp-layout set rwide3 ;;
         rwide3)
-            bsp-layout set rwide2
-            ;;
+            bsp-layout set rwide2 ;;
         rwide2)
-            bsp-layout set rwide
-            ;;
+            bsp-layout set rwide ;;
+         cmaster3)
+            bsp-layout set cmaster2 ;;
+         cmaster2)
+            bsp-layout set cmaster ;;
+         rcmaster3)
+            bsp-layout set rcmaster2 ;;
+         rcmaster2)
+            bsp-layout set rcmaster ;;
+         dmaster3)
+            bsp-layout set dmaster2 ;;
+         dmaster2)
+            bsp-layout set dmaster ;;
+         rdmaster3)
+            bsp-layout set rdmaster2 ;;
+         rdmaster2)
+            bsp-layout set rdmaster ;;
+         hdmaster3)
+            bsp-layout set hdmaster2 ;;
+         hdmaster2)
+            bsp-layout set hdmaster ;;
+         rhdmaster3)
+            bsp-layout set rhdmaster2 ;;
+         rhdmaster2)
+            bsp-layout set rhdmaster ;;
         *)
-            echo "Unknown layout: $current"
-            ;;
+            echo "Unknown layout: $current" ;;
+    esac
+  '';
+
+  bsp-move-master = pkgs.writeShellScriptBin "bsp-move-master" ''
+    # Get current layout
+    current=$(bsp-layout get)
+
+    case "$current" in
+        dmaster)
+            bsp-layout set cmaster ;;
+        cmaster)
+            bsp-layout set rdmaster ;;
+        rdmaster)
+            bsp-layout set dmaster ;;
+        hdmaster)
+            bsp-layout set rcmaster ;;
+        rcmaster)
+            bsp-layout set rhdmaster ;;
+        rhdmaster)
+            bsp-layout set hdmaster ;;
+        tv-nw)
+            bsp-layout set tv-sw ;;
+        tv-sw)
+            bsp-layout set tv-ne ;;
+        tv-ne)
+            bsp-layout set tv-nw ;;
+        *)
+            echo "Unknown layout: $current" ;;
     esac
   '';
 
@@ -1469,17 +1527,18 @@ let
     wcount=$(bspc query -N -n .window.!floating.!hidden.!sticky -d focused | wc -l)
     mcount=$(bspc query -N '@/1' -n .descendant_of.window.!sticky.!floating | wc -l )
     scount=$(bspc query -N '@/2' -n .descendant_of.window.!sticky.!floating | wc -l )
+    if [ "$wcount" -gt 2 ]; then
+      if [ "$mcount" -gt 1 ]; then
+        for wid in $(bspc query -N '@/1' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
+          bspc node "$wid" -n '@/2'
+        done
+      fi
 
-    if [ "$mcount" -gt 1 ]; then
-      for wid in $(bspc query -N '@/1' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
-        bspc node "$wid" -n '@/2'
-      done
-    fi
-
-    if [ "$scount" -gt 1 ]; then
-      for h in $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
-        bspc node "$h" -g hidden=on
-      done
+      if [ "$scount" -gt 1 ]; then
+        for h in $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
+          bspc node "$h" -g hidden=on
+        done
+      fi
     fi
   '';
 
@@ -1545,6 +1604,12 @@ let
     bsp-cmaster-remove
     bsp-culomns-rows-layout-remove
   '';
+
+  bsp-recalculate-layout = pkgs.writeShellScriptBin "bsp-recalculate-layout" ''
+    current_layout=$(bsp-layout get)
+    bsp-layout set $current_layout
+  '';
+
 
 in
 
@@ -1636,7 +1701,9 @@ in
       bsp-deck-layout
       bsp-deck-oneshot
       bsp-deck-cycle
+      bsp-recalculate-layout
       bsp-remove-deck
+      bsp-move-master
       bspswallow
       bspwmswallow
       pidswallow

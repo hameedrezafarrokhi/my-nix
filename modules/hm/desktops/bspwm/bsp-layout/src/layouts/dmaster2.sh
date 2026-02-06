@@ -6,50 +6,50 @@ source "$ROOT/utils/config.sh";
 
 node_filter=$FLAGS;
 
-master_ratio=$HDCENTER_RATIO;
+master_ratio=$DCENTER_RATIO;
 #master_ratio=0.5
 master_size=$(awk "BEGIN {print $master_ratio * 100}")
 
 
 equalize() {
   window_count=$(bspc query -N -n .window.$node_filter -d focused | wc -l)
-  rotate '@/' horizontal 90
-  rotate '@/2' vertical 90
+  rotate '@/' vertical 90
+  rotate '@/2' horizontal 90
   local right_stack_node=$(bspc query -N '@/2' -n)
   for parent in $(bspc query -N '@/2' -n .descendant_of.$node_filter | grep -v $right_stack_node); do
-  rotate $parent vertical 90
+  rotate $parent horizontal 90
   done
 
-  rotate '@/1/2' vertical 90
+  rotate '@/1/2' horizontal 90
   local left_stack_node=$(bspc query -N '@/1/2' -n)
   for parent in $(bspc query -N '@/1/2' -n .descendant_of.$node_filter | grep -v $left_stack_node); do
-  rotate $parent vertical 90
+  rotate $parent horizontal 90
   done
 
   auto_balance '@/2'
   auto_balance '@/1/2'
 
-  local mon_height=$(jget height "$(bspc query -T -m)")
-  local want_master=$(( master_size * mon_height / 100 ))
-  local have=$(jget height "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1))")
+  local mon_width=$(jget width "$(bspc query -T -m)")
+  local want_master=$(( master_size * mon_width / 100 ))
+  local have=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1))")
 
   if (( window_count > 2 )); then
-      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1) -z bottom 0 $((want_master - have));
+      bspc node $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | head -n 1) -z right $((want_master - have)) 0;
   else
      auto_balance '@/'
   fi
-  local top_stack=$(jget height "$(bspc query -T -n $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
-  local bottom_stack=$(jget height "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
-  local total_stack=$(( top_stack + bottom_stack ))
+  local left_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
+  local right_stack=$(jget width "$(bspc query -T -n $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1))")
+  local total_stack=$(( right_stack + left_stack ))
   local half_stack=$(( total_stack / 2 ))
-  if (( bottom_stack > top_stack )); then
-    local diff_bottom=$(( bottom_stack - top_stack ))
-    local diff_needed=$(( diff_bottom / 2 ))
-      bspc node $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize top 0 $diff_needed
+  if (( right_stack > left_stack )); then
+    local diff_right=$(( right_stack - left_stack ))
+    local diff_needed=$(( diff_right / 2 ))
+      bspc node $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize left $diff_needed 0
   else
-    local diff_top=$(( top_stack - bottom_stack ))
-    local diff_needed=$(( diff_top / 2 ))
-    bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize bottom 0 -$diff_needed
+    local diff_left=$(( left_stack - right_stack ))
+    local diff_needed=$(( diff_left / 2 ))
+    bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating | head -n 1) --resize right -$diff_needed 0
   fi
 }
 
@@ -67,10 +67,16 @@ calculate() {
   fi                                                                                   #END OF NEW SECTION
 
   [ -z $(bspc query -N -n @/1/1) ] && bspc node $(bspc query -N -n .local.window.$node_filter | tail -n 1) -n @/1
-  if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 1 )); then
+  if (( $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l) > 2 )); then
     for node in $(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | tail -n +2); do
       bspc node $node -n @/1/2
     done
+  fi
+  if [ $total_win_count -gt 3 ]; then
+    local new_mast_count=$(bspc query -N '@/1/1' -n .descendant_of.window.$node_filter | wc -l);
+    if (( new_mast_count < 2 )); then
+      bspc node $(bspc query -N '@/1/2' -n .descendant_of.window.$node_filter | tail -n 1) -n @/1/1
+    fi
   fi
 
   local A='@/2'
@@ -106,15 +112,14 @@ execute_layout() {
   done;
   calculate
 
-  rotate '@/' horizontal 90
-  rotate '@/1' horizontal -90
-  rotate '@/1/2' vertical 90
+  rotate '@/' vertical 90
+  rotate '@/1' vertical -90
+  rotate '@/1/2' horizontal 90
 
   calculate
 
   equalize
  #equalize
-
 }
 
 cmd=$1; shift;

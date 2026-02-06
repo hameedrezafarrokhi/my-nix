@@ -21,11 +21,47 @@ kill_layout() {
   kill $old_pid 2> /dev/null || true;
 }
 
+#Deck Cycle
+deck_cycle() {                                              #WARNING ADDED SECTION FOR DECK CYCLE
+  local desktop_selector=$(get_focused_desktop);
+  local current_layout=$(get_layout "$desktop_selector");
+  if [[ "$current_layout" == "deck" ]]; then
+    local lf="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
+    bspc node -f east
+    local f="$(bspc query -N @/2 -n focused.!floating.!sticky 2>/dev/null)"
+    set -- $(bspc query -N @/2 -n .descendant_of.window.!floating.!sticky)
+    [ "$#" -lt 2 ] && exit 0
+    local next="$1"
+    local prev=""
+    for n; do
+      if [ "$prev" = "$f" ]; then
+        next="$n"
+        break
+      fi
+      prev="$n"
+    done
+    for n; do
+      bspc node "$n" -g hidden=on
+    done
+    bspc node "$next" -g hidden=off
+    bspc node "$next" -f
+    bspc node "$lf" -f
+  fi
+}                                                             #END OF NEW SECTION
+
 # [desktop] -> ()
 remove_listener() {
   desktop="${1:-`get_focused_desktop`}";
 
   kill_layout "$desktop";
+
+  local desktop_selector=$(get_focused_desktop);
+  local current_layout=$(get_layout "$desktop_selector");     #WARNING ADDED SECTION FOR DECK REMOVE
+  if [[ "$current_layout" == "deck" ]]; then
+    for h in $(bspc query -N '@/2' -n .descendant_of.window.!floating.!sticky); do
+      bspc node "$h" -g hidden=off
+    done
+  fi                                                           #END OF NEW SECTION
 
   # Reset process id and layout
   set_desktop_option $desktop 'layout' "";
@@ -158,7 +194,8 @@ start_listener() {
   __recalculate_layout() { run_layout $layout $args 2> /dev/null || true; }
 
   # Then listen to node changes and recalculate as required
-  bspc subscribe node_{add,remove,transfer,flag,state} desktop_focus | while read line; do
+ #bspc subscribe node_{add,remove,transfer,flag,state} desktop_focus | while read line; do
+  bspc subscribe node_{add,remove,transfer,flag,state} | while read line; do                 #WARNING CHANGED (REMOVED DESKTOP SUBSCRIBE)
     event=$(echo "$line" | awk '{print $1}');
     arg_index=$([[ "$event" == "node_transfer" ]] && echo "6" || echo "3");
     desktop_id=$(echo "$line" | awk "{print \$$arg_index}");
@@ -257,6 +294,7 @@ main () {
     get)               get_layout "$1" ;;
     remove)            remove_listener "$1" ;;
     layouts)           list_layouts ;;
+    deck-cycle)        deck_cycle ;;                                #WARNING ADDED NEW LINE
     -h|--help|help)    man bsp-layout ;;
     -v|version)        echo "$VERSION" ;;
     *)                 echo -e "Unknown subcommand. Run bsp-layout help" && exit 1 ;;

@@ -376,6 +376,7 @@ in
       RCENTER_RATIO=0.6;
       DCENTER_RATIO=0.5;
       HDCENTER_RATIO=0.5;
+      DECK_RATIO=0.5;
 
       # Windows To Ignore
       FLAGS="!hidden.!floating";
