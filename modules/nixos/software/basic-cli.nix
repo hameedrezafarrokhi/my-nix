@@ -45,6 +45,7 @@
     pipes
     pipes-rs
     snowmachine
+    terminal-toys
 
     fd
 
