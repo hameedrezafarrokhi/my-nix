@@ -133,10 +133,10 @@ let
     TOP_HEIGHT=${config.my.poly-height}
     BOTTOM_HEIGHT=15
     BAR_NAME="${config.my.poly-name}"
-
-    bsp-gaps-bar-cache
+    gaps="$(bspc config right_padding)"
 
     if pgrep polybar > /dev/null; then
+        bsp-gaps-bar-cache
         #bsp-gaps-bar-cache
         pkill polybar
         #pkill tint2
@@ -144,24 +144,38 @@ let
         pkill dockx
         #pkill conky
         "$HOME/.bsp_gaps_bar_cache"
-        bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) - $TOP_HEIGHT ))
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-            pkill tint2
-            bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) - $BOTTOM_HEIGHT ))
+        node_state=$(bspc query -T -n $(bspc query -N -n) | grep -q '"state":"fullscreen"' && echo yes)
+
+        if [[ $gaps -eq 0 ]]; then
+          bspc config top_padding 0
+          if pgrep -x .tint2-wrapped  >/dev/null; then
+              pkill tint2
+          fi
+          bspc config bottom_padding 0
+        else
+          if [ "$node_state" != "yes" ]; then
+            bspc config top_padding $(bspc config bottom_padding)
+          fi
+
+          if pgrep -x .tint2-wrapped  >/dev/null; then
+              pkill tint2
+         #    bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+          fi
         fi
+
     else
         "$HOME/.bsp_gaps_bar_cache"
-        #bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) + $TOP_HEIGHT ))
+        #bspc config top_padding $(( $(bspc config top_padding) + $TOP_HEIGHT ))
 
         if pgrep -x .tint2-wrapped  >/dev/null; then
             echo ""
         else
-            #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
+            #bspc config bottom_padding $(( $(bspc config bottom_padding) + $BOTTOM_HEIGHT ))
             tint2 &
         fi
 
-        polybar &
-        $HOME/.polybar_modules
+        polybar-start &
+        #$HOME/.polybar_modules
         #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
         #plank &
         #dockx &
@@ -170,32 +184,100 @@ let
 
   bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
     BOTTOM_HEIGHT=15
+    TOP_HEIGHT=$(( ${config.my.poly-height} * 2 ))
     bsp-gaps-bar-cache
+    gaps="$(bspc config right_padding)"
     if pgrep -x .tint2-wrapped  >/dev/null; then
-        pkill .tint2-wrapped
-        "$HOME/.bsp_gaps_bar_cache"
-        bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) - $BOTTOM_HEIGHT ))
+     #echo $gaps
+      if [[ $gaps -eq 0 ]]; then
+        if pgrep polybar > /dev/null; then
+          pkill .tint2-wrapped
+          "$HOME/.bsp_gaps_bar_cache"
+          bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+          bspc config top_padding $TOP_HEIGHT
+        else
+          pkill .tint2-wrapped
+         #"$HOME/.bsp_gaps_bar_cache"
+          bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+          bspc config top_padding 0
+        fi
+      else
+        if pgrep polybar > /dev/null; then
+          pkill .tint2-wrapped
+          "$HOME/.bsp_gaps_bar_cache"
+         #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+        else
+          pkill .tint2-wrapped
+         #"$HOME/.bsp_gaps_bar_cache"
+         #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+        fi
+      fi
     else
-        "$HOME/.bsp_gaps_bar_cache"
-        #bspc config -m focused bottom_padding $(( $(bspc config -m focused bottom_padding) + $BOTTOM_HEIGHT ))
-        tint2 &
+      tint2 &
+      if [[ $gaps -eq 0 ]]; then
+        POLY_TOP=$(bspc config top_padding)
+        if pgrep polybar > /dev/null; then
+          bspc config top_padding $TOP_HEIGHT
+         #"$HOME/.bsp_gaps_bar_cache"
+          echo "waaaaat"
+        else
+          bspc confid top_padding 0
+        fi
+      else
+        if pgrep polybar > /dev/null; then
+          echo $gaps
+          "$HOME/.bsp_gaps_bar_cache"
+        else
+          bspc confid top_padding $(bspc confid bottom_padding)
+        fi
+      fi
     fi
   '';
 
   bsp-poly-hide = pkgs.writeShellScriptBin "bsp-poly-hide" ''
-    TOP_HEIGHT=${config.my.poly-height}
-    BAR_NAME="${config.my.poly-name}"
-    bsp-gaps-bar-cache
-
-    if pgrep polybar > /dev/null; then
-        pkill polybar
-        "$HOME/.bsp_gaps_bar_cache"
-        bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) - $TOP_HEIGHT ))
+    gaps="$(bspc config right_padding)"
+    #bsp-gaps-bar-cache
+    if [[ $gaps -eq 0 ]]; then
+      bsp-gaps-bar-cache
+      if pgrep polybar > /dev/null; then
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+          pkill polybar
+          "$HOME/.bsp_gaps_bar_cache"
+          bspc config top_padding 0
+        else
+          pkill polybar
+          "$HOME/.bsp_gaps_bar_cache"
+          bspc config top_padding 0
+          bspc config bottom_padding 0
+        fi
+      else
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+          "$HOME/.bsp_gaps_bar_cache"
+          polybar-start &
+          #$HOME/.polybar_modules
+        else
+          polybar-start &
+          #$HOME/.polybar_modules
+          bspc config bottom_padding 0
+        fi
+      fi
     else
+      if pgrep polybar > /dev/null; then
+        bsp-gaps-bar-cache
+        if pgrep -x .tint2-wrapped  >/dev/null; then
+          pkill polybar
+          "$HOME/.bsp_gaps_bar_cache"
+          bspc config top_padding $(bspc config bottom_padding)
+        else
+          pkill polybar
+          "$HOME/.bsp_gaps_bar_cache"
+          bspc config top_padding $(bspc config bottom_padding)
+        fi
+      else
         "$HOME/.bsp_gaps_bar_cache"
-        #bspc config -m focused top_padding $(( $(bspc config -m focused top_padding) + $TOP_HEIGHT ))
-        polybar &
-        $HOME/.polybar_modules
+        polybar-start &
+        #$HOME/.polybar_modules
+      fi
     fi
   '';
 
@@ -421,342 +503,6 @@ let
     rm "$CACHE_FILE"
   '';
 
-  bsp-cmaster-oneshot = pkgs.writeShellScriptBin "bsp-cmaster-oneshot" ''
-    ${builtins.readFile ./layouts/cmaster-oneshot}
-  '';
-
-  bsp-rcmaster-oneshot = pkgs.writeShellScriptBin "bsp-rcmaster-oneshot" ''
-    ${builtins.readFile ./layouts/rcmaster-oneshot}
-  '';
-
-  #${builtins.readFile ./layouts/cmaster}
- #bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
- #  DESKTOP=$(bspc query -D -d focused)
- #  LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
- #
- #  # Prevent multiple instances
- #  if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
- #      exit 0
- #  fi
- #
- #  # Record current PID in lock file
- #  echo $$ > "$LOCKFILE"
- #
- #  # Ensure lock file is removed when script exits
- #  trap 'rm -f "$LOCKFILE"' EXIT
- #
- #
- #  PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
- #
- #  kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
- #  rm -f "$PID_FILE_LISTEN"
- #
- #  bsp-cmaster-oneshot
- #
- #  {
- #    while read -r line; do
- #        read -r event monitor desktop node action <<< "$line"
- #        if [[ "$desktop" == "$DESKTOP" ]]; then
- #            bsp-cmaster-layout
- #        fi
- #    done
- #  } < <(bspc subscribe node_add node_remove) &
- #  echo $! > "$PID_FILE_LISTEN"
- #'';
-
-  bsp-cmaster-layout = pkgs.writeShellScriptBin "bsp-cmaster-layout" ''
-    ${builtins.readFile ./layouts/cmaster-layout}
-  '';
-
-  bsp-rcmaster-layout = pkgs.writeShellScriptBin "bsp-rcmaster-layout" ''
-    ${builtins.readFile ./layouts/rcmaster-layout}
-  '';
-
- #bsp-cmaster = pkgs.writeShellScriptBin "bsp-cmaster" ''
- #  DESKTOP=$(bspc query -D -d focused)
- #  PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
- #  kill $(cat "$PID_FILE_LISTEN")
- #  rm -f "$PID_FILE_LISTEN"
- #
- #  bsp-cmaster-layout
- #
- #  {
- #      while read -r line; do
- #          read -r event monitor desktop node action <<< "$line"
- #          if [[ "$desktop" == "$DESKTOP" ]]; then
- #              bsp-cmaster-layout
- #          fi
- #      done
- #  } < <(bspc subscribe node_add node_remove) &
- #  echo $! > "$PID_FILE_LISTEN"
- #'';
-
-  bsp-cmaster-remove = pkgs.writeShellScriptBin "bsp-cmaster-remove" ''
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-    kill $(cat "$PID_FILE_LISTEN")
-    rm -f "$PID_FILE_LISTEN"
-  '';
-
- #bsp-ctall-layout = pkgs.writeShellScriptBin "bsp-ctall-layout" ''
- #  ${builtins.readFile ./layouts/ctall.sh}
- #'';
-
-  bsp-tv-layout = pkgs.writeShellScriptBin "bsp-tv-layout" ''
-    DESKTOP=$(bspc query -D -d focused)
-
-    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
-
-    # Prevent multiple instances
-    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
-        exit 0
-    fi
-
-    # Record current PID in lock file
-    echo $$ > "$LOCKFILE"
-
-    # Ensure lock file is removed when script exits
-    trap 'rm -f "$LOCKFILE"' EXIT
-
-
-
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-    rm -f "$PID_FILE_LISTEN"
-
-    bsp-cmaster-oneshot &&
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-    #sleep 0.5
-    bspc node @parent -R -90
-
-    {
-      while read -r line; do
-          read -r event monitor desktop node action <<< "$line"
-          if [[ "$desktop" == "$DESKTOP" ]]; then
-              bsp-tv-layout
-          fi
-      done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-  '';
-
-  bsp-rtv-layout = pkgs.writeShellScriptBin "bsp-rtv-layout" ''
-    DESKTOP=$(bspc query -D -d focused)
-
-    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
-
-    # Prevent multiple instances
-    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
-        exit 0
-    fi
-
-    # Record current PID in lock file
-    echo $$ > "$LOCKFILE"
-
-    # Ensure lock file is removed when script exits
-    trap 'rm -f "$LOCKFILE"' EXIT
-
-
-
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-    rm -f "$PID_FILE_LISTEN"
-
-    bsp-cmaster-oneshot &&
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-    #sleep 0.5
-    bspc node @parent -R 90
-
-    {
-      while read -r line; do
-          read -r event monitor desktop node action <<< "$line"
-          if [[ "$desktop" == "$DESKTOP" ]]; then
-              bsp-rtv-layout
-          fi
-      done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-  '';
-
-  bsp-double-stack-layout = pkgs.writeShellScriptBin "bsp-double-stack-layout" ''
-    DESKTOP=$(bspc query -D -d focused)
-
-    LOCKFILE="$HOME/.cache/bspwm-cmaster-$DESKTOP.lock"
-
-    # Prevent multiple instances
-    if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
-        exit 0
-    fi
-
-    # Record current PID in lock file
-    echo $$ > "$LOCKFILE"
-
-    # Ensure lock file is removed when script exits
-    trap 'rm -f "$LOCKFILE"' EXIT
-
-
-
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-cmaster-$DESKTOP.pid"
-
-    kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
-    rm -f "$PID_FILE_LISTEN"
-
-    bsp-cmaster-oneshot &&
-    bspc node "$(bspc query -N -n focused)" -s "$(bspc query -N -n biggest.local)"
-    #sleep 0.5
-    bspc node @parent -R -180
-
-    {
-      while read -r line; do
-          read -r event monitor desktop node action <<< "$line"
-          if [[ "$desktop" == "$DESKTOP" ]]; then
-              bsp-double-stack-layout
-          fi
-      done
-    } < <(bspc subscribe node_add node_remove) &
-    echo $! > "$PID_FILE_LISTEN"
-  '';
-
-  bsp-vertical-layout-oneshot = pkgs.writeShellScriptBin "bsp-vertical-layout-oneshot" ''
-    ${builtins.readFile ./layouts/vetrical-columns-oneshot}
-  '';
-
-  bsp-horizontal-layout-oneshot = pkgs.writeShellScriptBin "bsp-horizontal-layout-oneshot" ''
-    ${builtins.readFile ./layouts/horizontal-columns-oneshot}
-  '';
-
-  bsp-culomns-rows-layout-oneshot = pkgs.writeShellScriptBin "bsp-culomns-rows-layout-oneshot" ''
-    CACHE_FILE="$HOME/.cache/bsp-columns-rows-oneshot"
-    if [[ -f "$CACHE_FILE" ]]; then
-        bsp-horizontal-layout-oneshot
-        rm "$CACHE_FILE"
-        notify-send -e -u low -t 2000 "Horizontal Rows Layout (OneShot)"
-    else
-        bsp-vertical-layout-oneshot
-        touch "$CACHE_FILE"
-        notify-send -e -u low -t 2000 "Vertical Columns Layout (OneShot)"
-    fi
-  '';
-
-  bsp-vertical-layout = pkgs.writeShellScriptBin "bsp-vertical-layout" ''
-    ${builtins.readFile ./layouts/vetrical-columns}
-  '';
-
-  bsp-horizontal-layout = pkgs.writeShellScriptBin "bsp-horizontal-layout" ''
-    ${builtins.readFile ./layouts/horizontal-columns}
-  '';
-
-  bsp-culomns = pkgs.writeShellScriptBin "bsp-culomns" ''
-    #!/bin/bash
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
-    LAST_WIN=$(bspc query -N -n last.local)
-    FOCUSED_WIN=$(bspc query -N -n focused)
-
-    # Kill existing monitor for THIS desktop
-    if [[ -f "$PID_FILE" ]]; then
-        kill $(cat "$PID_FILE") 2>/dev/null
-        rm -f "$PID_FILE"
-    fi
-
-    # Apply horizontal layout
-    bsp-vertical-layout
-
-    {
-        while read -r line; do
-            # Split the line into fields
-            read -r event monitor desktop node action <<< "$line"
-
-            # Only act if the desktop matches
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                case "$event" in
-                    node_add)
-                        window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-                        if (( window_count <= 2 )); then
-                          bsp-vertical-layout
-                        fi
-                        if (( window_count > 2 )); then
-                          LAST_WIN=$(bspc query -N -n last.local)
-                          bspc node --presel-dir \~west
-                          bspc node -f "$LAST_WIN"
-                          bspc node -n last.!automatic
-                          bspc node @/ -B
-                          bspc node -f east
-                        fi
-                        ;;
-
-                    node_remove)
-                        bspc node @/ -B
-                        ;;
-                esac
-            fi
-        done < <(bspc subscribe node_add node_remove)
-    } &
-    echo $! > "$PID_FILE"
-  '';
-
-  bsp-rows = pkgs.writeShellScriptBin "bsp-rows" ''
-    #!/bin/bash
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
-    LAST_WIN=$(bspc query -N -n last.local)
-    FOCUSED_WIN=$(bspc query -N -n focused)
-
-    # Kill existing monitor for THIS desktop
-    if [[ -f "$PID_FILE" ]]; then
-        kill $(cat "$PID_FILE") 2>/dev/null
-        rm -f "$PID_FILE"
-    fi
-
-    # Apply horizontal layout
-    bsp-horizontal-layout
-
-    {
-        while read -r line; do
-            # Split the line into fields
-            read -r event monitor desktop node action <<< "$line"
-
-            # Only act if the desktop matches
-            if [[ "$desktop" == "$DESKTOP" ]]; then
-                case "$event" in
-                    node_add)
-                        window_count=$(bspc query -N -n .window.!floating.!hidden -d focused | wc -l)
-                        if (( window_count <= 1 )); then
-                          bsp-horizontal-layout
-                        fi
-                        if (( window_count >= 2 )); then
-                          LAST_WIN=$(bspc query -N -n last.local)
-                          bspc node --presel-dir \~north
-                          bspc node -f "$LAST_WIN"
-                          bspc node -n last.!automatic
-                          bspc node @/ -B
-                          bspc node -f south
-                        fi
-                        ;;
-
-                    node_remove)
-                        bsp-horizontal-layout
-                        ;;
-                esac
-            fi
-        done < <(bspc subscribe node_add node_remove)
-    } &
-    echo $! > "$PID_FILE"
-  '';
-
-  bsp-culomns-rows-layout-remove = pkgs.writeShellScriptBin "bsp-culomns-rows-layout-remove" ''
-    DESKTOP=$(bspc query -D -d focused)
-    PID_FILE="$HOME/.cache/bspwm-row-column-layout-$DESKTOP.pid"
-
-    # Kill existing monitor for THIS desktop
-    if [[ -f "$PID_FILE" ]]; then
-        kill $(cat "$PID_FILE") 2>/dev/null
-        rm -f "$PID_FILE"
-    fi
-  '';
-
   bsp-zoom = pkgs.writeShellScriptBin "bsp-zoom" ''
     DESKTOP=$(bspc query -D -d focused --names)
     CACHE_FILE="$HOME/.cache/bspwm_zoom_last_$DESKTOP"
@@ -864,24 +610,24 @@ let
         # Restore default gap (adjust to your preference)
         "$HOME/.bsp_gaps_cache"
     else
-        # Turn off gaps
-        bsp-gaps-cache
-        bspc config left_padding 0
-        bspc config right_padding 0
-        bspc config window_gap 0
-        if pgrep polybar > /dev/null; then
-            bspc config top_padding $TOP_HEIGHT
-            pkill polybar
-            polybar &
-            $HOME/.polybar_modules
-        else
-            bspc config top_padding 0
-        fi
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-            bspc config bottom_padding $BOTTOM_HEIGHT
-        else
-            bspc config bottom_padding 0
-        fi
+      bsp-gaps-cache
+      if pgrep -x .tint2-wrapped  >/dev/null; then
+          bspc config bottom_padding $BOTTOM_HEIGHT
+      else
+          bspc config bottom_padding 0
+      fi
+      # Turn off gaps
+      bspc config left_padding 0
+      bspc config right_padding 0
+      bspc config window_gap 0
+      if pgrep polybar > /dev/null; then
+          bspc config top_padding $TOP_HEIGHT
+          pkill polybar
+          polybar-start &
+          #$HOME/.polybar_modules
+      else
+          bspc config top_padding 0
+      fi
     fi
   '';
 
@@ -896,8 +642,8 @@ let
     if pgrep polybar > /dev/null; then
         bspc config top_padding $TOP_HEIGHT
         pkill polybar
-        polybar &
-        $HOME/.polybar_modules
+        polybar-start &
+        #$HOME/.polybar_modules
     else
         bspc config top_padding ${toString config.xsession.windowManager.bspwm.settings.top_padding}
     fi
@@ -997,8 +743,8 @@ let
     #systemctl --user start touchegg-bsp.service
   '';
 
-  bsp-unhide-last-hidden = pkgs.writeShellScriptBin "bsp-unhide-last-hidden" ''
-    n=$(bspc query -N -n .hidden.local | head -n 1); [ -n "$n" ] && bspc node "$n" -g hidden=off
+  bsp-hide = pkgs.writeShellScriptBin "bsp-hide" ''
+    ${builtins.readFile ./bsp-hide}
   '';
 
   bsp-conky = pkgs.writeShellScriptBin "bsp-conky" ''
@@ -1313,14 +1059,29 @@ let
   bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
 
     if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
-        polybar & disown & tint2 & disown & bspc node -t tiled
-        $HOME/.polybar_modules
-
+       if [[ -f "$HOME/.polybar-status" ]]; then
+         if pgrep polybar > /dev/null; then
+            bspc node -t tiled
+          else
+           #polybar & disown & tint2 & disown & bspc node -t tiled
+            bsp-bar-hide & bspc node -t tiled
+            $HOME/.polybar_modules
+            rm -f $HOME/.polybar-status
+          fi
+        else
+          bspc node -t tiled
+        fi
     else
-        pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
+      if pgrep polybar > /dev/null; then
+       #pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
+        touch $HOME/.polybar-status
+        bsp-bar-hide & bspc node -t fullscreen
         exit
+      else
+        bspc node -t fullscreen
+        exit
+      fi
     fi
-
   '';
 
   bsp-skippy = pkgs.writeShellScriptBin "bsp-skippy" ''
@@ -1487,9 +1248,28 @@ let
     ${builtins.readFile ./bsp-sounds}
   '';
 
-  bsp-deck-layout = pkgs.writeShellScriptBin "bsp-deck-layout" ''
+  bsp-remove-layout = pkgs.writeShellScriptBin "bsp-remove-layout" ''
+    bsp-layout remove
+    bsp-stack-zoom-remove
+  '';
+
+  bsp-remove-layout-me = pkgs.writeShellScriptBin "bsp-remove-layout-me" ''
+    echo "no self-made layouts for now"
+    bsp-stack-zoom-remove
+  '';
+
+  bsp-recalculate-layout = pkgs.writeShellScriptBin "bsp-recalculate-layout" ''
+    current_layout=$(bsp-layout get)
+    bsp-layout set $current_layout
+  '';
+
+  bsp-stack-zoom-oneshot = pkgs.writeShellScriptBin "bsp-stack-zoom-oneshot" ''
+    ${builtins.readFile ./bsp-stack-zoom}
+  '';
+
+  bsp-stack-zoom = pkgs.writeShellScriptBin "bsp-stack-zoom" ''
     DESKTOP=$(bspc query -D -d focused)
-    LOCKFILE="$HOME/.cache/bspwm-deck-$DESKTOP.lock"
+    LOCKFILE="$HOME/.cache/bsp-stack-zoom-$DESKTOP.lock"
 
     # Prevent multiple instances
     if [[ -f "$LOCKFILE" ]] && kill -0 "$(cat "$LOCKFILE")" 2>/dev/null; then
@@ -1501,115 +1281,66 @@ let
 
     # Ensure lock file is removed when script exits
     trap 'rm -f "$LOCKFILE"' EXIT
-
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
-
+    PID_FILE_LISTEN="$HOME/.cache/bsp-stack-zoom-$DESKTOP.pid"
     kill $(cat "$PID_FILE_LISTEN") 2>/dev/null
     rm -f "$PID_FILE_LISTEN"
 
-    bsp-deck-oneshot
+    bsp-stack-zoom-oneshot
     {
         while read -r line; do
             # Split the line into fields
             read -r event monitor desktop node action <<< "$line"
-              if [[ "$desktop" == "$DESKTOP" ]]; then
-                bsp-deck-oneshot
-              fi
-        done < <(bspc subscribe node_add node_remove)
+
+            # Only act if the desktop matches
+            if [[ "$desktop" == "$DESKTOP" ]]; then
+              bsp-stack-zoom-oneshot
+            fi
+        done < <(bspc subscribe node_focus node_swap)
     } &
 
+    # Save the PID of the background listener
     echo $! > "$PID_FILE_LISTEN"
   '';
 
-  bsp-deck-oneshot = pkgs.writeShellScriptBin "bsp-deck-oneshot" ''
-    f="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
-
-    wcount=$(bspc query -N -n .window.!floating.!hidden.!sticky -d focused | wc -l)
-    mcount=$(bspc query -N '@/1' -n .descendant_of.window.!sticky.!floating | wc -l )
-    scount=$(bspc query -N '@/2' -n .descendant_of.window.!sticky.!floating | wc -l )
-    if [ "$wcount" -gt 2 ]; then
-      if [ "$mcount" -gt 1 ]; then
-        for wid in $(bspc query -N '@/1' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
-          bspc node "$wid" -n '@/2'
-        done
-      fi
-
-      if [ "$scount" -gt 1 ]; then
-        for h in $(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating | tail -n +2); do
-          bspc node "$h" -g hidden=on
-        done
-      fi
-    fi
-  '';
-
-  bsp-deck-cycle = pkgs.writeShellScriptBin "bsp-deck-cycle" ''
+  bsp-stack-zoom-remove = pkgs.writeShellScriptBin "bsp-stack-zoom-remove" ''
     DESKTOP=$(bspc query -D -d focused)
-    PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
-    if pgrep bsp-deck-layout > /dev/null; then
-      if [ -f "$HOME/.cache/bspwm-deck-$DESKTOP.pid" ]; then
-        lf="$(bspc query -N -n focused.!floating.!sticky 2>/dev/null)"
+    PID_FILE_LISTEN="$HOME/.cache/bsp-stack-zoom-$DESKTOP.pid"
+    kill $(cat "$PID_FILE_LISTEN")
+    rm -f "$PID_FILE_LISTEN"
+    bsp-layout reload
+  '';
 
-        bspc node -f east
+  bsp-abhide = pkgs.writeScriptBin "bsp-abhide" ''
+    bspc subscribe node_state desktop_focus node_add node_remove | \
+    while read -r event monitor desktop node_id; do
 
-        f="$(bspc query -N @/2 -n focused.!floating.!sticky 2>/dev/null)"
-        set -- $(bspc query -N @/2 -n .descendant_of.window.!floating.!sticky)
-        [ "$#" -lt 2 ] && exit 0
+      wid=$(bspc query -T -n)
+      state=$(printf '%s\n' "$wid" | jq -r '.client.state')
 
-        next="$1"
-        prev=""
-
-        for n; do
-          if [ "$prev" = "$f" ]; then
-            next="$n"
-            break
+      sleep 0.5
+      if [[ $state = "fullscreen" ]]; then
+        if pgrep polybar > /dev/null; then
+          bsp-bar-hide
+          touch $HOME/.polybar-status
+        else
+          continue
+        fi
+      else
+        if pgrep polybar > /dev/null; then
+          echo ""
+        else
+          if [[ -f "$HOME/.polybar-status"  ]]; then
+            bsp-bar-hide
           fi
-          prev="$n"
-        done
+        fi
 
-        for n; do
-          bspc node "$n" -g hidden=on
-        done
-
-        bspc node "$next" -g hidden=off
-        bspc node "$next" -f
-
-        bspc node "$lf" -f
       fi
-    fi
+    done
   '';
 
-  bsp-remove-deck = pkgs.writeShellScriptBin "bsp-remove-deck" ''
-    if pgrep bsp-deck-layout > /dev/null; then
-      DESKTOP=$(bspc query -D -d focused)
-      PID_FILE_LISTEN="$HOME/.cache/bspwm-deck-$DESKTOP.pid"
-      kill $(cat "$PID_FILE_LISTEN")
-      rm -f "$PID_FILE_LISTEN"
-     #pkill -f bsp-deck-layout
-      for h in $(bspc query -N '@/2' -n .descendant_of.window.!floating.!sticky); do
-        bspc node "$h" -g hidden=off
-      done
-    fi
+    bsp-s-autohide = pkgs.writeShellScriptBin "bsp-s-autohide" ''
+    ${builtins.readFile ./bsp-s-autohide}
   '';
-
-  bsp-remove-layout = pkgs.writeShellScriptBin "bsp-remove-layout" ''
-    bsp-remove-deck
-    bsp-cmaster-remove
-    bsp-culomns-rows-layout-remove
-    bsp-layout remove
-    #bsp-layout-ext remove
-  '';
-
-  bsp-remove-layout-me = pkgs.writeShellScriptBin "bsp-remove-layout-me" ''
-    bsp-remove-deck
-    bsp-cmaster-remove
-    bsp-culomns-rows-layout-remove
-  '';
-
-  bsp-recalculate-layout = pkgs.writeShellScriptBin "bsp-recalculate-layout" ''
-    current_layout=$(bsp-layout get)
-    bsp-layout set $current_layout
-  '';
-
 
 in
 
@@ -1647,16 +1378,6 @@ in
       bsp-cache-layout
       bsp-zoom
       bsp-zoom-second_biggest
-      bsp-cmaster-layout
-     #bsp-cmaster
-      bsp-cmaster-oneshot
-      bsp-rcmaster-oneshot
-      bsp-rcmaster-layout
-      bsp-cmaster-remove
-     #bsp-ctall-layout
-      bsp-rtv-layout
-      bsp-tv-layout
-      bsp-double-stack-layout
       bsp-send-follow
      #bsp-border-color
       bsp-border-size
@@ -1664,18 +1385,10 @@ in
       bsp-gaps-toggle
       bsp-empty-remove
       bsp-touchegg
-      bsp-unhide-last-hidden
+      bsp-hide
       bsp-conky
       bsp-desktop-switch
       bsp-desktop-switch-follow
-      bsp-vertical-layout-oneshot
-      bsp-horizontal-layout-oneshot
-      bsp-culomns-rows-layout-oneshot
-      bsp-vertical-layout
-      bsp-horizontal-layout
-      bsp-culomns
-      bsp-rows
-      bsp-culomns-rows-layout-remove
       bsp-manual-window-swap
       bsp-manual-window-send
       bsp-master-node-increase
@@ -1698,12 +1411,13 @@ in
       bsp-auto-color
       bsp-de-sounds
       bsp-sounds-toggle
-      bsp-deck-layout
-      bsp-deck-oneshot
-      bsp-deck-cycle
       bsp-recalculate-layout
-      bsp-remove-deck
       bsp-move-master
+      bsp-stack-zoom-oneshot
+      bsp-stack-zoom
+      bsp-stack-zoom-remove
+      bsp-abhide
+      bsp-s-autohide
       bspswallow
       bspwmswallow
       pidswallow

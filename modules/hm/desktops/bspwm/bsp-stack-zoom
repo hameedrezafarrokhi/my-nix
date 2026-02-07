@@ -1,0 +1,101 @@
+#!/bin/bash
+
+pivot=$(bspc query -N -n focused)
+layout=$(bsp-layout get)
+
+echo "$layout" | grep -q -E '^(-|tiled|monocle|deck|even|floating)' && exit 0
+
+run-zoom() {
+if echo "$layout" | grep -q -E '^(cmaster|cmaster2|cmaster3|dmaster|dmaster2|dmaster3|rdmaster|rdmaster2|rdmaster3|tall|tall2|tall3|tall4|rtall|rtall2|rtall3|rtall4|row|rgrid)'; then
+   local zoom_one="top 0 10000"
+   local zoom_two="bottom 0 -10000"
+elif echo "$layout" | grep -q -E '^(rcmaster|rcmaster2|rcmaster3|hdmaster|hdmaster2|hdmaster3|rhdmaster|rhdmaster2|rhdmaster3|wide|wide2|wide3|wide4|rwide|rwide2|rwide3|rwide4|col|grid)'; then
+   local zoom_one="left 10000 0"
+   local zoom_two="right -10000 0"
+else
+  exit 0
+fi
+
+  local before=()
+  local after=()
+  local found=0
+
+  # Split nodes into before and after pivot
+  for node in "${nodes[@]}"; do
+      if [[ "$node" == "$pivot" ]]; then
+          local found=1
+          continue
+      fi
+      if [[ $found -eq 0 ]]; then
+          local before+=("$node")
+      else
+          local after+=("$node")
+      fi
+  done
+
+  # Nodes above pivot: head → tail
+  # Nodes below pivot: tail → head
+  for ((i=${#after[@]}-1; i>=0; i--)); do
+      bspc node "${after[i]}" -z $zoom_one
+  done
+
+  for node in "${before[@]}"; do
+      bspc node "$node" -z $zoom_two
+  done
+}
+
+
+root() {
+local nodes=($(bspc query -N '@/' -n .descendant_of.window.!hidden.!floating))
+if ! [[ " ${nodes[*]} " =~ " $pivot " ]]; then
+  echo ""
+else
+  run-zoom
+fi
+}
+one() {
+local nodes=($(bspc query -N '@/1' -n .descendant_of.window.!hidden.!floating))
+if ! [[ " ${nodes[*]} " =~ " $pivot " ]]; then
+  echo ""
+else
+  run-zoom
+fi
+}
+two() {
+local nodes=($(bspc query -N '@/2' -n .descendant_of.window.!hidden.!floating))
+if ! [[ " ${nodes[*]} " =~ " $pivot " ]]; then
+  echo ""
+else
+  run-zoom
+fi
+}
+one-one() {
+local nodes=($(bspc query -N '@/1/1' -n .descendant_of.window.!hidden.!floating))
+if ! [[ " ${nodes[*]} " =~ " $pivot " ]]; then
+  echo ""
+else
+  run-zoom
+fi
+}
+one-two() {
+local nodes=($(bspc query -N '@/1/2' -n .descendant_of.window.!hidden.!floating))
+if ! [[ " ${nodes[*]} " =~ " $pivot " ]]; then
+  echo ""
+else
+  run-zoom
+fi
+}
+
+
+if echo "$layout" | grep -q -E '^(cmaster|cmaster2|cmaster3|dmaster|dmaster2|dmaster3|rdmaster|rdmaster2|rdmaster3|rcmaster|rcmaster2|rcmaster3|hdmaster|hdmaster2|hdmaster3|rhdmaster|rhdmaster2|rhdmaster3)'; then
+  one-one
+  one-two
+  two
+elif echo "$layout" | grep -q -E '^(tall|tall2|tall3|tall4|rtall|rtall2|rtall3|rtall4|wide|wide2|wide3|wide4|rwide|rwide2|rwide3|rwide4|grid|rgrid)'; then
+  one
+  two
+elif echo "$layout" | grep -q -E '^(col|row)'; then
+  root
+else
+  exit 0
+fi

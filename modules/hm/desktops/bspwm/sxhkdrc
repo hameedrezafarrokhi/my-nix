@@ -360,7 +360,7 @@ super + ctrl + alt + 6
 
 # Floating Layout
 super + ctrl + alt + 7
-	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout set floating; notify-send -e -u low -t 2000 "Floating Layout"
 
 # Deck Layout (OneShot)
 super + alt + 7
@@ -402,6 +402,22 @@ super + BackSpace
 super + ctrl + grave
 	bsp-layout reload; notify-send -e -u low -t 2000 "Reloaded Layouts"
 
+# Zoom Focused Window in Stack (OneShot)
+super + bracketright
+      bsp-stack-zoom-oneshot
+
+# Zoom Focused Window in Stack
+super + shift + bracketright
+      bsp-stack-zoom; notify-send -e -u low -t 2000 "Stack Zoom" "On"
+
+# Remove Zoom Focused Window in Stack
+super + shift + alt + bracketright
+      bsp-stack-zoom-remove
+
+# Remove Zoom Focused Window in Stack AND Recalculate
+super + alt + bracketright
+      bsp-stack-zoom-remove; bsp-layout reload; notify-send -e -u low -t 2000 "Stack Zoom" "On"
+
 # Floating Layout
 super + shift + alt + f
 	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
@@ -427,8 +443,8 @@ super + shift + alt + l
       notify-send -e -u low -t 2000 "$(bsp-layout get)"
 
 # Keyboard layout change
-alt + Caps_Lock
-      setxkbmap -layout us,ir -option "grp:alt_caps_toggle"; notify-send -e -u low -t 2000 "$(bsp-xkb-layout)"
+super + q
+      xkblayout-state set +1; notify-send -e -u low -t 2000 "$(xkblayout-state print "%s")"
 
 # Reset Plank
 alt + shift + p
@@ -454,6 +470,10 @@ super + alt + g
 super + shift + g
       bsp-poly-hide
 
+# Auto Hide Bars
+super + shift + alt + g
+      bsp-s-autohide
+
 # Polybar Modules
 super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
       ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
@@ -471,7 +491,7 @@ super + ctrl + y ; {Return}
       $HOME/.polybar_modules
 
 # Hide Dock
-super + shift + alt + g
+super + shift + alt + h
       bsp-dock-hide
 
 # Scratchpad Sticky Kitty
@@ -746,28 +766,32 @@ super + alt + k
 super + alt + shift + k
     tabc autoattach $(bspc query -N -n)
 
-# Unhide Windows on Focused Desktop
-super + shift + alt + d
+# Unhide All Windows on Focused Desktop
+super + shift + alt + d ; {a}
     bash -c 'for n in $(bspc query -N -n .hidden.local); do bspc node "$n" -g hidden=off; done'
+
+# Unhide All Manually Windows on Focused Desktop
+super + shift + alt + d ; {d}
+    bsp-hide all
 
 # Hide Current Focused Window
 super + d
-    bspc node -g hidden=on
+    bsp-hide hide
 
-# Unhide First Hidden Window to Last
+# Unhide Oldest Hidden Window
 super + alt + d
-    bash -c 'n=$(bspc query -N -n .hidden.local | tail -n 1); [ -n "$n" ] && bspc node "$n" -g hidden=off'
+    bsp-hide oldest
 
-# Unhide Last Hidden Window to First
+# Unhide Newest Hidden Window
 super + shift + d
-    bsp-unhide-last-hidden
+    bsp-hide newest
 
 # Unhide Rofi Menu
 super + alt + space
     bsp-hidden-menu
 
 # Show/Hide Conky
-super + shift + alt + h
+super + shift + alt + j
     bsp-conky
 
 # Clear Notifications

@@ -56,10 +56,15 @@ remove_listener() {
   kill_layout "$desktop";
 
   local desktop_selector=$(get_focused_desktop);
-  local current_layout=$(get_layout "$desktop_selector");     #WARNING ADDED SECTION FOR DECK REMOVE
+  local current_layout=$(get_layout "$desktop_selector");     #WARNING ADDED SECTION FOR DECK AND FLOATING REMOVE
   if [[ "$current_layout" == "deck" ]]; then
     for h in $(bspc query -N '@/2' -n .descendant_of.window.!floating.!sticky); do
       bspc node "$h" -g hidden=off
+    done
+  fi
+  if [[ "$current_layout" == "floating" ]]; then
+    for f in $(bspc query -N -n .local.window.!sticky.!marked.!hidden); do
+      bspc node "$f" -t tiled
     done
   fi                                                           #END OF NEW SECTION
 

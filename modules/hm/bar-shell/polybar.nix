@@ -2,6 +2,14 @@
 
 let
 
+  polybar-start = pkgs.writeShellScriptBin "polybar-start" ''
+    for m in $(polybar --list-monitors | cut -d":" -f1); do
+      MONITOR=$m polybar --reload ${config.my.poly-name} &
+    done
+
+    $HOME/.polybar_modules
+  '';
+
   poly-idle-inhibit = pkgs.writeShellScriptBin "poly-idle-inhibit" ''
     CURRENT_TIMEOUT=$(xset q | awk '/timeout:/ {print $2}')
 
@@ -115,6 +123,7 @@ let
   '';
   poly-xkb-change = pkgs.writeShellScriptBin "poly-xkb-change" ''
     xkb-switch -n
+    #xkblayout-state set +1
     notify-send -e -u low -t 2000 "$(poly-xkb-layout)"
   '';
 
@@ -250,6 +259,7 @@ in
   config = lib.mkIf (builtins.elem "polybar" config.my.bar-shell.shells) {
 
   home.packages = [
+    polybar-start
     poly-idle-inhibit
     poly-notif
     poly-power
@@ -286,13 +296,29 @@ in
    #script = "polybar example &";  # Script to run polybar like "polybar bar &"
 
     script = ''
-      polybar example &
+
+      for m in $(polybar --list-monitors | cut -d":" -f1); do
+        MONITOR=$m polybar --reload ${config.my.poly-name} &
+      done
+
       $HOME/.polybar_modules
     '';
+
+   #config = {
+   #
+   #  "bar/${config.my.poly-name}" = {
+   #    include-file = "${nix-path}/modules/hm/bar-shell/poly-monitors.ini";
+   #  };
+   #
+   #};
 
     settings = {
 
       "bar/${config.my.poly-name}" = {
+        include-file = "${nix-path}/modules/hm/bar-shell/poly-monitors.ini";
+
+       #monitor = "$MONITOR";
+
         width = "100%";
         height = "${config.my.poly-height}pt";
         radius = 6;

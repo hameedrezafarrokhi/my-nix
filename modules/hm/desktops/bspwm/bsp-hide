@@ -1,0 +1,36 @@
+#!/bin/bash
+# bspwm hide script
+
+dir="$HOME/.cache/bsp-hidden"
+mkdir -p "$dir"
+
+case $1 in
+    hide)
+        desktop=$(bspc query -D -d focused)
+        node=$(bspc query -N -n focused)
+        time=$(date +%s)
+        echo "$desktop"_"$node" > "$dir/${desktop}_${node}_${time}"
+        bspc node "$node" --flag hidden=on
+        ;;
+    newest)
+        desktop=$(bspc query -D -d focused)
+        file=$(ls -t "$dir"/"${desktop}"_* 2>/dev/null | head -n1)
+        [ -n "$file" ] && read -r d n <<< $(tr '_' ' ' < "$file") && bspc node "$n" --flag hidden=off && rm "$file"
+        ;;
+    oldest)
+        desktop=$(bspc query -D -d focused)
+        file=$(ls -rt "$dir"/"${desktop}"_* 2>/dev/null | head -n1)
+        [ -n "$file" ] && read -r d n <<< $(tr '_' ' ' < "$file") && bspc node "$n" --flag hidden=off && rm "$file"
+        ;;
+    all)
+        desktop=$(bspc query -D -d focused)
+        for file in "$dir"/"${desktop}"_* ; do
+            read -r d n <<< $(tr '_' ' ' < "$file")
+            bspc node "$n" --flag hidden=off 2>/dev/null
+            rm "$file"
+        done
+        ;;
+    *)
+        echo "$0 [hide|newest|oldest|all]"
+        ;;
+esac

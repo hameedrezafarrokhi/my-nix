@@ -155,10 +155,11 @@ in
         if hash polybar >/dev/null 2>&1; then
         	  pkill polybar
         	  sleep 1.5
-        	  polybar ${config.my.poly-name} &
+        	  #polybar ${config.my.poly-name} &
+              polybar-start
         fi
 
-        $HOME/.polybar_modules
+        #$HOME/.polybar_modules
 
         #if hash conky >/dev/null 2>&1; then
         #	  pkill conky
@@ -259,6 +260,15 @@ in
         sleep 0.5
         if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
             $HOME/.config/bspwm/bsp-sounds-toggle
+        fi
+
+        pkill -f "bsp-abhide"
+        pkill -f "bsp-s-autohide"
+        sleep 0.5
+        if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
+          bsp-s-autohide
+          sleep 0.5
+          bsp-s-autohide
         fi
       '';
 
@@ -405,32 +415,32 @@ in
       };
     };
 
-    systemd.user.services.bsp-conf = {
-      Unit = {
-        Description = "Save Bspwm Config";
-        ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = ''/bin/bash -c "bsp-conf && bsp-conf-color"'';
-      };
-    };
-
-    systemd.user.timers.bsp-conf = {
-      Unit = {
-        Description = "Bspwm Config Save Every 20min";
-        ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
-      };
-      Install = {
-        WantedBy = [ "timers.target" ];
-      };
-      Timer = {
-        OnBootSec = "20min";
-        OnUnitActiveSec = "20min";
-        AccuracySec = "1min";
-        Persistent = true;
-      };
-    };
+   #systemd.user.services.bsp-conf = {
+   #  Unit = {
+   #    Description = "Save Bspwm Config";
+   #    ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+   #  };
+   #  Service = {
+   #    Type = "oneshot";
+   #    ExecStart = ''/bin/bash -c "bsp-conf && bsp-conf-color"'';
+   #  };
+   #};
+   #
+   #systemd.user.timers.bsp-conf = {
+   #  Unit = {
+   #    Description = "Bspwm Config Save Every 20min";
+   #    ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+   #  };
+   #  Install = {
+   #    WantedBy = [ "timers.target" ];
+   #  };
+   #  Timer = {
+   #    OnBootSec = "20min";
+   #    OnUnitActiveSec = "20min";
+   #    AccuracySec = "1min";
+   #    Persistent = true;
+   #  };
+   #};
 
    #systemd.user.services.plank-bspwm = {
    #  Unit = {

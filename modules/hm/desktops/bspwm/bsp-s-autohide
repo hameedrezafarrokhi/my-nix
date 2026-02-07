@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+OUT="${1:-$HOME/.config/bspwm/bsp-autohide}"
+PROC="bsp-abhide"
+PID=$(pgrep -f "bsp-s-autohide")
+
+if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
+   notify-send -e -u low -t 2000 "Auto Bar Hide" "Off"
+   rm -f "$HOME/.config/bspwm/bsp-autohide"
+   pkill -f "bsp-abhide"
+   pkill -f "bsp-s-autohide"
+else
+   notify-send -e -u low -t 2000 "Auto Bar Hide" "On"
+   touch "$HOME/.config/bspwm/bsp-autohide"
+   bsp-abhide &
+fi
+
