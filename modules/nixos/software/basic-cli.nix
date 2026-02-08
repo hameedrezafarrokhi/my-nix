@@ -46,6 +46,8 @@
     pipes-rs
     snowmachine
     terminal-toys
+    cowsay
+   #pokemonsay
 
     fd
 
