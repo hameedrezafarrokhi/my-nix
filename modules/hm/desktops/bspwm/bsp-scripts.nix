@@ -66,31 +66,34 @@ let
   '';
 
   bsp-layout-manager = pkgs.writeShellScriptBin "bsp-layout-manager" ''
-    # Check if there is a floating window on the current focused desktop
-    if bspc query -N -n .floating.local > /dev/null; then
-        echo '󱗆'
-        exit 0
-    fi
-
     current=$(bsp-layout get 2>/dev/null)
-
     if [ $? -ne 0 ]; then
         echo ""
         exit 0
     fi
-
     case "$current" in
-        tiled)   echo '' ;;
-        monocle) echo '󱂬' ;;
-        even)    echo '' ;;
-        grid)    echo '󱗼' ;;
-        rgrid)   echo '󰋁' ;;
-        rtall)   echo '󱇜' ;;
-        rwide)   echo '' ;;
-        tall)    echo '' ;;
-        wide)    echo '' ;;
-        *)       echo ''
-             exit 1 ;;
+        tiled)                            echo ''  ;;
+        monocle)                          echo '󱂬'  ;; #󰓠
+        even)                             echo ''  ;; #
+        grid)                             echo '󱗼'  ;;
+        rgrid)                            echo '-󱗼' ;;
+        floating)                         echo '󱗆'  ;;
+        col)                              echo '󱪷'  ;;
+        row)                              echo '󱪶'  ;;
+        deck)                             echo ''  ;;
+        tall|tall2|tall3|tall4)           echo ''  ;;
+        rtall|rtall2|rtall3|rtall4)       echo '-' ;;  #󰯌
+        rwide|rwide2|rwide3|rwide4)       echo ''  ;;
+        wide|wide2|wide3|wide4)           echo '-' ;;
+        dmaster|dmaster2|dmaster3)        echo '󰬻' ;;
+        rdmaster|rdmaster2|rdmaster3)     echo '󰬻' ;;
+        cmaster|cmaster2|cmaster3)        echo ''  ;;
+        rcmaster|rcmaster2|rcmaster3)     echo '-' ;;
+        hdmaster|hdmaster2|hdmaster3)     echo '󰬻' ;;
+        rhdmaster|rhdmaster2|rhdmaster3)  echo '󰬻' ;;
+        tv-ne|tv-nw|tv-sw)                echo ''  ;;
+        *) echo ''
+           exit 1 ;;
     esac
   '';
 
@@ -1338,8 +1341,14 @@ let
     done
   '';
 
-    bsp-s-autohide = pkgs.writeShellScriptBin "bsp-s-autohide" ''
+  bsp-s-autohide = pkgs.writeShellScriptBin "bsp-s-autohide" ''
     ${builtins.readFile ./bsp-s-autohide}
+  '';
+
+  poly-bsp-lay = pkgs.writeShellScriptBin "poly-bsp-lay" ''
+    bspc subscribe desktop_focus | while read -r event; do
+      polybar-msg action "#bspwm.hook.1"
+    done
   '';
 
 in
@@ -1418,6 +1427,7 @@ in
       bsp-stack-zoom-remove
       bsp-abhide
       bsp-s-autohide
+      poly-bsp-lay
       bspswallow
       bspwmswallow
       pidswallow

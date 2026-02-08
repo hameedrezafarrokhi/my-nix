@@ -244,6 +244,9 @@ in
         pkill bsp-icon-bar
         bsp-icon-bar &
 
+        pkill poly-bsp-lay
+        poly-bsp-lay &
+
         pkill -f "live-bg-auto"
         sleep 0.5
         if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
@@ -262,14 +265,15 @@ in
             $HOME/.config/bspwm/bsp-sounds-toggle
         fi
 
-        pkill -f "bsp-abhide"
-        pkill -f "bsp-s-autohide"
-        sleep 0.5
-        if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
-          bsp-s-autohide
-          sleep 0.5
-          bsp-s-autohide
-        fi
+        #pkill -f "bsp-abhide"
+        #pkill -f "bsp-s-autohide"
+        #sleep 0.5
+        #if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
+        #  bsp-s-autohide
+        #  sleep 0.5
+        #  bsp-s-autohide
+        #fi
+
       '';
 
       startupPrograms = [

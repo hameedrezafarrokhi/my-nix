@@ -8,6 +8,8 @@ let
     done
 
     $HOME/.polybar_modules
+
+    #polybar-msg action "#keyboard-layout.hook.0"
   '';
 
   poly-idle-inhibit = pkgs.writeShellScriptBin "poly-idle-inhibit" ''
@@ -48,6 +50,7 @@ let
         xset -dpms
         xset dpms 0 0 0
     fi
+    polybar-msg action "#idle.hook.1"
   '';
 
   poly-notif = pkgs.writeShellScriptBin "poly-notif" ''
@@ -102,29 +105,34 @@ let
   '';
 
   bsp-next = pkgs.writeShellScriptBin "bsp-next" ''
-    bsp-layout next
-    notify-send -e -u low -t 2000 "$(bsp-layout get)"
+    bsp-layout next --layouts tall,wide,cmaster,rcmaster,deck,grid,rgrid,col,row,even,tv-nw,tiled,monocle,floating
+    polybar-msg action "#bspwm.hook.1"
+    #notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-prev = pkgs.writeShellScriptBin "bsp-prev" ''
-    bsp-layout previous
-    notify-send -e -u low -t 2000 "$(bsp-layout get)"
+    bsp-layout previous --layouts tall,wide,cmaster,rcmaster,deck,grid,rgrid,col,row,even,tv-nw,tiled,monocle,floating
+    polybar-msg action "#bspwm.hook.1"
+    #notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-reload = pkgs.writeShellScriptBin "bsp-reload" ''
     bsp-layout reload
+    polybar-msg action "#bspwm.hook.1"
     notify-send -e -u low -t 2000 "$(bsp-layout get)"
   '';
   bsp-og = pkgs.writeShellScriptBin "bsp-og" ''
     bsp-layout remove
-    notify-send -e -u low -t 2000 "BSPWM Layout"
+    polybar-msg action "#bspwm.hook.1"
+    notify-send -e -u low -t 2000 "Layout Removed"
   '';
 
   poly-xkb-layout = pkgs.writeShellScriptBin "poly-xkb-layout" ''
     xkblayout-state print "%s"
   '';
   poly-xkb-change = pkgs.writeShellScriptBin "poly-xkb-change" ''
-    xkb-switch -n
-    #xkblayout-state set +1
-    notify-send -e -u low -t 2000 "$(poly-xkb-layout)"
+    #xkb-switch -n
+    xkblayout-state set +1
+    polybar-msg action "#keyboard-layout.hook.0"
+    #notify-send -e -u low -t 2000 "$(poly-xkb-layout)"
   '';
 
   poly-picom-status = pkgs.writeShellScriptBin "poly-picom-status" ''
@@ -140,6 +148,7 @@ let
     else
         systemctl --user restart picom.service
     fi
+    polybar-msg action "#picom.hook.1"
   '';
 
   poly-bsp-float = pkgs.writeShellScriptBin "poly-bsp-float" ''
@@ -190,6 +199,7 @@ let
         echo "Switched to Performance mode."
         notify-send -e -u critical -t 3000 "Performance Mode"
     fi
+    polybar-msg action "#pp.hook.1"
   '';
 
   poly-color-picker = pkgs.writeShellScriptBin "poly-color-picker" ''
@@ -200,21 +210,47 @@ let
     magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m4 -r30
   '';
 
+ #poly-dnd = pkgs.writeShellScriptBin "poly-dnd" ''
+ #  ICON_DND=""    # DND icon (font-awesome)
+ #  ICON_BELL=""   # Bell icon
+ #  WAITING=$(dunstctl count waiting)
+ #
+ #  if [ "$WAITING" -ne 0 ]; then
+ #      echo "$ICON_DND $WAITING"
+ #      exit 0
+ #  fi
+ #
+ #  if dunstctl is-paused | grep -q true; then
+ #      echo "$ICON_DND"
+ #  else
+ #      echo "$ICON_BELL"
+ #  fi
+ #'';
+
   poly-dnd = pkgs.writeShellScriptBin "poly-dnd" ''
     ICON_DND=""    # DND icon (font-awesome)
     ICON_BELL=""   # Bell icon
-    WAITING=$(dunstctl count waiting)
 
-    if [ "$WAITING" -ne 0 ]; then
-        echo "$ICON_DND $WAITING"
-        exit 0
-    fi
+    print_state() {
+      WAITING=$(dunstctl count waiting)
+      if [ "$WAITING" -ne 0 ]; then
+          echo "$ICON_DND $WAITING"
+          return
+      fi
+      if dunstctl is-paused | grep -q true; then
+          echo "$ICON_DND"
+      else
+          echo "$ICON_BELL"
+      fi
+    }
 
-    if dunstctl is-paused | grep -q true; then
-        echo "$ICON_DND"
-    else
-        echo "$ICON_BELL"
-    fi
+    print_state
+
+    dbus-monitor --session \
+    "interface='org.freedesktop.Notifications'" \
+    2>/dev/null | while read -r _; do
+      print_state
+    done
   '';
 
   poly-modules = pkgs.writeShellScriptBin "poly-modules" ''
@@ -324,7 +360,7 @@ in
         radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup networkspeeddown-wired networkspeedup-wired player xwindow";
+          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup player xwindow"; #networkspeeddown-wired networkspeedup-wired
           center = "xworkspaces";
           right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio date hour power";
         };
@@ -372,7 +408,7 @@ in
       "module/filesystem" = {
         format-mounted = "<label-mounted>%{O-8pt}";
         type = "internal/fs";
-        interval = 120;
+        interval = 180;
         mount-0 = "/";
         format-mounted-prefix = '' %{O-4pt}'';
         label-mounted = "%{T3}%percentage_free%%%{T-}";
@@ -422,10 +458,24 @@ in
         layout-icon-1 = "ir";
       };
 
+     #"module/keyboard-layout" = {
+     #  type = "custom/script";
+     #  exec = "xkb-switch -p";
+     #  interval = 200;
+     #  click-left = "poly-xkb-change";
+     #  double-click-left = "iotas";
+     #  click-right = "onboard";
+     #  double-click-right = "sxcs --mag-filters 'circle'";
+     #  click-middle = "poly-color-picker";
+     #  double-click-middle = "poly-magnifier";
+     #  format = "<label>%{O-8pt}";
+     #};
+
       "module/keyboard-layout" = {
-        type = "custom/script";
-        exec = "xkb-switch -p";
-        interval = 2;
+        type = "custom/ipc";
+        hook-0 = "xkb-switch -p";
+        hook-1 = "xkb-switch -p";
+        initial = "2";
         click-left = "poly-xkb-change";
         double-click-left = "iotas";
         click-right = "onboard";
@@ -438,7 +488,7 @@ in
       "module/memory" = {
         format = "<label>%{O-8pt}";
         type = "internal/memory";
-        interval = 2;
+        interval = 4;
         format-prefix = '' %{O-5pt}'';
         label = "%{T3}%percentage_used:2%%%{T-}";
       };
@@ -473,28 +523,47 @@ in
         type = "internal/date";
        #interval = 5;
         interval = 1.0;
-        date = "%l:%M:%S";
+        time = "%l:%M:%S";
+        time-alt = " %H:%M";
+       #date = "%l:%M:%S";
        #date = "%l:%M %p";
        #date = "%a-%d %l:%M %p";
-        label = "%date%";
+       #label = "%date%";
+        label = "%time%";
         label-padding = 1;
         label-font = 1;
         format-prefix = ''"󰥔%{O-5pt}"'';
       };
 
+     #"module/date" = {
+     #  type = "custom/script";
+     #  interval = 60;
+     #  format = "<label>%{O-8pt}";
+     #  exec = ''"LC_TIME="en_us_utf8" date +"%a-%d""'';
+     #  label-padding = 0;
+     #  label-font = 1;
+     #  format-prefix = ''" "'';
+     #  click-left = "gnome-calendar";
+     #  click-right = "gnome-clocks";
+     # #double-click-middle = ;
+     # #double-click-left = "timeswitch";
+     #  double-click-right = "kalarm";
+     #};
+
       "module/date" = {
-        type = "custom/script";
-        interval = 60;
+        type = "internal/date";
+        interval = 200;
         format = "<label>%{O-8pt}";
-        exec = ''"LC_TIME="en_us_utf8" date +"%a-%d""'';
+        date = "%a-%d";
+        date-alt = "%d-%m-%Y";
         label-padding = 0;
         label-font = 1;
         format-prefix = ''" "'';
-        click-left = "gnome-calendar";
-        click-right = "gnome-clocks";
+       #click-left = "gnome-calendar";
+       #click-right = "gnome-clocks";
        #double-click-middle = ;
        #double-click-left = "timeswitch";
-        double-click-right = "kalarm";
+       #double-click-right = "kalarm";
       };
 
       "module/tray" = {
@@ -505,11 +574,25 @@ in
       };
 
       # ''"echo ' ' $(uname -n) | sed 's/^\(..\)\(.\)/\1\u\2/'"''
+     #"module/apps" = {
+     #  type = "custom/script";
+     #  format = "<label>%{O-10pt}";
+     #  exec = ''"echo ' '"'';
+     # #interval = 60;
+     #  click-left = "jgmenu_run";
+     # #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
+     #  click-right = "bsp-hidden-menu";
+     #  double-click-left = "skippy-xd --paging";
+     #  click-middle = "ulauncher";
+     # #double-click-middle = "kate";
+     #  double-click-middle = "skippy-xd --toggle";
+     #  double-click-right = "kitty";
+     #};
+
       "module/apps" = {
-        type = "custom/script";
+        type = "custom/text";
         format = "<label>%{O-10pt}";
-        exec = ''"echo ' '"'';
-       #interval = 60;
+        label = " ";
         click-left = "jgmenu_run";
        #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
         click-right = "bsp-hidden-menu";
@@ -520,10 +603,22 @@ in
         double-click-right = "kitty";
       };
 
+     #"module/idle" = {
+     #  type = "custom/script";
+     #  exec = "poly-idle-inhibit --status";
+     #  interval = 2;
+     #  click-left = "poly-idle-inhibit";
+     #  format = "<label>%{O-8pt}";
+     # #lable = "%output%";
+     # #label-on = "";
+     # #label-off = "";
+     #};
+
       "module/idle" = {
-        type = "custom/script";
-        exec = "poly-idle-inhibit --status";
-        interval = 2;
+        type = "custom/ipc";
+        hook-0 = "poly-idle-inhibit --status";
+        hook-1 = "poly-idle-inhibit --status";
+        initial = "2";
         click-left = "poly-idle-inhibit";
         format = "<label>%{O-8pt}";
        #lable = "%output%";
@@ -534,19 +629,33 @@ in
       "module/notif" = {
         type = "custom/script";
         exec = "poly-dnd";
-        interval = 2;
+       #interval = 2;
+        tail = true;
        #exec = "echo ''";
         format = "<label>%{O-8pt}";
         click-left = "dunstctl history-pop";
         click-right = "poly-notif";
         double-click-left = "dunstctl close-all";
-        double-click-right = "dunstctl history-clear";
-        click-middle = "dunstctl set-paused toggle";
+        double-click-right = "dunstctl history-clear && pkill -USR1 -x poly-dnd";
+        click-middle = "dunstctl set-paused toggle && pkill -USR1 -x poly-dnd";
       };
 
+     #"module/power" = {
+     #  type = "custom/script";
+     #  exec = "echo '⏻'";
+     #  format = "%{O-11pt}<label>%{O-2pt}";
+     #  click-left = "poly-power";
+     #  click-right = "gnome-clocks";
+     #  double-click-left = "timeswitch";
+     # #double-click-right = "resources";
+     #  double-click-right = "poly-modules-rofi";
+     #  double-click-middle = "kalarm";
+     #  click-middle = "gnome-calendar";
+     #};
+
       "module/power" = {
-        type = "custom/script";
-        exec = "echo '⏻'";
+        type = "custom/text";
+        label = "⏻";
         format = "%{O-11pt}<label>%{O-2pt}";
         click-left = "poly-power";
         click-right = "gnome-clocks";
@@ -557,12 +666,25 @@ in
         click-middle = "gnome-calendar";
       };
 
+     #"module/bspwm" = {
+     #  type = "custom/script";
+     #  exec = "bsp-layout-manager";
+     #  format = "<label>%{O-8pt}";
+     # #tail = true;
+     #  interval = 2;
+     #  click-left = "bsp-next";
+     #  click-right = "bsp-prev";
+     #  click-middle = "poly-bsp-float";
+     #  double-click-left = "bsp-reload";
+     #  double-click-right = "bsp-og";
+     #};
+
       "module/bspwm" = {
-        type = "custom/script";
-        exec = "bsp-layout-manager";
+        type = "custom/ipc";
+        hook-0 = "bsp-layout-manager";
+        hook-1 = "bsp-layout-manager";
         format = "<label>%{O-8pt}";
-       #tail = true;
-        interval = 2;
+        initial = "2";
         click-left = "bsp-next";
         click-right = "bsp-prev";
         click-middle = "poly-bsp-float";
@@ -575,7 +697,7 @@ in
         interface-type = "wireless";
        #interface = "wlp3s0";
         unknown-as-up = true;
-        interval = 2.0;
+        interval = 3.0;
         label-connected = ''"%upspeed:4%%{O-5pt}"'';
         format-connected = "%{T3}<label-connected>%{O-5pt}%{T-}";
         format-connected-prefix = ''""'';
@@ -587,7 +709,7 @@ in
         interface-type = "wireless";
        #interface = "wlp3s0";
         unknown-as-up = true;
-        interval = 2.0;
+        interval = 3.0;
         label-connected = ''"%downspeed:4%%{O-8pt}"'';
         format-connected = "%{T3}<label-connected>%{O-2pt}%{T-}";
         format-connected-prefix = ''""'';
@@ -599,7 +721,7 @@ in
         interface-type = "wired";
        #interface = "wlp3s0";
         unknown-as-up = true;
-        interval = 2.0;
+        interval = 3.0;
         label-connected = ''"%upspeed:4%%{O-5pt}"'';
         format-connected = "<label-connected>%{O-5pt}";
         format-connected-prefix = ''""'';
@@ -611,18 +733,28 @@ in
         interface-type = "wired";
        #interface = "wlp3s0";
         unknown-as-up = true;
-        interval = 2.0;
+        interval = 3.0;
         label-connected = ''"%downspeed:4%%{O-8pt}"'';
         format-connected = "<label-connected>%{O-2pt}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
       };
 
+     #"module/picom" = {
+     #  type = "custom/script";
+     #  exec = "poly-picom-status";
+     #  interval = 2;
+     # #tail = true;
+     #  click-left = "poly-picom-toggle";
+     #  format = "<label>%{O-8pt}";
+     #  label = "%output%";
+     #};
+
       "module/picom" = {
-        type = "custom/script";
-        exec = "poly-picom-status";
-        interval = 2;
-       #tail = true;
+        type = "custom/ipc";
+        hook-0 = "poly-picom-status";
+        hook-1 = "poly-picom-status";
+        initial = "2";
         click-left = "poly-picom-toggle";
         format = "<label>%{O-8pt}";
         label = "%output%";
@@ -652,16 +784,25 @@ in
         format-prefix = ''"󰝚 "'';
       };
 
+     #"module/pp" = {
+     #  type = "custom/script";
+     #  exec = "poly-pp --status";
+     #  interval = 2;
+     # #tail = true;
+     #  click-left = "poly-pp";
+     #  format = "<label>%{O-6pt}";
+     # #lable = "%output%";
+     # #label-on = "";
+     # #label-off = "";
+     #};
+
       "module/pp" = {
-        type = "custom/script";
-        exec = "poly-pp --status";
-        interval = 2;
-       #tail = true;
+        type = "custom/ipc";
+        hook-0 = "poly-pp --status";
+        hook-1 = "poly-pp --status";
+        initial = "2";
         click-left = "poly-pp";
         format = "<label>%{O-6pt}";
-       #lable = "%output%";
-       #label-on = "";
-       #label-off = "";
       };
 
       "settings" = {

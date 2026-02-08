@@ -260,11 +260,11 @@ Print
 
 # Master Stack Layout
 super + ctrl + 1
-      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts tall,rtall; notify-send -e -u low -t 2000 "Master Layout"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts tall,rtall; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Master Layout"
 
 # Wide Layout
 super + ctrl + 2
-      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts wide,rwide; notify-send -e -u low -t 2000 "Master H Layout"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts wide,rwide; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Master H Layout"
 
 # Master Node Increase / Deck Cycle
 super + equal
@@ -276,83 +276,83 @@ super + shift + equal
 
 # Master Node Position Cycle
 super + shift + alt + equal
-      bsp-move-master
+      bsp-move-master; polybar-msg action "#bspwm.hook.1"
 
 # Monocle Layout
 super + ctrl + 4
-      bsp-remove-layout; bsp-cache-layout; bsp-layout set monocle; notify-send -e -u low -t 2000 "Monocle Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout set monocle; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Monocle Layout"
 
 # Center Master Layout
 super + ctrl + 3
-	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts cmaster,rcmaster; notify-send -e -u low -t 2000 "Center Master Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts cmaster,rcmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Center Master Layout"
 
 # Grid Layout
 super + ctrl + 5
-      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts grid,rgrid; notify-send -e -u low -t 2000 "Grid Layout"
+      bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts grid,rgrid; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Grid Layout"
 
 # Even Layout
 super + ctrl + 6
-      bsp-remove-layout; bsp-cache-layout; bsp-layout set even; notify-send -e -u low -t 2000 "Even Layout"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout set even; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Even Layout"
 
 # Deck Layout
 super + ctrl + 7
-	bsp-remove-layout; bsp-cache-layout; bsp-layout set deck; notify-send -e -u low -t 2000 "Deck Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout set deck; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Deck Layout"
 
 # Columns/Rows Layout
 super + ctrl + 8
-	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts col,row; notify-send -e -u low -t 2000 "Columns/Rows Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts col,row; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Columns/Rows Layout"
 
 # Double Stack Layout
 super + ctrl + 9
-	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts dmaster,rdmaster; notify-send -e -u low -t 2000 "Double Stack Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts dmaster,rdmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Double Stack Layout"
 
 # H Double Stack Layout
 super + ctrl + 0
-	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts hdmaster,rhdmaster; notify-send -e -u low -t 2000 "H Double Stack Layout"
+	bsp-remove-layout-me; bsp-cache-layout; bsp-layout next --layouts hdmaster,rhdmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "H Double Stack Layout"
 
 # Master Stack Layout (OneShot)
 super + alt + 1
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once tall; notify-send -e -u low -t 2000 "Master Layout (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once tall; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Master Layout (OneShot)"
 
 # Reverse Master Stack Layout (OneShot)
 super + ctrl + alt + 1
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once rtall; notify-send -e -u low -t 2000 "Reverese Master Layout (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rtall; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverese Master Layout (OneShot)"
 
 # Master Stack Layout (Horizontal) (OneShot)
 super + alt + 2
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once wide; notify-send -e -u low -t 2000 "Master H Layout (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once wide; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Master H Layout (OneShot)"
 
 # Reverse Master Stack Layout (Horizontal) (OneShot)
 super + ctrl + alt + 2
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once rwide; notify-send -e -u low -t 2000 "Reverese Master H Layout (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rwide; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverese Master H Layout (OneShot)"
 
 # Center Master Layout (OneShot)
 super + alt + 3
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once cmaster; notify-send -e -u low -t 2000 "Center Master Layout (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once cmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Center Master Layout (OneShot)"
 
 # Center Master (OneShot)
 super + ctrl + alt + 3
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once rcmaster; notify-send -e -u low -t 2000 "Reverse Center Master Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rcmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverse Center Master Layout"
 
 # Tiled Layout
 super + alt + 4
-      bsp-remove-layout; bsp-layout set tiled; notify-send -e -u low -t 2000 "Tile Layout"
+      bsp-remove-layout; polybar-msg action "#bspwm.hook.1"; bsp-layout set tiled; notify-send -e -u low -t 2000 "Tile Layout"
 
 # Grid Layout (OneShot)
 super + alt + 5
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once grid; notify-send -e -u low -t 2000 "Grid Layout (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once grid; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Grid Layout (OneShot)"
 
 # Reverese Grid Layout (OneShot)
 super + ctrl + alt + 5
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once rgrid; notify-send -e -u low -t 2000 "Reverese Grid (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once rgrid; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverese Grid (OneShot)"
 
 # Even Layout (OneShot)
 super + alt + 6
-      bsp-remove-layout; bsp-cache-layout; bsp-layout once even; notify-send -e -u low -t 2000 "Even (OneShot)"
+      bsp-remove-layout; bsp-cache-layout; bsp-layout once even; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Even (OneShot)"
 
 # Resize All Windows Equally
 super + ctrl + F6
-	bspc query -N -d | xargs -I % bspc node % -B; notify-send -e -u low -t 2000 "Equal Size Windows"
+	bspc query -N -d | xargs -I % bspc node % -B; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Equal Size Windows"
 
 # Resize All Windows of Parent
 super + ctrl + alt + 6
@@ -360,47 +360,47 @@ super + ctrl + alt + 6
 
 # Floating Layout
 super + ctrl + alt + 7
-	bsp-remove-layout; bsp-cache-layout; bsp-layout set floating; notify-send -e -u low -t 2000 "Floating Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout set floating; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Floating Layout"
 
 # Deck Layout (OneShot)
 super + alt + 7
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once deck; notify-send -e -u low -t 2000 "Deck (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once deck; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Deck (OneShot)"
 
 # Columns Layout (OneShot)
 super + alt + 8
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once col; notify-send -e -u low -t 2000 "Columns (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once col; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Columns (OneShot)"
 
 # Rows Layout (OneShot)
 super + ctrl + alt + 8
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once row; notify-send -e -u low -t 2000 "Rows (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once row; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Rows (OneShot)"
 
 # Double Stack Layout (OneShot)
 super + alt + 9
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once dmaster; notify-send -e -u low -t 2000 "Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once dmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Double Stack (OneShot)"
 
 # Reverese Double Stack Layout (OneShot)
 super + ctrl + alt + 9
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once rdmaster; notify-send -e -u low -t 2000 "Reverse Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rdmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverse Double Stack (OneShot)"
 
 # Double Stack (OneShot)
 super + alt + 0
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once hdmaster; notify-send -e -u low -t 2000 "H Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once hdmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "H Double Stack (OneShot)"
 
 # Horizontal Double Stack (OneShot)
 super + ctrl + alt + 0
-	bsp-remove-layout; bsp-cache-layout; bsp-layout once rhdmaster; notify-send -e -u low -t 2000 "Reverese H Double Stack (OneShot)"
+	bsp-remove-layout; bsp-cache-layout; bsp-layout once rhdmaster; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reverese H Double Stack (OneShot)"
 
 # Remove Current Layout and Restore Original
 super + ctrl + BackSpace
-	bsp-remove-layout; bsp-restore-cached-layout; notify-send -e -u low -t 2000 "Layout Restored"
+	bsp-remove-layout; bsp-restore-cached-layout; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Layout Restored"
 
 # Remove Current Layout
 super + BackSpace
-	bsp-remove-layout; notify-send -e -u low -t 2000 "Layout Removed"
+	bsp-remove-layout; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Layout Removed"
 
 # Reload Current Layout
 super + ctrl + grave
-	bsp-layout reload; notify-send -e -u low -t 2000 "Reloaded Layouts"
+	bsp-layout reload; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Reloaded Layouts"
 
 # Zoom Focused Window in Stack (OneShot)
 super + bracketright
@@ -420,7 +420,7 @@ super + alt + bracketright
 
 # Floating Layout
 super + shift + alt + f
-	bsp-remove-layout; bsp-cache-layout; bsp-float; notify-send -e -u low -t 2000 "Floating Layout"
+	bsp-remove-layout; bsp-cache-layout; bsp-float; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Floating Layout"
 
 # Simple Full Screen
 super + f
@@ -432,19 +432,19 @@ super + alt + f
 
 # Layout Menu Selection
 super + l
-      bsp-layout-rofi
+      bsp-layout-rofi; polybar-msg action "#bspwm.hook.1"
 
 # Layout Menu Selection (OneShot)
 super + alt + l
-      bsp-layout-oneshot-rofi
+      bsp-layout-oneshot-rofi; polybar-msg action "#bspwm.hook.1"
 
 # Get Current Layout
 super + shift + alt + l
-      notify-send -e -u low -t 2000 "$(bsp-layout get)"
+      notify-send -e -u low -t 2000 "$(bsp-layout get)"; polybar-msg action "#bspwm.hook.1"
 
 # Keyboard layout change
 super + q
-      xkblayout-state set +1; notify-send -e -u low -t 2000 "$(xkblayout-state print "%s")"
+      xkblayout-state set +1; polybar-msg action "#keyboard-layout.hook.1"; notify-send -e -u low -t 2000 "$(xkblayout-state print "%s")"
 
 # Reset Plank
 alt + shift + p
@@ -666,7 +666,7 @@ super + alt + equal
 super + alt + shift + ctrl + Right
     bspc desktop -f next
 
-# Next Workspace
+# Previous Workspace
 super + alt + shift + ctrl + Left
     bspc desktop -f prev
 
@@ -808,11 +808,11 @@ super + shift + alt + n
 
 # Toggle Do Not Disturb
 super + ctrl + shift + n
-    dunstctl set-paused toggle
+    dunstctl set-paused toggle && pkill -USR1 -x poly-dnd
 
 # Clear Notifications History
 super + ctrl + shift + alt + n
-    dunstctl history-clear
+    dunstctl history-clear && pkill -USR1 -x poly-dnd
 
 # Toggle Dunst (Notification) Sounds
 super + alt + n

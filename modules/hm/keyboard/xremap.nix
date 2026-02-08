@@ -42,6 +42,7 @@ let
     xset s 0 0
     xset -dpms
     xset dpms 0 0 0
+    polybar-msg action "#idle.hook.1"
     notify-send -e -u critical -t 3000 "Idle Inhibited "
   '';
 
@@ -61,6 +62,7 @@ let
     #xset dpms 2100 2400 2700
     #xset dpms 6000 6000 6000
     xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 ))
+    polybar-msg action "#idle.hook.1"
     notify-send -e -u critical -t 3000 "Lock Activated "
   '';
 
@@ -93,6 +95,7 @@ let
         systemctl --user restart picom.service
         notify-send -e -u low -t 2000 "Picom Activated"
     fi
+    polybar-msg action "#picom.hook.1"
   '';
 
   volume= "$(pamixer --get-volume)";
@@ -159,6 +162,7 @@ let
         echo "Switched to Performance mode."
         notify-send -e -u critical -t 3000 "Performance Mode"
     fi
+    polybar-msg action "#pp.hook.1"
   '';
 
   xremap-time = pkgs.writeShellScriptBin "xremap-time" ''
