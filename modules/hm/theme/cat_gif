@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+GIF=$1
+flave=$2
+NAME=$(echo "${1##*/}" | cut -d. -f1)
+DIR=$HOME/Pictures/live/"$flav"/"$NAME"
+CAT_DIR=$HOME/.cache/tmp-cat
+FF_DIR=$HOME/.cache/tmp-png
+
+rm -rf $FF_DIR && rm -rf $CAT_DIR &&
+mkdir -p $FF_DIR
+mkdir -p $CAT_DIR
+mkdir -p $DIR
+
+ffmpeg -i $GIF $FF_DIR/frame_%04d.png &&
+catppuccinifier-cli -f $flave -d $CAT_DIR $FF_DIR/*.png &&
+ffmpeg -pattern_type glob -i "$CAT_DIR/*.png" -c:v bmp $DIR/%d.bmp &&
+
+rm -rf $FF_DIR && rm -rf $CAT_DIR

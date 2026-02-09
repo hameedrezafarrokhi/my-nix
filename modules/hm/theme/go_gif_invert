@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+GIF=$1
+NAME=$(echo "${1##*/}" | cut -d. -f1)
+DIR=$HOME/Pictures/live/hm-theme/"$NAME"-inv
+GO_DIR=$HOME/.cache/tmp-go
+GO_DIR_INV=$HOME/.cache/tmp-go-inv
+FF_DIR=$HOME/.cache/tmp-png
+
+rm -rf $FF_DIR && rm -rf $GO_DIR &&
+mkdir -p $FF_DIR
+mkdir -p $GO_DIR
+mkdir -p $DIR
+mkdir -p $GO_DIR_INV
+
+ffmpeg -i $GIF $FF_DIR/frame_%04d.png &&
+gowall invert --dir "$FF_DIR" --output "$GO_DIR_INV" &&
+gowall convert --dir "$GO_DIR_INV" --output "$GO_DIR" -f "png" -t "hm-theme" &&
+ffmpeg -pattern_type glob -i "$GO_DIR/*.png" -c:v bmp $DIR/%d.bmp &&
+
+rm -rf $FF_DIR && rm -rf $GO_DIR && rm -rf $GO_DIR_INV

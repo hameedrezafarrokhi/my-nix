@@ -12,19 +12,19 @@ super + Return
 
 # Cycle to next window (like next tab)
 alt + Tab
-      bspc node -f next.local.window
+      bspc node -f next.local.window.!hidden
 
 # Cycle to previous window (like previous tab)
 alt + shift + Tab
-      bspc node -f prev.local.window
+      bspc node -f prev.local.window.!hidden
 
 # Shift to next window
 super + Tab
-      bspc node -s next.local.window
+      bspc node -s next.local.window.!hidden.!floating
 
 # Shift to previous window
 super + shift + Tab
-      bspc node -s prev.local.window
+      bspc node -s prev.local.window.!hidden.!floating
 
 # Skippy-xd Expo
 super + ctrl + Tab

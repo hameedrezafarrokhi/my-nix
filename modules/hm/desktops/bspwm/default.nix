@@ -52,8 +52,10 @@ in
             bspc monitor "$INTERNAL_MONITOR" -d 1 2 3 4 5
             bspc monitor "$EXTERNAL_MONITOR" -d 6 7 8 9 10
             bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"
+            systemctl --user start bsppoly-2.service &
           else
             bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+            systemctl --user stop bsppoly-2.service &
           fi
         fi
 
@@ -68,6 +70,8 @@ in
 
           # reorder monitors
           bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"
+
+          systemctl --user restart bsppoly-2.service &
         }
 
         monitor_remove() {
@@ -84,6 +88,8 @@ in
 
           # reorder desktops
           bspc monitor "$INTERNAL_MONITOR" -o 1 2 3 4 5 6 7 8 9 10
+
+          systemctl --user stop bsppoly-2.service &
         }
 
         if [[ $(xrandr -q | grep "${config.my.display.external.name} connected") ]]; then
@@ -115,8 +121,8 @@ in
         	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
         fi
 
-        systemctl --user start bsppoly.service &
-        systemctl --user start bsptint.service &
+        systemctl --user restart bsppoly.service &
+        systemctl --user restart bsptint.service &
         bsp-touchegg &
 
         pw-play "$HOME/.local/share/desktop-sounds/startup"

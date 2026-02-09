@@ -2,6 +2,16 @@
 
 let
 
+  polybar-start-main = pkgs.writeShellScriptBin "polybar-start-main" ''
+    MONITOR=${config.my.display.primary.name} polybar --reload ${config.my.poly-name}
+    #$HOME/.polybar_modules
+  '';
+
+  polybar-start-external = pkgs.writeShellScriptBin "polybar-start-external" ''
+    MONITOR=${config.my.display.external.name} polybar --reload ${config.my.poly-name}
+    #$HOME/.polybar_modules
+  '';
+
   polybar-start = pkgs.writeShellScriptBin "polybar-start" ''
     for m in $(polybar --list-monitors | cut -d":" -f1); do
       MONITOR=$m polybar --reload ${config.my.poly-name}
@@ -297,6 +307,8 @@ in
 
   home.packages = [
     polybar-start
+    polybar-start-external
+    polybar-start-main
     poly-idle-inhibit
     poly-notif
     poly-power
@@ -320,8 +332,8 @@ in
     poly-modules-rofi
   ];
 
-  my.poly-height = "18";
-  my.poly-name = "example";
+ #my.poly-height = "18";
+ #my.poly-name = "example";
 
   systemd.user.services.bsppoly = {
     Unit = {
@@ -333,7 +345,28 @@ in
       Type = "simple";
      #Type = "forking";
      #Environment = [ "PATH=${config.services.polybar.package}/bin:/run/wrappers/bin" ];
-      ExecStart = "${polybar-start}/bin/polybar-start";
+      ExecStart = "${polybar-start-main}/bin/polybar-start-main";
+      ExecStartPost = "${poly-modules-load}/bin/poly-modules-load";
+      Restart = "on-failure";
+      KillMode = "mixed";
+      TimeoutStopSec = 5;
+    };
+   #Install = {
+   #  WantedBy = [ "graphical-session.target" ];
+   #};
+  };
+
+  systemd.user.services.bsppoly-2 = {
+    Unit = {
+     Description = "Polybar for bspwm (Second Monitor)";
+     ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+    #X-Restart-Triggers = [ "${nix-path}/.config/polybar/config.ini" ];
+    };
+    Service = {
+      Type = "simple";
+     #Type = "forking";
+     #Environment = [ "PATH=${config.services.polybar.package}/bin:/run/wrappers/bin" ];
+      ExecStart = "${polybar-start-external}/bin/polybar-start-external";
       ExecStartPost = "${poly-modules-load}/bin/poly-modules-load";
       Restart = "on-failure";
       KillMode = "mixed";
@@ -378,9 +411,9 @@ in
 
        #monitor = "$MONITOR";
 
-        width = "100%";
-        height = "${config.my.poly-height}pt";
-        radius = 6;
+       #width = "100%";
+       #height = "${config.my.poly-height}pt";
+       #radius = 6;
        #dpi = 96;
         modules = {
           left = "apps pp memory cpu filesystem networkspeeddown networkspeedup player xwindow"; #networkspeeddown-wired networkspeedup-wired

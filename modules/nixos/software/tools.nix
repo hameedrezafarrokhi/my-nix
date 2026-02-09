@@ -116,6 +116,11 @@
   [
     mypkgs.stable.ulauncher
    #mypkgs.stable.CuboCore.coretime
+
+    (pkgs.writeShellScriptBin "color-image" ''
+      ffmpeg -f lavfi -i color=c=#$1:s=1920x1080:d=1 -frames:v 1 $1.png
+    '')
+
   ]
 
    #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe/package.nix" { })]

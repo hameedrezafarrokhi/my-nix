@@ -7,6 +7,8 @@
     wallpaper = "${config.home.homeDirectory}/Pictures/Wallpapers/astronaut-${flavor}.png";
     wallpaper-alt = "file:///home/${config.home.username}/Pictures/Wallpapers/astronaut-${flavor}.png";
 
+    gowall-name = "${nameC}-${flavorC}";
+
     gtk-theme = "catppuccin-${flavor}-${accent}-standard";
     gtk-decoration = ":minimize,maximize,close";
     gtk-package = myGTKCatppuccin;
@@ -161,6 +163,7 @@
     MonoRofi = "${MonoSpace} ${toString MonoSize}";
     MonoSt = "${MonoSpace}:style:Regular:pixelsize=${toString MonoSize}";
     MonoURxvt = "xft:${MonoSpace}:size=${toString MonoSize}";
+    xmenu-font = "${Sans}:pixelsize=${toString XmenuSize}:antialias=true:style=Bold,${MonoAlt2}";
     rofiMenuFont = "${MonoSpace} 12";
     dunstFont = "${MonoSpace} ${toString MonoSize}";
     MonoOnboard = "${MonoAlt} bold";
@@ -188,6 +191,7 @@
     PolyWeight = "medium";
     PolyScale = 3;
     PolyScaleSmall = 1;
+    XmenuSize = 14;
 
     sound = "ocean";
 
@@ -280,6 +284,8 @@
     starship5 =  "#06969A";                               wlogout-base = "rgba(36, 39, 58, 0.90)";
     starship6 =  "#33658A";                               wlogout-button = "rgb(53, 57, 75)"; # 20% Overlay2, 80% mantle
 
+    name = "catppuccin";
+    nameC = "Catppuccin";
     flavor = "macchiato";
     flavorC = "Macchiato";
     accent = "sapphire";
@@ -320,6 +326,42 @@
       size = "standard";
      #tweaks = [ "black" ];
     };
+
+    cat-gif = pkgs.writeShellScriptBin "cat-gif" ''
+      ${builtins.readFile ./cat_gif}
+    '';
+    cat-gif-theme = pkgs.writeShellScriptBin "cat-gif-theme" ''
+      ${cat-gif}/bin/cat-gif $1 ${flavor}
+    '';
+    cat-pic = pkgs.writeShellScriptBin "cat-pic" ''
+      ${builtins.readFile ./cat_pic}
+    '';
+    cat-pic-theme = pkgs.writeShellScriptBin "cat-pic-theme" ''
+      ${cat-gif}/bin/cat-pic $1 ${flavor}
+    '';
+    cat-pic-batch = pkgs.writeShellScriptBin "cat-pic-batch" ''
+      ${builtins.readFile ./cat_pic}
+    '';
+    cat-pic-batch-theme = pkgs.writeShellScriptBin "cat-pic-batch-theme" ''
+      ${cat-gif}/bin/cat-pic $1 ${flavor}
+    '';
+
+    go-gif = pkgs.writeShellScriptBin "go-gif" ''
+      ${builtins.readFile ./go_gif}
+    '';
+    go-gif-invert = pkgs.writeShellScriptBin "go-gif-invert" ''
+      ${builtins.readFile ./go_gif_invert}
+    '';
+    go-pic = pkgs.writeShellScriptBin "go-pic" ''
+      DIR=$HOME/Pictures/my-wallpapers/gowall/"${gowall-name}"
+      mkdir -p "$DIR"
+      gowall convert "$1" "$DIR" -f "png" -t "hm-theme"
+    '';
+    go-pic-batch = pkgs.writeShellScriptBin "go-pic-batch" ''
+      DIR=$HOME/Pictures/my-wallpapers/gowall/"${gowall-name}"
+      mkdir -p "$DIR"
+      gowall convert --dir "$1" --output "$DIR" -f "png" -t "hm-theme"
+    '';
 
    #fehw = pkgs.writeShellScriptBin "fehw" ''
    #  if [ -f "$HOME/.fehbg" ]; then
@@ -581,6 +623,18 @@
 
     pkgs.catppuccinifier-cli
     pkgs.catppuccin-qt5ct
+   #pkgs.iconpack-jade
+
+    cat-gif
+    cat-gif-theme
+    cat-pic
+    cat-pic-theme
+    cat-pic-batch
+    cat-pic-batch-theme
+    go-pic
+    go-pic-batch
+    go-gif
+    go-gif-invert
 
     global-package
 
@@ -729,6 +783,7 @@
     "*color7" =       Subtext1;
     "*color15" =      Subtext0;
     # TODO add 16-21 colors
+
     "Xft.antialias" = 1;
     "Xft.hinting" = 1;
     "Xft.autohint" = 0;
@@ -736,15 +791,18 @@
     "Xft.rgba" = "rgb";
     "Xft.lcdfilter" = "lcddefault";
    #"Xft.dpi" = 140;
+
     "XTerm*faceName" = MonoSpace;
     "XTerm*faceSize" = MonoSize;
     "URxvt.font" = MonoURxvt;
-    "dmenu.selbackground" = Base;
-    "dmenu.selforeground" = Text;
+
     "Sxiv.foreground" = Text;
     "Sxiv.background" = Base;
     "Sxiv.font" = Mono-X;
    #"*background" = "[background_opacity]#fafafa";
+
+    "dmenu.selbackground" = Base;
+    "dmenu.selforeground" = Text;
    #"st.font" = MonoSt;
    #"st.alpha" = 0.80; # For Transparent 0.60
    #"st.borderpx" = 10; # inner border
@@ -754,6 +812,21 @@
    #dwm.selfgcolor: #FAFAFA
    #dwm.selbordercolor: #B48EAD
    #dwm.selbgcolor: #81A1C1
+
+    "xmenu.font" = xmenu-font;
+    "xmenu.background" = CBase;
+    "xmenu.foreground" = Text;
+    "xmenu.selbackground" = CAccent;
+    "xmenu.selforeground" = CBase;
+    "xmenu.separator" = CSubtext1;
+    "xmenu.border" = CAccent;
+    "xmenu.borderWidth" = 3;
+    "xmenu.separatorWidth" = 3;
+   #"xmenu.maxItems" = ;
+    "xmenu.alignment" = "left";
+    "xmenu.gap" = 6;
+   #"xmenu.width" = ; # min width
+   #"xmenu.height" = ; # height
   };
  #xsession = lib.mkIf config.xsession.enable {   # DEPRICATED
  #  pointerCursor = {
@@ -2934,6 +3007,10 @@
    #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };
   };
 
+ #my.poly-height = "18";
+  my.poly-height = "22";
+  my.poly-name = "example";
+
   services = {
     polybar = lib.mkIf config.services.polybar.enable {
       settings = {
@@ -2947,11 +3024,19 @@
        #  disabled = "#4e5b55";
        #  border = "#0f2923";
        #};
-        "bar/example" = {
+        "bar/${config.my.poly-name}" = {
           background = Base;
           foreground = Text;
-          line-size = "3pt";
-          border-size = "4pt";
+         #height = "${config.my.poly-height}pt";
+          height = "3.8%";
+          offset-y = "1%";
+          offset-x = "0.5%";
+          line-size = "2pt";
+          line-color = Accent;
+          width = "99%";
+          radius = 6;
+         #border-size = "4pt";
+          border-size = "0pt";
           border-color = Mantle;
           padding-left = 2;
           padding-right = 2;
@@ -2975,8 +3060,8 @@
               foreground = Accent;
              #background = Accent;
               background = Base;
-             #underline= Blue;
-              underline= Base;
+              underline= Accent;
+             #underline= Base;
             };
             urgent.background = Red;
             empty.foreground = Mantle;
@@ -3396,6 +3481,43 @@
         accent = catppuccinifier-accC;
         show_titlebar = false;
       };
+    };
+
+    gowall = {
+      target = "gowall/config.yml";
+      text = ''
+        themes:
+          - name: "hm-theme"
+            colors:
+              - "${CRosewater}"
+              - "${CFlamingo}"
+              - "${COrange}"
+              - "${CPink}"
+              - "${CMauve}"
+              - "${CRed}"
+              - "${CMaroon}"
+              - "${CPeach}"
+              - "${CYellow}"
+              - "${CGreen}"
+              - "${CTeal}"
+              - "${CSky}"
+              - "${CSapphire}"
+              - "${CBlue}"
+              - "${CLavender}"
+              - "${CBrown}"
+              - "${CText}"
+              - "${CSubtext1}"
+              - "${CSubtext0}"
+              - "${COverlay2}"
+              - "${COverlay1}"
+              - "${COverlay0}"
+              - "${CSurface2}"
+              - "${CSurface1}"
+              - "${CSurface0}"
+              - "${CBase}"
+              - "${CMantle}"
+              - "${CCrust}"
+      '';
     };
 
    #"obs-studio/themes/${obs-theme}.obt".source = obs-obt-source;
