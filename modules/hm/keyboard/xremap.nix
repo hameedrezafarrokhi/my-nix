@@ -195,6 +195,10 @@ let
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
 
+  xremap-pr-count = pkgs.writeShellScriptBin "xremap-pr-count" ''
+    notify-send -e -u critical -t 3000 '  Process Count' "$(bash -c 'expr $(ps auxf | grep -v ]$ | wc -l )')"
+  '';
+
 in
 
 { config = lib.mkIf (config.my.keyboard.xremap.enable) {
@@ -222,6 +226,7 @@ in
     xremap-weather
     xremap-xsession-load
     xremap-xsession-save
+    xremap-pr-count
    #vlc-env
   ];
 
@@ -492,6 +497,10 @@ in
                       remap:
                             KEY_SEMICOLON:
                               launch: [ "grim-slurp" ]
+                    c:
+                      remap:
+                            c:
+                              launch: [ "xremap-pr-count" ]
 
 
 

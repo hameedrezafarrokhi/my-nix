@@ -484,7 +484,7 @@
             bspc config focused_border_color "$color"
 
         done < <(bspc subscribe node_focus node_state)
-      } &
+      }
     '';
 
     bsp-tabbed = pkgs.callPackage ../desktops/bspwm/tabbed/bsp-tabbed.nix {
@@ -551,6 +551,12 @@
     };
     bsptab = pkgs.callPackage ../desktops/bspwm/tabbed/bsptab.nix { tabbed = bsp-tabbed; };
 
+    bsp-default-icon = pkgs.writeShellScriptBin "bsp-default-icon" ''
+      bspc query -D | while read name; do
+        bspc desktop "$name" -n ""
+      done
+    '';
+
     dunst-sound = pkgs.writeShellScriptBin "dunst-sound" ''
       NORMAL="$HOME/.local/share/desktop-sounds/notif"
       CRIT="$HOME/.local/share/desktop-sounds/notif-critical"
@@ -600,6 +606,7 @@
     bsp-border-color
     bsp-app-border
     bsp-tabbed
+    bsp-default-icon
     bsptab
 
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
@@ -4277,6 +4284,21 @@
  #    cp -rn "${pkgs.noto-fonts-color-emoji}/share/fonts/noto" "$HOME/.local/share/fonts/noto-fonts-color-emoji"
  #  '';
  #};
+
+  systemd.user.services.bspborder = {
+    Unit = {
+     Description = "bspwm per app border color";
+     ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${bsp-app-border}/bin/bsp-app-border";
+      Restart = "on-failure";
+    };
+   #Install = {
+   #  WantedBy = [ "graphical-session.target" ];
+   #};
+  };
 
   catppuccin = {
     enable = true;

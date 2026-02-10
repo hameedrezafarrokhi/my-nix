@@ -107,15 +107,31 @@ in
       # polybar -c ~/.config/bspwm/polybar/config.ini &
       extraConfig = ''
 
-        #bspc rule -a '*' desktop='^10$' state=floating
+        rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
-        #bspc subscribe node_add | while read -r event; do
-        #    node_id=$(echo "$event" | cut -d' ' -f5)
-        #    desktop=$(bspc query -D -d focused --names)
-        #    if [ "$desktop" = "10" ]; then
-        #        bspc node "$node_id" -t floating
-        #    fi
-        #done &
+        if hash sxhkd >/dev/null 2>&1; then
+        	  pkill sxhkd
+        	  sleep 0.5
+        	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
+        fi
+
+        systemctl --user start bsppoly.service &
+        systemctl --user start bsptint.service &
+        bsp-touchegg &
+
+        pw-play "$HOME/.local/share/desktop-sounds/startup"
+
+        if [ -f "$HOME/.bsp_conf" ]; then
+            "$HOME/.bsp_conf"
+        fi
+        if [ -f "$HOME/.bsp_conf_color" ]; then
+            "$HOME/.bsp_conf_color"
+        fi
+        if [ -f "$HOME/.config/bspwm/bsp-power-state" ]; then
+            bsp-power-man $(cat $HOME/.config/bspwm/bsp-power-state)
+        else
+            bsp-power-man manual
+        fi
 
         bspc rule -a Tilda state=floating # rectangle=0x0+0+0
         bspc rule -a ulauncher border=off
@@ -131,148 +147,7 @@ in
         bspc rule -a kruler border=off
         bspc rule -a kitty-picker state=floating
         bspc rule -a tetris state=floating rectangle=370x450+500+150
-
-        # zoom apps float and size (xzoom and magnify)
-        bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300
-
-        #bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        #bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        #bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        #bspc rule -a Dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
-        #bspc rule -a dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
-        #bspc rule -a Dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
-
-        #bspc subscribe node_add | while read -r _; do
-        #   xdo raise -N dockbarx &
-        #done
-
-        if hash sxhkd >/dev/null 2>&1; then
-        	  pkill sxhkd
-        	  sleep 0.5
-        	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
-        fi
-
-        if hash polybar >/dev/null 2>&1; then
-        	  pkill polybar
-        	  sleep 1.5
-        	  #polybar ${config.my.poly-name} &
-              polybar-start
-        fi
-
-        #$HOME/.polybar_modules
-
-        #if hash conky >/dev/null 2>&1; then
-        #	  pkill conky
-        #	  sleep 0.5
-        #	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
-        #fi
-
-        #if hash plank >/dev/null 2>&1; then
-        #	  pkill plank
-        #	  sleep 0.5
-        #	  plank &
-        #fi
-
-        #if hash dockx >/dev/null 2>&1; then
-        #	  pkill dockx
-        #	  sleep 0.5
-        #	  dockx &
-        #fi
-
-        if hash tint2 >/dev/null 2>&1; then
-        	  pkill tint2
-        	  sleep 0.5
-        	  #tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
-              tint2 &
-        fi
-
-        #if hash skippy-xd >/dev/null 2>&1; then
-        #	  skippy-xd --stop-daemon
-        #	  sleep 0.5
-        #	  skippy-xd --start-daemon &
-        #fi
-
-         pw-play "$HOME/.local/share/desktop-sounds/startup"
-
-         # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
-        #pgrep bspswallow || bspswallow &
-
-         # Generic Swallower (Doesnt Work)
-        #export PIDSWALLOW_SWALLOW_COMMAND='bspc node $pwid --flag hidden=on'
-        #export PIDSWALLOW_VOMIT_COMMAND='bspc node $pwid --flag hidden=off'
-        ##export PIDSWALLOW_PREGLUE_HOOK='bspc query -N -n $pwid.floating >/dev/null && bspc node $cwid --state floating'
-        #pgrep -fl 'pidswallow -gl' || pidswallow -gl &
-
-         # Manual Swallowe With Include List (Set Env Vars Below)
-        #export SWALLOW_APPLICATIONS="sxiv|zathura|mpv"
-        #export SWALLOW_TERMINALS="xterm|gnome-terminal"
-        #bspwmswallow &
-
-        #bspc subscribe node_add | while read -r _; do
-        #   xdo raise -N Plank &
-        #done
-        #bspc subscribe node_add | while read -r _; do
-        #   xdo raise -N dockx &
-        #done &
-        #bspc subscribe node_add | while read -r _; do
-        #   xdo raise -N Dockx &
-        #done &
-
-        bsp-touchegg &
-
-        #rm -f $HOME/.config/touchegg/touchegg.conf
-        #cp ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
-        #if hash touchegg >/dev/null 2>&1; then
-        #	  pkill touchegg
-        #	  sleep 0.5
-        #	  touchegg --daemon &
-        #fi
-
-        rm -f ~/.cache/bspwm_zoom_last_1
-        rm -f ~/.cache/bspwm_zoom_last_2
-        rm -f ~/.cache/bspwm_zoom_last_3
-
-        rm -f "$HOME/.cache/bsp"* 2>/dev/null
-
-        if [ -f "$HOME/.bsp_conf" ]; then
-            "$HOME/.bsp_conf"
-        fi
-        if [ -f "$HOME/.bsp_conf_color" ]; then
-            "$HOME/.bsp_conf_color"
-        fi
-
-        pkill bsp-icon-bar
-        bsp-icon-bar &
-
-        pkill poly-bsp-lay
-        poly-bsp-lay &
-
-        pkill -f "live-bg-auto"
-        sleep 0.5
-        if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
-            $HOME/.config/bspwm/bsp-live-auto-pause
-        fi
-
-        pkill -f "bsp-app-border"
-        sleep 0.5
-        if [ -f "$HOME/.config/bspwm/bsp-auto-color" ]; then
-            $HOME/.config/bspwm/bsp-auto-color
-        fi
-
-        pkill -f "bsp-de-sounds"
-        sleep 0.5
-        if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
-            $HOME/.config/bspwm/bsp-sounds-toggle
-        fi
-
-        #pkill -f "bsp-abhide"
-        #pkill -f "bsp-s-autohide"
-        #sleep 0.5
-        #if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
-        #  bsp-s-autohide
-        #  sleep 0.5
-        #  bsp-s-autohide
-        #fi
+        bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300   # zoom apps float and size (xzoom and magnify)
 
       '';
 
@@ -356,30 +231,15 @@ in
       pkgs.skippy-xd
       pkgs.xorg.xprop
 
-
      #pkgs.bsp-layout
       bsp-layout
-
      #pkgs.touchegg
      #pkgs.tabbed
-
      #bsp-tabbed
      #bsptab
-
-      bsp-layout-ext
-
+     #bsp-layout-ext
      #pkgs.tabbed
 
-     #(pkgs.bsp-layout.overrideAttrs (old: {
-     #  myLayouts = ./layouts;   # your extra *.sh files
-     #  postInstall = old.postInstall or "" + ''
-     #    cp -v $myLayouts/*.sh $out/lib/bsp-layout/layouts/
-     #    chmod 755 $out/lib/bsp-layout/layouts/*.sh
-     #    for f in $out/lib/bsp-layout/layouts/*.sh; do
-     #      substituteInPlace "$f" --replace 'bc ' '${pkgs.bc}/bin/bc '
-     #    done
-     #  '';
-     #}))
     ];
 
     xdg.configFile."bsp-layout/layoutrc".text = ''
@@ -429,7 +289,6 @@ in
    #    ExecStart = ''/bin/bash -c "bsp-conf && bsp-conf-color"'';
    #  };
    #};
-   #
    #systemd.user.timers.bsp-conf = {
    #  Unit = {
    #    Description = "Bspwm Config Save Every 20min";
@@ -446,41 +305,146 @@ in
    #  };
    #};
 
-   #systemd.user.services.plank-bspwm = {
-   #  Unit = {
-   #    Description = "Plank for BSPWM";
-   #    After = "xdg-desktop-autostart.target";
-   #   #BindsTo = "xdg-desktop-autostart.target";
-   #    PartOf = [ "tray.target" ];
-   #  };
-   #
-   #  Service = {
-   #    ExecStart = "${bsp-plank}/bin/bsp-plank";
-   #    Restart = "on-failure";
-   #   #ExecCondition = "${bsp-plank}/bin/bsp-plank";
-   #  };
-   #
-   #  Install = {
-   #    WantedBy = [ "tray.target" ];
-   #  };
-   #};
-
-   #systemd.user.services.touchegg-bsp = {
-   #  Unit = {
-   #   Description = "Touchegg BSPWM Daemon";
-   #   ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
-   #  };
-   #  Service = {
-   #    Type = "simple";
-   #    ExecStart = "${pkgs.touchegg}/bin/touchegg --daemon";
-   #    Restart = "on-failure";
-	 ##xecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER bspwm'";
-   #  };
-   #  Install = {
-   #    WantedBy = [ "graphical-session.target" ];
-   #  };
-   #};
-
   };
 
 }
+
+
+
+# junk config
+
+
+        #bspc subscribe node_add | while read -r event; do
+        #    node_id=$(echo "$event" | cut -d' ' -f5)
+        #    desktop=$(bspc query -D -d focused --names)
+        #    if [ "$desktop" = "10" ]; then
+        #        bspc node "$node_id" -t floating
+        #    fi
+        #done &
+
+
+        #bspc rule -a plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Plank layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Dockx layer=top    # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+        #bspc rule -a Dockbarx layer=top # manage=on border=off  # locked=on focus=off follow=off
+
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N dockbarx &
+        #done
+
+        #rm -f ~/.cache/bspwm_zoom_last_1
+        #rm -f ~/.cache/bspwm_zoom_last_2
+        #rm -f ~/.cache/bspwm_zoom_last_3
+
+
+        #if hash polybar >/dev/null 2>&1; then
+        #	  pkill polybar
+        #	  sleep 1.5
+        #	  #polybar ${config.my.poly-name} &
+        #     polybar-start
+        #fi
+
+        #$HOME/.polybar_modules
+
+        #if hash conky >/dev/null 2>&1; then
+        #	  pkill conky
+        #	  sleep 0.5
+        #	  conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+        #fi
+
+        #if hash plank >/dev/null 2>&1; then
+        #	  pkill plank
+        #	  sleep 0.5
+        #	  plank &
+        #fi
+
+        #if hash dockx >/dev/null 2>&1; then
+        #	  pkill dockx
+        #	  sleep 0.5
+        #	  dockx &
+        #fi
+
+        #if hash tint2 >/dev/null 2>&1; then
+        #	  pkill tint2
+        #	  sleep 0.5
+        #	  #tint2 -c ${nix-path}/modules/hm/bar-shell/tint2/dock/liness/tint.tint2rc &
+        #     tint2 &
+        #fi
+
+        #if hash skippy-xd >/dev/null 2>&1; then
+        #	  skippy-xd --stop-daemon
+        #	  sleep 0.5
+        #	  skippy-xd --start-daemon &
+        #fi
+
+
+         # Auto Swallower With Exclude List (Set With XDG ConfigFile in bsp-scripts.nix)
+        #pgrep bspswallow || bspswallow &
+
+         # Generic Swallower (Doesnt Work)
+        #export PIDSWALLOW_SWALLOW_COMMAND='bspc node $pwid --flag hidden=on'
+        #export PIDSWALLOW_VOMIT_COMMAND='bspc node $pwid --flag hidden=off'
+        ##export PIDSWALLOW_PREGLUE_HOOK='bspc query -N -n $pwid.floating >/dev/null && bspc node $cwid --state floating'
+        #pgrep -fl 'pidswallow -gl' || pidswallow -gl &
+
+         # Manual Swallowe With Include List (Set Env Vars Below)
+        #export SWALLOW_APPLICATIONS="sxiv|zathura|mpv"
+        #export SWALLOW_TERMINALS="xterm|gnome-terminal"
+        #bspwmswallow &
+
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N Plank &
+        #done
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N dockx &
+        #done &
+        #bspc subscribe node_add | while read -r _; do
+        #   xdo raise -N Dockx &
+        #done &
+
+
+        #rm -f $HOME/.config/touchegg/touchegg.conf
+        #cp ${nix-path}/modules/hm/desktops/bspwm/touchegg.conf $HOME/.config/touchegg/touchegg.conf
+        #if hash touchegg >/dev/null 2>&1; then
+        #	  pkill touchegg
+        #	  sleep 0.5
+        #	  touchegg --daemon &
+        #fi
+
+        #bsp-subscribtions
+
+        #pkill bsp-icon-bar
+        #bsp-icon-bar &
+
+        #pkill poly-bsp-lay
+        #poly-bsp-lay &
+
+        #pkill -f "live-bg-auto"
+        #sleep 0.5
+        #if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
+        #    $HOME/.config/bspwm/bsp-live-auto-pause
+        #fi
+
+        #pkill -f "bsp-app-border"
+        #sleep 0.5
+        #if [ -f "$HOME/.config/bspwm/bsp-auto-color" ]; then
+        #    $HOME/.config/bspwm/bsp-auto-color
+        #fi
+
+        #pkill -f "bsp-de-sounds"
+        #sleep 0.5
+        #if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
+        #    $HOME/.config/bspwm/bsp-sounds-toggle
+        #fi
+
+        #pkill -f "bsp-abhide"
+        #pkill -f "bsp-s-autohide"
+        #sleep 0.5
+        #if [ -f "$HOME/.config/bspwm/bsp-autohide" ]; then
+        #  bsp-s-autohide
+        #  sleep 0.5
+        #  bsp-s-autohide
+        #fi
+

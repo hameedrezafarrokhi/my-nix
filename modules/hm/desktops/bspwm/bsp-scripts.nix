@@ -132,156 +132,236 @@ let
     esac
   '';
 
+ #bsp-bar-hide = pkgs.writeShellScriptBin "bsp-bar-hide" ''
+ #  TOP_HEIGHT=${config.my.poly-height}
+ #  BOTTOM_HEIGHT=15
+ #  BAR_NAME="${config.my.poly-name}"
+ #  gaps="$(bspc config right_padding)"
+ #
+ #  if pgrep polybar > /dev/null; then
+ #      bsp-gaps-bar-cache
+ #      #bsp-gaps-bar-cache
+ #      pkill polybar
+ #      #pkill tint2
+ #      #pkill plank
+ #      pkill dockx
+ #      #pkill conky
+ #      "$HOME/.bsp_gaps_bar_cache"
+ #      node_state=$(bspc query -T -n $(bspc query -N -n) | grep -q '"state":"fullscreen"' && echo yes)
+ #
+ #      if [[ $gaps -eq 0 ]]; then
+ #        bspc config top_padding 0
+ #        if pgrep -x .tint2-wrapped  >/dev/null; then
+ #            pkill tint2
+ #        fi
+ #        bspc config bottom_padding 0
+ #      else
+ #        if [ "$node_state" != "yes" ]; then
+ #          bspc config top_padding $(bspc config bottom_padding)
+ #        fi
+ #
+ #        if pgrep -x .tint2-wrapped  >/dev/null; then
+ #            pkill tint2
+ #       #    bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+ #        fi
+ #      fi
+ #
+ #  else
+ #      "$HOME/.bsp_gaps_bar_cache"
+ #      #bspc config top_padding $(( $(bspc config top_padding) + $TOP_HEIGHT ))
+ #
+ #      if pgrep -x .tint2-wrapped  >/dev/null; then
+ #          echo ""
+ #      else
+ #          #bspc config bottom_padding $(( $(bspc config bottom_padding) + $BOTTOM_HEIGHT ))
+ #          tint2 &
+ #      fi
+ #
+ #      polybar-start &
+ #      #$HOME/.polybar_modules
+ #      #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
+ #      #plank &
+ #      #dockx &
+ #  fi
+ #'';
   bsp-bar-hide = pkgs.writeShellScriptBin "bsp-bar-hide" ''
-    TOP_HEIGHT=${config.my.poly-height}
-    BOTTOM_HEIGHT=15
-    BAR_NAME="${config.my.poly-name}"
-    gaps="$(bspc config right_padding)"
 
-    if pgrep polybar > /dev/null; then
+    if systemctl --user is-active --quiet bsppoly.service; then
+      if [ -f "$HOME/.config/bspwm/poly-state" ]; then
+        $HOME/.bsp_gaps_bar_cache
+        polybar-msg cmd show
+        rm -f "$HOME/.config/bspwm/poly-state"
+        if [ -f "$HOME/.config/bspwm/tint-state" ]; then
+          systemctl --user restart bsptint.service
+          rm -f "$HOME/.config/bspwm/tint-state"
+        fi
+      else
         bsp-gaps-bar-cache
-        #bsp-gaps-bar-cache
-        pkill polybar
-        #pkill tint2
-        #pkill plank
-        pkill dockx
-        #pkill conky
-        "$HOME/.bsp_gaps_bar_cache"
-        node_state=$(bspc query -T -n $(bspc query -N -n) | grep -q '"state":"fullscreen"' && echo yes)
-
-        if [[ $gaps -eq 0 ]]; then
-          bspc config top_padding 0
-          if pgrep -x .tint2-wrapped  >/dev/null; then
-              pkill tint2
-          fi
-          bspc config bottom_padding 0
-        else
-          if [ "$node_state" != "yes" ]; then
-            bspc config top_padding $(bspc config bottom_padding)
-          fi
-
-          if pgrep -x .tint2-wrapped  >/dev/null; then
-              pkill tint2
-         #    bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
-          fi
+        bsp-poly-cache
+        bspc config top_padding $(bspc config right_padding)
+        polybar-msg cmd hide
+        touch "$HOME/.config/bspwm/poly-state"
+        if systemctl --user is-active --quiet bsptint.service; then
+            bsp-tint-cache
+            systemctl --user stop bsptint.service
+            bspc config bottom_padding $(bspc config right_padding)
+            touch "$HOME/.config/bspwm/tint-state"
         fi
-
-    else
-        "$HOME/.bsp_gaps_bar_cache"
-        #bspc config top_padding $(( $(bspc config top_padding) + $TOP_HEIGHT ))
-
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-            echo ""
-        else
-            #bspc config bottom_padding $(( $(bspc config bottom_padding) + $BOTTOM_HEIGHT ))
-            tint2 &
-        fi
-
-        polybar-start &
-        #$HOME/.polybar_modules
-        #conky -c "${nix-path}/modules/hm/bar-shell/conky/Deneb/Deneb.conf" &
-        #plank &
-        #dockx &
+      fi
     fi
+
   '';
 
+ #bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
+ #  BOTTOM_HEIGHT=15
+ #  TOP_HEIGHT=$(( ${config.my.poly-height} * 2 ))
+ #  bsp-gaps-bar-cache
+ #  gaps="$(bspc config right_padding)"
+ #  if pgrep -x .tint2-wrapped  >/dev/null; then
+ #   #echo $gaps
+ #    if [[ $gaps -eq 0 ]]; then
+ #      if pgrep polybar > /dev/null; then
+ #        pkill .tint2-wrapped
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+ #        bspc config top_padding $TOP_HEIGHT
+ #      else
+ #        pkill .tint2-wrapped
+ #       #"$HOME/.bsp_gaps_bar_cache"
+ #        bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+ #        bspc config top_padding 0
+ #      fi
+ #    else
+ #      if pgrep polybar > /dev/null; then
+ #        pkill .tint2-wrapped
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #       #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+ #      else
+ #        pkill .tint2-wrapped
+ #       #"$HOME/.bsp_gaps_bar_cache"
+ #       #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
+ #      fi
+ #    fi
+ #  else
+ #    tint2 &
+ #    if [[ $gaps -eq 0 ]]; then
+ #      POLY_TOP=$(bspc config top_padding)
+ #      if pgrep polybar > /dev/null; then
+ #        bspc config top_padding $TOP_HEIGHT
+ #       #"$HOME/.bsp_gaps_bar_cache"
+ #        echo "waaaaat"
+ #      else
+ #        bspc confid top_padding 0
+ #      fi
+ #    else
+ #      if pgrep polybar > /dev/null; then
+ #        echo $gaps
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #      else
+ #        bspc confid top_padding $(bspc confid bottom_padding)
+ #      fi
+ #    fi
+ #  fi
+ #'';
   bsp-tint2-hide = pkgs.writeShellScriptBin "bsp-tint2-hide" ''
-    BOTTOM_HEIGHT=15
-    TOP_HEIGHT=$(( ${config.my.poly-height} * 2 ))
-    bsp-gaps-bar-cache
-    gaps="$(bspc config right_padding)"
-    if pgrep -x .tint2-wrapped  >/dev/null; then
-     #echo $gaps
-      if [[ $gaps -eq 0 ]]; then
-        if pgrep polybar > /dev/null; then
-          pkill .tint2-wrapped
-          "$HOME/.bsp_gaps_bar_cache"
-          bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
-          bspc config top_padding $TOP_HEIGHT
-        else
-          pkill .tint2-wrapped
-         #"$HOME/.bsp_gaps_bar_cache"
-          bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
-          bspc config top_padding 0
-        fi
-      else
-        if pgrep polybar > /dev/null; then
-          pkill .tint2-wrapped
-          "$HOME/.bsp_gaps_bar_cache"
-         #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
-        else
-          pkill .tint2-wrapped
-         #"$HOME/.bsp_gaps_bar_cache"
-         #bspc config bottom_padding $(( $(bspc config bottom_padding) - $BOTTOM_HEIGHT ))
-        fi
-      fi
+
+    BOTOM_PADING=$(bspc config bottom_padding)
+    GAPS=$(bspc config window_gap)
+    TINT_HEIGHT=18
+    if systemctl --user is-active --quiet bsptint.service; then
+      bsp-tint-cache
+      #bsp-gaps-bar-cache
+      systemctl --user stop bsptint.service
+      bspc config bottom_padding $(bspc config right_padding)
+      touch "$HOME/.config/bspwm/tint-state"
     else
-      tint2 &
-      if [[ $gaps -eq 0 ]]; then
-        POLY_TOP=$(bspc config top_padding)
-        if pgrep polybar > /dev/null; then
-          bspc config top_padding $TOP_HEIGHT
-         #"$HOME/.bsp_gaps_bar_cache"
-          echo "waaaaat"
-        else
-          bspc confid top_padding 0
-        fi
+      systemctl --user restart bsptint.service
+      if (( BOTOM_PADING < TINT_HEIGHT )); then
+        bspc config bottom_padding $(( $(bspc config bottom_padding) + $TINT_HEIGHT ))
+        systemctl --user restart bsptint.service
       else
-        if pgrep polybar > /dev/null; then
-          echo $gaps
-          "$HOME/.bsp_gaps_bar_cache"
-        else
-          bspc confid top_padding $(bspc confid bottom_padding)
-        fi
+        #$HOME/.bsp_gaps_bar_cache
+        $HOME/.bsp_tint_cache
+        systemctl --user restart bsptint.service
+        rm -f $HOME/.bsp_tint_cache
       fi
     fi
+
   '';
 
+ #bsp-poly-hide = pkgs.writeShellScriptBin "bsp-poly-hide" ''
+ #  gaps="$(bspc config right_padding)"
+ #  #bsp-gaps-bar-cache
+ #  if [[ $gaps -eq 0 ]]; then
+ #    bsp-gaps-bar-cache
+ #    if pgrep polybar > /dev/null; then
+ #      if pgrep -x .tint2-wrapped  >/dev/null; then
+ #        pkill polybar
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        bspc config top_padding 0
+ #      else
+ #        pkill polybar
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        bspc config top_padding 0
+ #        bspc config bottom_padding 0
+ #      fi
+ #    else
+ #      if pgrep -x .tint2-wrapped  >/dev/null; then
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        polybar-start &
+ #        #$HOME/.polybar_modules
+ #      else
+ #        polybar-start &
+ #        #$HOME/.polybar_modules
+ #        bspc config bottom_padding 0
+ #      fi
+ #    fi
+ #  else
+ #    if pgrep polybar > /dev/null; then
+ #      bsp-gaps-bar-cache
+ #      if pgrep -x .tint2-wrapped  >/dev/null; then
+ #        pkill polybar
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        bspc config top_padding $(bspc config bottom_padding)
+ #      else
+ #        pkill polybar
+ #        "$HOME/.bsp_gaps_bar_cache"
+ #        bspc config top_padding $(bspc config bottom_padding)
+ #      fi
+ #    else
+ #      "$HOME/.bsp_gaps_bar_cache"
+ #      polybar-start &
+ #      #$HOME/.polybar_modules
+ #    fi
+ #  fi
+ #'';
   bsp-poly-hide = pkgs.writeShellScriptBin "bsp-poly-hide" ''
-    gaps="$(bspc config right_padding)"
-    #bsp-gaps-bar-cache
-    if [[ $gaps -eq 0 ]]; then
-      bsp-gaps-bar-cache
-      if pgrep polybar > /dev/null; then
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-          pkill polybar
-          "$HOME/.bsp_gaps_bar_cache"
-          bspc config top_padding 0
+
+    TOP_PADING=$(bspc config top_padding)
+    GAPS=$(bspc config window_gap)
+    POLY_HEIGHT=30
+    if systemctl --user is-active --quiet bsppoly.service; then
+      if [ -f "$HOME/.config/bspwm/poly-state" ]; then
+        if (( TOP_PADING < POLY_HEIGHT )); then
+          bspc config top_padding $(( $(bspc config top_padding) + $POLY_HEIGHT ))
+          systemctl --user restart bsptint.service
         else
-          pkill polybar
-          "$HOME/.bsp_gaps_bar_cache"
-          bspc config top_padding 0
-          bspc config bottom_padding 0
+          #$HOME/.bsp_gaps_bar_cache
+          $HOME/.bsp_tint_cache
+          systemctl --user restart bsptint.service
+          rm -f $HOME/.bsp_tint_cache
         fi
+        $HOME/.bsp_poly_cache
+        polybar-msg cmd show
+        rm -f "$HOME/.config/bspwm/poly-state"
       else
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-          "$HOME/.bsp_gaps_bar_cache"
-          polybar-start &
-          #$HOME/.polybar_modules
-        else
-          polybar-start &
-          #$HOME/.polybar_modules
-          bspc config bottom_padding 0
-        fi
-      fi
-    else
-      if pgrep polybar > /dev/null; then
-        bsp-gaps-bar-cache
-        if pgrep -x .tint2-wrapped  >/dev/null; then
-          pkill polybar
-          "$HOME/.bsp_gaps_bar_cache"
-          bspc config top_padding $(bspc config bottom_padding)
-        else
-          pkill polybar
-          "$HOME/.bsp_gaps_bar_cache"
-          bspc config top_padding $(bspc config bottom_padding)
-        fi
-      else
-        "$HOME/.bsp_gaps_bar_cache"
-        polybar-start &
-        #$HOME/.polybar_modules
+        bsp-poly-cache
+        bspc config top_padding $(bspc config right_padding)
+        polybar-msg cmd hide
+        touch "$HOME/.config/bspwm/poly-state"
       fi
     fi
+
   '';
 
   bsp-dock-hide = pkgs.writeShellScriptBin "bsp-dock-hide" ''
@@ -604,17 +684,28 @@ let
   '';
 
   bsp-gaps-toggle = pkgs.writeShellScriptBin "bsp-gaps-toggle" ''
-    TOP_HEIGHT=${config.my.poly-height}
-    BOTTOM_HEIGHT=15
+    TOP_HEIGHT=35
+    BOTTOM_HEIGHT=14
     # Get current window gap
     gap=$(bspc config window_gap)
 
     if [ "$gap" -eq 0 ]; then
-        # Restore default gap (adjust to your preference)
+      if systemctl --user is-active --quiet bsppoly.service; then
+        if [ -f "$HOME/.config/bspwm/poly-state" ]; then
+          #bspc config top_padding $(bspc config right_padding)
+           "$HOME/.bsp_gaps_cache"
+           #bspc config top_padding $(bspc config right_padding)
+        else
+          "$HOME/.bsp_gaps_cache"
+          #bspc config top_padding $(bspc config right_padding)
+        fi
+      else
         "$HOME/.bsp_gaps_cache"
+        bspc config top_padding $(bspc config right_padding)
+      fi
     else
       bsp-gaps-cache
-      if pgrep -x .tint2-wrapped  >/dev/null; then
+      if systemctl --user is-active --quiet bsptint.service; then
           bspc config bottom_padding $BOTTOM_HEIGHT
       else
           bspc config bottom_padding 0
@@ -623,13 +714,12 @@ let
       bspc config left_padding 0
       bspc config right_padding 0
       bspc config window_gap 0
-      if pgrep polybar > /dev/null; then
-          bspc config top_padding $TOP_HEIGHT
-          pkill polybar
-          polybar-start &
-          #$HOME/.polybar_modules
-      else
+      if systemctl --user is-active --quiet bsppoly.service; then
+        if [ -f "$HOME/.config/bspwm/poly-state" ]; then
           bspc config top_padding 0
+        else
+            bspc config top_padding $TOP_HEIGHT
+        fi
       fi
     fi
   '';
@@ -1059,31 +1149,38 @@ let
 
   '';
 
+ #bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
+ #
+ #  if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
+ #     if [[ -f "$HOME/.polybar-status" ]]; then
+ #       if pgrep polybar > /dev/null; then
+ #          bspc node -t tiled
+ #        else
+ #         #polybar & disown & tint2 & disown & bspc node -t tiled
+ #          bsp-bar-hide & bspc node -t tiled
+ #          $HOME/.polybar_modules
+ #          rm -f $HOME/.polybar-status
+ #        fi
+ #      else
+ #        bspc node -t tiled
+ #      fi
+ #  else
+ #    if pgrep polybar > /dev/null; then
+ #     #pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
+ #      touch $HOME/.polybar-status
+ #      bsp-bar-hide & bspc node -t fullscreen
+ #      exit
+ #    else
+ #      bspc node -t fullscreen
+ #      exit
+ #    fi
+ #  fi
+ #'';
   bsp-full-screen = pkgs.writeShellScriptBin "bsp-full-screen" ''
-
     if [ -n "$(bspc query -N -n focused.fullscreen)" ]; then
-       if [[ -f "$HOME/.polybar-status" ]]; then
-         if pgrep polybar > /dev/null; then
-            bspc node -t tiled
-          else
-           #polybar & disown & tint2 & disown & bspc node -t tiled
-            bsp-bar-hide & bspc node -t tiled
-            $HOME/.polybar_modules
-            rm -f $HOME/.polybar-status
-          fi
-        else
-          bspc node -t tiled
-        fi
+      bspc node -t tiled
     else
-      if pgrep polybar > /dev/null; then
-       #pkill polybar & sleep 3 & pkill tint2 & bspc node -t fullscreen
-        touch $HOME/.polybar-status
-        bsp-bar-hide & bspc node -t fullscreen
-        exit
-      else
-        bspc node -t fullscreen
-        exit
-      fi
+      bspc node -t fullscreen
     fi
   '';
 
@@ -1098,20 +1195,28 @@ let
 
   '';
 
-   bsp-conf = pkgs.writeShellScriptBin "bsp-conf" ''
+  bsp-conf = pkgs.writeShellScriptBin "bsp-conf" ''
     ${builtins.readFile ./bspconf}
   '';
 
-   bsp-conf-color = pkgs.writeShellScriptBin "bsp-conf-color" ''
+  bsp-conf-color = pkgs.writeShellScriptBin "bsp-conf-color" ''
     ${builtins.readFile ./bspconfcolor}
   '';
 
-   bsp-gaps-cache = pkgs.writeShellScriptBin "bsp-gaps-cache" ''
+  bsp-gaps-cache = pkgs.writeShellScriptBin "bsp-gaps-cache" ''
     ${builtins.readFile ./bsp-gaps-cache}
   '';
 
-   bsp-gaps-bar-cache = pkgs.writeShellScriptBin "bsp-gaps-bar-cache" ''
+  bsp-gaps-bar-cache = pkgs.writeShellScriptBin "bsp-gaps-bar-cache" ''
     ${builtins.readFile ./bsp-gaps-bar-cache}
+  '';
+
+  bsp-tint-cache = pkgs.writeShellScriptBin "bsp-tint-cache" ''
+    ${builtins.readFile ./bsp-tint-cache}
+  '';
+
+  bsp-poly-cache = pkgs.writeShellScriptBin "bsp-poly-cache" ''
+    ${builtins.readFile ./bsp-poly-cache}
   '';
 
   bsp-hidden-menu = pkgs.writeShellScriptBin "bsp-hidden-menu" ''
@@ -1239,16 +1344,38 @@ let
     esac
   '';
 
+ #bsp-auto-color = pkgs.writeShellScriptBin "bsp-auto-color" ''
+ #  ${builtins.readFile ./bsp-auto-color}
+ #'';
   bsp-auto-color = pkgs.writeShellScriptBin "bsp-auto-color" ''
-    ${builtins.readFile ./bsp-auto-color}
+    if [ -f "$HOME/.config/bspwm/bsp-auto-color" ]; then
+        rm -f "$HOME/.config/bspwm/bsp-auto-color"
+        systemctl --user stop bspborder.service
+        notify-send -e -u low -t 2000 "Per App Border Color" "Off"
+    else
+        touch "$HOME/.config/bspwm/bsp-auto-color"
+        systemctl --user start bspborder.service
+        notify-send -e -u low -t 2000 "Per App Border Color" "On"
+    fi
   '';
 
   bsp-de-sounds = pkgs.writeShellScriptBin "bsp-de-sounds" ''
     ${builtins.readFile ./sounds}
   '';
 
+ #bsp-sounds-toggle = pkgs.writeShellScriptBin "bsp-sounds-toggle" ''
+ #  ${builtins.readFile ./bsp-sounds}
+ #'';
   bsp-sounds-toggle = pkgs.writeShellScriptBin "bsp-sounds-toggle" ''
-    ${builtins.readFile ./bsp-sounds}
+    if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
+        rm -f "$HOME/.config/bspwm/bsp-sounds-toggle"
+        systemctl --user stop bspsounds.service
+        notify-send -e -u low -t 2000 "Desktop Sounds" "Off"
+    else
+        touch "$HOME/.config/bspwm/bsp-sounds-toggle"
+        systemctl --user start bspsounds.service
+        notify-send -e -u low -t 2000 "Desktop Sounds" "On"
+    fi
   '';
 
   bsp-remove-layout = pkgs.writeShellScriptBin "bsp-remove-layout" ''
@@ -1313,32 +1440,61 @@ let
     bsp-layout reload
   '';
 
+ #bsp-abhide = pkgs.writeScriptBin "bsp-abhide" ''
+ #  bspc subscribe node_state desktop_focus node_add node_remove | \
+ #  while read -r event monitor desktop node_id; do
+ #
+ #    wid=$(bspc query -T -n)
+ #    state=$(printf '%s\n' "$wid" | jq -r '.client.state')
+ #
+ #    sleep 0.5
+ #    if [[ $state = "fullscreen" ]]; then
+ #      if pgrep polybar > /dev/null; then
+ #        bsp-bar-hide
+ #        touch $HOME/.polybar-status
+ #      else
+ #        continue
+ #      fi
+ #    else
+ #      if pgrep polybar > /dev/null; then
+ #        echo ""
+ #      else
+ #        if [[ -f "$HOME/.polybar-status"  ]]; then
+ #          bsp-bar-hide
+ #        fi
+ #      fi
+ #
+ #    fi
+ #  done
+ #'';
+
   bsp-abhide = pkgs.writeScriptBin "bsp-abhide" ''
-    bspc subscribe node_state desktop_focus node_add node_remove | \
-    while read -r event monitor desktop node_id; do
+      {
+          while read -r line; do
+              read -r event monitor desktop node action <<< "$line"
+              wid=$(bspc query -T -n)
+              state=$(printf '%s\n' "$wid" | jq -r '.client.state')
 
-      wid=$(bspc query -T -n)
-      state=$(printf '%s\n' "$wid" | jq -r '.client.state')
+              sleep 0.5
+              if [[ $state = "fullscreen" ]]; then
+                if pgrep polybar > /dev/null; then
+                  bsp-bar-hide
+                  touch $HOME/.polybar-status
+                else
+                  continue
+                fi
+              else
+                if pgrep polybar > /dev/null; then
+                  echo ""
+                else
+                  if [[ -f "$HOME/.polybar-status"  ]]; then
+                    bsp-bar-hide
+                  fi
+                fi
 
-      sleep 0.5
-      if [[ $state = "fullscreen" ]]; then
-        if pgrep polybar > /dev/null; then
-          bsp-bar-hide
-          touch $HOME/.polybar-status
-        else
-          continue
-        fi
-      else
-        if pgrep polybar > /dev/null; then
-          echo ""
-        else
-          if [[ -f "$HOME/.polybar-status"  ]]; then
-            bsp-bar-hide
-          fi
-        fi
-
-      fi
-    done
+              fi
+          done < <(bspc subscribe node_state node_add node_remove desktop_focus)
+      }
   '';
 
   bsp-s-autohide = pkgs.writeShellScriptBin "bsp-s-autohide" ''
@@ -1349,6 +1505,221 @@ let
     bspc subscribe desktop_focus | while read -r event; do
       polybar-msg action "#bspwm.hook.1"
     done
+  '';
+
+  live-bg-auto = pkgs.writeShellScriptBin "live-bg-auto" ''
+      {
+          while read -r line; do
+              # Split the line into fields
+              read -r event monitor desktop node action <<< "$line"
+
+                  pp() {
+                      PROC="paperview-rs"
+                      PID=$(pgrep -n "$PROC")
+                      pgrep -n "$PROC" &&
+                      WINCOUNT=$(bspc query -N '@/' -n .descendant_of.window.!hidden.!floating | wc -l)
+                      if [[ $WINCOUNT -eq 0 ]]; then
+                        kill -CONT "$PID"
+                      fi
+                      if [[ $WINCOUNT -gt 0 ]]; then
+                        kill -STOP "$PID"
+                      fi
+                  }
+
+                  case "$event" in
+      		    node_focus) pp;;
+      		    node_remove) pp;;
+      		    node_state) pp;;
+      		    node_transfer) pp;;
+      		    desktop_focus) pp;;
+                  esac
+
+          done < <(bspc subscribe node_focus desktop_focus)
+      }
+  '';
+
+ #live-bg-pause-script = pkgs.writeShellScriptBin "live-bg-pause-script" ''
+ #  ${builtins.readFile ./live-bg-pause-script}
+ #'';
+  live-bg-pause-script = pkgs.writeShellScriptBin "live-bg-pause-script" ''
+    if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
+        rm -f "$HOME/.config/bspwm/bsp-live-auto-pause"
+        systemctl --user stop bsplive.service
+        notify-send -e -u low -t 2000 "Auto Live Wallpaper Pause" "Off"
+    else
+        touch "$HOME/.config/bspwm/bsp-live-auto-pause"
+        systemctl --user start bsplive.service
+        notify-send -e -u low -t 2000 "Auto Live Wallpaper Pause" "On"
+    fi
+  '';
+
+  bsp-bspi-toggle = pkgs.writeShellScriptBin "bsp-bspi-toggle" ''
+    if [ -f "$HOME/.config/bspwm/bsp-bspi-icons" ]; then
+        rm -f "$HOME/.config/bspwm/bsp-bspi-icons"
+        systemctl --user stop bspicon.service
+        notify-send -e -u low -t 2000 "bspi Icons" "Off"
+        bsp-default-icon
+    else
+        touch "$HOME/.config/bspwm/bsp-bspi-icons"
+        systemctl --user start bspicon.service
+        notify-send -e -u low -t 2000 "bspi Icons" "On"
+    fi
+  '';
+
+  bsp-layout-status = pkgs.writeShellScriptBin "bsp-layout-status" ''
+    if [ -f "$HOME/.config/bspwm/bsp-layout-status" ]; then
+        rm -f "$HOME/.config/bspwm/bsp-layout-status"
+        systemctl --user stop bsplayout.service
+        notify-send -e -u low -t 2000 "bsp-layout Status" "Off"
+    else
+        touch "$HOME/.config/bspwm/bsp-layout-status"
+        systemctl --user start bsplayout.service
+        notify-send -e -u low -t 2000 "bsp-layout Status" "On"
+    fi
+  '';
+
+
+  bsp-subscribtions = pkgs.writeShellScriptBin "bsp-subscribtions" ''
+
+    if [ -f "$HOME/.config/bspwm/bsp-live-auto-pause" ]; then
+        systemctl --user start bsplive.service
+    else
+        systemctl --user stop bsplive.service
+    fi
+
+    if [ -f "$HOME/.config/bspwm/bsp-bspi-icons" ]; then
+        systemctl --user start bspicon.service
+    else
+        systemctl --user stop bspicon.service
+        bsp-default-icon
+    fi
+
+    if [ -f "$HOME/.config/bspwm/bsp-sounds-toggle" ]; then
+        systemctl --user start bspsounds.service
+    else
+        systemctl --user stop bspsounds.service
+    fi
+
+    if [ -f "$HOME/.config/bspwm/bsp-auto-color" ]; then
+        systemctl --user start bspborder.service
+    else
+        systemctl --user stop bspborder.service
+    fi
+
+    if [ -f "$HOME/.config/bspwm/bsp-layout-status" ]; then
+        systemctl --user start bsplayout.service
+    else
+        systemctl --user stop bsplayout.service
+    fi
+
+    #if [ -f "$HOME/.config/bspwm/bsp-auto-bar-hide" ]; then
+    #    systemctl --user start bspautohide.service
+    #else
+    #   systemctl --user stop bspautohide.service
+    #fi
+
+  '';
+
+  bsp-power-man = pkgs.writeShellScriptBin "bsp-power-man" ''
+
+    case "$1" in
+
+      battery-save)
+        systemctl --user stop bsplive.service
+        systemctl --user stop bspicon.service
+        bsp-default-icon
+        systemctl --user stop bspsounds.service
+        systemctl --user stop bspborder.service
+        systemctl --user stop bsplayout.service
+        #systemctl --user stop bspautohide.service
+
+        powerprofilesctl set power-saver
+        polybar-msg action "#pp.hook.1"
+
+        pkill paperview-rs
+        $HOME/.fehbg
+
+        xset s blank
+        xset s on
+        xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle}
+        xset +dpms
+        xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 ))
+        systemctl --user restart xautolock-session.service
+        systemctl --user restart xss-lock.service
+        polybar-msg action "#idle.hook.1"
+
+        systemctl --user stop picom.service
+        polybar-msg action "#picom.hook.1"
+
+        xbacklight -20
+
+        echo "battery-save" > "$HOME/.config/bspwm/bsp-power-state"
+      ;;
+
+
+      performance)
+        systemctl --user stop bsplive.service
+        systemctl --user stop bspicon.service
+        bsp-default-icon
+        systemctl --user stop bspsounds.service
+        systemctl --user stop bspborder.service
+        systemctl --user stop bsplayout.service
+        #systemctl --user stop bspautohide.service
+
+        powerprofilesctl set performance
+        polybar-msg action "#pp.hook.1"
+
+        pkill paperview-rs
+        $HOME/.fehbg
+
+        pkill .xscreensaver-w
+        pkill xscreensaver-sy
+        pkill .xscreensaver-s
+        systemctl --user stop xautolock-session.service
+        systemctl --user stop xss-lock.service
+        xset s noblank
+        xset s off
+        xset s 0 0
+        xset -dpms
+        xset dpms 0 0 0
+        polybar-msg action "#idle.hook.1"
+
+        systemctl --user start picom.service
+        polybar-msg action "#picom.hook.1"
+
+        xbacklight +20
+
+        echo "performance" > "$HOME/.config/bspwm/bsp-power-state"
+      ;;
+
+
+      fancy)
+        systemctl --user start bsplive.service
+        systemctl --user start bspicon.service
+        systemctl --user start bspsounds.service
+        systemctl --user start bspborder.service
+        systemctl --user start bsplayout.service
+        #systemctl --user start bspautohide.service
+
+        systemctl --user start picom.service
+        polybar-msg action "#picom.hook.1"
+
+        echo "fancy" > "$HOME/.config/bspwm/bsp-power-state"
+      ;;
+
+
+      manual)
+        bsp-subscribtions
+        echo "manual" > "$HOME/.config/bspwm/bsp-power-state"
+      ;;
+
+    esac
+
+  '';
+
+  tint-go-below = pkgs.writeShellScriptBin "tint-go-below" ''
+    sleep 0.5
+    xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" $(xdo id -n tint2)
   '';
 
 in
@@ -1427,13 +1798,22 @@ in
       bsp-stack-zoom-remove
       bsp-abhide
       bsp-s-autohide
+      bsp-tint-cache
+      bsp-poly-cache
+      bsp-subscribtions
+      bsp-bspi-toggle
+      bsp-layout-status
+      bsp-power-man
       poly-bsp-lay
+      live-bg-auto
+      live-bg-pause-script
       bspswallow
       bspwmswallow
       pidswallow
       bspad
       scratchpad
       bspi
+      tint-go-below
 
     ];
 
@@ -1458,5 +1838,98 @@ in
 
     };
 
+    systemd.user.services.bsptint = {
+      Unit = {
+       Description = "Tint2 for bspwm";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      #X-Restart-Triggers = [ "${nix-path}/.config/polybar/config.ini" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${config.programs.tint2.package}/bin/tint2";
+        ExecStartPost = "${tint-go-below}/bin/tint-go-below";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
+
+    systemd.user.services.bspicon = {
+      Unit = {
+       Description = "bspwm bspi, icons for bar";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      #After = "graphical-session.target";
+      #Wants = "graphical-session.target";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${bsp-icon-bar}/bin/bsp-icon-bar";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
+
+    systemd.user.services.bsplayout = {
+      Unit = {
+       Description = "bspwm layout detection";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${poly-bsp-lay}/bin/poly-bsp-lay";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
+
+    systemd.user.services.bspsounds = {
+      Unit = {
+       Description = "bspwm desktop sounds";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${bsp-de-sounds}/bin/bsp-de-sounds";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
+
+    systemd.user.services.bsplive = {
+      Unit = {
+       Description = "bspwm auto live wallpaper pause";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${live-bg-auto}/bin/live-bg-auto";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
+
+    systemd.user.services.bspautohide = {
+      Unit = {
+       Description = "bspwm auto bar hide and show";
+       ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${bsp-abhide}/bin/bsp-abhide";
+        Restart = "on-failure";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+    };
 
 };}

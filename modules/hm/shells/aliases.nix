@@ -120,6 +120,8 @@ in
       docker volume prune -f
     '';
 
+    pr-count = "bash -c 'expr $(ps auxf | grep -v ]$ | wc -l )'";
+
     fehb = "feh --bg-fill";
 
     tkc = "${config.my.default.gui-editor-alt-name} $(kitten choose-files) & disown";

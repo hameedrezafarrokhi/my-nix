@@ -442,13 +442,17 @@ super + alt + l
 super + shift + alt + l
       notify-send -e -u low -t 2000 "$(bsp-layout get)"; polybar-msg action "#bspwm.hook.1"
 
+# bsp-layout Status Toggle
+super + ctrl + y ; {grave}
+      {bsp-layout-status}
+
 # Keyboard layout change
 super + q
       xkblayout-state set +1; polybar-msg action "#keyboard-layout.hook.1"; notify-send -e -u low -t 2000 "$(xkblayout-state print "%s")"
 
-# Reset Plank
-alt + shift + p
-      pkill plank && plank; notify-send -e -u low -t 2000 'Plank Reloaded'
+# BSPWM Power Manager
+alt + shift + p ; {p,b,f,m}
+      {bsp-power-man performance,bsp-power-man battery-save,bsp-power-man fancy,bsp-power-man manual}; sleep 2; notify-send -e -u critical -t 3000 "Power Manager" "$(cat $HOME/.config/bspwm/bsp-power-state)"
 
 # Keybind Help
 super + h
@@ -476,11 +480,11 @@ super + shift + alt + g
 
 # Polybar Modules
 super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
-      ~/nixos/modules/hm/bar-shell/poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
+      poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
 
 # Polybar Modules
 super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,z}
-      ~/nixos/modules/hm/bar-shell/poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,aaa}
+      poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,aaa}
 
 # Polybar Stast/Window-Title
 super + ctrl + y ; {space}
@@ -894,17 +898,9 @@ super + shift + t
 super + alt + shift + t
     bsp-window-rules-remove; notify-send -e -u low -t 2000 "Window Rules Removed"
 
-# Icon Bar Start
+# Icon Bar toggle
 alt + shift + i
-    bsp-icon-bar
-
-# Icon Bar Stop
-alt + shift + u
-    pkill bsp-icon-bar
-
-# Icon Bar Restart
-alt + shift + o
-    pkill bsp-icon-bar; bsp-icon-bar
+    bsp-bspi-toggle
 
 # Group Delete Cachce
 super + ctrl + c

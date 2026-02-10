@@ -362,41 +362,6 @@ let
     fi
   '';
 
-  live-bg-auto = pkgs.writeShellScriptBin "live-bg-auto" ''
-      {
-          while read -r line; do
-              # Split the line into fields
-              read -r event monitor desktop node action <<< "$line"
-
-                  pp() {
-                      PROC="paperview-rs"
-                      PID=$(pgrep -n "$PROC")
-                      pgrep -n "$PROC" &&
-                      WINCOUNT=$(bspc query -N '@/' -n .descendant_of.window.!hidden.!floating | wc -l)
-                      if [[ $WINCOUNT -eq 0 ]]; then
-                        kill -CONT "$PID"
-                      fi
-                      if [[ $WINCOUNT -gt 0 ]]; then
-                        kill -STOP "$PID"
-                      fi
-                  }
-
-                  case "$event" in
-      		    node_focus) pp;;
-      		    node_remove) pp;;
-      		    node_state) pp;;
-      		    node_transfer) pp;;
-      		    desktop_focus) pp;;
-                  esac
-
-          done < <(bspc subscribe node_focus desktop_focus)
-      } &
-  '';
-
-  live-bg-pause-script = pkgs.writeShellScriptBin "live-bg-pause-script" ''
-    ${builtins.readFile ./live-bg-pause-script}
-  '';
-
   live-bg-speed-manual = pkgs.writeShellScriptBin "live-bg-speed-manual" ''
     FILE="$HOME/.live-bg"
     [ -f "$FILE" ] || exit 0
@@ -479,8 +444,6 @@ in
       live-bg-cycle
       live-bg-pause
       live-bg-speed-manual
-      live-bg-auto
-      live-bg-pause-script
       live-bg-manual
       paperview-rofi
 
@@ -550,6 +513,7 @@ in
       ++ lib.optional config.services.screen-locker.xautolock.detectSleep "-detectsleep"
       ++ config.services.screen-locker.xautolock.extraOptions
     ));
+
 
     services = {
 

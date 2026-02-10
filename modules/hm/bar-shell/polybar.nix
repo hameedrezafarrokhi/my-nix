@@ -4,12 +4,13 @@ let
 
   polybar-start = pkgs.writeShellScriptBin "polybar-start" ''
     for m in $(polybar --list-monitors | cut -d":" -f1); do
-      MONITOR=$m polybar --reload ${config.my.poly-name} &
+      MONITOR=$m polybar --reload ${config.my.poly-name}
     done
+    #$HOME/.polybar_modules
+  '';
 
+  poly-modules-load = pkgs.writeShellScriptBin "poly-modules-load" ''
     $HOME/.polybar_modules
-
-    #polybar-msg action "#keyboard-layout.hook.0"
   '';
 
   poly-idle-inhibit = pkgs.writeShellScriptBin "poly-idle-inhibit" ''
@@ -315,11 +316,33 @@ in
     poly-magnifier
     poly-dnd
     poly-modules
+    poly-modules-load
     poly-modules-rofi
   ];
 
   my.poly-height = "18";
   my.poly-name = "example";
+
+  systemd.user.services.bsppoly = {
+    Unit = {
+     Description = "Polybar for bspwm";
+     ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+    #X-Restart-Triggers = [ "${nix-path}/.config/polybar/config.ini" ];
+    };
+    Service = {
+      Type = "simple";
+     #Type = "forking";
+     #Environment = [ "PATH=${config.services.polybar.package}/bin:/run/wrappers/bin" ];
+      ExecStart = "${polybar-start}/bin/polybar-start";
+      ExecStartPost = "${poly-modules-load}/bin/poly-modules-load";
+      Restart = "on-failure";
+      KillMode = "mixed";
+      TimeoutStopSec = 5;
+    };
+   #Install = {
+   #  WantedBy = [ "graphical-session.target" ];
+   #};
+  };
 
   services.polybar = {
 
@@ -369,7 +392,7 @@ in
         enable-ipc = true;
        #tray-position = "right";
        #wm-restack = "generic";
-       #wm-restack = "bspwm";
+        wm-restack = "bspwm";
        #wm-restack = :i3";
        #override-redirect = true;
       };
