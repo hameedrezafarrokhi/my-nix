@@ -857,6 +857,7 @@ xmenu <<EOF | sh &
 󰪛  CapsLock				xdotool key Caps_Lock
 $(echo "           󰇘󰇘󰇘󰇘 ")
 󰌏  Onscreen Keyboard		onboard
+󰌏  Vboard          		vboard
   Fonts				font-manager
 $(echo "           󰇘󰇘󰇘󰇘 ")
 󰞅  Emojis				rofi -show emoji -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"

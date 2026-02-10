@@ -100,38 +100,32 @@ in
         substituters = [
           "https://cache.nixos.org/"
           "https://catppuccin.cachix.org/"
-          "https://nix-community.cachix.org/"
-          "https://chaotic-nyx.cachix.org/"
+         #"https://nix-community.cachix.org/"
         ];
         extra-substituters = [
           "https://cache.nixos.org/"
           "https://catppuccin.cachix.org/"
-          "https://nix-community.cachix.org/"
-          "https://chaotic-nyx.cachix.org/"
+         #"https://nix-community.cachix.org/"
         ];
         trusted-substituters = [
           "https://cache.nixos.org/"
           "https://catppuccin.cachix.org/"
-          "https://nix-community.cachix.org/"
-          "https://chaotic-nyx.cachix.org/"
+         #"https://nix-community.cachix.org/"
         ];
         extra-trusted-substituters = [
           "https://cache.nixos.org/"
           "https://catppuccin.cachix.org/"
-          "https://nix-community.cachix.org/"
-          "https://chaotic-nyx.cachix.org/"
+         #"https://nix-community.cachix.org/"
         ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU="
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+         #"nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
         extra-trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU="
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+         #"nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
 
 
@@ -227,7 +221,7 @@ in
         package = pkgs.nix-search-tv;
         enableTelevisionIntegration = true;
         settings = {
-          indexes = [ "nixpkgs" "home-manager" "nixos" "nur" ];
+          indexes = [ "nixpkgs" "home-manager" "nixos" /*"nur"*/ ];
           update_interval = "168h";
          #cache_dir = "path/to/cache/dir";
           enable_waiting_message = true;

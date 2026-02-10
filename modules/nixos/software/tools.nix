@@ -128,9 +128,9 @@
    #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe.nix" { })]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
-   #++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
     ++ [(pkgs.callPackage ../myPackages/timeswitch.nix { })]
-    ++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
     ++ [(pkgs.callPackage ../myPackages/xsession-manager.nix { })]
     ++ [(pkgs.callPackage ../myPackages/paperview-rs.nix { })]
 

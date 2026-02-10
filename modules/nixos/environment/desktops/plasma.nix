@@ -44,7 +44,7 @@
       kdePackages.qtwebsockets
       kdePackages.qtwebengine
       kdePackages.qtwebchannel
-      nur.repos.xddxdd.plasma-smart-video-wallpaper-reborn
+     #nur.repos.xddxdd.plasma-smart-video-wallpaper-reborn
      #nur.repos.shadowrz.klassy-qt6
      #plasma-panel-colorizer
       kara
@@ -53,7 +53,14 @@
 
       kdePackages.plasma-keyboard
 
-    ];
+    ]
+
+    ++
+
+    [(pkgs.callPackage ../../myPackages/plasma-smart-video-wallpaper-reborn.nix { })]
+
+    ;
+
    #plasma6.excludePackages = [             # Excluding Packages (Not Working)
    #  pkgs.kdePackages.kwallet
    #  pkgs.kdePackages.kwalletmanager

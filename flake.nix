@@ -33,8 +33,8 @@
         nix-on-droid = { url = "github:nix-community/nix-on-droid/release-24.05";
                                 inputs.nixpkgs.follows = "nixpkgs";
                                 inputs.home-manager.follows = "home-manager"; };
-                 nur = { url = "github:nix-community/NUR";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
+#                nur = { url = "github:nix-community/NUR";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
   nix-index-database = { url = "github:nix-community/nix-index-database";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
@@ -44,10 +44,6 @@
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
-
-#            chaotic = { url = "github:chaotic-cx/nyx/nyxpkgs-unstable"; };    # WARNING DEAD PROJECT
-
-#        flake-utils = { url = "github:numtide/flake-utils";};
 
       cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
                                 inputs.nixpkgs.follows = "nixpkgs";
@@ -75,13 +71,6 @@
 #           ax-shell = { url = "github:poogas/Ax-Shell";
 #                               inputs.nixpkgs.follows = "nixpkgs"; };
 
-          #   fabric = { url = "github:Fabric-Development/fabric";      # OLD STUFF
-          #                     inputs.nixpkgs.follows = "nixpkgs"; };
-          #     gray = { url = "github:Fabric-Development/gray";
-          #                     inputs.nixpkgs.follows = "nixpkgs"; };
-          # ax-shell = { url = "github:Axenide/Ax-Shell";
-          #                     flake = false; };
-
                ignis = { url = "github:ignis-sh/ignis";
                                inputs.nixpkgs.follows = "nixpkgs"; };
 
@@ -96,40 +85,16 @@
                                 flake = false; };
              drew-wm = { url = "github:drewgrif/dwm-setup";
                                 flake = false; };
-#           bread-wm = { url = "github:BreadOnPenguins/dwm";
-#                               flake = false; };
-#              pd-wm = { url = "github:r0-zero/pdwm";
-#                               flake = false; };
-#              pdwmc = { url = "github:r0-zero/pdwmc";
-#                               flake = false; };
 
                 oxwm = { url = "github:tonybanters/oxwm";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
-#            omarchy = { url = "github:basecamp/omarchy";
-#                               flake = false; };
-
-#        nix-artwork = { url = "github:NixOS/nixos-artwork";
-#                               flake = false; };
               assets = { url = "github:hameedrezafarrokhi/assets";
                                 flake = false; };
 
           catppuccin = { url = "github:catppuccin/nix";};
   catppuccin-openbox = { url = "github:catppuccin/openbox";
                                 flake = false; };
-
-#     polybar-themes = { url = "github:adi1090x/polybar-themes";
-#                               flake = false; };
-# polybar-collection = { url = "github:Murzchnvok/polybar-collection";
-#                               flake = false; };
-#   tint2-collection = { url = "github:addy-dclxvi/tint2-theme-collections";
-#                               flake = false; };
-
-        picom-ftlabs = { url = "github:r0-zero/picom"; };
-#     git-ignore-nix = { url = "github:hercules-ci/gitignore.nix";
-#                               inputs.nixpkgs.follows = "nixpkgs"; };
-
-#         windscribe = { url = "github:ParkerrDev/nixpkgs-windscribe";};
 
   };
 
@@ -189,7 +154,6 @@
             sharedModules = [
               { home.stateVersion = state;             }
               { home.enableNixpkgsReleaseCheck = true; }
-             #inputs.chaotic.homeManagerModules.default
               inputs.nix-flatpak.homeManagerModules.nix-flatpak
               inputs.plasma-manager.homeModules.plasma-manager
               inputs.cosmic-manager.homeManagerModules.cosmic-manager
@@ -221,15 +185,13 @@
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.nix-flatpak.nixosModules.nix-flatpak
-            inputs.nur.modules.nixos.default
+           #inputs.nur.modules.nixos.default
            #inputs.nur.legacyPackages."${system}".repos.iopq.modules.xraya  # example
-           #inputs.chaotic.nixosModules.default
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
             inputs.mango.nixosModules.mango
            #inputs.oxwm.nixosModules.default
            #inputs.xremap-flake.nixosModules.default
-           #(import "${inputs.windscribe}/windscribe/default.nix")
 
       ];
     };
@@ -253,7 +215,6 @@
             { home.enableNixpkgsReleaseCheck = true; }
             { nixpkgs.hostPlatform = system;         }
             { nixpkgs.overlays = myOverlays;         }
-           #inputs.chaotic.homeManagerModules.default
             inputs.nix-flatpak.homeManagerModules.nix-flatpak
             inputs.plasma-manager.homeModules.plasma-manager
             inputs.cosmic-manager.homeManagerModules.cosmic-manager

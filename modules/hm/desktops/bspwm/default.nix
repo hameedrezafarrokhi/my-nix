@@ -149,6 +149,8 @@ in
         bspc rule -a ".protonvpn-app-wrapped" state=floating
         bspc rule -a protonvpn-app state=floating
         bspc rule -a Protonvpn-app state=floating
+        bspc rule -a "Vboard.py" state=floating sticky=on layer=above
+        bspc rule -a "vboard.py" state=floating sticky=on layer=above
         bspc rule -a kruler state=floating
         bspc rule -a kruler border=off
         bspc rule -a kitty-picker state=floating

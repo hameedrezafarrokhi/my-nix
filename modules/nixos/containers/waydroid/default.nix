@@ -19,9 +19,10 @@ in
     environment.systemPackages = with pkgs; [
       waydroid                                ##Android Emulator
       waydroid-helper                         ##Waydroid Helper
-      nur.repos.ataraxiasjel.waydroid-script  ##Script for ARM Compatibility
+     #nur.repos.ataraxiasjel.waydroid-script  ##Script for ARM Compatibility
      #fdroidcl                                ##Alternative AppStore
      #fdroidserver                            ##Alternative AppStore
+     #(callPackage ../../myPackages/waydroid-script.nix { })
     ];
 
   };
