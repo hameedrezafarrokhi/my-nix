@@ -163,7 +163,7 @@
     MonoRofi = "${MonoSpace} ${toString MonoSize}";
     MonoSt = "${MonoSpace}:style:Regular:pixelsize=${toString MonoSize}";
     MonoURxvt = "xft:${MonoSpace}:size=${toString MonoSize}";
-    xmenu-font = "${Sans}:pixelsize=${toString XmenuSize}:antialias=true:style=Bold,${MonoAlt2}";
+    xmenu-font = "${Sans}:pixelsize=${toString XmenuSize}:antialias=true:style=Bold,${MonoAlt2},${Emoji}";
     rofiMenuFont = "${MonoSpace} 12";
     dunstFont = "${MonoSpace} ${toString MonoSize}";
     MonoOnboard = "${MonoAlt} bold";
@@ -615,6 +615,489 @@
       fi
     '';
 
+    xmenu-app = pkgs.writeShellScriptBin "xmenu-app" ''
+xmenu <<EOF | sh &
+  Run			rofi -show run -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+󰀻  All Apps		xdg-xmenu
+󰮫  JGMenu  		jgmenu_run
+󱓟  Ulauncher		ulauncher
+  Rofi		rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+
+󰖲  Pager		skippy-xd --paging
+  Xpose		skippy-xd --toggle
+󱞞  Hidden		bsp-hidden-menu
+
+󱑆  Time
+	  󰥔  Clock			gnome-clocks
+	    Calendar		gnome-calendar
+	  󱎫  Timer			timeswitch
+	  󰀠  Alarm			kalarm
+	  󰔜  Auto			kshutdown
+  Resourses
+	    Disk Usage		baobab
+	    Monitor			resources
+	    Btop			kitty --name btop --class btop sh -c btop
+  Text
+	    Notes			iotas
+	  󰘎  Gui Editor		kate
+󰍹  Screen
+	  󰍹  Multi Monitor		rofi-monitor
+	  󰸉  Wallpaper
+		      Static			feh-rofi
+		    󱜆  Live			paperview-rofi
+		    󰑓  Reload Static			pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
+		    󰑓  Reload Live			live-bg
+		    󰋆  Manual Live			live-bg-manual
+		    󰋆  Manual Static			feh-rofi-manual
+  Terminal
+	    Kitty			kitty
+	    Alacritty		alacritty
+	    Ghostty			ghostty
+	    Wezterm			wezterm
+	    Konsole			konsole
+	    Tilda			tilda
+	    Xterm			xterm
+	    Urxvt			urxvt
+	    Foot			foot
+	    St			st
+	    Gnome			gnome-terminal
+	    Xfce			xfce4-terminal
+  File Manager
+	    Dolphin			dolphin
+	    Nemo			nemo
+	    Thunar			thunar
+	    Nautilus		nautilus
+	    Yazi			yazi
+  Browser
+	    Firefox			firefox
+	    Brave			brave
+	    Qute			qutebrowser
+  Tools
+	    Ruler			kruler
+	    Calc			rofi -show calc -modi drun -line-padding 4 -hide-scrollbar -show-icons
+	    Color Picker		poly-color-picker
+	  󰍉  Magnifier		sxcs --mag-filters "circle"
+	  󰹑  XMagnify		magnify -wexpr 1920 / 4 -hexpr 1080 / 4 -m4 -r30
+	  󰹑  XZoom			xzoom -mag 2
+󰊗  Games
+	    Menu			rofi -show games -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+	    Pinball			SpaceCadetPinball
+	    Tetris			ttetris
+	  󱔎  Snake			gnome-nibbles
+	  󰷚  Mines			gnome-mines
+EOF
+    '';
+
+    xmenu-pp = pkgs.writeShellScriptBin "xmenu-pp" ''
+pbcolor=$(systemctl --user is-active bspborder.service)
+if [ "$pbcolor" = "active" ]; then
+  pbcolor_status="On"
+else
+  pbcolor_status="Off"
+fi
+
+desound=$(systemctl --user is-active bspsounds.service)
+if [ "$desound" = "active" ]; then
+  desound_status="On"
+else
+  desound_status="Off"
+fi
+
+abp=$(systemctl --user is-active bsplive.service)
+if [ "$abp" = "active" ]; then
+  abp_status="On"
+else
+  abp_status="Off"
+fi
+
+baricon=$(systemctl --user is-active bspicon.service)
+if [ "$baricon" = "active" ]; then
+  baricon_status="On"
+else
+  baricon_status="Off"
+fi
+
+polylay=$(systemctl --user is-active bsplayout.service)
+if [ "$polylay" = "active" ]; then
+  polylay_status="On"
+else
+  polylay_status="Off"
+fi
+
+picomm=$(systemctl --user is-active picom.service)
+if [ "$picomm" = "active" ]; then
+  picom_status="On"
+else
+  picom_status="Off"
+fi
+
+xmenu <<EOF | sh &
+  Power Profile
+	  󰑣  Performance			powerprofilesctl set performance; polybar-msg action "#pp.hook.1"
+	    Balanced			powerprofilesctl set balanced; polybar-msg action "#pp.hook.1"
+	    Eco				powerprofilesctl set power-saver; polybar-msg action "#pp.hook.1"
+  $(powerprofilesctl get)
+$(echo "       󰇘󰇘󰇘󰇘 ")
+  Bspwm Profile
+	    Performance			bsp-power-man performance
+	  󰮤  Fnacy				bsp-power-man fancy
+	  󰂐  Battery-Save			bsp-power-man battery-save
+	  󰜐  Manual				bsp-power-man manual
+  $(cat $HOME/.config/bspwm/bsp-power-state)
+$(echo "       󰇘󰇘󰇘󰇘 ")
+󰵀  Subscribtions
+	  Total: $(pgrep -a bspc | grep subscribe | wc -l)
+	  Layouts: $(pgrep -a bspc | grep "subscribe node_add node_remove node_transfer node_flag node_state" | wc -l)
+	  $(echo "    󰇘󰇘󰇘󰇘 ")
+	  Border Color
+		Status: $pbcolor_status
+		  On			systemctl --user start bspborder.service; touch $HOME/.config/bspwm/bsp-auto-color
+		󰅙  Off			systemctl --user stop bspborder.service; rm -f $HOME/.config/bspwm/bsp-auto-color
+		󰑓  Reload		systemctl --user restart bspborder.service; touch $HOME/.config/bspwm/bsp-auto-color
+	  Sounds
+		Status: $desound_status
+		  On			systemctl --user start bspsounds.service; touch $HOME/.config/bspwm/bsp-sounds-toggle
+		󰅙  Off			systemctl --user stop bspsounds.service; rm -f $HOME/.config/bspwm/bsp-sounds-toggle
+		󰑓  Reload		systemctl --user restart bspsounds.service; touch $HOME/.config/bspwm/bsp-sounds-toggle
+	  Auto Live
+		Status: $abp_status
+		  On			systemctl --user start bsplive.service; touch $HOME/.config/bspwm/bsp-live-auto-pause
+		󰅙  Off			systemctl --user stop bsplive.service; rm -f $HOME/.config/bspwm/bsp-live-auto-pause
+		󰑓  Reload		systemctl --user restart bsplive.service; touch $HOME/.config/bspwm/bsp-live-auto-pause
+	  Bspi
+		Status: $baricon_status
+		  On			systemctl --user start bspicon.service; touch $HOME/.config/bspwm/bsp-bspi-icons
+		󰅙  Off			systemctl --user stop bspicon.service; rm -f $HOME/.config/bspwm/bsp-bspi-icons
+		󰑓  Reload		systemctl --user restart bspicon.service; touch $HOME/.config/bspwm/bsp-bspi-icons
+	  Layout
+		Status: $polylay_status
+		  On			systemctl --user start bsplayout.service; touch $HOME/.config/bspwm/bsp-layout-status
+		󰅙  Off			systemctl --user stop bsplayout.service; rm -f $HOME/.config/bspwm/bsp-layout-status
+		󰑓  Reload		systemctl --user restart bsplayout.service; touch $HOME/.config/bspwm/bsp-layout-status
+$(echo "       󰇘󰇘󰇘󰇘 ")
+󰗘  Picom is $picom_status		xremap-picom-toggle
+EOF
+    '';
+
+    xmenu-audio = pkgs.writeShellScriptBin "xmenu-audio" ''
+playing() {
+    echo ""
+    playerctl metadata -f '{{status}} {{title}}' 2>/dev/null | while read event; do
+    out=$(playerctl metadata -f '{{status}} {{title}}' 2>/dev/null)
+      if [[ -z $out ]]; then
+        echo ""
+      else
+        echo $out | sed 's/Paused//; s/Playing//; s/Stopped//;'
+      fi
+    done
+}
+
+xmenu <<EOF | sh &
+󱡫  Audio Control			pavucontrol
+$(echo "        󰇘󰇘󰇘󰇘 ")
+  Mute				pamixer --mute
+  Unmute				pamixer --unmute
+󰝝  Up
+	  +5				pamixer --increase 5
+	  +10				pamixer --increase 10
+	  +20				pamixer --increase 20
+	  +30				pamixer --increase 30
+	  +40				pamixer --increase 40
+	  +50				pamixer --increase 50
+󰝞  Down
+	  -5				pamixer --decrease 5
+	  -10				pamixer --decrease 10
+	  -20				pamixer --decrease 20
+	  -30				pamixer --decrease 30
+	  -40				pamixer --decrease 40
+	  -50				pamixer --decrease 50
+  Volume
+	  5%				pamixer --set-volume 5
+	  10%				pamixer --set-volume 10
+	  20%				pamixer --set-volume 20
+	  30%				pamixer --set-volume 30
+	  40% 			pamixer --set-volume 40
+	  50% 			pamixer --set-volume 50
+	  60% 			pamixer --set-volume 60
+	  70% 			pamixer --set-volume 70
+	  80% 			pamixer --set-volume 80
+	  90% 			pamixer --set-volume 90
+	  100%			pamixer --set-volume 100
+	  110%			pamixer --set-volume 110
+	  120%			pamixer --set-volume 120
+$(echo "        󰇘󰇘󰇘󰇘 ")
+Now Playing
+󰝚 $(playing)
+	  󰐎  Play/Pause		playerctl play-pause
+	  󰒭  Next			playerctl next
+	  󰒮  Prev			playerctl previous
+	    Loop			playerctl loop
+	    Stop			playerctl stop
+	    Seek
+		      +5			playerctl position 5+
+		      -5			playerctl position 5-
+		      +10			playerctl position 10+
+		      -10			playerctl position 10-
+		      +20			playerctl position 20+
+		      -20			playerctl position 20-
+		      +30			playerctl position 30+
+		      -30			playerctl position 30-
+EOF
+    '';
+
+    xmenu-key = pkgs.writeShellScriptBin "xmenu-key" ''
+LAYOUT=$(xkb-switch -p)
+case "$LAYOUT" in
+  us) flag="🇺🇸" ;;
+  ir) flag="🇮🇷" ;;
+esac
+
+xmenu <<EOF | sh &
+  Layout: $flag $LAYOUT		poly-xkb-change
+󰪛  CapsLock				xdotool key Caps_Lock
+$(echo "           󰇘󰇘󰇘󰇘 ")
+󰌏  Onscreen Keyboard		onboard
+  Fonts				font-manager
+$(echo "           󰇘󰇘󰇘󰇘 ")
+󰞅  Emojis				rofi -show emoji -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+  Symbols				rofi -show nerdy -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+EOF
+    '';
+
+    xmenu-idle = pkgs.writeShellScriptBin "xmenu-idle" ''
+xss=$(systemctl --user is-active xss-lock.service)
+if [ "$xss" = "active" ]; then
+  xss_status="Active"
+else
+  xss_status="Inactive"
+fi
+
+xmenu <<EOF | sh &
+  Uptime
+       $(uptime | awk '{print $1}')
+
+󱄥  ScreenSaver
+     $(xset q | grep -E "timeout")
+
+󰚥  Power Managerment
+     $(xset q | grep -E "DPMS is")
+
+󰤆  Power Time
+     $(xset q | grep -E "Standby")
+
+  Auto Lock
+       $(echo "$xss_status")
+
+󰍹  Display
+     $(xset q | grep -E "Monitor is")
+EOF
+    '';
+
+    xmenu-power = pkgs.writeShellScriptBin "xmenu-power" ''
+xmenu <<EOF | sh &
+󰪫  $(uname -n | sed 's/^\(.\)/\U\1/') - $(whoami | tr '[:lower:]' '[:upper:]')
+  $(date '+%a %d %b %y')		gnome-calendar
+$(echo "        󰇘󰇘󰇘󰇘 ")
+  Lock				i3lock-fancy-rapid 10 10 -n -c 24273a -p default
+󰍃  Logout				bspc quit; pkill dwm; pkill dwm; openbox --exit; i3-msg exit
+󰒲  Sleep				systemctl suspend
+  Reboot				systemctl reboot
+⏼  Shutdown				systemctl poweroff
+$(echo "        󰇘󰇘󰇘󰇘 ")
+  Menu				poly-power
+󱟛  Modules				poly-modules-rofi
+  Bspwm
+	  󰑓  Reload Bspwm		bspc wm -r
+	  󰆓  Save Session		yes | xsession-manager -s bspwm
+	  󰆔  Restore Session	yes | xsession-manager -pr bspwm
+  NixOS
+	  $(bullshit)
+EOF
+    '';
+
+    xmenu-bsp = pkgs.writeShellScriptBin "xmenu-bsp" ''
+xmenu <<EOF | sh &
+  Current: $(bsp-layout get)
+$(echo "        󰇘󰇘󰇘󰇘 ")
+󰨇  Layouts
+	  Tiled		bsp-set-layout tiled
+	  Monocle		bsp-set-layout monocle
+	  Floating		bsp-set-layout floating
+	  $(echo "    󰇘󰇘󰇘󰇘 ")
+	  V Master
+		    Right
+			  1
+				Set			bsp-set-layout tall
+				Once			bsp-once-layout tall
+			  2
+				Set			bsp-set-layout tall2
+				Once			bsp-once-layout tall2
+			  3
+				Set			bsp-set-layout tall3
+				Once			bsp-once-layout tall3
+			  4
+				Set			bsp-set-layout tall4
+				Once			bsp-once-layout tall4
+		    Left
+			  1
+				Set			bsp-set-layout rtall
+				Once			bsp-once-layout rtall
+			  2
+				Set			bsp-set-layout rtall2
+				Once			bsp-once-layout rtall2
+			  3
+				Set			bsp-set-layout rtall3
+				Once			bsp-once-layout rtall3
+			  4
+				Set			bsp-set-layout rtall4
+				Once			bsp-once-layout rtall4
+	  H Master
+		    Up
+			  1
+				Set			bsp-set-layout wide
+				Once			bsp-once-layout wide
+			  2
+				Set			bsp-set-layout wide2
+				Once			bsp-once-layout wide2
+			  3
+				Set			bsp-set-layout wide3
+				Once			bsp-once-layout wide3
+			  4
+				Set			bsp-set-layout wide4
+				Once			bsp-once-layout wide4
+		    Down
+			  1
+				Set			bsp-set-layout rwide
+				Once			bsp-once-layout rwide
+			  2
+				Set			bsp-set-layout rwide2
+				Once			bsp-once-layout rwide2
+			  3
+				Set			bsp-set-layout rwide3
+				Once			bsp-once-layout rwide3
+			  4
+				Set			bsp-set-layout rwide4
+				Once			bsp-once-layout rwide4
+	  D Master
+		    V Center
+			  1
+				Set			bsp-set-layout cmaster
+				Once			bsp-once-layout cmaster
+			  2
+				Set			bsp-set-layout cmaster2
+				Once			bsp-once-layout cmaster2
+			  3
+				Set			bsp-set-layout cmaster3
+				Once			bsp-once-layout cmaster3
+		    H Center
+			  1
+				Set			bsp-set-layout rcmaster
+				Once			bsp-once-layout rcmaster
+			  2
+				Set			bsp-set-layout rcmaster2
+				Once			bsp-once-layout rcmaster2
+			  3
+				Set			bsp-set-layout rcmaster3
+				Once			bsp-once-layout rcmaster3
+		    Right
+			  1
+				Set			bsp-set-layout rdmaster
+				Once			bsp-once-layout rdmaster
+			  2
+				Set			bsp-set-layout rdmaster2
+				Once			bsp-once-layout rdmaster2
+			  3
+				Set			bsp-set-layout rdmaster3
+				Once			bsp-once-layout rdmaster3
+		    Left
+			  1
+				Set			bsp-set-layout dmaster
+				Once			bsp-once-layout dmaster
+			  2
+				Set			bsp-set-layout dmaster2
+				Once			bsp-once-layout dmaster2
+			  3
+				Set			bsp-set-layout dmaster3
+				Once			bsp-once-layout dmaster3
+		    Up
+			  1
+				Set			bsp-set-layout hdmaster
+				Once			bsp-once-layout hdmaster
+			  2
+				Set			bsp-set-layout hdmaster2
+				Once			bsp-once-layout hdmaster2
+			  3
+				Set			bsp-set-layout hdmaster3
+				Once			bsp-once-layout hdmaster3
+		    Down
+			  1
+				Set			bsp-set-layout rhdmaster
+				Once			bsp-once-layout rhdmaster
+			  2
+				Set			bsp-set-layout rhdmaster2
+				Once			bsp-once-layout rhdmaster2
+			  3
+				Set			bsp-set-layout rhdmaster3
+				Once			bsp-once-layout rhdmaster3
+	  Grid
+		    V
+			  Set			bsp-set-layout grid
+			  Once		bsp-once-layout grid
+		    H
+			  Set			bsp-set-layout rgrid
+			  Once		bsp-once-layout rgrid
+	  Deck
+		    Set		bsp-set-layout deck
+		    Once		bsp-once-layout deck
+	  Row
+		    Set		bsp-set-layout row
+		    Once		bsp-once-layout row
+	  Col
+		    Set		bsp-set-layout col
+		    Once		bsp-once-layout col
+	  TV
+		    NW
+			  Set			bsp-set-layout tv-nw
+			  Once		bsp-once-layout tv-nw
+		    SW
+			  Set			bsp-set-layout tv-sw
+			  Once		bsp-once-layout tv-sw
+		    NE
+			  Set			bsp-set-layout tv-ne
+			  Once		bsp-once-layout tv-ne
+	  Equal
+		    Set		bsp-set-layout even
+		    Once		bsp-once-layout even
+  Layout Actions
+	  󰑓  Reload Layout				bsp-layout reload; polybar-msg action "#bspwm.hook.1"
+	    Remove Layout				bsp-remove-layout; polybar-msg action "#bspwm.hook.1"
+	  󰙰  Remove & Restore			bsp-remove-layout; bsp-restore-cached-layout; polybar-msg action "#bspwm.hook.1"
+	    Cache Layout				bsp-cache-layout
+	  $(echo "        󰇘󰇘󰇘󰇘 ")
+	    Zoom On					bsp-stack-zoom
+	    Zoom Off				bsp-stack-zoom-remove
+	  󱡴  Zoom Once				bsp-stack-zoom-oneshot
+	  $(echo "        󰇘󰇘󰇘󰇘 ")
+	    Equalize All				bspc query -N -d | xargs -I % bspc node % -B
+	  󰾞  Equalize Stack
+		      Parent			bspc node @parent -B
+	  $(echo "        󰇘󰇘󰇘󰇘 ")
+	    Add Master Node			bsp-master-node-increase
+	  -  Sub Master Node			bsp-master-node-decrease
+	    Move Master				bsp-move-master; polybar-msg action "#bspwm.hook.1"
+	  $(echo "        󰇘󰇘󰇘󰇘 ")
+	  󰑌  Deck Cycle				bsp-layout deck-cycle
+󱂬  Node Actions
+	    Close Focused				bspc node -c
+EOF
+    '';
+
+    xmenu-fetch = pkgs.writeShellScriptBin "xmenu-fetch" ''
+xmenu <<EOF | sh &
+$(fastfetch --logo none)
+EOF
+    '';
+
   in
 
 { config = lib.mkIf (config.my.theme == "catppuccin-uni") {
@@ -662,6 +1145,15 @@
     bsp-tabbed
     bsp-default-icon
     bsptab
+
+    xmenu-app
+    xmenu-pp
+    xmenu-audio
+    xmenu-key
+    xmenu-idle
+    xmenu-power
+    xmenu-bsp
+    xmenu-fetch
 
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
 

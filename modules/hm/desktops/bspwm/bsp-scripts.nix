@@ -1722,6 +1722,14 @@ let
     xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" $(xdo id -n tint2)
   '';
 
+  bsp-set-layout = pkgs.writeShellScriptBin "bsp-set-layout" ''
+    bsp-remove-layout; bsp-cache-layout; bsp-layout set $1; polybar-msg action "#bspwm.hook.1"
+  '';
+
+  bsp-once-layout = pkgs.writeShellScriptBin "bsp-once-layout" ''
+    bsp-remove-layout; bsp-cache-layout; bsp-layout once $1; polybar-msg action "#bspwm.hook.1"
+  '';
+
 in
 
 {
@@ -1735,6 +1743,8 @@ in
       bsp-conf
       bsp-conf-color
       bsp-volume
+      bsp-once-layout
+      bsp-set-layout
       bsp-layout-manager
       bsp-remove-layout
       bsp-remove-layout-me

@@ -48,7 +48,7 @@ in
       pkgs.playerctl
      #pkgs.upower
 
-      pkgs.xmenu
+     #pkgs.xmenu
 
       (pkgs.callPackage ../../myPackages/xdg-xmenu.nix { })
 

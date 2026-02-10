@@ -482,6 +482,8 @@ in
                               launch: [ "jgmenu_run" ]
                             f:
                               launch: [ "feh-rofi" ]
+                            i:
+                              launch: [ "feh-rofi-manual" ]
                             p:
                               launch: [ "poly-modules-rofi" ]
 

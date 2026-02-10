@@ -2,11 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  xorgproto,
-  libX11,
-  libXft,
   inih,
-  xmenu,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -16,14 +12,11 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "xlucn";
     repo = "xdg-xmenu";
-    rev = "c_version";  # Or use a specific commit/tag
-    hash = "sha256-RtLMtwnXmuutudZslFU2+8+whN2wAzi/ViM44Rr7gI0=";  # Update this
+    rev = "c_version";
+    hash = "sha256-RtLMtwnXmuutudZslFU2+8+whN2wAzi/ViM44Rr7gI0=";
   };
 
   buildInputs = [
-    xorgproto
-    libX11
-    libXft
     inih
   ];
 

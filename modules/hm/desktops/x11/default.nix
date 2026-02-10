@@ -181,6 +181,20 @@ let
     feh --bg-fill "$WALL_DIR/$choice"
   '';
 
+  feh-rofi-manual = pkgs.writeShellScriptBin "feh-rofi-manual" ''
+    ROFI_THEME="$HOME/.config/rofi/themes/main.rasi"
+    choice=$(rofi -dmenu -theme "$ROFI_THEME" -p "Wallpaper Path:")
+    [[ -z "$choice" ]] && exit 0
+
+    PROC="paperview-rs"
+    PID=$(pgrep -n "$PROC")
+    kill -CONT "$PID"
+    pkill paperview-rs
+
+    CMD="feh --bg-fill $choice"
+    eval "$CMD"
+  '';
+
   paperview-rofi = pkgs.writeShellScriptBin "paperview-rofi" ''
     WALL_DIR="${inputs.assets}/live-wallpapers" # TODO: Not Working With Nix Symlinks, Only Works With Normal Files
     LIVE_BG="$HOME/.live-bg"
@@ -374,6 +388,10 @@ let
     pkill paperview-rs && kill -CONT "$PID" && $HOME/.live-bg
   '';
 
+  rofi-monitor = pkgs.writeShellScriptBin "rofi-monitor" ''
+    ${builtins.readFile ./rofi-monitor}
+  '';
+
 in
 
 {
@@ -437,8 +455,11 @@ in
       xsession-load
       xsession-save
 
+      rofi-monitor
+
       feh-rofi
       feh-cycle
+      feh-rofi-manual
       live-bg
       live-bg-speed
       live-bg-cycle
@@ -446,6 +467,10 @@ in
       live-bg-speed-manual
       live-bg-manual
       paperview-rofi
+
+      (pkgs.xmenu.override {
+        imlib2 = pkgs.imlib2Full;
+      })
 
     ];
 

@@ -476,11 +476,11 @@ in
         format-volume-prefix = ''"󰜟 "'';
         format-volume = "<label-volume>%{O-8pt}";
         label-volume = "%percentage%%";
-        label-muted = "muted";
-        click-right = "pavucontrol";
+        label-muted = "󰝟";
+        click-right = "xmenu-audio";
        #double-click-left = "resources";
        #double-click-middle = ;
-        double-click-right = "baobab";
+       #double-click-right = "baobab";
       };
 
       "module/lock" = {
@@ -533,11 +533,11 @@ in
         hook-1 = "xkb-switch -p";
         initial = "2";
         click-left = "poly-xkb-change";
-        double-click-left = "iotas";
-        click-right = "onboard";
-        double-click-right = "sxcs --mag-filters 'circle'";
-        click-middle = "poly-color-picker";
-        double-click-middle = "poly-magnifier";
+       #double-click-left = "iotas";
+        click-right = "xmenu-key";
+       #double-click-right = "sxcs --mag-filters 'circle'";
+       #click-middle = "poly-color-picker";
+       #double-click-middle = "poly-magnifier";
         format = "<label>%{O-8pt}";
       };
 
@@ -649,14 +649,14 @@ in
         type = "custom/text";
         format = "<label>%{O-10pt}";
         label = " ";
-        click-left = "jgmenu_run";
+        click-left = "xmenu-app";
        #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
-        click-right = "bsp-hidden-menu";
-        double-click-left = "skippy-xd --paging";
-        click-middle = "ulauncher";
+       #click-right = "bsp-hidden-menu";
+       #double-click-left = "skippy-xd --paging";
+       #click-middle = "ulauncher";
        #double-click-middle = "kate";
-        double-click-middle = "skippy-xd --toggle";
-        double-click-right = "kitty";
+       #double-click-middle = "skippy-xd --toggle";
+       #double-click-right = "kitty";
       };
 
      #"module/idle" = {
@@ -676,6 +676,7 @@ in
         hook-1 = "poly-idle-inhibit --status";
         initial = "2";
         click-left = "poly-idle-inhibit";
+        click-right = "xmenu-idle";
         format = "<label>%{O-8pt}";
        #lable = "%output%";
        #label-on = "";
@@ -713,13 +714,13 @@ in
         type = "custom/text";
         label = "⏻";
         format = "%{O-11pt}<label>%{O-2pt}";
-        click-left = "poly-power";
-        click-right = "gnome-clocks";
-        double-click-left = "timeswitch";
+        click-left = "xmenu-power";
+        click-right = "xmenu-fetch";
+       #double-click-left = "timeswitch";
        #double-click-right = "resources";
-        double-click-right = "poly-modules-rofi";
-        double-click-middle = "kalarm";
-        click-middle = "gnome-calendar";
+       #double-click-right = "poly-modules-rofi";
+       #double-click-middle = "kalarm";
+       #click-middle = "gnome-calendar";
       };
 
      #"module/bspwm" = {
@@ -741,11 +742,11 @@ in
         hook-1 = "bsp-layout-manager";
         format = "<label>%{O-8pt}";
         initial = "2";
-        click-left = "bsp-next";
-        click-right = "bsp-prev";
-        click-middle = "poly-bsp-float";
-        double-click-left = "bsp-reload";
-        double-click-right = "bsp-og";
+        click-left = "xmenu-bsp";
+       #click-right = "bsp-prev";
+       #click-middle = "poly-bsp-float";
+       #double-click-left = "bsp-reload";
+       #double-click-right = "bsp-og";
       };
 
       "module/networkspeedup" = {
@@ -858,6 +859,7 @@ in
         hook-1 = "poly-pp --status";
         initial = "2";
         click-left = "poly-pp";
+        click-right = "xmenu-pp";
         format = "<label>%{O-6pt}";
       };
 
