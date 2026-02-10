@@ -78,8 +78,10 @@ let
         grid)                             echo '󱗼'  ;;
         rgrid)                            echo '-󱗼' ;;
         floating)                         echo '󱗆'  ;;
-        col)                              echo '󱪷'  ;;
-        row)                              echo '󱪶'  ;;
+        col|col2|col3|col4|col5|col6)     echo '󱪷'  ;;
+        row|row2|row3|row4|row5|row6)     echo '󱪶'  ;;
+        fair)                             echo ''  ;;
+        rfair)                            echo '-' ;;
         deck)                             echo ''  ;;
         tall|tall2|tall3|tall4)           echo ''  ;;
         rtall|rtall2|rtall3|rtall4)       echo '-' ;;  #󰯌
@@ -983,8 +985,6 @@ let
     current=$(bsp-layout get)
 
     case "$current" in
-        row)
-            bsp-layout set tall ;;
         tall)
             bsp-layout set tall2 ;;
         tall2)
@@ -997,8 +997,6 @@ let
             bsp-layout set rtall3 ;;
         rtall3)
             bsp-layout set rtall4 ;;
-        col)
-            bsp-layout set wide ;;
         wide)
             bsp-layout set wide2 ;;
         wide2)
@@ -1035,6 +1033,26 @@ let
             bsp-layout set rhdmaster2 ;;
         rhdmaster2)
             bsp-layout set rhdmaster3 ;;
+        row)
+            bsp-layout set row2 ;;
+        row2)
+            bsp-layout set row3 ;;
+        row3)
+            bsp-layout set row4 ;;
+        row4)
+            bsp-layout set row5 ;;
+        row5)
+            bsp-layout set row6 ;;
+        col)
+            bsp-layout set col2 ;;
+        col2)
+            bsp-layout set col3 ;;
+        col3)
+            bsp-layout set col4 ;;
+        col4)
+            bsp-layout set col5 ;;
+        col5)
+            bsp-layout set col6 ;;
         *)
             echo "Unknown layout: $current" ;;
     esac
@@ -1051,8 +1069,6 @@ let
             bsp-layout set tall2 ;;
         tall2)
             bsp-layout set tall ;;
-        tall)
-            bsp-layout set row ;;
         rtall4)
             bsp-layout set rtall3 ;;
         rtall3)
@@ -1065,8 +1081,6 @@ let
             bsp-layout set wide2 ;;
         wide2)
             bsp-layout set wide ;;
-        wide)
-            bsp-layout set col ;;
         rwide4)
             bsp-layout set rwide3 ;;
         rwide3)
@@ -1097,8 +1111,28 @@ let
             bsp-layout set rhdmaster2 ;;
          rhdmaster2)
             bsp-layout set rhdmaster ;;
-        *)
-            echo "Unknown layout: $current" ;;
+         row6)
+             bsp-layout set row5 ;;
+         row5)
+             bsp-layout set row4 ;;
+         row4)
+             bsp-layout set row3 ;;
+         row3)
+             bsp-layout set row2 ;;
+         row2)
+             bsp-layout set row ;;
+         col6)
+             bsp-layout set col5 ;;
+         col5)
+             bsp-layout set col4 ;;
+         col4)
+             bsp-layout set col3 ;;
+         col3)
+             bsp-layout set col2 ;;
+         col2)
+             bsp-layout set col ;;
+         *)
+             echo "Unknown layout: $current" ;;
     esac
   '';
 

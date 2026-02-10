@@ -106,7 +106,7 @@ plugin=org.kde.plasma.systemmonitor.cpu
 
 [Containments][527][Applets][531][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=55
+PreloadWeight=60
 popupHeight=400
 popupWidth=560
 
@@ -165,7 +165,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][527][Applets][533][Configuration][General]
-savedAt=2025,10,20,6,20,3.283
+savedAt=2026,2,10,15,9,22.474
 
 [Containments][527][Applets][534]
 immutability=1
@@ -174,7 +174,7 @@ plugin=org.kde.plasma.systemmonitor.net
 [Containments][527][Applets][534][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
 PreloadWeight=100
-popupHeight=156
+popupHeight=157
 popupWidth=152
 
 [Containments][527][Applets][534][Configuration][Appearance]
@@ -267,7 +267,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][527][Applets][538][Applets][539][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 
 [Containments][527][Applets][538][Applets][540]
 immutability=1

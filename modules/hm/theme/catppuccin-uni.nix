@@ -1050,12 +1050,51 @@ $(echo "        󰇘󰇘󰇘󰇘 ")
 	  Deck
 		    Set		bsp-set-layout deck
 		    Once		bsp-once-layout deck
+	  Fair
+		    V
+			  Set			bsp-set-layout fair
+			  Once		bsp-once-layout fair
+		    H
+			  Set			bsp-set-layout rfair
+			  Once		bsp-once-layout rfair
 	  Row
-		    Set		bsp-set-layout row
-		    Once		bsp-once-layout row
+		    1
+			  Set			bsp-set-layout row
+			  Once		bsp-once-layout row
+		    2
+			  Set			bsp-set-layout row2
+			  Once		bsp-once-layout row2
+		    3
+			  Set			bsp-set-layout row3
+			  Once		bsp-once-layout row3
+		    4
+			  Set			bsp-set-layout row4
+			  Once		bsp-once-layout row4
+		    5
+			  Set			bsp-set-layout row5
+			  Once		bsp-once-layout row5
+		    6
+			  Set			bsp-set-layout row6
+			  Once		bsp-once-layout row6
 	  Col
-		    Set		bsp-set-layout col
-		    Once		bsp-once-layout col
+		    1
+			  Set			bsp-set-layout col
+			  Once		bsp-once-layout col
+		    2
+			  Set			bsp-set-layout col2
+			  Once		bsp-once-layout col2
+		    3
+			  Set			bsp-set-layout col3
+			  Once		bsp-once-layout col3
+		    4
+			  Set			bsp-set-layout col4
+			  Once		bsp-once-layout col4
+		    5
+			  Set			bsp-set-layout col5
+			  Once		bsp-once-layout col5
+		    6
+			  Set			bsp-set-layout col6
+			  Once		bsp-once-layout col6
 	  TV
 		    NW
 			  Set			bsp-set-layout tv-nw
