@@ -56,7 +56,7 @@ in
     environment.systemPackages = [
       cfg.package
       bread-wm
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
       pkgs.dwmblocks
     ];
 

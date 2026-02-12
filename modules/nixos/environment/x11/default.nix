@@ -29,7 +29,7 @@ in
 
     environment.systemPackages = [
 
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
 
       pkgs.wayback-x11
      #pkgs.i3status             ##i3 status bar
@@ -52,6 +52,7 @@ in
 
       (pkgs.callPackage ../../myPackages/xdg-xmenu.nix { })
      #(pkgs.callPackage ../../myPackages/xfiles.nix { })
+      (pkgs.callPackage ../../myPackages/xclickroot.nix { })
 
     ];
 

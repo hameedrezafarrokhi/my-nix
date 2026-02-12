@@ -56,9 +56,7 @@
 
     ]
 
-    ++
-
-    [(pkgs.callPackage ../../myPackages/plasma-smart-video-wallpaper-reborn.nix { })]
+   #++ [(pkgs.callPackage ../../myPackages/plasma-smart-video-wallpaper-reborn.nix { })]
 
     ;
 

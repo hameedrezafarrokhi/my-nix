@@ -19,7 +19,7 @@ python3Packages.buildPythonApplication rec {
     owner = "nlpsuge";
     repo = "xsession-manager";
     rev = "master";  # Or use a specific commit/tag
-    hash = "sha256-jcFeyrF3aFzJBK6jsUgeCY/P6uNLIxEIZB5k+3D/gNk=";  # Update this
+    hash = "sha256-ijhe1w/m7WNFDxYvu8uDYvGhHuSYR2SrvdOxihMNSvI=";  # Update this
   };
 
   nativeBuildInputs = [

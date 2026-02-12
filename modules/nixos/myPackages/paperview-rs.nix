@@ -4,6 +4,7 @@
   fetchFromGitHub,
   pkg-config,
   stdenv,
+  libX11,
   xorg,
   imlib2,
 }:
@@ -32,7 +33,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs = lib.optionals stdenv.isLinux [
-    xorg.libX11
+    libX11
     imlib2
   ];
 

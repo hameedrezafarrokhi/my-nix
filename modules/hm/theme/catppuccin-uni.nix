@@ -1285,6 +1285,7 @@ EOF
     };
   };
   xsession.initExtra = lib.mkIf config.xsession.enable ''
+    #xclickroot -r xmenu-app &
     xsetroot -solid ${Base} &
     hsetroot -cover ${wallpaper} &
     xrdb -load ${config.xresources.path} &

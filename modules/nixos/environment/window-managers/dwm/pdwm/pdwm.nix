@@ -56,7 +56,7 @@ in
     environment.systemPackages = [
       cfg.package
       pd-wm
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
     ];
 
     services.xserver.windowManager.pd-wm = {

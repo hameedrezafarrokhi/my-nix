@@ -56,7 +56,7 @@ in
     environment.systemPackages = [
       cfg.package
       titus-wm
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
     ];
 
     services.xserver.windowManager.titus-wm = {

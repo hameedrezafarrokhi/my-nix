@@ -230,9 +230,9 @@ in
       pkgs.tilda
      #pkgs.plank
       pkgs.dockbarx
-     #pkgs.xorg.xdpyinfo
-      pkgs.xorg.xwininfo
-      pkgs.xorg.xprop
+     #pkgs.xdpyinfo
+      pkgs.xwininfo
+      pkgs.xprop
       pkgs.xdotool
       mypkgs.stable.tint2
       pkgs.bc
@@ -241,7 +241,7 @@ in
       pkgs.xbacklight
       pkgs.xkblayout-state
       pkgs.skippy-xd
-      pkgs.xorg.xprop
+      pkgs.xprop
 
      #pkgs.bsp-layout
       bsp-layout

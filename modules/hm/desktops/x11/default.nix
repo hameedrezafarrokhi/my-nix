@@ -510,6 +510,7 @@ in
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
         blueman-applet &
         #skippy-xd --start-daemon &
+        #xclickroot -r xmenu-app &
 
       '';
 

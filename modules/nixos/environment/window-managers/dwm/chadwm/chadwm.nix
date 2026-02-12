@@ -67,7 +67,7 @@ in
       cfg.package
       chadwm
       pkgs.dash
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
     ];
 
     services.xserver.windowManager.chadwm = {

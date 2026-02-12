@@ -68,7 +68,7 @@
 
    # UNCATEGORIZED
 
-    xorg.xeyes                    ##Detect wich apps use wayland
+    xeyes                    ##Detect wich apps use wayland
     wayland-logout
 
     # Astronomy

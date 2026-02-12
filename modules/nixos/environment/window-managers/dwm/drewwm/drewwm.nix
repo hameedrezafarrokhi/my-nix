@@ -70,7 +70,7 @@ in
     environment.systemPackages = [
       cfg.package
       drew-wm
-      pkgs.xorg.xsetroot
+      pkgs.xsetroot
       drew-slstatus
     ];
 

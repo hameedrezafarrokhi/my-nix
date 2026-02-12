@@ -19,7 +19,7 @@
       old-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
   #   old-stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
 
-        fallback.url = "github:NixOS/nixpkgs/f61125a668a320878494449750330ca58b78c557";
+        fallback.url = "github:NixOS/nixpkgs/88d3861acdd3d2f0e361767018218e51810df8a1";
 
   # NIX_COMMUNITY
 

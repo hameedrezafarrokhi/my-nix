@@ -144,7 +144,8 @@ in
         templates = "${config.home.homeDirectory}/Templates";
         videos = "${config.home.homeDirectory}/Videos";
         extraConfig = {  # add extra dirs here
-          XDG_MISC_DIR = "${config.home.homeDirectory}/Misc";
+         #XDG_MISC_DIR = "${config.home.homeDirectory}/Misc";
+          MISC = "${config.home.homeDirectory}/Misc";
         };
       };
 
