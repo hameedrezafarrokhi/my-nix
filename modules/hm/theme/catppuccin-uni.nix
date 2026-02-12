@@ -91,6 +91,8 @@
     btop-theme = "catppuccin_${flavor}";
     cava-theme = "catppuccin_${flavor}";
 
+    xfiles-icons = "papirus-${flavor}-${accent}";
+
     dunst-theme = "catppuccin_${flavor}";
 
     catppuccinifier-flav = "${flavor}";
@@ -175,6 +177,7 @@
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
     bspTabFont = "monospace:size=11";
+    xfilesFont = "${Sans}";
 
     MonoSize = 10;
     SansSize = MonoSize;
@@ -192,6 +195,7 @@
     PolyScale = 3;
     PolyScaleSmall = 1;
     XmenuSize = 14;
+    XfilesSize = 12;
 
     sound = "ocean";
 
@@ -1105,6 +1109,12 @@ $(echo "        󰇘󰇘󰇘󰇘 ")
 		    NE
 			  Set			bsp-set-layout tv-ne
 			  Once		bsp-once-layout tv-ne
+	  Dwindle
+		    Set		bsp-set-layout dwindle
+		    Once		bsp-once-layout dwindle
+	  Spiral
+		    Set		bsp-set-layout spiral
+		    Once		bsp-once-layout spiral
 	  Equal
 		    Set		bsp-set-layout even
 		    Once		bsp-once-layout even
@@ -1196,6 +1206,9 @@ EOF
     xmenu-fetch
 
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
+
+
+    (pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/default.nix { inputs = inputs; })
 
   ];
 
@@ -1360,6 +1373,32 @@ EOF
    #"xmenu.width" = ; # min width
    #"xmenu.height" = ; # height
   };
+  xresources.extraConfig = lib.mkIf config.xsession.enable ''
+    ! Font
+    XFiles.faceName:                ${xfilesFont}
+    XFiles.faceSize:                ${toString XfilesSize}
+
+    ! Plan 9 Acme colors
+    XFiles.background:              ${CBase}
+    XFiles.foreground:              ${CText}
+    XFiles.activeBackground:        ${CAccent}
+    XFiles.activeForeground:        ${CCrust}
+
+    ! Background transparency (requires X11 compositor)
+    XFiles.opacity:                 0.9
+
+    ! Icons for XDG user directories
+    XFiles.fileIcons:                       \n\
+        *.c=code                        \n\
+        *.h=code                        \n\
+        ~/Documents/=documents_dir      \n\
+        ~/Download/=downloads_dir       \n\
+        ~/Memes/=meme_dir               \n\
+        ~/Music/=music_dir              \n\
+        ~/Pictures/=images_dir          \n\
+        ~/Videos/=videos_dir
+  '';
+
  #xsession = lib.mkIf config.xsession.enable {   # DEPRICATED
  #  pointerCursor = {
  #    defaultCursor = x-cursor;

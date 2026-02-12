@@ -952,6 +952,7 @@
         "stable": "stable",
         "stylix": "stylix",
         "unstable": "unstable",
+        "xfiles": "xfiles",
         "xremap-flake": "xremap-flake"
       }
     },
@@ -1151,6 +1152,22 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "xfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770856850,
+        "narHash": "sha256-HWfxbm6lUNGY9BZnb4WQXdyusa7amZIIRAAe2IjHByE=",
+        "owner": "hameedrezafarrokhi",
+        "repo": "xfiles-colors",
+        "rev": "cdd4a2d2c7ee662317801abd70c06c1119b6e865",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hameedrezafarrokhi",
+        "repo": "xfiles-colors",
         "type": "github"
       }
     },

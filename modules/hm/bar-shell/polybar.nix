@@ -298,6 +298,42 @@ let
     [[ -n "$SELECTED_CLEANED" ]] && poly-modules "$SELECTED_CLEANED"
   '';
 
+  poly-super = pkgs.writeShellScriptBin "poly-super" ''
+    STATE_FILE="$HOME/.cache/poly-super-state"
+    if [ -f "$STATE_FILE" ]; then
+      CURRENT_STATE=on
+    else
+      CURRENT_STATE=off
+    fi
+
+    if [ "$1" = "--status" ]; then
+        if [ "$CURRENT_STATE" = "off" ]; then
+            echo "⏻"
+        else
+            echo ""
+        fi
+        exit 0
+    fi
+
+    if [ "$CURRENT_STATE" = "on" ]; then
+        xdotool keyup Super_L
+        rm -f "$STATE_FILE"
+        echo "⏻"
+    else
+        xdotool keydown Super_L
+        touch "$STATE_FILE"
+        echo ""
+    fi
+    polybar-msg action "#power.hook.1"
+  '';
+
+  poly-fetch = pkgs.writeShellScriptBin "poly-fetch" ''
+    xmenu-fetch
+    polybar-msg action "#power.hook.2"
+    sleep 2
+    polybar-msg action "#power.hook.1"
+  '';
+
 in
 
 { options.my.poly-height = lib.mkOption { type = lib.types.str; };
@@ -330,6 +366,8 @@ in
     poly-modules
     poly-modules-load
     poly-modules-rofi
+    poly-super
+    poly-fetch
   ];
 
  #my.poly-height = "18";
@@ -624,7 +662,8 @@ in
 
       "module/tray" = {
         type = "internal/tray";
-        tray-spacing = "5px";
+       #tray-spacing = "5px";
+        tray-spacing = "3px";
         format = "<tray>%{O-6pt}";
         tray-size = "66%";
       };
@@ -710,17 +749,34 @@ in
      #  click-middle = "gnome-calendar";
      #};
 
+     #"module/power" = {
+     #  type = "custom/text";
+     #  label = "⏻";
+     #  format = "%{O-11pt}<label>%{O-2pt}";
+     #  click-left = "xmenu-power";
+     #  click-right = "xmenu-fetch";
+     # #double-click-left = "timeswitch";
+     # #double-click-right = "resources";
+     # #double-click-right = "poly-modules-rofi";
+     # #double-click-middle = "kalarm";
+     # #click-middle = "gnome-calendar";
+     #};
+
       "module/power" = {
-        type = "custom/text";
-        label = "⏻";
+        type = "custom/ipc";
+        hook-0 = "poly-super --status";
+        hook-1 = "poly-super --status";
+        hook-2 = "echo 'BTW'";
+       #label = "⏻";
         format = "%{O-11pt}<label>%{O-2pt}";
+        initial = "2";
         click-left = "xmenu-power";
-        click-right = "xmenu-fetch";
+        click-right = "poly-super";
        #double-click-left = "timeswitch";
        #double-click-right = "resources";
        #double-click-right = "poly-modules-rofi";
        #double-click-middle = "kalarm";
-       #click-middle = "gnome-calendar";
+        click-middle = "poly-fetch";
       };
 
      #"module/bspwm" = {

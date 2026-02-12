@@ -51,6 +51,7 @@ in
      #pkgs.xmenu
 
       (pkgs.callPackage ../../myPackages/xdg-xmenu.nix { })
+     #(pkgs.callPackage ../../myPackages/xfiles.nix { })
 
     ];
 

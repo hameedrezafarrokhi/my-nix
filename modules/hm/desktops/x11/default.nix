@@ -392,6 +392,14 @@ let
     ${builtins.readFile ./rofi-monitor}
   '';
 
+  xfilesctl = pkgs.writeShellScriptBin "xfilesctl" ''
+    ${builtins.readFile ./xfilesctl}
+  '';
+
+  xfilesthumb = pkgs.writeShellScriptBin "xfilesthumb" ''
+    ${builtins.readFile ./xfilesthumb}
+  '';
+
 in
 
 {
@@ -467,6 +475,8 @@ in
       live-bg-speed-manual
       live-bg-manual
       paperview-rofi
+      xfilesctl
+      xfilesthumb
 
       (pkgs.xmenu.override {
         imlib2 = pkgs.imlib2Full;

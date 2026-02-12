@@ -45,6 +45,9 @@
     gst_all_1.gst-libav
     gst_all_1.gst-vaapi
 
+   #imagemagick
+    imagemagickBig
+
   ] ) config.my.software.codecs.exclude)
 
    ++

@@ -44,6 +44,7 @@
       kdePackages.qtwebsockets
       kdePackages.qtwebengine
       kdePackages.qtwebchannel
+      kdePackages.kdialog
      #nur.repos.xddxdd.plasma-smart-video-wallpaper-reborn
      #nur.repos.shadowrz.klassy-qt6
      #plasma-panel-colorizer

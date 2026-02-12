@@ -73,8 +73,8 @@ let
     fi
     case "$current" in
         tiled)                            echo ''  ;;
-        monocle)                          echo '󱂬'  ;; #󰓠
-        even)                             echo ''  ;; #
+        monocle)                          echo '󱂬'  ;;  #󰓠
+        even)                             echo ''  ;;  #
         grid)                             echo '󱗼'  ;;
         rgrid)                            echo '-󱗼' ;;
         floating)                         echo '󱗆'  ;;
@@ -83,6 +83,8 @@ let
         fair)                             echo ''  ;;
         rfair)                            echo '-' ;;
         deck)                             echo ''  ;;
+        dwindle)                          echo ''  ;;  #󱑺
+        spiral)                           echo ''  ;;  #
         tall|tall2|tall3|tall4)           echo ''  ;;
         rtall|rtall2|rtall3|rtall4)       echo '-' ;;  #󰯌
         rwide|rwide2|rwide3|rwide4)       echo ''  ;;

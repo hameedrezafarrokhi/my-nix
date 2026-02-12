@@ -157,6 +157,10 @@ in
         bspc rule -a tetris state=floating rectangle=370x450+500+150
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300   # zoom apps float and size (xzoom and magnify)
 
+        xdotool keyup Super_L
+        rm -f "$HOME/.cache/poly-super-state"
+        polybar-msg action "#power.hook.1"
+
       '';
 
       startupPrograms = [

@@ -54,6 +54,10 @@ alt + shift + e
 super + c
 	bspc node -c
 
+# Close Focused Window
+super + button2
+	bspc node -c
+
 # Change Focus to Left Window
 super + Left
 	bspc node -f west
@@ -230,17 +234,21 @@ XF86AudioRaiseVolume
 XF86AudioLowerVolume
       wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; ; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
-# Increase Volume (notify)
+# Mute Volume (notify)
 super + Insert
-      bsp-volume up; pw-play "$HOME/.local/share/desktop-sounds/focus"
+      bsp-volume mute
+
+# Cancel Mouse Super
+super + Delete
+	xdotool keyup Super_L; rm -f "$HOME/.cache/poly-super-state"; polybar-msg action "#power.hook.1"
+
+# Increase Volume (notify)
+super + Home
+	bsp-volume up; pw-play "$HOME/.local/share/desktop-sounds/focus"
 
 # Decrease Volume (notify)
-super + Delete
+super + End
 	bsp-volume down; pw-play "$HOME/.local/share/desktop-sounds/focus"
-
-# Mute Volume (notify)
-super + Home
-	bsp-volume mute
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
@@ -476,7 +484,7 @@ super + shift + g
 
 # Auto Hide Bars
 super + shift + alt + g
-      bsp-s-autohide
+      systemctl --user restart bsppoly.service
 
 # Polybar Modules
 super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
