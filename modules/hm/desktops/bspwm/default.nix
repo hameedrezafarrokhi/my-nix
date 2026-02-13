@@ -157,6 +157,10 @@ in
         bspc rule -a tetris state=floating rectangle=370x450+500+150
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300   # zoom apps float and size (xzoom and magnify)
         bspc rule -a "XFilesFloat" state=floating rectangle=520x380+10+40
+        bspc rule -a "Xmessage" state=floating
+        bspc rule -a "Gxmessage" state=floating
+        bspc rule -a "baobab" state=floating
+        bspc rule -a "fehprev" state=floating
 
         xdotool keyup Super_L
         rm -f "$HOME/.cache/poly-super-state"

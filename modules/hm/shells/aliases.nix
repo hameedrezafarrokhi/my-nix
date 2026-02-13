@@ -66,6 +66,8 @@ in
 
     now = ''date "+%Y-%m-%d %A %T %Z"'';
 
+    cdo = "builtin cd";
+
     cp = "cp -i";
     mv = "mv -i";
     rm = "rm -i";

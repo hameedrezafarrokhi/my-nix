@@ -482,6 +482,10 @@ in
         imlib2 = pkgs.imlib2Full;
       })
 
+      pkgs.pmenu
+      pkgs.xmessage
+      pkgs.gxmessage
+
     ];
 
     xsession = {
@@ -668,6 +672,7 @@ in
           "class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu')"
           "class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu')"
           "class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu')"
+          "class_g = 'baobab' && (window_type = 'menu' || window_type = 'dropdown_menu')"
         ];
 
         fade = true;

@@ -518,6 +518,9 @@
               tetris) color="${Peach}" ;;
               kitty-picker) color="${Red}" ;;
               XFilesFloat) color="${Green}" ;;
+              Xmessage) color="${Red}" ;;
+              Gxmessage) color="${Red}" ;;
+              baobab) color="${Green}" ;;
             esac
 
             case "$popup" in
@@ -1270,9 +1273,39 @@ EOF
     };
   };
 
- #home.sessionVariables = {
- #  QT_QPA_PLATFORMTHEME = lib.mkForce "";
- #};
+  home.sessionVariables = {
+   #QT_QPA_PLATFORMTHEME = lib.mkForce "";
+    THEME_COLOR_A  = "${Accent}";
+    THEME_COLOR_1  = "${Rosewater}";
+    THEME_COLOR_2  = "${Flamingo}";
+    THEME_COLOR_3  = "${Orange}";
+    THEME_COLOR_4  = "${Pink}";
+    THEME_COLOR_5  = "${Mauve}";
+    THEME_COLOR_6  = "${Red}";
+    THEME_COLOR_7  = "${Maroon}";
+    THEME_COLOR_8  = "${Peach}";
+    THEME_COLOR_9  = "${Yellow}";
+    THEME_COLOR_10 = "${Green}";
+    THEME_COLOR_11 = "${Teal}";
+    THEME_COLOR_12 = "${Sky}";
+    THEME_COLOR_13 = "${Sapphire}";
+    THEME_COLOR_14 = "${Blue}";
+    THEME_COLOR_15 = "${Lavender}";
+    THEME_COLOR_16 = "${Brown}";
+    THEME_COLOR_17 = "${Text}";
+    THEME_COLOR_18 = "${Subtext1}";
+    THEME_COLOR_19 = "${Subtext0}";
+    THEME_COLOR_20 = "${Overlay2}";
+    THEME_COLOR_21 = "${Overlay1}";
+    THEME_COLOR_22 = "${Overlay0}";
+    THEME_COLOR_23 = "${Surface2}";
+    THEME_COLOR_24 = "${Surface1}";
+    THEME_COLOR_25 = "${Surface0}";
+    THEME_COLOR_26 = "${Base}";
+    THEME_COLOR_27 = "${Mantle}";
+    THEME_COLOR_28 = "${Crust}";
+    THEME_COLOR_29 = "${Black}";
+  };
 
  #services.screen-locker.lockCmd = lib.mkIf config.xsession.enable "\${pkgs.i3lock}/bin/i3lock -n -c ${Base} -f -k ";
 

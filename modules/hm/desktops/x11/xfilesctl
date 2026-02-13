@@ -13,7 +13,7 @@
 # This script depends on the following programs:
 # - $OPENER (defaults to xdg-open) for opening files.
 # - $EDITOR (defaults to vi) for editing text files.
-# - xmessage, for displaying dialogs.
+# - gxmessage, for displaying dialogs. (changed from xmessage)
 # - xterm, for opening the text editor.
 # - xmenu, for popping up a mouse-based menu.
 # - dmenu, for popping up a keyboard-based menu.
@@ -27,13 +27,20 @@ ask=true
 
 # default paths
 TRASH="${TRASH:-"${XDG_DATA_HOME:-"$HOME/.local/share"}/Trash"}"
+#TRASH="$HOME/.local/share/Trash"
 
 # default commands
 #xdg-open
 #gio open
 #kioclient exec
 OPENER="${OPENER:-"xdg-open"}"
-EDITOR="${EDITOR:-"${VISUAL:-"vi"}"}"
+#OPENER="xdg-open"
+#OPENER="gio open"
+#OPENER="${OPENER:-"gio open"}"
+#OPENER="${OPENER:-"kioclient exec"}"
+#EDITOR="${EDITOR:-"${VISUAL:-"vi"}"}"
+#EDITOR="${EDITOR:-"${VISUAL:-"$EDITOR"}"}"
+#EDITOR="${EDITOR:-nvim}"
 
 # print error message
 warn() {
@@ -63,17 +70,19 @@ newwin() {
 
 # open terminal window running given command
 term() {
-	xterm &
+	$TERMINAL &
 }
 
 # open given files (on background, so xfiles not wait)
 open() {
-	command -- "$OPENER" "$@" &
+	command -- $OPENER "$@" &
+#gio open $@ &
 }
 
 # open text editor on given file
 edit() {
 	xterm -into "$WINDOWID" -bw 0 -e "$EDITOR" -- "$@"
+#kitty $EDITOR $@ &
 }
 
 # open dialog asking for confirmation ("$1" is the prompt, rest are filenames)
@@ -84,7 +93,8 @@ dialog() {
 	{
 		printf "%s\n" "$prompt"
 		printf "\t%s\n" "$@"
-	} | xmessage -buttons Yes:0,No:1 -nearmouse -file -
+#} | gxmessage -buttons Yes:0,No:1 -nearmouse -file -
+	} | gxmessage -buttons Yes:0,No:1 -center -iconic -ontop -wrap -fg $THEME_COLOR_17 -bg $THEME_COLOR_27 -file -
 }
 
 # if $1 == /path/to/file_1.txt exists, set $uniquepath to /path/to/file_2.txt and so on
@@ -107,6 +117,19 @@ setuniquepath() {
 		fi
 	done
 	uniquepath="$dirname/$body$p$i$ext"
+}
+
+# Open Files With Correct Method
+open-file-gio() {
+	gio open $@ &
+}
+
+open-file-kexec() {
+	kioclient exec $@ &
+}
+
+open-file-xdg() {
+	xdg-open $@ &
 }
 
 # copy files here if user confirms dialog
@@ -344,6 +367,18 @@ makedir() {
 	rm "$tempfile"
 }
 
+makefile() {
+	unset -v tempfile
+	trap 'test "$tempfile" && rm -f -- "$tempfile" 2>/dev/null' EXIT
+	tempfile="$(mktemp)" || exit 1
+	edit "$tempfile"
+	while read -r file
+	do
+		touch "$file"
+	done <"$tempfile"
+	rm "$tempfile"
+}
+
 # open random file in current directory
 random() {
 	set --
@@ -390,25 +425,29 @@ close() {
 	xdotool getwindowfocus windowkill
 }
 
+ctar() {
+  tar -czf "$PWD".tar.gz "$1"
+}
+
 # pop-up menu for file dropping
 dropmenu() {
 	{
 		cat <<-EOF
-		copy
-		move
-		link
+		󰆏  Copy
+		  Move
+		  Link
 		none
 		EOF
 	} | menu | {
 		read -r option
 		case "$option" in
-		("copy")
+		("󰆏  Copy")
 			copy "$@"
 			;;
-		("move")
+		("  Move")
 			move "$@"
 			;;
-		("link")
+		("  Link")
 			link "$@"
 			;;
 		("term")
@@ -422,61 +461,134 @@ dropmenu() {
 dirmenu() {
 	{
 		cat <<EOF
-paste
-	copy
-	move
-	link
-go up
-go prev
-go next
-go home
-open
-	xfiles
-	term
-	random
-$(case "$PWD" in ("$TRASH/files") printf 'empty trash' ;; (*) printf 'trash can' ;; esac)
-close
+  Locations
+	  Home
+	  Desktop
+	󱔗  Documents
+	󰅢  Downloads
+	󰝚  Music
+	  Pictures
+	󰎁  Videos
+	  Games
+	  NixOS
+󱢜  Go
+	  Up
+	  Prev
+	  Next
+	  Home
+  New
+	  Folder
+	  File
+  Copy Location
+  Paste
+	󰆏  Copy
+	  Move
+	  Link
+  Open
+	  XFiles
+	  Yazi
+	  Terminal
+	  Random
+󰋊  Mounts
+	  mnt
+	󰨡  Windows
+	  Media
+  Info
+	  Pie Chart
+$(case "$PWD" in ("$TRASH/files") printf '  Empty Trash' ;; (*) printf '  Trash Can' ;; esac)
+  Close
 EOF
 	} | menu | {
 		read -r option
 		case "$option" in
-		("go up")
-			changedir ".."
+		("  Folder")
+			makedir
 			;;
-		("go home")
+		("  File")
+			makefile
+			;;
+		("  Home")
 			changedir "$HOME"
 			;;
-		("go prev")
+		("  Desktop")
+			changedir "$HOME/Desktop"
+			;;
+		("󱔗  Documents")
+			changedir "$HOME/Documents"
+			;;
+		("󰅢  Downloads")
+			changedir "$HOME/Downloads"
+			;;
+		("󰝚  Music")
+			changedir "$HOME/Music"
+			;;
+		("  Pictures")
+			changedir "$HOME/Pictures"
+			;;
+		("󰎁  Videos")
+			changedir "$HOME/Videos"
+			;;
+		("  Games")
+			changedir "$HOME/Games"
+			;;
+		("  NixOS")
+			changedir "$NH_FLAKE"
+			;;
+		("  mnt")
+			changedir "/mnt"
+			;;
+		("󰨡  Windows")
+			changedir "/mnt/windows"
+			;;
+		("  Media")
+			changedir "/mnt/media"
+			;;
+		("  Up")
+			changedir ".."
+			;;
+		("  Home")
+			changedir "$HOME"
+			;;
+		("  Prev")
 			changedir "-"
 			;;
-		("go next")
+		("  Next")
 			changedir "+"
 			;;
-		("copy")
+		("  Copy Location")
+			pwd | xclip -selection clipboard &
+			;;
+		("󰆏  Copy")
 			paste "cp" "$@"
 			;;
-		("move")
+		("  Move")
 			paste "mv" "$@"
 			;;
-		("link")
+		("  Link")
 			paste "ln" "$@"
 			;;
-		("empty trash")
+		("  Empty Trash")
 			emptytrash
 			;;
-		("trash can")
+		("  Trash Can")
 			changedir "$TRASH/files"
 			;;
-		("random")
+		("  Random")
 			random
 			;;
-		("term")
+		("  Terminal")
 			term
 			;;
-		("xfiles")
+		("  XFiles")
 			newwin
 			;;
-		("close")
+		("  Yazi")
+			yazi $PWD &
+			;;
+		("  Pie Chart")
+			baobab $PWD &
+			;;
+		("  Close")
 			close
 			;;
 		esac
@@ -488,38 +600,83 @@ filemenu() {
 	case "$PWD" in
 	("$TRASH/files")
 		cat <<-EOF
-		untrash
-		delete
+		󰗩  Untrash
+		󰗨  Delete
 		EOF
 		;;
 	(*)
-		cat <<-EOF
-		rename
-		snarf
-		trash
-		edit
-		EOF
+	{
+		cat <<EOF
+  Open File
+	󰍜  XDG
+	󰍜  Gio
+	󰍜  Kio
+󰮫  Open With
+	  Text
+		󱗆  Kate
+	  Folder
+		󱢴  Dolphin
+		󰇥  Yazi
+  Snarf
+󰆑  Duplicate
+  Copy Location
+󰢊  Compress
+	  Zip
+	󰌽  Tar
+󰑕  Rename
+  Trash
+󰗨  Delete
+  Edit
+EOF
+	}
 		;;
 	esac | menu | {
 		read -r option
 		case "$option" in
-		("rename")
+		("󰑕  Rename")
 			rename "$@"
 			;;
-		("snarf")
+		("  Snarf")
 			snarf "$@"
 			;;
-		("delete")
+		("󰗨  Delete")
 			delete "$@"
 			;;
-		("trash")
+		("  Trash")
 			trash "$@"
 			;;
-		("untrash")
+		("󰗩  Untrash")
 			untrash "$@"
 			;;
-		("edit")
+		("  Edit")
 			edit "$1" &
+			;;
+		("󰆑  Duplicate")
+			snarf "$@" && paste "cp"
+			;;
+		("  Copy Location")
+			readlink -f "$@" | xclip -selection clipboard &
+			;;
+		("󰌽  Tar")
+			ctar "$@" &
+			;;
+		("󰍜  XDG")
+			open-file-xdg "$@" &
+			;;
+		("󰍜  Gio")
+			open-file-gio "$@" &
+			;;
+		("󰍜  Kio")
+			open-file-kexec "$@" &
+			;;
+		("󱗆  Kate")
+			kate "$@" &
+			;;
+		("󱢴  Dolphin")
+			dolphin "$@" &
+			;;
+		("󰇥  Yazi")
+			yazi "$@" &
 			;;
 		esac
 	}
@@ -609,5 +766,9 @@ case "$operation" in
 		trash "$@"
 		;;
 	esac
+	;;
+(^[Ii])
+	# Image Preview
+	feh --class fehprev "$@"
 	;;
 esac
