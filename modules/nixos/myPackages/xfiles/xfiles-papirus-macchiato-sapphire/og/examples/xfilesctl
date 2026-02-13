@@ -29,9 +29,6 @@ ask=true
 TRASH="${TRASH:-"${XDG_DATA_HOME:-"$HOME/.local/share"}/Trash"}"
 
 # default commands
-#xdg-open
-#gio open
-#kioclient exec
 OPENER="${OPENER:-"xdg-open"}"
 EDITOR="${EDITOR:-"${VISUAL:-"vi"}"}"
 
@@ -380,16 +377,6 @@ urlbar() {
 	}
 }
 
-# Close XFiles
-close() {
-#if pgrep xfiles-float >/dev/null 2>&1; then
-#	pkill xfiles-float
-#else
-#	xdotool selectwindow windowkill
-#fi
-	xdotool getwindowfocus windowkill
-}
-
 # pop-up menu for file dropping
 dropmenu() {
 	{
@@ -427,15 +414,11 @@ paste
 	move
 	link
 go up
-go prev
-go next
-go home
 open
 	xfiles
 	term
 	random
 $(case "$PWD" in ("$TRASH/files") printf 'empty trash' ;; (*) printf 'trash can' ;; esac)
-close
 EOF
 	} | menu | {
 		read -r option
@@ -475,9 +458,6 @@ EOF
 			;;
 		("xfiles")
 			newwin
-			;;
-		("close")
-			close
 			;;
 		esac
 	}

@@ -517,6 +517,7 @@
               pavucontrol) color="${Yellow}" ;;
               tetris) color="${Peach}" ;;
               kitty-picker) color="${Red}" ;;
+              XFilesFloat) color="${Green}" ;;
             esac
 
             case "$popup" in
@@ -1139,6 +1140,7 @@ $(echo "        󰇘󰇘󰇘󰇘 ")
 	  󰑌  Deck Cycle				bsp-layout deck-cycle
 󱂬  Node Actions
 	    Close Focused				bspc node -c
+	    Point & Close				xdotool selectwindow windowkill
 EOF
     '';
 
@@ -1146,6 +1148,12 @@ EOF
 xmenu <<EOF | sh &
 $(fastfetch --logo none)
 EOF
+    '';
+
+    xfiles-float-package = pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/float/default.nix { inputs = inputs; };
+
+    xfiles-float-script = pkgs.writeShellScriptBin "xfiles-float-script" ''
+      ${xfiles-float-package}/bin/xfiles-float
     '';
 
   in
@@ -1207,8 +1215,8 @@ EOF
 
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
 
-
-    (pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/default.nix { inputs = inputs; })
+    xfiles-float-script
+    (pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/og/default.nix { inputs = inputs; })
 
   ];
 
@@ -1390,6 +1398,30 @@ EOF
 
     ! Icons for XDG user directories
     XFiles.fileIcons:                       \n\
+        *.c=code                        \n\
+        *.h=code                        \n\
+        ~/Documents/=documents_dir      \n\
+        ~/Download/=downloads_dir       \n\
+        ~/Memes/=meme_dir               \n\
+        ~/Music/=music_dir              \n\
+        ~/Pictures/=images_dir          \n\
+        ~/Videos/=videos_dir
+
+    ! Font
+    XFilesFloat.faceName:           ${xfilesFont}
+    XFilesFloat.faceSize:           ${toString XfilesSize}
+
+    ! Plan 9 Acme colors
+    XFilesFloat.background:         ${CBase}
+    XFilesFloat.foreground:         ${CText}
+    XFilesFloat.activeBackground:   ${CAccent}
+    XFilesFloat.activeForeground:   ${CCrust}
+
+    ! Background transparency (requires X11 compositor)
+    XFilesFloat.opacity:                 0.9
+
+    ! Icons for XDG user directories
+    XFilesFloat.fileIcons:                  \n\
         *.c=code                        \n\
         *.h=code                        \n\
         ~/Documents/=documents_dir      \n\

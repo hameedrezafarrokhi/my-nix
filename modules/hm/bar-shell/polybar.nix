@@ -571,11 +571,7 @@ in
         hook-1 = "xkb-switch -p";
         initial = "2";
         click-left = "poly-xkb-change";
-       #double-click-left = "iotas";
         click-right = "xmenu-key";
-       #double-click-right = "sxcs --mag-filters 'circle'";
-       #click-middle = "poly-color-picker";
-       #double-click-middle = "poly-magnifier";
         format = "<label>%{O-8pt}";
       };
 
@@ -653,11 +649,6 @@ in
         label-padding = 0;
         label-font = 1;
         format-prefix = ''" "'';
-       #click-left = "gnome-calendar";
-       #click-right = "gnome-clocks";
-       #double-click-middle = ;
-       #double-click-left = "timeswitch";
-       #double-click-right = "kalarm";
       };
 
       "module/tray" = {
@@ -689,13 +680,7 @@ in
         format = "<label>%{O-10pt}";
         label = " ";
         click-left = "xmenu-app";
-       #click-left = "rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi -location 1 -yoffset 42 -xoffset 8";
-       #click-right = "bsp-hidden-menu";
-       #double-click-left = "skippy-xd --paging";
-       #click-middle = "ulauncher";
-       #double-click-middle = "kate";
-       #double-click-middle = "skippy-xd --toggle";
-       #double-click-right = "kitty";
+        click-right = "xfiles-float-script";
       };
 
      #"module/idle" = {
@@ -717,9 +702,6 @@ in
         click-left = "poly-idle-inhibit";
         click-right = "xmenu-idle";
         format = "<label>%{O-8pt}";
-       #lable = "%output%";
-       #label-on = "";
-       #label-off = "";
       };
 
       "module/notif" = {
@@ -767,15 +749,10 @@ in
         hook-0 = "poly-super --status";
         hook-1 = "poly-super --status";
         hook-2 = "echo 'BTW'";
-       #label = "⏻";
         format = "%{O-11pt}<label>%{O-2pt}";
         initial = "2";
         click-left = "xmenu-power";
         click-right = "poly-super";
-       #double-click-left = "timeswitch";
-       #double-click-right = "resources";
-       #double-click-right = "poly-modules-rofi";
-       #double-click-middle = "kalarm";
         click-middle = "poly-fetch";
       };
 
@@ -799,10 +776,6 @@ in
         format = "<label>%{O-8pt}";
         initial = "2";
         click-left = "xmenu-bsp";
-       #click-right = "bsp-prev";
-       #click-middle = "poly-bsp-float";
-       #double-click-left = "bsp-reload";
-       #double-click-right = "bsp-og";
       };
 
       "module/networkspeedup" = {

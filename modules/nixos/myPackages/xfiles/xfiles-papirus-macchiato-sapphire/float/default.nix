@@ -17,10 +17,10 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
-  pname = "xfiles";
+  pname = "xfiles-float";
   version = "1.0.0";
 
-  src = "${inputs.xfiles}/xfiles-papirus-macchiato-sapphire/";
+  src = "${inputs.xfiles}/xfiles-papirus-macchiato-sapphire/float";
 
   naviteBuildInputs = [
     pkg-config
@@ -46,16 +46,16 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 xfiles $out/bin/xfiles
+    install -Dm755 xfiles $out/bin/xfiles-float
 
     runHook postInstall
   '';
 
   meta = {
-    description = "File Manager for X";
+    description = "File Manager for X (Floating)";
     homepage = "https://github.com/phillbush/xfiles";
     license = lib.licenses.mit;
     platforms = lib.platforms.all;
-    mainProgram = "xfiles";
+    mainProgram = "xfiles-float";
   };
 })
