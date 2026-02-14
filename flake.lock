@@ -1158,11 +1158,11 @@
     "xfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1771063341,
-        "narHash": "sha256-8PvfzGm9lPXODwA2tnkFfepBdiqHgnQ7g7itn7Psk34=",
+        "lastModified": 1771078274,
+        "narHash": "sha256-nJojRRl1xvWgmVqO5zmJRHgXLaTlW7AfrXG7Q+pNmbc=",
         "owner": "hameedrezafarrokhi",
         "repo": "xfiles-colors",
-        "rev": "f86ed69248aae30b09aaf5caa183614794fc3341",
+        "rev": "f8233d991302cad304612bd322996bb4264a7198",
         "type": "github"
       },
       "original": {

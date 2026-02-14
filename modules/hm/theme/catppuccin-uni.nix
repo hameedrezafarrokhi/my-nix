@@ -1154,12 +1154,47 @@ $(fastfetch --logo none)
 EOF
     '';
 
-    xfiles-float-package = pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/float/default.nix { inputs = inputs; };
+    xfiles = pkgs.callPackage ../../nixos/myPackages/xfiles.nix { };
+    xfiles-theme =  xfiles.overrideAttrs (old: {
+      prePatch = (old.prePatch or "") + ''
+        rm -rf icons
+        cp -r ${inputs.xfiles}/xfiles-papirus-macchiato-sapphire icons
+        chmod -R +w icons
+      '';
+    });
+    xfiles-float-package = xfiles-theme.overrideAttrs (old: {
+      pname = "xfiles-float";
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace xfiles.c \
+      --replace-fail 'APPCLASS        "XFiles"' 'APPCLASS        "XFilesFloat"'
+      '';
+      installPhase = ''
+        runHook preInstall
+        install -Dm755 xfiles $out/bin/xfiles-float
+        runHook postInstall
+      '';
+      meta = old.meta // {
+        mainProgram = "xfiles-float";
+      };
+    });
     xfiles-float-script = pkgs.writeShellScriptBin "xfiles-float-script" ''
       ${xfiles-float-package}/bin/xfiles-float
     '';
-
-    xfiles-root-package = pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/root/default.nix { inputs = inputs; };
+     xfiles-root-package =  xfiles-theme.overrideAttrs (old: {
+       pname = "xfiles-root";
+       postPatch = (old.postPatch or "") + ''
+         substituteInPlace xfiles.c \
+       --replace-fail 'APPCLASS        "XFiles"' 'APPCLASS        "XFilesRoot"'
+       '';
+       installPhase = ''
+         runHook preInstall
+         install -Dm755 xfiles $out/bin/xfiles-root
+         runHook postInstall
+       '';
+       meta = old.meta // {
+         mainProgram = "xfiles-root";
+       };
+    });
     xfiles-root-script = pkgs.writeShellScriptBin "xfiles-root-script" ''
       ${xfiles-root-package}/bin/xfiles-root
     '';
@@ -1225,7 +1260,7 @@ EOF
 
     xfiles-float-script
     xfiles-root-script
-    (pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/og/default.nix { inputs = inputs; })
+    xfiles-theme
 
   ];
 
