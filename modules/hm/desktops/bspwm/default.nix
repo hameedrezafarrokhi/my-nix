@@ -161,6 +161,7 @@ in
         bspc rule -a "Gxmessage" state=floating
         bspc rule -a "baobab" state=floating
         bspc rule -a "fehprev" state=floating
+        bspc rule -a mpv:mpvprev state=floating
 
         xdotool keyup Super_L
         rm -f "$HOME/.cache/poly-super-state"

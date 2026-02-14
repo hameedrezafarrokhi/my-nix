@@ -518,6 +518,7 @@
               tetris) color="${Peach}" ;;
               kitty-picker) color="${Red}" ;;
               XFilesFloat) color="${Green}" ;;
+              XFilesRoot) color="${Red}" ;;
               Xmessage) color="${Red}" ;;
               Gxmessage) color="${Red}" ;;
               baobab) color="${Green}" ;;
@@ -1154,9 +1155,13 @@ EOF
     '';
 
     xfiles-float-package = pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/float/default.nix { inputs = inputs; };
-
     xfiles-float-script = pkgs.writeShellScriptBin "xfiles-float-script" ''
       ${xfiles-float-package}/bin/xfiles-float
+    '';
+
+    xfiles-root-package = pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/root/default.nix { inputs = inputs; };
+    xfiles-root-script = pkgs.writeShellScriptBin "xfiles-root-script" ''
+      ${xfiles-root-package}/bin/xfiles-root
     '';
 
   in
@@ -1219,6 +1224,7 @@ EOF
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
 
     xfiles-float-script
+    xfiles-root-script
     (pkgs.callPackage ../../nixos/myPackages/xfiles/xfiles-${xfiles-icons}/og/default.nix { inputs = inputs; })
 
   ];
@@ -1440,6 +1446,8 @@ EOF
         ~/Pictures/=images_dir          \n\
         ~/Videos/=videos_dir
 
+
+
     ! Font
     XFilesFloat.faceName:           ${xfilesFont}
     XFilesFloat.faceSize:           ${toString XfilesSize}
@@ -1455,6 +1463,31 @@ EOF
 
     ! Icons for XDG user directories
     XFilesFloat.fileIcons:                  \n\
+        *.c=code                        \n\
+        *.h=code                        \n\
+        ~/Documents/=documents_dir      \n\
+        ~/Download/=downloads_dir       \n\
+        ~/Memes/=meme_dir               \n\
+        ~/Music/=music_dir              \n\
+        ~/Pictures/=images_dir          \n\
+        ~/Videos/=videos_dir
+
+
+    ! Font
+    XFilesRoot.faceName:           ${xfilesFont}
+    XFilesRoot.faceSize:           ${toString XfilesSize}
+
+    ! Plan 9 Acme colors
+    XFilesRoot.background:         ${CMaroon}
+    XFilesRoot.foreground:         ${CCrust}
+    XFilesRoot.activeBackground:   ${CRed}
+    XFilesRoot.activeForeground:   ${CCrust}
+
+    ! Background transparency (requires X11 compositor)
+    XFilesRoot.opacity:                 0.9
+
+    ! Icons for XDG user directories
+    XFilesRoot.fileIcons:                  \n\
         *.c=code                        \n\
         *.h=code                        \n\
         ~/Documents/=documents_dir      \n\
@@ -5011,13 +5044,13 @@ EOF
       ColorPalette=${Surface1};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext1};${Surface2};${Red};${Green};${Yellow};${Blue};${Pink};${Teal};${Subtext0}
     '';
 
-   #"desktop-sounds/open".source = "${inputs.assets}/sounds/pen-2";
-   #"desktop-sounds/close".source = "${inputs.assets}/sounds/pen-1";
-   #"desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
-   #"desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
-   #"desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
-   #"desktop-sounds/notif".source = "${inputs.assets}/sounds/message-new-instant";
-   #"desktop-sounds/notif-critical".source = "${inputs.assets}/sounds/message-highlight";
+    "desktop-sounds/open".source = "${inputs.assets}/sounds/pen-2";
+    "desktop-sounds/close".source = "${inputs.assets}/sounds/pen-1";
+    "desktop-sounds/focus".source = "${inputs.assets}/sounds/bell";
+    "desktop-sounds/dektop".source = "${inputs.assets}/sounds/screen-capture";
+    "desktop-sounds/startup".source = "${inputs.assets}/sounds/desktop-logout";
+    "desktop-sounds/notif".source = "${inputs.assets}/sounds/message-new-instant";
+    "desktop-sounds/notif-critical".source = "${inputs.assets}/sounds/message-highlight";
 
   };
 

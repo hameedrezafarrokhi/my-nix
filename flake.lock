@@ -3,11 +3,11 @@
     "assets": {
       "flake": false,
       "locked": {
-        "lastModified": 1770049772,
-        "narHash": "sha256-Bc6yh2NZd9EyXeNlaAkwiPJvdrdQQpvFqFBBFM/mRt0=",
+        "lastModified": 1771062149,
+        "narHash": "sha256-0JvhkAKGCfT+R/PhY/+1xFm+p6aBH1AbaDSXkUsHQTU=",
         "owner": "hameedrezafarrokhi",
         "repo": "assets",
-        "rev": "7c1730c0e9ba89d15c3d123013e07dddb81fc9e8",
+        "rev": "71f994a3305d29d31253e513573586c86bf497bc",
         "type": "github"
       },
       "original": {
@@ -1158,11 +1158,11 @@
     "xfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1770942730,
-        "narHash": "sha256-Ml+DQ+Gi7uKaFueJ68LWkUkVo9snYD5p4OnzyIhcK8g=",
+        "lastModified": 1771063341,
+        "narHash": "sha256-8PvfzGm9lPXODwA2tnkFfepBdiqHgnQ7g7itn7Psk34=",
         "owner": "hameedrezafarrokhi",
         "repo": "xfiles-colors",
-        "rev": "431b40887c91a75691a95e103ae4b80bbe6feefa",
+        "rev": "f86ed69248aae30b09aaf5caa183614794fc3341",
         "type": "github"
       },
       "original": {

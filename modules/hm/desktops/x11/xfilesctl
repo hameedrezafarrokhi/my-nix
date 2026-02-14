@@ -485,7 +485,9 @@ dirmenu() {
 	  Move
 	  Link
   Open
-	  XFiles
+	  XFiles (New)
+	  XFiles (Clone)
+	󰌆  XFiles (Root)
 	  Yazi
 	  Terminal
 	  Random
@@ -579,11 +581,17 @@ EOF
 		("  Terminal")
 			term
 			;;
-		("  XFiles")
+		("  XFiles (New)")
+			xfiles $HOME &
+			;;
+		("  XFiles (Clone)")
 			newwin
 			;;
+		("󰌆  XFiles (Root)")
+			sudo xfiles-root-script "$@" &
+			;;
 		("  Yazi")
-			yazi $PWD &
+			kitty yazi $PWD &
 			;;
 		("  Pie Chart")
 			baobab $PWD &
@@ -617,6 +625,9 @@ filemenu() {
 	  Folder
 		󱢴  Dolphin
 		󰇥  Yazi
+	  Video
+		  Mpv
+		󰕼  Vlc
   Snarf
 󰆑  Duplicate
   Copy Location
@@ -626,6 +637,8 @@ filemenu() {
 󰑕  Rename
   Trash
 󰗨  Delete
+󰹆  Permissions
+	󱆃  Make Exec
   Edit
 EOF
 	}
@@ -660,6 +673,9 @@ EOF
 		("󰌽  Tar")
 			ctar "$@" &
 			;;
+		("󱆃  Make Exec")
+			chmod +x "$@"
+			;;
 		("󰍜  XDG")
 			open-file-xdg "$@" &
 			;;
@@ -676,7 +692,13 @@ EOF
 			dolphin "$@" &
 			;;
 		("󰇥  Yazi")
-			yazi "$@" &
+			kitty yazi "$@" &
+			;;
+		("  Mpv")
+			mpv "$@" &
+			;;
+		("󰕼  Vlc")
+			vlc "$@" &
 			;;
 		esac
 	}
@@ -769,6 +791,18 @@ case "$operation" in
 	;;
 (^[Ii])
 	# Image Preview
-	feh --class fehprev "$@"
+	feh --class fehprev "$@" &
+	;;
+(^[Oo])
+	# Video Preview
+	mpv --x11-name="mpvprev" "$@" &
+	;;
+(^[Nn])
+	# New Folder
+	makedir
+	;;
+(^[Bb])
+	# New File
+	makefile
 	;;
 esac

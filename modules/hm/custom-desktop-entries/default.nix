@@ -77,6 +77,19 @@ in
        #settings = { DBusActivatable = "false"; "X-Ubuntu-Gettext-Domain=onboard"; };
        #actions = {};
       };
+      "XFiles" = {
+        name="XFiles";
+        genericName = "File Manager";
+        exec="xfiles"; # QT_QPA_PLATFORMTHEME=kde
+        categories=["System" "FileTools" "FileManager"];
+        mimeType= ["inode/directory"];
+        type="Application";
+        comment="Manage your files the simple way";
+        icon="${inputs.assets}/icons/xfiles.png";
+        settings = {
+          Keywords="files;file management;file browsing;Explorer;Finder;";
+        };
+      };
 
 
 ############## REMOVING AUTO GENERATED AND UNWANTED AUTOSTARTS
