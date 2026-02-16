@@ -57,7 +57,7 @@
    ++
 
   [
-    mypkgs.stable.previewqt
+   #mypkgs.stable.previewqt
   ];
 
 };}

@@ -16,6 +16,13 @@
       package = pkgs.bluez;
       powerOnBoot = true;
 
+      hsphfpd.enable = false;  # Conflict with Wireplumber
+
+     #disabledPlugins = [ ];
+
+     #network = { };
+     #input = { };
+
       settings = {
         General = {
           Enable = "Source,Sink,Media,Socket";
@@ -29,7 +36,7 @@
 
     };
 
-    services.blueman.enable = true;
+    services.blueman.enable = false;
 
     environment.systemPackages = with pkgs; [
 

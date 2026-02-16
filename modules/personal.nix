@@ -92,8 +92,8 @@
      #"sway"
      #"qtile"
      #"dwl"
-      "mango"
-      "labwc"
+     #"mango"
+     #"labwc"
      #"river"
      #"wayfire"
 
@@ -104,11 +104,11 @@
      #"icewm" "fluxbox"
       "openbox"
      #"windowlab" "windowmaker"
-      "i3"
+     #"i3"
      #"spectrwm" "herbstluftwm" "dk"
-      "drew-wm" "titus-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
+      "titus-wm" #"drew-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
       "bspwm"
-      "awesome"
+     #"awesome"
      #"xmonad"
      #"exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
      #"fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
@@ -139,7 +139,7 @@
       nm-applet.enable = true;
       nfs.enable = false;
       torrent.enable = false;
-      tools.enable = false;
+      tools.enable = true;
     };
 
     services.enable = true;
@@ -341,7 +341,7 @@
             appletrc = null;
             kate.enable = true;
             konsole.enable = true;
-            elisa.enable = true;
+            elisa.enable = false;
             ghostwriter.enable = true;
             okular.enable = true;
             wallpaper-engine.enable = false;
@@ -358,22 +358,22 @@
          #sway.enable = true;
          #river.enable = true;
          #wayfire.enable = true;
-          labwc.enable = true;
+          labwc.enable = false;
           dwm.enable = true;
-          i3.enable = true;
+          i3.enable = false;
           openbox.enable = true;
          #xmonad.enable = true;
-          awesome.enable = true;
+          awesome.enable = false;
          #qtile.enable = true;
           bspwm.enable = true;
          #spectrwm.enable = true;
          #herbstluftwm.enable = true;
          #fluxbox.enable = true;
-          mango.enable = true;
+          mango.enable = false;
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"
-            /*"hyprland-uwsm"*/ "hyprland-noctalia" "hyprland-caelestia" /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ "hyprland-exo"
+            /*"hyprland-uwsm"*/ "hyprland-noctalia" /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/
 
           ];
 
@@ -381,7 +381,7 @@
 
           bar-shell.shells = [
             # wayland
-            "ags" "quickshell" "waybar" "ashell" "ignis"
+            /*"ags"*/ "quickshell" /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
             # x11
             "polybar"
             "tint2"
@@ -392,6 +392,7 @@
             amberol.enable = true;
             bat.enable = true;
             bazaar.enable = false;
+            bluetuith.enable = true;
             borg.enable = true;
             btop.enable = true;
             cava.enable = true;

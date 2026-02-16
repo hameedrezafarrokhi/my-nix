@@ -442,29 +442,35 @@ in
     };
 
     home.packages = [
+      pkgs.feh
+      pkgs.xkb-switch
+      pkgs.xdotool
+      pkgs.pamixer
       pkgs.wayback-x11
       pkgs.xdo
-      x-cursor
       pkgs.xbacklight
-      x-lock-sleep
-      x-lock
       pkgs.xkblayout-state
       pkgs.skippy-xd
       pkgs.xcolor
-
       mypkgs.stable.xmagnify
       pkgs.xzoom
       pkgs.sxcs
-
       pkgs.betterlockscreen
-
+      pkgs.pmenu
+      pkgs.xmessage
+      pkgs.gxmessage
      #pkgs.deadd-notification-center
+      (pkgs.xmenu.override {
+        imlib2 = pkgs.imlib2Full;
+      })
 
+
+      x-cursor
+      x-lock-sleep
+      x-lock
       xsession-load
       xsession-save
-
       rofi-monitor
-
       feh-rofi
       feh-cycle
       feh-rofi-manual
@@ -477,15 +483,6 @@ in
       paperview-rofi
       xfilesctl
       xfilesthumb
-
-      (pkgs.xmenu.override {
-        imlib2 = pkgs.imlib2Full;
-      })
-
-      pkgs.pmenu
-      pkgs.xmessage
-      pkgs.gxmessage
-
     ];
 
     xsession = {
@@ -512,7 +509,7 @@ in
         #xset dpms 2100 2400 2700
         export GDK_BACKEND=x11 &
         setxkbmap -layout us,ir -option "grp:alt_caps_toggle" &
-        blueman-applet &
+        #blueman-applet &
         #skippy-xd --start-daemon &
         #xclickroot -r xmenu-app &
 

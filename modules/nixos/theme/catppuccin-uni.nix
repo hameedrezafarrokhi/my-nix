@@ -8,14 +8,30 @@
     plymouth-package = myPlymouthCatppuccin;
     plymouth-logo = "${pkgs.nixos-icons}/share/icons/hicolor/96x96/apps/nix-snowflake.png";
 
-    sddm-theme = "breeze";
-    sddm-package = mySDDMCatppuccin;
+   #sddm-theme = "breeze";
+    sddm-theme = "where_is_my_sddm_theme";
+    sddm-package = pkgs.where-is-my-sddm-theme.override {
+      themeConfig.General = {
+       #background =displayManager-background ;
+       #backgroundMode = "none";
+        backgroundFill= backgroundFill;
+        showSessionsByDefault=true;
+        sessionsFontSize=13;
+        showUsersByDefault=true;
+        font=MonoSpace;
+        passwordFontSize=20;
+        passwordInputWidth=0.7;
+        passwordcharacter="";
+        cursorBlinkAnimation=false;
+        passwordInputCursorVisible=false;
+      };
+    };
     sddm-cursor-theme = cursor-theme;
     sddm-cursor-package = myCursorCatppuccin;
     sddm-cursor-size = 24;
 
     displayManager-background = "${pkgs.catppuccin-sddm-corners}/share/sddm/themes/catppuccin-sddm-corners/backgrounds/hashtags-large.png";
-    backgroundFill = "#1D2231";
+    backgroundFill = Base;
 
     icons-package = myIconCatppuccin;
 
@@ -31,33 +47,33 @@
     MonoSize = "10";
 
 
-    BRosewater = "f4dbd6";  Rosewater = "#${Rosewater}"; base00 =     BBase;
-    BFlamingo =  "f0c6c6";  Flamingo =  "#${Flamingo}";  base01 =     BRed;
-    BPink =      "f5bde6";  Pink =      "#${Pink}";      base02 =     BGreen;
-    BMauve =     "c6a0f6";  Mauve =     "#${Mauve}";     base03 =     BYellow;
-    BRed =       "ed8796";  Red =       "#${Red}";       base04 =     BBlue;
-    BMaroon =    "ee99a0";  Maroon =    "#${Maroon}";    base05 =     BPink;
-    BPeach =     "f5a97f";  Peach =     "#${Peach}";     base06 =     BTeal;
-    BYellow =    "eed49f";  Yellow =    "#${Yellow}";    base07 =     BSubtext1;
-    BGreen =     "a6da95";  Green =     "#${Green}";     base08 =     BSurface2;
-    BTeal =      "8bd5ca";  Teal =      "#${Teal}";      base09 =     BRed;
-    BSky =       "91d7e3";  Sky =       "#${Sky}";       base0A =     BGreen;
-    BSapphire =  "7dc4e4";  Sapphire =  "#${Sapphire}";  base0B =     BYellow;
-    BBlue =      "8aadf4";  Blue =      "#${Blue}";      base0C =     BBlue;
-    BLavender =  "b7bdf8";  Lavender =  "#${Lavender}";  base0D =     BPink;
+    BRosewater = "f4dbd6";  Rosewater = "#${BRosewater}"; base00 =     BBase;
+    BFlamingo =  "f0c6c6";  Flamingo =  "#${BFlamingo}";  base01 =     BRed;
+    BPink =      "f5bde6";  Pink =      "#${BPink}";      base02 =     BGreen;
+    BMauve =     "c6a0f6";  Mauve =     "#${BMauve}";     base03 =     BYellow;
+    BRed =       "ed8796";  Red =       "#${BRed}";       base04 =     BBlue;
+    BMaroon =    "ee99a0";  Maroon =    "#${BMaroon}";    base05 =     BPink;
+    BPeach =     "f5a97f";  Peach =     "#${BPeach}";     base06 =     BTeal;
+    BYellow =    "eed49f";  Yellow =    "#${BYellow}";    base07 =     BSubtext1;
+    BGreen =     "a6da95";  Green =     "#${BGreen}";     base08 =     BSurface2;
+    BTeal =      "8bd5ca";  Teal =      "#${BTeal}";      base09 =     BRed;
+    BSky =       "91d7e3";  Sky =       "#${BSky}";       base0A =     BGreen;
+    BSapphire =  "7dc4e4";  Sapphire =  "#${BSapphire}";  base0B =     BYellow;
+    BBlue =      "8aadf4";  Blue =      "#${BBlue}";      base0C =     BBlue;
+    BLavender =  "b7bdf8";  Lavender =  "#${BLavender}";  base0D =     BPink;
                                                          base0E =     BTeal;
-    BText =      "cad3f5";  Text =      "#${Text}";      base0F =     BSubtext0;
-    BSubtext1 =  "b8c0e0";  Subtext1 =  "#${Subtext1}";
-    BSubtext0 =  "a5adcb";  Subtext0 =  "#${Subtext0}";
-    BOverlay2 =  "939ab7";  Overlay2 =  "#${Overlay2}";
-    BOverlay1 =  "8087a2";  Overlay1 =  "#${Overlay1}";
-    BOverlay0 =  "6e738d";  Overlay0 =  "#${Overlay0}";
-    BSurface2 =  "5b6078";  Surface2 =  "#${Surface2}";
-    BSurface1 =  "494d64";  Surface1 =  "#${Surface1}";
-    BSurface0 =  "363a4f";  Surface0 =  "#${Surface0}";
-    BBase =      "24273a";  Base =      "#${Base}";
-    BMantle =    "1e2030";  Mantle =    "#${Mantle}";
-    BCrust =     "181926";  Crust =     "#${Crust}";
+    BText =      "cad3f5";  Text =      "#${BText}";      base0F =     BSubtext0;
+    BSubtext1 =  "b8c0e0";  Subtext1 =  "#${BSubtext1}";
+    BSubtext0 =  "a5adcb";  Subtext0 =  "#${BSubtext0}";
+    BOverlay2 =  "939ab7";  Overlay2 =  "#${BOverlay2}";
+    BOverlay1 =  "8087a2";  Overlay1 =  "#${BOverlay1}";
+    BOverlay0 =  "6e738d";  Overlay0 =  "#${BOverlay0}";
+    BSurface2 =  "5b6078";  Surface2 =  "#${BSurface2}";
+    BSurface1 =  "494d64";  Surface1 =  "#${BSurface1}";
+    BSurface0 =  "363a4f";  Surface0 =  "#${BSurface0}";
+    BBase =      "24273a";  Base =      "#${BBase}";
+    BMantle =    "1e2030";  Mantle =    "#${BMantle}";
+    BCrust =     "181926";  Crust =     "#${BCrust}";
 
     myStuff.myCat = {
       myGlobal-Flav   = "macchiato";
@@ -110,23 +126,6 @@
    #    Blur="0.0";
    #    Background="";
    #    BackgroundColor=backgroundFill;
-   #  };
-   #})
-
-   #(pkgs.where-is-my-sddm-theme.override {
-   #  themeConfig.General = {
-   #   #background =displayManager-background ;
-   #   #backgroundMode = "none";
-   #    backgroundFill= backgroundFill;
-   #    showSessionsByDefault=true;
-   #    sessionsFontSize=13;
-   #    showUsersByDefault=true;
-   #    font=MonoSpace;
-   #    passwordFontSize=20;
-   #    passwordInputWidth=0.7;
-   #    passwordcharacter="";
-   #    cursorBlinkAnimation=false;
-   #    passwordInputCursorVisible=false;
    #  };
    #})
 

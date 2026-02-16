@@ -8,8 +8,6 @@
 
     libnotify
 
-    xdotool
-
     onboard                       ##Onscreen keyboard
 
    #(flameshot.override {
@@ -36,7 +34,7 @@
 
     eyedropper                    ##Colorpicker
 
-    gnome-characters              ##Gnome emojis
+   #gnome-characters              ##Gnome emojis
    #gnome-decoder                 ##QR code reader
     gnome-clocks                  ##Gnome clock app
     gnome-calendar                ##Gnome calendar
@@ -51,7 +49,7 @@
     kdePackages.ktimer            ##Task Timer KDE
     kdePackages.kalarm
     kshutdown
-    kdePackages.kcron
+   #kdePackages.kcron
     peaclock                       ##CLI Clock and Task Timer utils
 
    #dxvk
@@ -68,7 +66,7 @@
 
    # UNCATEGORIZED
 
-    xeyes                    ##Detect wich apps use wayland
+   #xeyes                    ##Detect wich apps use wayland
     wayland-logout
 
     # Astronomy
@@ -99,7 +97,7 @@
 
     wmctrl
 
-    showmethekey
+   #showmethekey
 
     busybox
 

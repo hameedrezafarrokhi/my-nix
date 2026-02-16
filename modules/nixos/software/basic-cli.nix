@@ -36,6 +36,8 @@
    #bat
    #ninja
 
+    python3
+
     trashy
    #net-tools
    #iproute2

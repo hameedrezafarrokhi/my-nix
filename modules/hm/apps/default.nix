@@ -14,6 +14,7 @@ in
     amberol.enable = lib.mkEnableOption "amberol";
     bat.enable = lib.mkEnableOption "bat";
     bazaar.enable = lib.mkEnableOption "bazaar";
+    bluetuith.enable = lib.mkEnableOption "bluetuith";
     borg.enable = lib.mkEnableOption "borg";
     btop.enable = lib.mkEnableOption "btop";
     cava.enable = lib.mkEnableOption "cava";
@@ -75,6 +76,7 @@ in
       ./amberol.nix
       ./bat.nix
       ./bazaar.nix
+      ./bluetuith.nix
       ./borg.nix
       ./btop.nix
       ./cava.nix

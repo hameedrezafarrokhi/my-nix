@@ -57,14 +57,9 @@ in
       pkgs.xkb-switch-i3
       pkgs.kitti3
 
-      pkgs.feh
-
       i3-master
       i3-tile
       i3-manual
-
-      pkgs.pamixer
-      pkgs.playerctl
 
     ];
 

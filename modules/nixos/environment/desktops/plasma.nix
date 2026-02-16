@@ -60,11 +60,13 @@
 
     ;
 
-   #plasma6.excludePackages = [             # Excluding Packages (Not Working)
-   #  pkgs.kdePackages.kwallet
-   #  pkgs.kdePackages.kwalletmanager
-   #  pkgs.kdePackages.kpkpass
-   #];
+    plasma6.excludePackages = [             # Excluding Packages (Not Working)
+     #pkgs.kdePackages.kwallet
+     #pkgs.kdePackages.kwalletmanager
+     #pkgs.kdePackages.kpkpass
+      pkgs.kdePackages.kwin-x11
+      pkgs.kdePackages.elisa
+    ];
   };
 
   programs = {

@@ -7,7 +7,7 @@
   (utils.removePackagesByName ( with pkgs; [
 
     solfege                       ##Learn music
-    timidity
+   #timidity
    #tuxguitar                     ##Tableture app
    #gmetronome                    ##Metronome app
    #fretboard                     ##Learn the frets

@@ -6,7 +6,7 @@
 
     enable = true;
     enableXfwm = true;
-    enableWaylandSession = true;
+    enableWaylandSession = false;
     waylandSessionCompositor = "labwc --startup"; # "wayfire"
     noDesktop = false;
     enableScreensaver = true;

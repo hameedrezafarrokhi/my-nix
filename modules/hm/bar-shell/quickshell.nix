@@ -5,7 +5,8 @@
   programs.quickshell = {
     enable = true;
    #package = inputs.quickshell.packages.${system}.default;
-    package = lib.mkForce inputs.quickshell.packages.${system}.default; # pkgs.quickshell;
+   #package = lib.mkForce inputs.quickshell.packages.${system}.default; # pkgs.quickshell;
+    package = pkgs.quickshell;
     systemd = {
       enable = lib.mkForce false;
       target = "hyprland-session.target"; # default: config.wayland.systemd.target (without quotes)

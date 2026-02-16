@@ -5,17 +5,21 @@
   programs = {
 
     wireshark = {
-      enable = true;
+      enable = false;
       package = pkgs.wireshark;
       usbmon.enable = true;
       dumpcap.enable = true;
     };
 
     mtr = {
-      enable = true;
+      enable = false;
       package = pkgs.mtr-gui;
     };
 
   };
+
+  environment.systemPackages = [
+    pkgs.nethogs
+  ];
 
 };}

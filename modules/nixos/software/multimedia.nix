@@ -9,13 +9,13 @@
   ############################################################   VIDEO_PLAYER
 
     vlc                           ##VLC!!
-    vlc-bittorrent
+   #vlc-bittorrent
     mpv                           ##MPV backend
-    mpv-handler                   ##For web
-    mpvc                          ##Mpc-like control interface for mpv
-    smplayer                      ##MPV frontend
-    showtime                      ##GOOD video player
-    handbrake                     ##CD/DVD ripper/player
+   #mpv-handler                   ##For web
+   #mpvc                          ##Mpc-like control interface for mpv
+   #smplayer                      ##MPV frontend
+   #showtime                      ##GOOD video player
+   #handbrake                     ##CD/DVD ripper/player
    #ruffle                        ##Flash player
    #celluloid                     ##MPV backend (Another)
 

@@ -11,7 +11,6 @@
      #i3status             ##i3 status bar
      #i3lock               ##i3 screenlock
      #i3blocks             ##i3 blocks for status bar
-      feh                  ##i3/dwm theming background
     ];
    #configFile = ;
   };

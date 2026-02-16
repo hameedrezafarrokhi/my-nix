@@ -1346,6 +1346,8 @@ EOF
     THEME_COLOR_27 = "${Mantle}";
     THEME_COLOR_28 = "${Crust}";
     THEME_COLOR_29 = "${Black}";
+
+    GLAMOUR_STYLE = "${config.xdg.configHome}/glamour/theme.json";
   };
 
  #services.screen-locker.lockCmd = lib.mkIf config.xsession.enable "\${pkgs.i3lock}/bin/i3lock -n -c ${Base} -f -k ";
@@ -4493,6 +4495,211 @@ EOF
       '';
     };
 
+    glamour-theme = {
+      target = "glamour/theme.json";
+      text = ''
+        {
+          "document": {
+            "block_prefix": "\n",
+            "block_suffix": "\n",
+            "color": "${Text}",
+            "margin": 2
+          },
+          "block_quote": {
+            "indent": 1,
+            "indent_token": "│ "
+          },
+          "paragraph": {},
+          "list": {
+            "level_indent": 2
+          },
+          "heading": {
+            "block_suffix": "\n",
+            "color": "${Text}",
+            "bold": true
+          },
+          "h1": {
+            "prefix": "▓▓▓ ",
+            "suffix": " ",
+            "color": "${Red}",
+            "bold": true
+          },
+          "h2": {
+            "prefix": "▓▓▓▓ ",
+            "color": "${Peach}"
+          },
+          "h3": {
+            "prefix": "▓▓▓▓▓ ",
+            "color": "${Yellow}"
+          },
+          "h4": {
+            "prefix": "▓▓▓▓▓▓ ",
+            "color": "${Green}"
+          },
+          "h5": {
+            "prefix": "▓▓▓▓▓▓▓ ",
+            "color": "${Sapphire}"
+          },
+          "h6": {
+            "prefix": "▓▓▓▓▓▓▓▓ ",
+            "color": "${Lavender}"
+          },
+          "text": {},
+          "strikethrough": {
+            "crossed_out": true
+          },
+          "emph": {
+            "italic": true
+          },
+          "strong": {
+            "bold": true
+          },
+          "hr": {
+            "color": "${Overlay0}",
+            "format": "\n--------\n"
+          },
+          "item": {
+            "block_prefix": "• "
+          },
+          "enumeration": {
+            "block_prefix": ". "
+          },
+          "task": {
+            "ticked": "[✓] ",
+            "unticked": "[ ] "
+          },
+          "link": {
+            "color": "${Blue}",
+            "underline": true
+          },
+          "link_text": {
+            "color": "${Lavender}",
+            "bold": true
+          },
+          "image": {
+            "color": "${Blue}",
+            "underline": true
+          },
+          "image_text": {
+            "color": "${Lavender}",
+            "format": "Image: {{.text}} →"
+          },
+          "code": {
+            "prefix": " ",
+            "suffix": " ",
+            "color": "${Maroon}",
+            "background_color": "${Mantle}"
+          },
+          "code_block": {
+            "color": "${Mantle}",
+            "margin": 2,
+            "chroma": {
+              "text": {
+                "color": "${Text}"
+              },
+              "error": {
+                "color": "${Text}",
+                "background_color": "${Red}"
+              },
+              "comment": {
+                "color": "${Overlay0}"
+              },
+              "comment_preproc": {
+                "color": "${Blue}"
+              },
+              "keyword": {
+                "color": "${Mauve}"
+              },
+              "keyword_reserved": {
+                "color": "${Mauve}"
+              },
+              "keyword_namespace": {
+                "color": "${Yellow}"
+              },
+              "keyword_type": {
+                "color": "${Yellow}"
+              },
+              "operator": {
+                "color": "${Sky}"
+              },
+              "punctuation": {
+                "color": "${Overlay2}"
+              },
+              "name": {
+                "color": "${Lavender}"
+              },
+              "name_builtin": {
+                "color": "${Peach}"
+              },
+              "name_tag": {
+                "color": "${Mauve}"
+              },
+              "name_attribute": {
+                "color": "${Yellow}"
+              },
+              "name_class": {
+                "color": "${Yellow}"
+              },
+              "name_constant": {
+                "color": "${Yellow}"
+              },
+              "name_decorator": {
+                "color": "${Pink}"
+              },
+              "name_exception": {},
+              "name_function": {
+                "color": "${Blue}"
+              },
+              "name_other": {},
+              "literal": {},
+              "literal_number": {
+                "color": "${Peach}"
+              },
+              "literal_date": {},
+              "literal_string": {
+                "color": "${Green}"
+              },
+              "literal_string_escape": {
+                "color": "${Pink}"
+              },
+              "generic_deleted": {
+                "color": "${Red}"
+              },
+              "generic_emph": {
+                "color": "${Text}",
+                "italic": true
+              },
+              "generic_inserted": {
+                "color": "${Green}"
+              },
+              "generic_strong": {
+                "color": "${Text}",
+                "bold": true
+              },
+              "generic_subheading": {
+                "color": "${Sky}"
+              },
+              "background": {
+                "background_color": "${Mantle}"
+              }
+            }
+          },
+          "table": {
+            "center_separator": "┼",
+            "column_separator": "│",
+            "row_separator": "─"
+          },
+          "definition_list": {},
+          "definition_term": {},
+          "definition_description": {
+            "block_prefix": "\n🠶 "
+          },
+          "html_block": {},
+          "html_span": {}
+        }
+      '';
+    };
+
     rofi-power = {
       target = "rofi/themes/power.rasi";
       text = ''
@@ -5127,50 +5334,50 @@ EOF
    #};
   };
 
-  catppuccin = {
-    enable = true;
-   #cache.enable = true;
-    flavor = flavor;
-    accent = accent;
-
-    alacritty.enable = false;
-    bat.enable = false;
-    btop.enable = false;
-    brave.enable = false;
-    cava.enable = false;
-    cursors.enable = false;
-    dunst.enable = false;
-   #firefox.profiles={default={enable=false;force=false;};};
-    fish.enable = false;
-    freetube.enable = false;
-    fzf.enable = false;
-    gh-dash.enable = false;
-    ghostty.enable = false;
-    gtk.icon.enable = false;
-    hyprland.enable = false;
-    hyprlock.enable = false;
-    kitty.enable = false;
-    kvantum.enable = false;
-    mangohud.enable = false;
-    mpv.enable = false;
-    nvim.enable = false;
-    obs.enable = false;
-    polybar.enable = false;
-    qutebrowser.enable = false;
-    rofi.enable = false;
-    sioyek.enable = false;
-    starship.enable = false;
-    sway.enable = false;
-    swaylock.enable = false;
-    swaync.enable = false;
-    television.enable = false;
-    waybar.enable = false;
-    wezterm.enable = false;
-    wlogout.enable = false;
-    xfce4-terminal.enable = false;
-    yazi.enable = false;
-
-  };
+ #catppuccin = {
+ #  enable = false;
+ # #cache.enable = true;
+ #  flavor = flavor;
+ #  accent = accent;
+ #
+ #  alacritty.enable = false;
+ #  bat.enable = false;
+ #  btop.enable = false;
+ #  brave.enable = false;
+ #  cava.enable = false;
+ #  cursors.enable = false;
+ #  dunst.enable = false;
+ # #firefox.profiles={default={enable=false;force=false;};};
+ #  fish.enable = false;
+ #  freetube.enable = false;
+ #  fzf.enable = false;
+ #  gh-dash.enable = false;
+ #  ghostty.enable = false;
+ #  gtk.icon.enable = false;
+ #  hyprland.enable = false;
+ #  hyprlock.enable = false;
+ #  kitty.enable = false;
+ #  kvantum.enable = false;
+ #  mangohud.enable = false;
+ #  mpv.enable = false;
+ #  nvim.enable = false;
+ #  obs.enable = false;
+ #  polybar.enable = false;
+ #  qutebrowser.enable = false;
+ #  rofi.enable = false;
+ #  sioyek.enable = false;
+ #  starship.enable = false;
+ #  sway.enable = false;
+ #  swaylock.enable = false;
+ #  swaync.enable = false;
+ #  television.enable = false;
+ #  waybar.enable = false;
+ #  wezterm.enable = false;
+ #  wlogout.enable = false;
+ #  xfce4-terminal.enable = false;
+ #  yazi.enable = false;
+ #
+ #};
 
  #stylix.targets = {
  #  alacritty.enable = false;
