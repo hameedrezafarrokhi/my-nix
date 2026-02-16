@@ -945,3 +945,7 @@ super + i
 # Dekstop Sounds Toggle
 super + ctrl + v
     bsp-sounds-toggle
+
+# Bluetooth
+super + b
+    bluetuith-gui

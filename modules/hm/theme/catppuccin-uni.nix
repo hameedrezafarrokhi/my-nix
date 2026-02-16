@@ -864,6 +864,9 @@ case "$LAYOUT" in
 esac
 
 xmenu <<EOF | sh &
+  Clipboard				copyq toggle
+  ClipMenu				copyq menu
+$(echo "           󰇘󰇘󰇘󰇘 ")
   Layout: $flag $LAYOUT		poly-xkb-change
 󰪛  CapsLock				xdotool key Caps_Lock
 $(echo "           󰇘󰇘󰇘󰇘 ")

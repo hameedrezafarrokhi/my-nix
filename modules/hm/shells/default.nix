@@ -9,10 +9,12 @@ in
 {
 
   options.my.shells = lib.mkOption {
-
      type = lib.types.listOf (lib.types.enum [ "bash" "fish" "zsh" ]);
-     default = [ ];
-
+     default = [ "bash" ];
+  };
+  options.my.defaultShell = lib.mkOption {
+     type = lib.types.str;
+     default = "bash";
   };
 
   options.my.shellAliases = lib.mkEnableOption "shell aliases";

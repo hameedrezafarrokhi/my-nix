@@ -67,7 +67,9 @@
    dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
                                #inputs.quickshell.follows = "quickshell"; };
-
+              ambxst = { url = "github:Axenide/Ambxst";
+                                inputs.nixpkgs.follows = "nixpkgs";
+                                inputs.quickshell.follows = "quickshell"; };
 #           ax-shell = { url = "github:poogas/Ax-Shell";
 #                               inputs.nixpkgs.follows = "nixpkgs"; };
 
@@ -193,6 +195,7 @@
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
             inputs.mango.nixosModules.mango
+            inputs.ambxst.nixosModules.default
            #inputs.oxwm.nixosModules.default
            #inputs.xremap-flake.nixosModules.default
 

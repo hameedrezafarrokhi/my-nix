@@ -148,19 +148,21 @@ in
 
       '';
 
-     #configFile."./autostart/blueman.desktop".text = ''
-     #
-     #  [Desktop Entry]
-     #  NotShowIn=KDE;GNOME;Hyprland;niri;Cosmic;cosmic;COSMIC;
-     #  Name=Blueman Applet
-     #  Comment=Blueman Bluetooth Manager
-     #  Icon=blueman
-     #  Exec=blueman-applet
-     #  Terminal=false
-     #  Type=Application
-     #  Categories=
-     #
-     #'';
+      #NotShowIn=KDE;GNOME;Hyprland;niri;Cosmic;cosmic;COSMIC;
+      configFile."./autostart/blueman.desktop".text = ''
+
+        [Desktop Entry]
+        OnlyShowIn=none;
+        Hidden=true
+        Name=Blueman Applet
+        Comment=Blueman Bluetooth Manager
+        Icon=blueman
+        Exec=blueman-applet
+        Terminal=false
+        Type=Application
+        Categories=
+
+      '';
 
      #configFile."./autostart/x-cursor.desktop".text = ''
      #

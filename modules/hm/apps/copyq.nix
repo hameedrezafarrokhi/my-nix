@@ -21,4 +21,14 @@
     };
   };
 
+  # opens a window on start if tray is disabled
+ #xdg.configFile.copyq-conf = {
+ #  target = "copyq/copyq.conf";
+ #  text = ''
+ #    [Options]
+ #    tabs=&clipboard
+ #    disable_tray=true
+ #  '';
+ #};
+
 };}

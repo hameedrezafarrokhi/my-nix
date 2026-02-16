@@ -6,8 +6,18 @@
 
      type = lib.types.listOf (lib.types.enum [
 
-       "hyprland-uwsm" "hyprland-noctalia" "hyprland-caelestia" "hyprland-dms" "hyprland-ax" "hyprland-ashell" "hyprland-exo"
-       "niri-uwsm" "niri-noctalia" "niri-dms"
+       "hyprland-uwsm"
+       "hyprland-noctalia"
+       "hyprland-caelestia"
+       "hyprland-dms"
+       "hyprland-ambxst"
+       "hyprland-ax"
+       "hyprland-ashell"
+       "hyprland-exo"
+
+       "niri-uwsm"
+       "niri-noctalia"
+       "niri-dms"
 
       ]);
      default = [ ];

@@ -244,6 +244,7 @@ in
     ./hyprland-caelestia.nix
     ./hyprland-uwsm.nix
     ./hyprland-dms.nix
+    ./hyprland-ambxst.nix
    #./hyprland-ax.nix
     ./hyprland-ashell.nix
     ./hyprland-exo.nix

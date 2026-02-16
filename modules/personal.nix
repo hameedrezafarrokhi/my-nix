@@ -166,8 +166,8 @@
     };
 
     shell = {
-      shells = [ "bash" "fish" ];
-      default = "fish";
+      shells = config.home-manager.users.${admin}.my.shells;
+      default = config.home-manager.users.${admin}.my.defaultShell;
       alias.enable = true;
     };
 
@@ -324,6 +324,7 @@
           nix.enable = true;
 
           shells = [ "bash" "fish" ];
+          defaultShell = "fish";
           shellAliases = true;
           xdg.enable = true;
           uwsm.enable = true;
@@ -373,7 +374,7 @@
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"
-            /*"hyprland-uwsm"*/ "hyprland-noctalia" /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/
+            /*"hyprland-uwsm"*/ "hyprland-noctalia" /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/ "hyprland-ambxst"
 
           ];
 
@@ -437,6 +438,7 @@
             swww.enable = true;
             television.enable = true;
             tldr.enable = true;
+            tmux.enable = true;
             udiskie.enable = true;
             vim.enable = true;
             yazi.enable = true;

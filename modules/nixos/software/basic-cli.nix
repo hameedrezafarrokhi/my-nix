@@ -160,6 +160,27 @@
       ];
     };
 
+    tmux = lib.mkIf config.home-manager.users.${admin}.programs.tmux.enable {
+      enable = config.home-manager.users.${admin}.programs.tmux.enable;
+      package = config.home-manager.users.${admin}.programs.tmux.package;
+      terminal = config.home-manager.users.${admin}.programs.tmux.terminal;
+      shortcut = config.home-manager.users.${admin}.programs.tmux.shortcut;
+      secureSocket = config.home-manager.users.${admin}.programs.tmux.secureSocket;
+      reverseSplit = config.home-manager.users.${admin}.programs.tmux.reverseSplit;
+      resizeAmount = config.home-manager.users.${admin}.programs.tmux.resizeAmount;
+      newSession = config.home-manager.users.${admin}.programs.tmux.newSession;
+      keyMode = config.home-manager.users.${admin}.programs.tmux.keyMode;
+      historyLimit = config.home-manager.users.${admin}.programs.tmux.historyLimit;
+      escapeTime = config.home-manager.users.${admin}.programs.tmux.escapeTime;
+      customPaneNavigationAndResize = config.home-manager.users.${admin}.programs.tmux.customPaneNavigationAndResize;
+      clock24 = config.home-manager.users.${admin}.programs.tmux.clock24;
+      baseIndex = config.home-manager.users.${admin}.programs.tmux.baseIndex;
+      aggressiveResize = config.home-manager.users.${admin}.programs.tmux.aggressiveResize;
+     #plugins = [ ];
+     #extraConfigBeforePlugins = '' '';
+      withUtempter = true;
+    };
+
   };
 
 };}
