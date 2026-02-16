@@ -19,4 +19,10 @@
     };
   };
 
+  home.packages = [
+
+    (pkgs.writeShellScriptBin "bluetuith-gui" ''${config.my.default.terminal} --name bluetuith --class bluetuith sh -c 'bluetuith' '')
+
+  ];
+
 };}

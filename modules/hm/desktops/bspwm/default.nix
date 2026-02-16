@@ -144,6 +144,7 @@ in
         bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
         bspc rule -a ".blueman-manager-wrapped" state=floating
+        bspc rule -a bluetuith state=floating
         bspc rule -a pavucontrol state=floating
         bspc rule -a copyq state=floating
         bspc rule -a ".protonvpn-app-wrapped" state=floating

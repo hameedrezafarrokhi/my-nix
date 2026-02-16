@@ -511,6 +511,7 @@
             case "$classname" in
               cbonsai) color="${Green}" ;;
               ".blueman-manager-wrapped") color="${Blue}" ;;
+              bluetuith) color="${Blue}" ;;
               scratchpad) color="${Green}" ;;
               ".protonvpn-app-wrapped") color="${Mauve}" ;;
               eyedropper) color="${Mauve}" ;;
@@ -803,6 +804,7 @@ playing() {
 
 xmenu <<EOF | sh &
 󱡫  Audio Control			pavucontrol
+  Bluetooth			bluetuith-gui
 $(echo "        󰇘󰇘󰇘󰇘 ")
   Mute				pamixer --mute
   Unmute				pamixer --unmute
