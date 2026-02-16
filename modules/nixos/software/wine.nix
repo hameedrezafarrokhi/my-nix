@@ -13,7 +13,11 @@
 
    #wineWowPackages.stagingFull   ## Wine latest 64/32
    #wineWowPackages.stable        ## Wine stable 64/32
-    wineWowPackages.stableFull
+
+   #wineWowPackages.stableFull   # SHIT THIS WAS GOOD, NOW IS DEPRICATED IN FAVOR OF 64
+    wineWow64Packages.stableFull
+
+
    #wineWowPackages.waylandFull   ## Wine wayland 64/32
    #wineWowPackages.fonts
 

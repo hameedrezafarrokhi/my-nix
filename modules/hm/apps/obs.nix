@@ -8,7 +8,7 @@
     plugins = [
       pkgs.obs-studio-plugins.wlrobs
       pkgs.obs-studio-plugins.obs-vaapi
-      pkgs.obs-studio-plugins.obs-media-controls
+     #pkgs.obs-studio-plugins.obs-media-controls     # WARNING BROKEN
       pkgs.obs-studio-plugins.droidcam-obs
       pkgs.obs-studio-plugins.obs-vkcapture
       pkgs.obs-studio-plugins.obs-gstreamer

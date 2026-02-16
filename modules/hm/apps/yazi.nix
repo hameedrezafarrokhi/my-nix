@@ -15,7 +15,7 @@
    #initLua = ./   .lua;
    #keymap = {};
    #settings = {};
-   #shellWrapperName = "yy";
+    shellWrapperName = "y";
   };
 
 };}
