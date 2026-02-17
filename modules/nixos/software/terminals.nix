@@ -7,7 +7,16 @@
   (utils.removePackagesByName ( with pkgs; [
 
     kitty                         ##Terminal emulator
-    st                            ##Terminal emulator
+
+    (st.override {
+      patches = [
+        (pkgs.fetchurl {
+          url = "https://st.suckless.org/patches/xresources/st-xresources-20230320-45a15676.diff";
+          sha256 = "sha256-/ETVhdSM8d+wD7MMTixM+RmLd/VakfaO974mpcdXBKg=";
+        })
+      ];
+    })
+
     foot                          ##Terminal emulator
     alacritty                     ##Terminal emulator
    #ghostty

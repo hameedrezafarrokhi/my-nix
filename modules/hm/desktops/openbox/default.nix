@@ -14,7 +14,7 @@ in
 
     home.packages = [
       pkgs.obconf
-      pkgs.jgmenu
+     #pkgs.jgmenu
     ];
 
     xdg.configFile = {

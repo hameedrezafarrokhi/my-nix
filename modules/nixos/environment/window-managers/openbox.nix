@@ -7,7 +7,7 @@
   environment.systemPackages = [
 
     pkgs.obconf
-    pkgs.jgmenu
+   #pkgs.jgmenu
 
   ];
 

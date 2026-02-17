@@ -412,6 +412,7 @@
             ghostty.enable = true;
             gpg.enable = true;
             htop.enable = true;
+            jgmenu.enable = true;
             joplin.enable = false;
             kdeconnect.enable = true;
             keyrings.enable = true;

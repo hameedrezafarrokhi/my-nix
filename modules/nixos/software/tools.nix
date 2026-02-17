@@ -93,6 +93,7 @@
    #CuboCore.coretime
 
     bullshit
+    (fortune.override { withOffensive = true; })
 
 
     wmctrl

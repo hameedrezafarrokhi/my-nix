@@ -39,7 +39,16 @@ in
       pkgs.feh                  ##i3/dwm theming background
      #pkgs.dunst                ##i3/dwm notification daemon
      #pkgs.lxappearance         ##i3/dwm theming client
-      pkgs.dmenu                ##i3/dwm app launcher menu
+
+      (pkgs.dmenu.override {
+        patches = [
+          (pkgs.fetchurl {
+            url = "https://tools.suckless.org/dmenu/patches/xresources/dmenu-xresources-4.9.diff";
+            sha256 = "sha256-dbiE4myVnzlmdhEOteC3S97EOxy5QklQ8IzGQeb7Y9Y=";
+          })
+        ];
+      })
+
       pkgs.rofi                 ##i3/dwm app launcher menu (alternative)
       pkgs.xclip                ## Clipboard_manager
      #pkgs.variety              ## Wallpaper_manager

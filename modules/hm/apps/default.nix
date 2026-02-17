@@ -33,6 +33,7 @@ in
     ghostty.enable = lib.mkEnableOption "ghostty";
     gpg.enable = lib.mkEnableOption "gpg";
     htop.enable = lib.mkEnableOption "htop";
+    jgmenu.enable = lib.mkEnableOption "jgmenu";
     joplin.enable = lib.mkEnableOption "joplin";
     kdeconnect.enable =  lib.mkEnableOption "kde connect";
     keyrings.enable = lib.mkEnableOption "keyrings";
@@ -96,6 +97,7 @@ in
       ./ghostty.nix
       ./gpg.nix
       ./htop.nix
+      ./jgmenu.nix
       ./joplin.nix
       ./kdeconnect.nix
       ./keyrings.nix

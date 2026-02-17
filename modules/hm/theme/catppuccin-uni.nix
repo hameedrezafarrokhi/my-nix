@@ -68,6 +68,7 @@
     okular-theme = "Catppuccin ${flavorC} ${accentC}";
     dolphin-theme = "Catppuccin ${flavorC} ${accentC}";
     kdenlive-theme = "Catppuccin${flavorC}${accentC}.colors";
+    easyeffects-theme = "Catppuccin${flavorC}${accentC}";
 
     alacritty-theme = "catppuccin_${flavor}";
     ghostty-theme = "light:catppuccin-${flavor},dark:catppuccin-${flavor}";
@@ -151,6 +152,10 @@
 
     cmatrix = "blue";
 
+    heroic-theme = "nord-dark";
+    onlyoffice-theme = "theme-${scheme}";
+    audacity-theme = "${scheme}";
+
 
     MonoSpace = "Comic Mono";
     MonoAlt = "Monofur Nerd Font Mono";
@@ -158,29 +163,31 @@
     Sans = "Comic Sans MS";
     Serif = "Comic Sans MS";
     Emoji = "Blobmoji";
-
+    Symbols = "Symbols Nerd Font";
 
     Sans-X = "${Sans},  ${toString MonoSize}";
     Mono-X = "${MonoSpace},  ${toString MonoSize}";
     MonoRofi = "${MonoSpace} ${toString MonoSize}";
-    MonoSt = "${MonoSpace}:style:Regular:pixelsize=${toString MonoSize}";
+    MonoSt = "${MonoSpace}:style:Regular:pixelsize=${toString StSize}:antialias=true:autohint=true";
     MonoURxvt = "xft:${MonoSpace}:size=${toString MonoSize}";
+    dmenuFont = "${MonoSpace}:style:Bold:pixelsize=${toString DmenuSize}:antialias=true:autohint=true";
     xmenu-font = "${Sans}:pixelsize=${toString XmenuSize}:antialias=true:style=Bold,${MonoAlt2},${Emoji}";
-    rofiMenuFont = "${MonoSpace} 12";
+    rofiMenuFont = "${MonoSpace} ${toString RofiSize}";
     dunstFont = "${MonoSpace} ${toString MonoSize}";
     MonoOnboard = "${MonoAlt} bold";
     Poly1 = "${MonoSpace}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
     Poly2 = "${MonoAlt2}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
     Poly3 = "${MonoSpace}:size=${toString PolySizeSmall}:weight=${PolyWeight};${toString PolyScaleSmall}";
-    PolySymbols = "Symbols Nerd Font:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
-    awesome-wmFont = "Comic Sans Bold ${toString SansSize}";
+    PolySymbols = "${Symbols}:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    awesome-wmFont = "${Sans} Bold ${toString SansSize}";
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
-    bspTabFont = "monospace:size=11";
+    bspTabFont = "monospace:size=${toString BspTabSize}";
     xfilesFont = "${Sans}";
+    jgmenuFont = "${MonoSpace}; ${toString JgmenuSize}";
 
     MonoSize = 10;
-    SansSize = MonoSize;
+    SansSize = 10;
     MonoSizeKitty = 9;
     MonoSizeAlacritty = 9.0;
     MonoSizePlasma = 11;
@@ -196,6 +203,11 @@
     PolyScaleSmall = 1;
     XmenuSize = 14;
     XfilesSize = 12;
+    JgmenuSize = 11;
+    RofiSize = 12;
+    BspTabSize = 11;
+    StSize = 12;
+    DmenuSize = 16;
 
     sound = "ocean";
 
@@ -1436,11 +1448,16 @@ EOF
     "Sxiv.font" = Mono-X;
    #"*background" = "[background_opacity]#fafafa";
 
-    "dmenu.selbackground" = Base;
-    "dmenu.selforeground" = Text;
-   #"st.font" = MonoSt;
-   #"st.alpha" = 0.80; # For Transparent 0.60
-   #"st.borderpx" = 10; # inner border
+    "dmenu.font" = dmenuFont;
+    "dmenu.background" = Base;
+    "dmenu.foreground" = Text;
+    "dmenu.selbackground" = Rosewater;
+    "dmenu.selforeground" = Base;
+
+    "st.font" = MonoSt;
+    "st.alpha" = 0.80; # For Transparent 0.60
+    "st.borderpx" = 10; # inner border
+
    #dwm.normbgcolor: #FAFAFA
    #dwm.normbordercolor: #FAFAFA
    #dwm.normfgcolor: #2E3440
@@ -1867,6 +1884,22 @@ EOF
      #    "Theme" = qt-icon; # "*"
      #  };
      #};
+      "/.config/easyeffectsrc" = {
+        "UiSettings" = {
+          "ColorScheme" = easyeffects-theme;
+        };
+      };
+      "/.config/easyeffects/db/graphrc" = {
+        "Graph" = {
+          "colorTheme" = "userDefined";
+          "backgroundColor" = rgb-alt-Mantle;
+          "borderColors" = rgb-alt-Accent;
+          "labelBackgroundColor" = rgb-alt-Crust;
+          "labelTextColor" = rgb-alt-Text;
+          "plotAreaBackgroundColor" = rgb-alt-Mantle;
+          "seriesColors" = rgb-alt-Crust;
+        };
+      };
     };
   };
 
@@ -4705,6 +4738,138 @@ EOF
       '';
     };
 
+    jgmenu-theme = {
+      target = "jgmenu/jgmenurc";
+      text = ''
+        # verbosity = 0
+        # stay_alive = 1
+        # persistent = 0
+        # hide_on_startup = 0
+        # csv_cmd = apps
+        # tint2_look = 1
+        position_mode = pointer
+        # edge_snap_x = 30
+        # terminal_exec = x-terminal-emulator
+        # terminal_args = -e
+        # monitor = 0
+        # hover_delay = 100
+        # hide_back_items = 1
+        # columns = 1
+        # tabs = 120
+        # menu_margin_x = 0
+        # menu_margin_y = 0
+        # menu_width = 200
+        # menu_height_min = 0
+        # menu_height_max = 0
+        # menu_height_mode = static
+        # menu_padding_top = 5
+        # menu_padding_right = 5
+        # menu_padding_bottom = 5
+        # menu_padding_left = 5
+        # menu_radius = 1
+        menu_border = 6
+        # menu_halign = left
+        # menu_valign = bottom
+        # menu_gradient_pos = none
+        sub_spacing = 0
+        # sub_padding_top = auto
+        # sub_padding_right = auto
+        # sub_padding_bottom = auto
+        # sub_padding_left = auto
+        # sub_hover_action = 1
+        # item_margin_x = 3
+        # item_margin_y = 3
+        # item_height = 25
+        # item_padding_x = 4
+        # item_radius = 1
+        # item_border = 0
+        # item_halign = left
+        # sep_height = 5
+        sep_halign = center
+        sep_markup =
+        font = ${jgmenuFont}
+        # font_fallback = xtg
+        # icon_size = 22
+        # icon_text_spacing = 10
+        # icon_norm_alpha = 100
+        # icon_sel_alpha = 100
+        icon_theme = ${gtk-icon}
+        icon_theme_fallback = gxt
+        arrow_string = 
+        # arrow_width = 15
+        # search_empty_string = &lt;empty&gt;
+        color_menu_bg = ${Base} 100
+        # color_menu_bg_to = #000000 100
+        color_menu_border = ${Base} 100
+        # color_norm_bg = #000000 00
+        color_norm_fg = ${Text} 100
+        color_sel_bg = ${Accent} 100
+        color_sel_fg = ${Base} 100
+        color_sel_border = ${Surface1} 100
+        color_sep_fg = ${Base} 100
+        # color_scroll_ind = #eeeeee 40
+        color_title_fg = ${Subtext0} 100
+        color_title_bg = ${Crust} 100
+        color_title_border = ${Crust} 100
+        # csv_name_format = %n (%g)
+        # csv_single_window = 0
+        # csv_no_dirs = 0
+        # csv_i18n =
+        # csv_no_duplicates = 0
+      '';
+    };
+
+    copyq-theme = {
+      target = "copyq/themes/hm-theme.ini";
+      text = ''
+        [General]
+        bg=${CBase}
+        fg=${CText}
+        alt_bg=${CMantle}
+        sel_bg=${CRosewater}
+        sel_fg=${CCrust}
+        find_bg=${CYellow}
+        find_fg=${CCrust}
+        edit_bg=${CSurface0}
+        edit_fg=${CText}
+        notes_bg=${CMantle}
+        notes_fg=${CText}
+        num_fg=${COverlay0}
+        num_sel_fg=${CText}
+        notification_bg=${CSurface0}
+        notification_fg=${CText}
+
+        hover_item_css="
+            ;background: ${starship6}"
+        sel_item_css="
+            ;background: ${CRosewater}"
+        menu_bar_css="
+            ;background: ${CBase}"
+        menu_bar_disabled_css="
+            ;color: ${CMantle}"
+
+        tab_bar_css="
+            ;background: ${CMantle}"
+        tab_bar_item_counter="
+            ;color: ${CAccent}"
+        tab_bar_scroll_buttons_css="
+            ;background: ${CMantle}"
+        tab_bar_tab_unselected_css="
+            ;background: ${CMantle}"
+        tab_tree_item_counter="
+            ;color: ${CAccent}"
+        tab_bar_sel_item_counter="
+            ;color: ${CAccent}"
+        tab_tree_sel_item_counter="
+            ;color: ${CAccent}"
+
+        tool_button_selected_css="
+            ;background: ${CBase}"
+
+        style_main_window=true
+      '';
+    };
+
     rofi-power = {
       target = "rofi/themes/power.rasi";
       text = ''
@@ -5317,12 +5482,30 @@ EOF
  #  };
  #};
 
- #home.activation = {
- #  openbox-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
- #    mkdir -p "$HOME/./share/fonts/noto-fonts-color-emoji"
- #    cp -rn "${pkgs.noto-fonts-color-emoji}/share/fonts/noto" "$HOME/.local/share/fonts/noto-fonts-color-emoji"
- #  '';
- #};
+  home.activation = {
+   #openbox-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+   #  mkdir -p "$HOME/./share/fonts/noto-fonts-color-emoji"
+   #  cp -rn "${pkgs.noto-fonts-color-emoji}/share/fonts/noto" "$HOME/.local/share/fonts/noto-fonts-color-emoji"
+   #'';
+    heroic-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if [ -f "$HOME/.config/heroic/store/config.json" ]; then
+        jq '.theme = "${heroic-theme}" | .contentFontFamily = "${Sans}" | .actionsFontFamily = "${Sans}"' $HOME/.config/heroic/store/config.json > heroic-tmp.json && mv -f heroic-tmp.json $HOME/.config/heroic/store/config.json
+      fi
+    '';
+    onlyoffice-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if [ -f "$HOME/.config/onlyoffice/DesktopEditors.conf" ]; then
+        sed -i 's/^UITheme=.*/UITheme=${onlyoffice-theme}/' $HOME/.config/onlyoffice/DesktopEditors.conf
+      fi
+    '';
+    audacity-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if [ -f "$HOME/.config/audacity/audacity.cfg" ]; then
+        sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.config/audacity/audacity.cfg
+      fi
+      if [ -f "$HOME/.audacity-data/audacity.cfg" ]; then
+        sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.audacity-data/audacity.cfg
+      fi
+    '';
+  };
 
   systemd.user.services.bspborder = {
     Unit = {
