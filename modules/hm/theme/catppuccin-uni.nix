@@ -51,6 +51,12 @@
     xfce-theme = "Prune";
     xfce-package = myGTKCatppuccin;
 
+    openbox-package = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "openbox";
+      rev = "main";
+      sha256 = "sha256-56da/tjKvFhBbDF6uBau/KMznWIKeCK6jynbRJRkpTc=";
+    };
     openbox-theme = "catppuccin-${flavor}";
 
     i3status-theme = "ctp-${flavor}";
@@ -939,6 +945,7 @@ $(echo "        󰇘󰇘󰇘󰇘 ")
 	  󰆔  Restore Session	yes | xsession-manager -pr bspwm
   NixOS
 	  $(bullshit)
+󰛨  Inspire				notify-send '$(fortune -so | tr '\n' ' ')'
 EOF
     '';
 
@@ -1175,7 +1182,7 @@ EOF
     xfiles-theme =  xfiles.overrideAttrs (old: {
       prePatch = (old.prePatch or "") + ''
         rm -rf icons
-        cp -r ${inputs.xfiles}/xfiles-papirus-macchiato-sapphire icons
+        cp -r ${inputs.assets}/icons/xfiles-colors/xfiles-papirus-macchiato-sapphire icons
         chmod -R +w icons
       '';
     });
@@ -4203,7 +4210,7 @@ EOF
       recursive = true;
     };
     openbox = {  # Needs To Be Writable
-      source = "${inputs.catppuccin-openbox}/themes/${openbox-theme}/openbox-3/";
+      source = "${openbox-package}/themes/${openbox-theme}/openbox-3/";
       target = ".themes/${openbox-theme}/openbox-3/";
       recursive = true;
     };

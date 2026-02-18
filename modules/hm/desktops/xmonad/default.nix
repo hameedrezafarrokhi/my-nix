@@ -65,14 +65,14 @@ in
 
     ];
 
-    xdg.configFile = {
-
-      xmonad-conf = {
-        target = "xmonad/";
-        source = "${inputs.dot-collection}/xmonad/shahab-xmonad-dots/xmonad/";
-      };
-
-    };
+   #xdg.configFile = {
+   #
+   #  xmonad-conf = {
+   #    target = "xmonad/";
+   #    source = ./.;
+   #  };
+   #
+   #};
 
   };
 

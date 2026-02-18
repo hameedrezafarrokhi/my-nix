@@ -14,10 +14,10 @@ in
 
     xdg.configFile = {
 
-      qtile-conf = {
-        target = "qtile/";
-        source = "${inputs.dot-collection}/qtile/matt-qtile/";
-      };
+     #qtile-conf = {
+     #  target = "qtile/";
+     #  source = ./.;
+     #};
 
     };
 

@@ -26,11 +26,11 @@
     "assets": {
       "flake": false,
       "locked": {
-        "lastModified": 1771062149,
-        "narHash": "sha256-0JvhkAKGCfT+R/PhY/+1xFm+p6aBH1AbaDSXkUsHQTU=",
+        "lastModified": 1771428741,
+        "narHash": "sha256-m4QD+c3p5JCaMlze1k6SIJ8ys4p2LRfb3y2XiSfjK9s=",
         "owner": "hameedrezafarrokhi",
         "repo": "assets",
-        "rev": "71f994a3305d29d31253e513573586c86bf497bc",
+        "rev": "5887b3b541a3f4594c98cea5954b2de08da6402b",
         "type": "github"
       },
       "original": {
@@ -174,22 +174,6 @@
         "type": "github"
       }
     },
-    "catppuccin-openbox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1721498991,
-        "narHash": "sha256-56da/tjKvFhBbDF6uBau/KMznWIKeCK6jynbRJRkpTc=",
-        "owner": "catppuccin",
-        "repo": "openbox",
-        "rev": "bb1c8662898b156e2b5425d4616bcc8ae4cfeeb2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "openbox",
-        "type": "github"
-      }
-    },
     "chadwm": {
       "flake": false,
       "locked": {
@@ -284,22 +268,6 @@
         "owner": "nix-community",
         "ref": "latest",
         "repo": "disko",
-        "type": "github"
-      }
-    },
-    "dot-collection": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1763201698,
-        "narHash": "sha256-WFfJUc4LsNZukoekrIj4ZvDzts575mcRLiq1C69RZy8=",
-        "owner": "hameedrezafarrokhi",
-        "repo": "dot-collection",
-        "rev": "65f62ef08c9986c724decdce7cdae0172dffeff2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hameedrezafarrokhi",
-        "repo": "dot-collection",
         "type": "github"
       }
     },
@@ -952,12 +920,10 @@
         "caelestia-cli": "caelestia-cli",
         "caelestia-shell": "caelestia-shell",
         "catppuccin": "catppuccin",
-        "catppuccin-openbox": "catppuccin-openbox",
         "chadwm": "chadwm",
         "cosmic-manager": "cosmic-manager",
         "dankMaterialShell": "dankMaterialShell",
         "disko": "disko",
-        "dot-collection": "dot-collection",
         "drew-wm": "drew-wm",
         "dwm-titus": "dwm-titus",
         "fallback": "fallback",
@@ -976,7 +942,6 @@
         "stable": "stable",
         "stylix": "stylix",
         "unstable": "unstable",
-        "xfiles": "xfiles",
         "xremap-flake": "xremap-flake"
       }
     },
@@ -1176,22 +1141,6 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "xfiles": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771078274,
-        "narHash": "sha256-nJojRRl1xvWgmVqO5zmJRHgXLaTlW7AfrXG7Q+pNmbc=",
-        "owner": "hameedrezafarrokhi",
-        "repo": "xfiles-colors",
-        "rev": "f8233d991302cad304612bd322996bb4264a7198",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hameedrezafarrokhi",
-        "repo": "xfiles-colors",
         "type": "github"
       }
     },
