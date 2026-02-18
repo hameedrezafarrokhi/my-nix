@@ -89,10 +89,11 @@ in
         allow-dirty = true;
         warn-dirty = true;
 
-        keep-derivations = false;
+        keep-derivations = true;
         keep-failed = false;
         keep-going = false;
         keep-outputs = false;
+       #keep-env-derivations = false;
 
         require-sigs = false;
         trusted-users = [ "root" "@wheel" admin ];
