@@ -13,12 +13,12 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "xsession-manager";
-  version = "unstable-2021-09-08";  # Based on last commit date
+  version = "unstable-2021-09-08";
 
   src = fetchFromGitHub {
     owner = "nlpsuge";
     repo = "xsession-manager";
-    rev = "master";  # Or use a specific commit/tag
+    rev = "master";
     hash = "sha256-ijhe1w/m7WNFDxYvu8uDYvGhHuSYR2SrvdOxihMNSvI=";  # Update this
   };
 

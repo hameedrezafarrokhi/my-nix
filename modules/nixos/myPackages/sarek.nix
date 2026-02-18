@@ -7,11 +7,11 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "proton-sarek-async";
-  version = "10-8";  # UPDATE THIS
+  version = "10-8";
 
   src = fetchzip {
     url = "https://github.com/pythonlover02/Proton-Sarek/releases/download/Proton-Sarek${finalAttrs.version}/Proton-Sarek${finalAttrs.version}-async.tar.gz";
-    hash = "sha256-3IfT/xoKioXYP7xUU59TKSBevVRp1SlhHQQd5YVY9U8=";  # nix will tell you the right hash
+    hash = "sha256-3IfT/xoKioXYP7xUU59TKSBevVRp1SlhHQQd5YVY9U8=";
   };
 
   dontUnpack = true;

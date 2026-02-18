@@ -21,11 +21,6 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "slstatus";
   version = "1.1";
 
- #src = fetchzip {
- #  url = "https://dl.suckless.org/tools/slstatus-${finalAttrs.version}.tar.gz";
- #  hash = "sha256-MRDovZpQsvnLEvsbJNBzprkzQQ4nIs1T9BLT+tSGta8=";
- #};
-
   src = "${inputs.drew-wm}/suckless/slstatus/";
 
   preBuild =

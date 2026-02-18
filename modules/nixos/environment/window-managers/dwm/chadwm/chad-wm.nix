@@ -26,11 +26,6 @@ stdenv.mkDerivation rec {
   pname = "chadwm";
   version = "6.6";
 
- #src = fetchurl {
- #  url = "https://github.com/siduck/chadwm/archive/master.tar.gz";
- #  sha256 = "sha256-zv2AXptCSmSrPquW6C8ARj+G/I8cTBwg6xAQO9cVLxM=";
- #};
-
   src = "${inputs.chadwm}/chadwm/";
 
   buildInputs = [

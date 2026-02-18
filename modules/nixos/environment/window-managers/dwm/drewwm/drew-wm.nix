@@ -25,19 +25,7 @@ stdenv.mkDerivation rec {
   pname = "drew-wm";
   version = "6.6";
 
- #src = fetchurl {
- #  url = "https://dl.suckless.org/dwm/${pname}-${version}.tar.gz";
- #  sha256 = "sha256-Ideev6ny+5MUGDbCZmy4H0eExp1k5/GyNS+blwuglyk=";
- #};
-
- #src = fetchurl {
- #  url = "https://github.com/ChrisTitusTech/dwm-titus/archive/master.tar.gz";
- #  sha256 = "sha256-Om0StJTkXIHhtkAklwfNSy5KJsiRZto7CHrJlVvHl7U=";
- #};
-
   src = "${inputs.drew-wm}/suckless/dwm/";
-
- #src = "${inputs.dwm-titus}/";
 
   buildInputs = [
     libX11

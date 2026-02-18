@@ -14,7 +14,6 @@
 
   environment.systemPackages = [
    #pkgs.bsp-layout
-   #(pkgs.callPackage ./bsp-tabbed.nix { })
   ];
 
     # ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.su}/bin/su m --command='systemctl --user start bspwm-reload.service'"

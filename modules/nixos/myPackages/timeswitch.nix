@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     owner = "fsobolev";
     repo = "timeswitch";
     rev = "refs/tags/${version}";
-    hash = "sha256-GNV/GpWHMhW/QJTdmDE+W8QIP2Q9oUdytTJ5Ok49YmI="; # Replace with actual hash
+    hash = "sha256-GNV/GpWHMhW/QJTdmDE+W8QIP2Q9oUdytTJ5Ok49YmI=";
   };
 
   nativeBuildInputs = [

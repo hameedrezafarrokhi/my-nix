@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     owner = "Taiko2k";
     repo = "Avvie";
     rev = "v${version}";
-    sha256 = "sha256-Y3Tf+EC7uwgVpHltV3qa5aY/5S3ANminfX5RNpGTQGA="; # Replace with actual SHA256
+    sha256 = "sha256-Y3Tf+EC7uwgVpHltV3qa5aY/5S3ANminfX5RNpGTQGA=";
   };
 
   nativeBuildInputs = [

@@ -20,7 +20,7 @@ in
 
        "icewm" "fluxbox" "openbox" "windowlab" "windowmaker"
        "i3" "spectrwm" "herbstluftwm" "dk"
-       "dwm" "chadwm" "drew-wm" "titus-wm" "bread-wm" "pd-wm"
+       "dwm" "chadwm" "drew-wm" "titus-wm"
        "xmonad" "awesome" "bspwm"
        "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
        "fvwm2" "fvwm3" "leftwm" "berry" "hypr" "sawfish"
@@ -64,8 +64,6 @@ in
     ./dwm/chadwm/chadwm.nix
     ./dwm/drewwm/drewwm.nix
     ./dwm/tituswm/tituswm.nix
-    ./dwm/breadwm/breadwm.nix
-    ./dwm/pdwm/pdwm.nix
     ./dwl.nix
 
     ./xmonad.nix

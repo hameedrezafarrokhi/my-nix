@@ -106,7 +106,7 @@
      #"windowlab" "windowmaker"
      #"i3"
      #"spectrwm" "herbstluftwm" "dk"
-      "titus-wm" #"drew-wm" #"dwm" #"chadwm"  #"bread-wm" #"pd-wm"
+      "titus-wm" #"drew-wm" #"dwm" #"chadwm"
       "bspwm"
      #"awesome"
      #"xmonad"

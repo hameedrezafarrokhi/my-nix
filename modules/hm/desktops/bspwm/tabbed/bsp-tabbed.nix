@@ -12,13 +12,6 @@ stdenv.mkDerivation {
 
   name = "tabbed-flexipatch";
 
- #src = fetchFromGitHub {
- #  owner = "bakkeby";
- #  repo = "tabbed-flexipatch";
- #  rev = "77d8b71540791d5593c841cdb7160d4feb23a8fe";  # commit hash
- #  sha256 = "sha256-Imh+kMOEWhtuET0MWrT6HJ+rPLWvbiz4cQPxGDYN3cQ=";
- #};
-
   src = ./flexipatch;
 
   inherit patches;

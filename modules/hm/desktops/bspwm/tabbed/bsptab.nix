@@ -16,9 +16,9 @@ stdenv.mkDerivation rec {
   version = "0.2";
 
   src = fetchFromGitHub {
-    owner = "albertored11";   # ← replace
-    repo  = "bsptab";     # ← replace
-    rev   = "0.2";     # or a commit / tag
+    owner = "albertored11";
+    repo  = "bsptab";
+    rev   = "0.2";
     sha256 = "sha256-G2GZKnrb9QIcnsGizIut8w6utfEobVquh4UJkGCrzAc=";
   };
 

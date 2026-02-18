@@ -6,13 +6,6 @@ let
   jsonFormat = pkgs.formats.json { };
  #confPath = toString ./hyprland.conf;
 
- #ax-shell = pkgs.fetchFromGitHub {
- #  owner = "Axenide";
- #  repo = "Ax-Shell";
- #  rev = "d03c90516e6acac09e9edc424f8792fe3c250b4b";
- #  hash = "sha256-Lq9xZl/MNk2amr5T8od99OpoIE7eLJwAi1R8dYSuaGs=";
- #};
-
 in
 
 {
@@ -220,19 +213,6 @@ in
       };
 
     };
-
-   #home.file.".local/share/fonts/tabler-icons.ttf" = {
-   #  source = "${ax-shell}/assets/fonts/tabler-icons/tabler-icons.ttf";
-   #};
-   #
-   #xdg.configFile = {
-   #  ax-shell = {
-   #    recursive = true;
-   #    source = "${ax-shell}/";
-   #    target = "Ax-Shell";
-   #  };
-   #
-   #};
 
    home.packages = [ pkgs.hyprpanel ];
 
