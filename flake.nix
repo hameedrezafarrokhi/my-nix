@@ -4,20 +4,10 @@
 
   # NIXPKGS
          nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  #      nixpkgs.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
-
-  #       master.url = "github:NixOS/nixpkgs/master";
-  #       master.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
-
+#         master.url = "github:NixOS/nixpkgs/master";
         unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-  #     unstable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
-
           stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-  #       stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
-
       old-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
-  #   old-stable.url = "github:NixOS/nixpkgs/fbcf476f790d8a217c3eab4e12033dc4a0f6d23c";
-
         fallback.url = "github:NixOS/nixpkgs/88d3861acdd3d2f0e361767018218e51810df8a1";
 
   # NIX_COMMUNITY
@@ -48,13 +38,8 @@
               stylix = { url = "github:danth/stylix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
-               ignis = { url = "github:ignis-sh/ignis";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
-          quickshell = { url = "github:outfoxxed/quickshell";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
      caelestia-shell = { url = "github:caelestia-dots/shell";
                                 inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.quickshell.follows = "quickshell";
                                 inputs.caelestia-cli.follows = "caelestia-cli"; };
        caelestia-cli = { url = "github:caelestia-dots/cli";
                                 inputs.nixpkgs.follows = "nixpkgs";
@@ -64,8 +49,9 @@
    dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
               ambxst = { url = "github:Axenide/Ambxst";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.quickshell.follows = "quickshell"; };
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+               ignis = { url = "github:ignis-sh/ignis";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
 
                mango = { url = "github:DreamMaoMao/mango";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -133,10 +119,10 @@
               inputs.nix-index-database.homeModules.nix-index
               inputs.xremap-flake.homeManagerModules.default
               inputs.catppuccin.homeModules.catppuccin
-              inputs.dankMaterialShell.homeModules.dank-material-shell
-             #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
               inputs.mango.hmModules.mango
               inputs.ignis.homeManagerModules.default
+              inputs.dankMaterialShell.homeModules.dank-material-shell
+             #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
               (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
             ];
           };

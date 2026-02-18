@@ -5,9 +5,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "quickshell": [
-          "quickshell"
-        ]
+        "quickshell": "quickshell"
       },
       "locked": {
         "lastModified": 1771072201,
@@ -138,9 +136,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "quickshell": [
-          "quickshell"
-        ]
+        "quickshell": "quickshell_2"
       },
       "locked": {
         "lastModified": 1771120934,
@@ -234,7 +230,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "quickshell": "quickshell"
+        "quickshell": "quickshell_3"
       },
       "locked": {
         "lastModified": 1771190547,
@@ -874,6 +870,48 @@
     "quickshell": {
       "inputs": {
         "nixpkgs": [
+          "ambxst",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770693276,
+        "narHash": "sha256-ngXnN5YXu+f45+QGYNN/VEBMQmcBCYGRCqwaK8cxY1s=",
+        "ref": "refs/heads/master",
+        "rev": "dacfa9de829ac7cb173825f593236bf2c21f637e",
+        "revCount": 735,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
+    "quickshell_2": {
+      "inputs": {
+        "nixpkgs": [
+          "caelestia-shell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770693276,
+        "narHash": "sha256-ngXnN5YXu+f45+QGYNN/VEBMQmcBCYGRCqwaK8cxY1s=",
+        "ref": "refs/heads/master",
+        "rev": "dacfa9de829ac7cb173825f593236bf2c21f637e",
+        "revCount": 735,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
+    "quickshell_3": {
+      "inputs": {
+        "nixpkgs": [
           "dankMaterialShell",
           "nixpkgs"
         ]
@@ -891,26 +929,6 @@
         "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
         "type": "git",
         "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      }
-    },
-    "quickshell_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1770693276,
-        "narHash": "sha256-ngXnN5YXu+f45+QGYNN/VEBMQmcBCYGRCqwaK8cxY1s=",
-        "owner": "outfoxxed",
-        "repo": "quickshell",
-        "rev": "dacfa9de829ac7cb173825f593236bf2c21f637e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "outfoxxed",
-        "repo": "quickshell",
-        "type": "github"
       }
     },
     "root": {
@@ -938,7 +956,6 @@
         "old-stable": "old-stable",
         "oxwm": "oxwm",
         "plasma-manager": "plasma-manager",
-        "quickshell": "quickshell_2",
         "stable": "stable",
         "stylix": "stylix",
         "unstable": "unstable",
