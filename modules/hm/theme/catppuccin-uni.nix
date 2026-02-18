@@ -112,19 +112,22 @@
     onboard-layout = "${pkgs.onboard}/share/onboard/layouts/Full Keyboard.onboard";
     onboard-key = "dish";
 
-    nvim-package = pkgs.vimPlugins.catppuccin-nvim;
+    nvim-package-theme = "catppuccin-nvim";
+    nvim-name-theme = "catppuccin";
+    nvim-package = pkgs.vimPlugins.${nvim-package-theme};
+    nvim-lua = ''
+      ["flavour"] = "${flavor}"
+    '';
     nvim-config = ''
       lua << EOF
-        local compile_path = vim.fn.stdpath("cache") .. "/catppuccin-nvim"
+        local compile_path = vim.fn.stdpath("cache") .. "/${nvim-package-theme}"
         vim.fn.mkdir(compile_path, "p")
         vim.opt.runtimepath:append(compile_path)
-
-        require("catppuccin").setup({
+        require("${nvim-name-theme}").setup({
         ["compile_path"] = (compile_path),
-        ["flavour"] = "${flavor}"
+        ${nvim-lua}
       })
-
-        vim.api.nvim_command("colorscheme catppuccin")
+        vim.api.nvim_command("colorscheme ${nvim-name-theme}")
       EOF
     '';
 
