@@ -736,7 +736,11 @@ super + alt + b
 
 # Fehbg
 super + w
-    pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
+    pkill xwinwrap; pkill feh-slide; pkill feh-auto; pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
+
+# Feh Slide Show
+super + alt + w
+    pkill xwinwrap; pkill paperview-rs; pkill feh-auto; feh-slide
 
 # Cycle Feh Wallpapers Next
 super + shift + w
@@ -852,7 +856,7 @@ super + alt + shift + o
 
 # Live Wallpaper
 super + comma ; {space}
-    live-bg
+    pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg
 
 # Live Wallpaper Auto Pause
 super + comma ; {Return}
@@ -860,11 +864,11 @@ super + comma ; {Return}
 
 # Live Wallpaper Menu
 super + ctrl + shift + comma
-    paperview-rofi
+    pkill xwinwrap; pkill feh-slide; pkill feh-auto; paperview-rofi
 
 # Live Wallpaper Manual
 super + comma ; {m}
-    live-bg-manual
+    pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg-manual
 
 # Live Wallpaper Cycle Next
 super + shift + comma

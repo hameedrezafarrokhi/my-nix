@@ -4,7 +4,11 @@ IDIR=$1
 flave=$2
 NAME=$(echo "${1##*/}" | cut -d. -f1)
 ODIR=$HOME/Pictures/my-wallpapers/"$flav"/"$NAME"
+PICS=$(find $IDIR -maxdepth 1 -type f)
 
-mkdir -p $DIR
-catppuccinifier-cli -f $flave -d $ODIR $IDIR/*
+mkdir -p "$ODIR"
+
+for n in $PICS; do
+  catppuccinifier-cli -f $flave -d $ODIR $n
+done
 

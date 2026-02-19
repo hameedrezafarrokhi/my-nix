@@ -3767,6 +3767,14 @@ EOF
   my.poly-name = "example";
 
   services = {
+    picom = lib.mkIf config.services.picom.enable {
+      settings = {
+        shadow-color = "#000000";
+        corner-radius = 10;
+        shadow-radius = 20;
+      };
+      extraConfig = '' '';
+    };
     polybar = lib.mkIf config.services.polybar.enable {
       settings = {
        #colors ={
@@ -4221,6 +4229,322 @@ EOF
   };
 
   xdg.configFile = {
+
+    "picom/picom.conf".text = ''
+backend = "egl";
+corner-radius = 10;
+detect-client-opacity = true;
+detect-rounded-corners = true;
+detect-transient = true;
+fade-delta = 10;
+fade-duration = 400;
+fade-in-step = 0.050000;
+fade-out-step = 0.050000;
+fade-time = 300;
+fading = true;
+frame-opacity = 1.000000;
+glx-use-copysubbuffer-mesa = true;
+no-fading-destroyed-argb = true;
+no-fading-openclose = true;
+shadow = true;
+shadow-color = "#000000";
+shadow-offset-x = -15;
+shadow-offset-y = -15;
+shadow-opacity = 0.800000;
+shadow-radius = 20;
+vsync = true;
+xrender-sync = true;
+xrender-sync-fence = true;
+
+blur: {
+  method = "dual_kawase";
+  size = 13;
+  strength = 7;
+  deviation = 6.0;
+  background-frame = false;
+  kern = "3x3box";
+}
+
+rules: (
+	{
+	      match = "class_g != 'dunst' || class_g != 'Dunst'"
+		opacity = 0.85;
+		opacity-override = false;
+	}, {
+	      match = "focused || group_focused || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'firefox' || class_g = 'chromium' || class_g = 'brave-browser' || class_g = 'Polybar' || class_g *= 'Brave-browser' || class_g = 'brave' || class_g = 'Brave' || class_name *= 'Dunst' || class_name *= 'dunst' || class_g = 'mpv' || class_g = 'mpv' && !focused || class_g = 'mpvk' || name = 'mpv' || name = 'mpvk' || window_id = '0x5600002' || class_g = 'Xwinwrap' || class_g = 'xwinwrap' || name = 'Xwinwrap' || name = 'xwinwrap' || (class_g *= 'xwin' || name *= 'xwin')"
+		opacity = 1.0;
+		opacity-override = false;
+	}, {
+		match = "window_type = 'normal'";
+		fade = true;
+		shadow = true;
+	}, {
+		match = "window_type = 'Polybar' || window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'desktop' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'Dunst'";
+		blur-background = false;
+		clip-shadow-above = false;
+		shadow = false;
+	}, {
+		match = "window_type = 'dock' || class_g = 'Polybar' || window_type = 'desktop' || name = 'Notification' || class_g = 'i3-frame' || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'dockx' || class_g = 'Dockx'";
+            corner-radius = 0;
+	}, {
+		match = "_GTK_FRAME_EXTENTS@:c && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dockx' || class_g = 'Dockx' || class_g = 'iotas' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'baobab' && (window_type = 'menu' || window_type = 'dropdown_menu')";
+		shadow = false;
+		opacity = 1.0;
+		opacity-override = false;
+	}, {
+		match = "fullscreen";
+            corner-radius = 0;
+            opacity = 1.0;
+            opacity-override = false;
+            transparent-clipping = false;
+	}, {
+		match = "class_g = 'Conky' || class_g = 'conky'";
+		transparent-clipping = false;
+		unredir = true;
+            opacity-override = false;
+	},
+      #{
+      #    # Fix shadow related bugs on small UI elements
+      #    match = "window_type = 'menu' || role = 'popup' || role = 'bubble'";
+      #    shadow = false;
+      #},
+	{
+        match = "window_type = 'normal'";
+        animations = (
+          {
+              triggers = ["close"];
+              opacity = {
+                  curve = "linear";
+                  duration = 0.2;  # Slightly longer duration for smoother opacity fade
+                  start = "window-raw-opacity-before";
+                  end = 0;
+              };
+              shadow-opacity = "opacity";
+              scale-x = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.4;  # Smoother zoom-out
+                  start = 1;  # Start at full size
+                  end = 0;  # Zoom out to 0
+              };
+              scale-y = "scale-x";
+              shadow-scale-x = "scale-x";
+              shadow-scale-y = "scale-y";
+
+              # Adjust offsets to zoom from the center
+              offset-x = "(1 - scale-x) / 2 * window-width";
+              offset-y = "(1 - scale-y) / 2 * window-height";
+              shadow-offset-x = "offset-x";
+              shadow-offset-y = "offset-y";
+
+              # Add blur effect during close
+              blur = {
+                  curve = "linear";
+                  duration = 0.4;  # Smooth blur fade
+                  start = 0;
+                  end = 10;  # Max blur (you can adjust this value for stronger/weaker blur)
+              };
+          }, {
+              triggers = ["hide"];
+              preset = "disappear";
+              scale = 0.3;
+              duration = 0.15;
+          }, {
+              triggers = ["open"];
+              opacity = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Smoother fade-in with longer duration
+                  start = 0;
+                  end = "window-raw-opacity";
+              };
+              offset-x = "(1 - scale-x) / 2 * window-width";  # Start from center
+              offset-y = "(1 - scale-y) / 2 * window-height";  # Start from center
+              scale-x = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Slower zoom-in for smooth effect
+                  start = 0;  # Start very small
+                  end = 1;  # Zoom in to full size
+              };
+              scale-y = "scale-x";
+              shadow-scale-x = "scale-x";
+              shadow-scale-y = "scale-y";
+              shadow-offset-x = "offset-x";
+              shadow-offset-y = "offset-y";
+          }, {
+              triggers = ["show"];
+              preset = "appear";
+              scale = 0.7;
+              duration = 0.15;
+          }, {
+              triggers = ["geometry"];
+              scale-x = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Smoother scaling
+                  start = "window-width-before / window-width";
+                  end = 1;
+              };
+              scale-y = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Smoother scaling
+                  start = "window-height-before / window-height";
+                  end = 1;
+              };
+              offset-x = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Smoother positioning
+                  start = "window-x-before - window-x";
+                  end = 0;
+              };
+              offset-y = {
+                  curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
+                  duration = 0.15;  # Smoother positioning
+                  start = "window-y-before - window-y";
+                  end = 0;
+              };
+              shadow-scale-x = "scale-x";
+              shadow-scale-y = "scale-y";
+              shadow-offset-x = "offset-x";
+              shadow-offset-y = "offset-y";
+          },
+        )
+    }, {
+        match = "class_g = 'Dunst'";
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";	#-dunst-close-preset
+		 direction = "right";	#-dunst-close-direction
+		 duration = 0.2;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";	#-dunst-open-preset
+		 direction = "right";	#-dunst-open-direction
+		 duration = 0.2;
+	    }
+	  )
+    }, {
+        match = "class_g = 'Rofi'";
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";	#-dunst-close-preset
+		 direction = "up";	#-dunst-close-direction
+		 duration = 1.0;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";	#-dunst-open-preset
+		 direction = "down";	#-dunst-open-direction
+		 duration = 0.2;
+	    }
+	  )
+    }, {
+      	match = "class_g = 'jgmenu'";
+      	animations = (
+      	{
+      		triggers = ["close", "hide"];
+      		preset = "disappear";
+      		duration = 0.08;
+      		scale = 0.5;
+      	}, {
+      		triggers = ["open", "show"];
+      		preset = "appear";
+      		duration = 0.15;
+      		scale = 0.5;
+      	}
+      	)
+      }, {
+		match = "class_g = 'scratchpad' || class_g = 'Tilda' || class_g = 'Ulauncher' || class_g = 'XFilesFloat' || class_g = 'tetris'";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "fly-out";
+			direction = "up";
+			duration = 0.2;
+		}, {
+			triggers = ["open", "show"];
+			preset = "fly-in";
+			direction = "up";
+			duration = 0.2;
+		}
+		)
+	}, {
+		match = "class_g = 'Polybar'";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "fly-out";
+			direction = "up";
+			duration = 0.2;
+		}, {
+			triggers = ["open", "show"];
+			preset = "fly-in";
+			direction = "up";
+			duration = 0.2;
+		}
+		)
+	}, {
+		match = "class_g = 'Tint2' || fullscreen";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "fly-out";
+			direction = "down";
+			duration = 0.2;
+		},
+		{
+			triggers = ["open", "show"];
+			preset = "fly-in";
+			direction = "down";
+			duration = 0.2;
+		}
+		)
+	}, {
+		match = "class_g = 'kitty-picker' || class_g = 'Xmessage' || class_g = 'Gxmessage'";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "fly-out";
+			direction = "left";
+			duration = 0.2;
+		}, {
+			triggers = ["open", "show"];
+			preset = "fly-in";
+			direction = "left";
+			duration = 0.2;
+		}
+		)
+	}, {
+		match = "class_g = 'bluetuith' || class_g = 'pavucontrol' || class_g = 'Vboard.py' || class_g = 'baobab'";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "fly-out";
+			direction = "right";
+			duration = 0.2;
+		}, {
+			triggers = ["open", "show"];
+			preset = "fly-in";
+			direction = "right";
+			duration = 0.2;
+		}
+		)
+	}, {
+		match = "class_g = 'XMenu' || class_g = 'Xmenu' || class_g = 'xmenu' || class_g = 'Onboard'";
+		animations = (
+		{
+			triggers = ["close", "hide"];
+			preset = "disappear";
+			direction = "up";
+			duration = 0.1;
+		}, {
+			triggers = ["open", "show"];
+			preset = "appear";
+			direction = "up";
+			duration = 0.1;
+		}
+		)
+	},
+)
+    '';
 
     catppuccinifier = {
       target = "com.lighttigerxiv.catppuccinifier/settings.json";

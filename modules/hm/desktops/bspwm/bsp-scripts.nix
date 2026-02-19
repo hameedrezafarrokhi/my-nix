@@ -1543,6 +1543,7 @@ let
     done
   '';
 
+
   live-bg-auto = pkgs.writeShellScriptBin "live-bg-auto" ''
       {
           while read -r line; do

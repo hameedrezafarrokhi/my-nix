@@ -99,6 +99,45 @@ let
     notify-send -e -u critical -t 5000 "Session restored" "Applications launched."
   '';
 
+  feh-auto = pkgs.writeShellScriptBin "feh-auto" ''
+    cleanup() {
+      if [ -f "$HOME/.fehbg" ]; then
+        "$HOME/.fehbg"
+      fi
+      exit 0
+    }
+
+    trap cleanup SIGINT SIGTERM
+
+    while true; do
+      rnd="$(find "$1" -type f | shuf -n 1)"
+      feh --bg-fill --no-fehbg "$rnd"
+      echo "$rnd"
+      sleep $2
+    done
+  '';
+
+  feh-slide = pkgs.writeShellScriptBin "feh-slide" ''
+    pkill feh-auto
+    sleep 2
+
+    cleanup() {
+      if [ -f "$HOME/.fehbg" ]; then
+        "$HOME/.fehbg"
+      fi
+      exit 0
+    }
+
+    trap cleanup SIGINT SIGTERM
+
+    while true; do
+      rnd="$(find "$HOME/Pictures/themed-wallpapers" -type f | shuf -n 1)"
+      feh --bg-fill --no-fehbg "$rnd"
+      echo "$rnd"
+      sleep 300
+    done
+  '';
+
   feh-cycle = pkgs.writeShellScriptBin "feh-cycle" ''
     ${builtins.readFile ./feh-cycle.sh}
   '';
@@ -400,6 +439,26 @@ let
     ${builtins.readFile ./xfilesthumb}
   '';
 
+  live-xwin = pkgs.writeShellScriptBin "live-xwin" ''
+    cleanup() {
+      if [ -f "$HOME/.fehbg" ]; then
+        "$HOME/.fehbg"
+      fi
+      exit 0
+    }
+
+    trap cleanup SIGINT SIGTERM
+
+    if [ -f "$HOME/.cache/000000.png" ]; then
+      feh --bg-fill --no-fehbg "$HOME/.cache/000000.png"
+    else
+      cd $HOME/.cache
+      color-image 000000
+      feh --bg-fill --no-fehbg "000000.png"
+    fi
+    xwinwrap -o 100 -fs -s -ni -b -nf -st -sp -ov -- mpv --hwdec=auto --hwdec-codecs=all --no-audio --no-border --no-config --load-scripts=no --scripts= --no-window-dragging --no-input-default-bindings --no-osd-bar --no-sub --loop -wid WID --video-scale-x=1 --video-scale-y=1 --panscan=1.0 "$1"
+  '';
+
 in
 
 {
@@ -442,6 +501,7 @@ in
     };
 
     home.packages = [
+      pkgs.picom
       pkgs.feh
       pkgs.xkb-switch
       pkgs.xdotool
@@ -471,6 +531,8 @@ in
       xsession-load
       xsession-save
       rofi-monitor
+      feh-auto
+      feh-slide
       feh-rofi
       feh-cycle
       feh-rofi-manual
@@ -481,6 +543,8 @@ in
       live-bg-speed-manual
       live-bg-manual
       paperview-rofi
+      live-xwin
+
       xfilesctl
       xfilesthumb
     ];
@@ -642,374 +706,107 @@ in
         };
       };
 
-      picom ={
-        enable = true;
-        package = pkgs.picom;
-       #package = pkgs.callPackage ../../../nixos/myPackages/picom-ft.nix { };# pkgs.picom-pijulius; # pkgs.picom;
-        backend = "egl"; # "egl", "glx", "xrender", "xr_glx_hybrid"
+     #picom ={
+     #  enable = true;
+     # #extraArgs = [ ];
+     #  package = pkgs.picom;
+     # #package = pkgs.callPackage ../../../nixos/myPackages/picom-ft.nix { };# pkgs.picom-pijulius; # pkgs.picom;
+     #  backend = "egl"; # "egl", "glx", "xrender", "xr_glx_hybrid"
+     #  shadow = true;
+     #  shadowOpacity = 0.80;
+     # #shadowOffsets = [ 15 15 ];
+     # #shadowExclude = [ ];
+     #  fade = true;
+     #  fadeSteps = [ 0.05 0.05 ];
+     #  fadeDelta = 10;
+     # #fadeExclude = [ ];
+     # #activeOpacity = 1.0;
+     # #menuOpacity = 1.0;
+     # #inactiveOpacity = 0.85;
+     # #opacityRules = [ ];
+     #  settings = {
+     #    blur = {
+     #      method = "dual_kawase"; # "gaussian";
+     #      size = 13;
+     #      strength = 7;
+     #      deviation = 6.0;
+     #      background-frame = false;
+     #      kern = "3x3box";
+     #     #background-exclude = [ ];
+     #    };
+     #    corner-radius = lib.mkDefault 10;
+     #    shadow-radius = lib.mkDefault 20;
+     #   #shadow-offset-x = "5";
+     #   #shadow-offset-y = "-5";
+     #    shadow-color = lib.mkDefault "#000000";
+     #    frame-opacity = 1.0;
+     #   #inactive-opacity-override = false;
+     #   #round-borders = 8;
+     #   #blur-background-exclude = [ ];
+     #   #rounded-corners-exclude = [ ];
+     #    vsync = true;
+     #   #mark-wmwin-focused = true;
+     #   #mark-ovredir-focused = true;
+     #    detect-rounded-corners = true;
+     #    detect-client-opacity = true;
+     #    detect-transient = true;
+     #   #use-damage = true;  # WARNING DEGRADES PERFORMANCE
+     #   #wintypes = {
+     #   #  tooltip = {
+     #   #    fade = true;
+     #   #    shadow = false;
+     #   #    opacity = 0.95;
+     #   #    focus = true;
+     #   #    full-shadow = false;
+     #   #  };
+     #   #  dock = {
+     #   #    shadow = false;
+     #   #    clip-shadow-above = true;
+     #   #  };
+     #   #  dnd = { shadow = false; };
+     #   # #popup_menu = { opacity = 1.0; };
+     #   # #dropdown_menu = { opacity = 1.0; };
+     #   #};
+     #    fade-time = 300;  # Increase fade-time to 300ms for a more gradual fade-in
+     #    fade-duration = 400;  # Slightly longer fade-duration for a smoother transition
+     #    no-fading-openclose = true;  # Keep this to prevent fade during open/close transitions
+     #    no-fading-destroyed-argb = true;
+     #    glx-use-copysubbuffer-mesa = true;
+     #   #glx-copy-from-front = true;
+     #   #glx-swap-method = 2;
+     #    xrender-sync = true;
+     #    xrender-sync-fence = true;
+     #  };
+     #  extraConfig = ''
+     #
+     #  '';
+     #
+     #};
 
-        shadow = true;
-        shadowOpacity = 0.80;
-       #shadowOffsets = [ 15 15 ];
-        shadowExclude = [
-         #"name = 'Notification'"
-         #"class_g ?= 'Notify-osd'"
+    };
 
-          "_GTK_FRAME_EXTENTS@:c && (window_type = 'menu' || window_type = 'dropdown_menu')" # this is for brave
-
-          "class_g = 'ulauncher'"
-          "class_g = 'Ulauncher'"
-
-          "class_g = 'dockx'"
-          "class_g = 'Dockx'"
-
-          # only way for gtk4 menu stuff
-          #class_g = 'firefox' && (window_type = 'menu' || window_type = 'dropdown_menu' || window_type = 'popup_menu' || window_type = 'utility' || window_type = 'unknown' || window_type = 'toolbar' || window_type = 'tooltip' || window_type = 'dialog')"
-          "class_g = 'iotas' && (window_type = 'menu' || window_type = 'dropdown_menu')"
-          "class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu')"
-          "class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu')"
-          "class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu')"
-          "class_g = 'baobab' && (window_type = 'menu' || window_type = 'dropdown_menu')"
-        ];
-
-        fade = true;
-        fadeSteps = [ 0.05 0.05 ];
-        fadeDelta = 10;
-        fadeExclude = [ ];
-
-        activeOpacity = 1.0;
-        menuOpacity = 1.0;
-        inactiveOpacity = 0.85;
-        opacityRules = [ # doesnt work
-         #"100:class_g = 'firefox'"
-         #"100:class_g = 'chromium'"
-         #"100:class_g = 'brave-browser'"
-         #"100:class_g *= 'Brave-browser'"
-         #"100:class_g = 'brave'"
-         #"100:class_g = 'Brave'"
-         #"95:class_g =  'kitty'"
-         #"95:class_g =  'dolphin'"
-         #"100:class_name *= 'Dunst'"
-         #"100:class_name *= 'iotas'"
-        ];
-
-        settings = {
-          blur = {
-            method = "dual_kawase"; # "gaussian";
-            size = 13;
-            strength = 7;
-            deviation = 6.0;
-            background-frame = false;
-            kern = "3x3box";
-            background-exclude = [ # use the oher option for exclude blurs
-              "window_type = 'Polybar'"
-              "window_type = 'desktop'"
-              "window_type = 'dock'"
-
-             #"window_type = 'tooltip'"
-             #"window_type = 'popup_menu'"
-             #"window_type = 'toolbar'"
-             #"window_type = 'menu'"
-             #"window_type = 'dialog'"
-             #"window_type = 'dropdown_menu'"
-             #"window_type = 'unknown'"
-             #"window_type = 'utility'"
-
-             #"role = 'xborder'"
-              "class_g = 'Conky'"
-              "class_g = 'conky'"
-
-             #"name = 'Notification'" # doesnt work
-             #"class_g = 'Dunst'" # doesnt work
-
-             #"_GTK_FRAME_EXTENTS"
-             #"_GTK_FRAME_EXTENTS@:c"
-             #"class_g = 'GtkFrame'"
-
-             #"class_g = 'ulauncher'" # doesnt work
-             #"class_g = 'Ulauncher'" # doesnt work
-              "class_g = 'dockx'"
-              "class_g = 'Dockx'"
-             #"class_g = 'Gtk'" # works for gtk3
-             #"class_g = 'iotas'" # gtk4 apps dont work at all
-            ];
-          };
-         #blur-kern = "3x3box";
-          corner-radius = 10;
-          shadow-radius = 20;
-         #shadow-offset-x = "5";
-         #shadow-offset-y = "-5";
-          shadow-color = "#000000";
-          frame-opacity = 1.0;
-          inactive-opacity-override = true;
-         #round-borders = 8;
-          blur-background-exclude = [
-            "window_type = 'dock'"
-            "window_type = 'desktop'"
-
-           #"_GTK_FRAME_EXTENTS@:c" # wroks (for brave)
-
-           #"GtkFrame@:c"
-
-           #"window_type = 'tooltip'"
-           #"window_type = 'toolbar'"
-           #"window_type = 'dialog'"
-           #"window_type = 'unknown'"
-           #"window_type = 'utility'"
-
-           # works:
-           #"window_type = 'popup_menu'" # affects things like copyq popus menu
-            "window_type = 'menu'"
-            "window_type = 'dropdown_menu'"
-
-            "class_g = 'ulauncher'"
-            "class_g = 'Ulauncher'"
-
-           #"class_g = 'iotas'"  # this is correct
-          ];
-          rounded-corners-exclude = [
-            "window_type = 'dock'"
-            "window_type = 'desktop'"
-            "name = 'Notification'"
-            "class_g = 'i3-frame'"
-           #"class_g = 'rofi'"
-           #"class_g = 'Rofi'"
-           #"class_name = 'rofi'"
-            "class_g = 'dunst'"
-            "class_g = 'Dunst'"
-           #"class_name = 'dunst'"
-            "class_g = 'dockx'"
-            "class_g = 'Dockx'"
-          ];
-          vsync = true;
-          mark-wmwin-focused = true;
-         #mark-ovredir-focused = true;
-          detect-rounded-corners = true;
-          detect-client-opacity = true;
-          detect-transient = true;
-         #use-damage = true;  # WARNING DEGRADES PERFORMANCE
-          wintypes = {
-            tooltip = {
-              fade = true;
-              shadow = false;
-              opacity = 0.95;
-              focus = true;
-              full-shadow = false;
-            };
-            dock = {
-              shadow = false;
-              clip-shadow-above = true;
-            };
-            dnd = { shadow = false; };
-           #popup_menu = { opacity = 1.0; };
-           #dropdown_menu = { opacity = 1.0; };
-          };
-
-
-          fade-time = 300;  # Increase fade-time to 300ms for a more gradual fade-in
-          fade-duration = 400;  # Slightly longer fade-duration for a smoother transition
-          no-fading-openclose = true;  # Keep this to prevent fade during open/close transitions
-          no-fading-destroyed-argb = true;
-
-          glx-use-copysubbuffer-mesa = true;
-         #glx-copy-from-front = true;
-         #glx-swap-method = 2;
-          xrender-sync = true;
-          xrender-sync-fence = true;
-
-
-        };
-
-          # OG PICOM CONFIG
-         extraConfig = ''
- animations = (
-     {
-         triggers = ["close", "hide"];
-         opacity = {
-             curve = "linear";
-             duration = 0.2;  # Slightly longer duration for smoother opacity fade
-             start = "window-raw-opacity-before";
-             end = 0;
-         };
-         shadow-opacity = "opacity";
-         scale-x = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.4;  # Smoother zoom-out
-             start = 1;  # Start at full size
-             end = 0;  # Zoom out to 0
-         };
-         scale-y = "scale-x";
-         shadow-scale-x = "scale-x";
-         shadow-scale-y = "scale-y";
-
-         # Adjust offsets to zoom from the center
-         offset-x = "(1 - scale-x) / 2 * window-width";
-         offset-y = "(1 - scale-y) / 2 * window-height";
-         shadow-offset-x = "offset-x";
-         shadow-offset-y = "offset-y";
-
-         # Add blur effect during close
-         blur = {
-             curve = "linear";
-             duration = 0.4;  # Smooth blur fade
-             start = 0;
-             end = 10;  # Max blur (you can adjust this value for stronger/weaker blur)
-         };
-     },
-     {
-         triggers = ["open", "show"];
-         opacity = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Smoother fade-in with longer duration
-             start = 0;
-             end = "window-raw-opacity";
-         };
-         offset-x = "(1 - scale-x) / 2 * window-width";  # Start from center
-         offset-y = "(1 - scale-y) / 2 * window-height";  # Start from center
-         scale-x = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Slower zoom-in for smooth effect
-             start = 0;  # Start very small
-             end = 1;  # Zoom in to full size
-         };
-         scale-y = "scale-x";
-         shadow-scale-x = "scale-x";
-         shadow-scale-y = "scale-y";
-         shadow-offset-x = "offset-x";
-         shadow-offset-y = "offset-y";
-     },
-     {
-         triggers = ["geometry", "position"];
-         scale-x = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Smoother scaling
-             start = "window-width-before / window-width";
-             end = 1;
-         };
-         scale-y = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Smoother scaling
-             start = "window-height-before / window-height";
-             end = 1;
-         };
-         offset-x = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Smoother positioning
-             start = "window-x-before - window-x";
-             end = 0;
-         };
-         offset-y = {
-             curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
-             duration = 0.15;  # Smoother positioning
-             start = "window-y-before - window-y";
-             end = 0;
-         };
-         shadow-scale-x = "scale-x";
-         shadow-scale-y = "scale-y";
-         shadow-offset-x = "offset-x";
-         shadow-offset-y = "offset-y";
-     },
-     {
-         triggers = ["workspace-out"];
-         offset-x = {
-             duration = 0.15;
-             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
-             start = "0";
-             end = "-window-monitor-height";
-         };
-         shadow-offset-x = "offset-x";
-         opacity = {
-             duration = 0.15;
-             timing = "0.15s linear";
-             start = "window-raw-opacity-before";
-             end = "window-raw-opacity-before";
-         };
-         blur-opacity = "opacity";
-         shadow-opacity = "opacity";
-     },
-     {
-         triggers = ["workspace-out-inverse"];
-         offset-x = {
-             duration = 0.15;
-             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
-             start = "0";
-             end = "window-monitor-height";
-         };
-         shadow-offset-x = "offset-x";
-         opacity = {
-             duration = 0.15;
-             timing = "0.15s linear";
-             start = "window-raw-opacity-before";
-             end = "window-raw-opacity-before";
-         };
-         blur-opacity = "opacity";
-         shadow-opacity = "opacity";
-     },
-     {
-         triggers = ["workspace-in-inverse"];
-         offset-x = {
-             duration = 0.15;
-             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
-             start = "-window-monitor-height";
-             end = "0";
-         };
-         shadow-offset-x = "offset-x";
-         opacity = {
-             duration = 0.15;
-             timing = "0.15s linear";
-             start = "window-raw-opacity";
-             end = "window-raw-opacity";
-         };
-         blur-opacity = "opacity";
-         shadow-opacity = "opacity";
-     },
-     {
-         triggers = ["workspace-in"];
-         offset-x = {
-             duration = 0.15;
-             timing = "0.15s cubic-bezier(0.21, 0.02, 0.76, 0.36)";
-             start = "window-monitor-height";
-             end = "0";
-         };
-         shadow-offset-x = "offset-x";
-         opacity = {
-             duration = 0.15;
-             timing = "0.15s linear";
-             start = "window-raw-opacity";
-             end = "window-raw-opacity";
-         };
-         blur-opacity = "opacity";
-         shadow-opacity = "opacity";
-     },
-     {
-        triggers = ["focus-change"];
-        scale-x = {
-            curve = "cubic-bezier(0.25,0.8,0.25,1)";
-            duration = 0.2;
-            start = 0.95;
-            end = 1;
-        };
-        scale-y = "scale-x";
-        opacity = {
-            curve = "linear";
-            duration = 0.2;
-            start = 0.8;
-            end = 1;
-        };
-     }
-
- )
-
- animation-exclude = [
-   "class_g *= 'conky'",
-   "class_g *= 'Conky'"
- ];
-         '';
-
-       #extraArgs = { };
-
+    systemd.user.services.picom = {
+      Unit = {
+        Description = "Picom X11 compositor";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
       };
 
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+
+      Service = {
+        ExecStart = lib.concatStringsSep " " (
+          [
+            "${lib.getExe pkgs.picom}"
+           #"--config ${config.xdg.configFile."picom/picom.conf".source}"
+          ]
+         #++ cfg.extraArgs
+        );
+        Restart = "always";
+        RestartSec = 3;
+      };
     };
 
   };
