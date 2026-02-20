@@ -366,6 +366,18 @@ let
     cd $HOME/.cache && eval "$CMD"
   '';
 
+  live-mpv-inc = pkgs.writeShellScriptBin "live-mpv-inc" ''
+    echo '{ "command": ["add", "speed", 0.1] }' | socat - $(cat /tmp/mpv-socket-path.txt)
+  '';
+
+  live-mpv-dec = pkgs.writeShellScriptBin "live-mpv-dec" ''
+    echo '{ "command": ["add", "speed", -0.1] }' | socat - $(cat /tmp/mpv-socket-path.txt)
+  '';
+
+  live-xwin-load = pkgs.writeShellScriptBin "live-xwin-load" ''
+    echo '{ "command": ["loadfile", "$1", "append-play"] }' | socat - $(cat /tmp/mpv-socket-path.txt)
+  '';
+
   live-bg-speed = pkgs.writeShellScriptBin "live-bg-speed" ''
     LIVE_BG="$HOME/.live-bg"
     LIVE_DIR="$HOME/Pictures/live-wallpapers"
@@ -401,6 +413,10 @@ let
   live-bg-pause = pkgs.writeShellScriptBin "live-bg-pause" ''
     PROC="paperview-rs"
     PID=$(pgrep -n "$PROC")
+    if [ -f "/tmp/mpv-socket-path.txt" ]; then
+      echo '{ "command": ["cycle", "pause"] }' | \
+        socat - $(cat /tmp/mpv-socket-path.txt)
+    fi
     if [ -z "$PID" ]; then
         echo "Process not running"
         exit 1
@@ -444,6 +460,8 @@ let
       if [ -f "$HOME/.fehbg" ]; then
         "$HOME/.fehbg"
       fi
+      rm -f "/tmp/mpv-socket-path.txt"
+      rm -f "/tmp/mpv-socket-$$"
       exit 0
     }
 
@@ -456,7 +474,10 @@ let
       color-image 000000
       feh --bg-fill --no-fehbg "000000.png"
     fi
-    xwinwrap -o 100 -fs -s -ni -b -nf -st -sp -ov -- mpv --hwdec=auto --hwdec-codecs=all --no-audio --no-border --no-config --load-scripts=no --scripts= --no-window-dragging --no-input-default-bindings --no-osd-bar --no-sub --loop -wid WID --video-scale-x=1 --video-scale-y=1 --panscan=1.0 "$1"
+
+    SOCKET="/tmp/mpv-socket-$$"
+    echo $SOCKET > /tmp/mpv-socket-path.txt
+    xwinwrap -o 100 -fs -s -ni -b -nf -st -sp -ov -- mpv --hwdec=auto --hwdec-codecs=all --no-audio --no-border --no-config --load-scripts=no --scripts= --no-window-dragging --no-input-default-bindings --no-osd-bar --no-sub --loop -wid WID --video-scale-x=1 --video-scale-y=1 --panscan=1.0 --input-ipc-server="$SOCKET" "$1"
   '';
 
 in
@@ -538,12 +559,17 @@ in
       feh-rofi-manual
       live-bg
       live-bg-speed
+      live-mpv-inc
+      live-mpv-dec
       live-bg-cycle
       live-bg-pause
       live-bg-speed-manual
       live-bg-manual
       paperview-rofi
+
+      live-xwin-load
       live-xwin
+      pkgs.socat
 
       xfilesctl
       xfilesthumb

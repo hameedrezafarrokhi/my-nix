@@ -4428,7 +4428,7 @@ rules: (
 		 triggers = ["close", "hide"];
 		 preset = "fly-out";	#-dunst-close-preset
 		 direction = "up";	#-dunst-close-direction
-		 duration = 1.0;
+		 duration = 0.2;
 	    }, {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";	#-dunst-open-preset

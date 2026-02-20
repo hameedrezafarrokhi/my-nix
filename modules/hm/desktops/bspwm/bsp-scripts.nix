@@ -1553,13 +1553,24 @@ let
                   pp() {
                       PROC="paperview-rs"
                       PID=$(pgrep -n "$PROC")
-                      pgrep -n "$PROC" &&
                       WINCOUNT=$(bspc query -N '@/' -n .descendant_of.window.!hidden.!floating | wc -l)
                       if [[ $WINCOUNT -eq 0 ]]; then
-                        kill -CONT "$PID"
+                        if pgrep -n "$PROC" >/dev/null; then
+                          kill -CONT "$PID"
+                        fi
+                        if [ -f "/tmp/mpv-socket-path.txt" ]; then
+                          echo '{ "command": ["set_property", "pause", false] }' | \
+                            socat - $(cat /tmp/mpv-socket-path.txt)
+                        fi
                       fi
                       if [[ $WINCOUNT -gt 0 ]]; then
-                        kill -STOP "$PID"
+                        if pgrep -n "$PROC" >/dev/null; then
+                          kill -STOP "$PID"
+                        fi
+                        if [ -f "/tmp/mpv-socket-path.txt" ]; then
+                          echo '{ "command": ["set_property", "pause", true] }' | \
+                            socat - $(cat /tmp/mpv-socket-path.txt)
+                        fi
                       fi
                   }
 
@@ -1852,7 +1863,7 @@ in
       bsp-layout-status
       bsp-power-man
       poly-bsp-lay
-      live-bg-auto
+      live-bg-auto   pkgs.socat
       live-bg-pause-script
       bspswallow
       bspwmswallow

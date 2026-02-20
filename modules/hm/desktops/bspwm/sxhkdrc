@@ -736,11 +736,11 @@ super + alt + b
 
 # Fehbg
 super + w
-    pkill xwinwrap; pkill feh-slide; pkill feh-auto; pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
+    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill feh-slide; pkill feh-auto; pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
 
 # Feh Slide Show
 super + alt + w
-    pkill xwinwrap; pkill paperview-rs; pkill feh-auto; feh-slide
+    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill paperview-rs; pkill feh-auto; feh-slide
 
 # Cycle Feh Wallpapers Next
 super + shift + w
@@ -856,7 +856,7 @@ super + alt + shift + o
 
 # Live Wallpaper
 super + comma ; {space}
-    pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg
+    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg
 
 # Live Wallpaper Auto Pause
 super + comma ; {Return}
@@ -864,11 +864,11 @@ super + comma ; {Return}
 
 # Live Wallpaper Menu
 super + ctrl + shift + comma
-    pkill xwinwrap; pkill feh-slide; pkill feh-auto; paperview-rofi
+    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill feh-slide; pkill feh-auto; paperview-rofi
 
 # Live Wallpaper Manual
 super + comma ; {m}
-    pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg-manual
+    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill feh-slide; pkill feh-auto; live-bg-manual
 
 # Live Wallpaper Cycle Next
 super + shift + comma
@@ -893,6 +893,14 @@ super + alt + comma
 # Live Wallpaper Manual Speed
 super + shift + ctrl + alt + comma
     live-bg-speed-manual
+
+# Live Wallpaper Speed Increase (MPV)
+super + comma ; {equal}
+    live-mpv-inc
+
+# Live Wallpaper Speed Decrease (MPV)
+super + comma ; {minus}
+    live-mpv-dec
 
 # BSPWM Manual Config Save
 super + alt + r
