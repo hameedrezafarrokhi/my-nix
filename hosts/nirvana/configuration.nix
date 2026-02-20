@@ -13,10 +13,8 @@
   };
 
   home-manager = {
-
     users = {
       ${admin} = {
-
         my = {
           kde.appletrc = "nirvana";
           gaming.proton.sarek.enable = true;
@@ -38,21 +36,28 @@
             };
           };
         };
-
         programs.fish.shellAbbrs = {
           nof = "__NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only";
         };
-
         home.shellAliases = {
           noa = "__NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only";
         };
-
         programs.bluetuith.settings = {
          #adapter = "hci1";
         };
+        services.polybar.settings = {
+          "module/light".card = "intel_backlight";
+          "module/temp" = {
+            zone-type = "x86_pkg_temp";
+            thermal-zone = 1;
+          };
+          "module/battery" = {
+           #battery = ;
+            adapter = "ACAD";
+          };
+        };
       };
     };
-
   };
 
   # only on a device that doesnt have swap on it already

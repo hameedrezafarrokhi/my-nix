@@ -7,6 +7,9 @@
     wallpaper = "${config.home.homeDirectory}/Pictures/Wallpapers/astronaut-${flavor}.png";
     wallpaper-alt = "file:///home/${config.home.username}/Pictures/Wallpapers/astronaut-${flavor}.png";
 
+    picom-gamma = 0.85;
+    picom-brightness = 1.05;
+
     gowall-name = "${nameC}-${flavorC}";
 
     gtk-theme = "catppuccin-${flavor}-${accent}-standard";
@@ -188,6 +191,7 @@
     Poly2 = "${MonoAlt2}:size=${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
     Poly3 = "${MonoSpace}:size=${toString PolySizeSmall}:weight=${PolyWeight};${toString PolyScaleSmall}";
     PolySymbols = "${Symbols}:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
+    PolyEmoji = "${Emoji}:${toString PolyEmojiSize}";
     awesome-wmFont = "${Sans} Bold ${toString SansSize}";
     i3Style = "Bold Semi-Condensed";
     i3BarStyle = "Regular Semi-Condensed";
@@ -207,6 +211,7 @@
     MonoSizeWezterm = 9.0;
     PolySize = 10.5;
     PolySizeSmall = 5.0;
+    PolyEmojiSize = 1;
     PolyWeight = "medium";
     PolyScale = 3;
     PolyScaleSmall = 1;
@@ -3810,6 +3815,7 @@ EOF
           font-1 = PolySymbols;
           font-2 = Poly2;
           font-3 = Poly3;
+          font-4 = PolyEmoji;
          #font-1 = "FontAwesome:size=12;3";
          #font-2 = "Hack Nerd Font:size=12;3";
         };
@@ -3917,6 +3923,30 @@ EOF
         };
         "module/pp" = {
           label-foreground = Rosewater;
+        };
+        "module/light" = {
+          ramp-0 = "󰽤"; # "🌑";
+          ramp-1 = "󰽥"; # "🌒";
+          ramp-2 = "󰽣"; # "🌓";
+          ramp-3 = "󰽦"; # "🌔";
+          ramp-4 = "󰽢"; # "🌕";
+        };
+        "module/temp" = {
+          ramp-0 = "󱟯";
+          ramp-1 = "󱟮";
+          ramp-2 = "󰞴";
+          ramp-3 = "󰞳";
+          ramp-4 = "󰞲";
+          ramp-5 = "󱟫";
+          label-warn-foreground = "${Red}";
+          ramp-foreground = "${Pink}";
+        };
+        "module/battery" = {
+          ramp-capacity-0 = "";
+          ramp-capacity-1 = "";
+          ramp-capacity-2 = "";
+          ramp-capacity-3 = "";
+          ramp-capacity-4 = "";
         };
       };
     };
@@ -4267,6 +4297,12 @@ blur: {
 
 rules: (
 	{
+	      match = "class_g != 'Polybar'";
+		shader = {
+		 path = "${config.xdg.configHome}/picom/gamma_brightness.glsl";
+		 #COLOR = "vec4(100.0, 100.0, 100.0, 100.0)";
+		};
+	}, {
 	      match = "class_g != 'dunst' || class_g != 'Dunst'"
 		opacity = 0.85;
 		opacity-override = false;
@@ -4544,6 +4580,45 @@ rules: (
 		)
 	},
 )
+    '';
+
+    "picom/gamma_brightness.glsl".text = ''
+      #version 330
+
+      // Changes gamma of windows
+      float gamma = ${toString picom-gamma}; // Use values higher than 0. Change to your liking
+      float brightness_level = ${toString picom-brightness};
+
+      float inv_gamma = 1/gamma;
+
+      in vec2 texcoord;             // texture coordinate of the fragment
+
+      uniform sampler2D tex;        // texture of the window
+
+      // Default window post-processing:
+      // 1) invert color
+      // 2) opacity / transparency
+      // 3) max-brightness clamping
+      // 4) rounded corners
+      vec4 default_post_processing(vec4 c);
+
+      vec4 window_shader() {
+          vec4 c = texelFetch(tex, ivec2(texcoord), 0);
+
+          c = default_post_processing(c);
+
+          // Apply power law transform
+
+          c.x = pow(c.x, inv_gamma);
+          c.y = pow(c.y, inv_gamma);
+          c.z = pow(c.z, inv_gamma);
+
+          c.x *= brightness_level;
+          c.y *= brightness_level;
+          c.z *= brightness_level;
+
+          return c;
+      }
     '';
 
     catppuccinifier = {

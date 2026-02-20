@@ -494,6 +494,10 @@ super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
 super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,z}
       poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,aaa}
 
+# Polybar Modules
+super + ctrl + y ; {bracketleft,bracketright,backslash}
+      poly-modules {light,temp,battery}
+
 # Polybar Stast/Window-Title
 super + ctrl + y ; {space}
       poly-modules cpu; poly-modules memory; poly-modules filesystem; poly-modules networkspeeddown; poly-modules networkspeedup; poly-modules xwindow;

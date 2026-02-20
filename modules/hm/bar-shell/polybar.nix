@@ -454,9 +454,9 @@ in
        #radius = 6;
        #dpi = 96;
         modules = {
-          left = "apps pp memory cpu filesystem networkspeeddown networkspeedup player xwindow"; #networkspeeddown-wired networkspeedup-wired
+          left = "apps pp battery temp memory cpu filesystem networkspeeddown networkspeedup player xwindow"; #networkspeeddown-wired networkspeedup-wired
           center = "xworkspaces";
-          right = "lock tray picom bspwm notif idle keyboard-layout pulseaudio date hour power";
+          right = "lock tray picom bspwm notif idle keyboard-layout light pulseaudio date hour power";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -890,6 +890,59 @@ in
         click-left = "poly-pp";
         click-right = "xmenu-pp";
         format = "<label>%{O-6pt}";
+      };
+
+      "module/light" = {
+        type = "internal/backlight";
+       #card = lib.mkDefault "intel_backlight"; # Default to first in "ls /sys/class/backlight"
+        use-actual-brightness = true;
+        poll-interval = 0;
+        enable-scroll = true;
+        scroll-interval = 2;
+        format = "<ramp>%{O-8pt}";
+       #label = "%percentage%%";
+        ramp-0 = lib.mkDefault "󰽢"; # "🌕";
+        ramp-1 = lib.mkDefault "󰽦"; # "🌔";
+        ramp-2 = lib.mkDefault "󰽣"; # "🌓";
+        ramp-3 = lib.mkDefault "󰽥"; # "🌒";
+        ramp-4 = lib.mkDefault "󰽤"; # "🌑";
+      };
+
+      "module/temp" = {
+        type = "internal/temperature";
+        interval = 4;
+        thermal-zone = lib.mkDefault 0;
+        # To Find The Zones: for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+        zone-type = lib.mkDefault "x86_pkg_temp";
+        base-temperature = 50;
+        warn-temperature = 80;
+        units = false;
+       #label = "TEMP %temperature-c%";
+        label-warn = "";
+        format = "<ramp>%{O-5pt}";
+        format-warn = "<ramp>%{O-5pt} <label-warn>%{O-5pt}";
+      };
+
+      "module/battery" = {
+        type = "internal/battery";
+        full-at = 98;
+        low-at = 15;
+        # To Find Adapters and Batteries: ls -1 /sys/class/power_supply/
+        battery = lib.mkDefault "BAT0";
+        adapter = lib.mkDefault "ADP1";
+        poll-interval = 0;
+        time-format = "%H:%M";
+       #format-charging = "<animation-charging> <label-charging>";
+        format-charging = "<label-charging>%{O-5pt}";
+       #format-discharging = "<ramp-capacity> <label-discharging>";
+        format-discharging = "<ramp-capacity>%{O-5pt}";
+        format-full = "<label-full>%{O-5pt}";
+        format-low = "<label-low>%{O-5pt}";
+        label-charging = " %percentage%%";
+       #label-discharging = "Discharging %percentage%%";
+        label-full = "";
+        label-low = " 󱈸";
+       #bar-capacity-width = 10;
       };
 
       "settings" = {
