@@ -1,0 +1,52 @@
+#!/bin/bash
+
+BRIGHTNESS_STEPS=$2
+MIN_BRIGHTNESS=1
+
+get_brightness() {
+    brightnessctl i | awk -F '[()%]' '/Current brightness:/ {print $2}'
+}
+
+send_notification() {
+    brightness="$1"
+    icon="󰖨"
+    bar=""
+    bar_length=$((brightness / BRIGHTNESS_STEPS))
+
+    i=0
+    while [ "$i" -lt "$bar_length" ]; do
+        bar="${bar}─"
+        i=$((i + 1))
+    done
+
+    dunstify "🔅 Brightness $brightness%" -i "$icon" -r 5555 -h int:value:$(($brightness))
+}
+
+adjust_brightness() {
+    current="$(get_brightness)"
+
+    case $1 in
+        up)
+            if [ "$current" -eq "$MIN_BRIGHTNESS" ]; then
+                brightnessctl set "${BRIGHTNESS_STEPS}%" -q
+            else
+                brightnessctl set "${BRIGHTNESS_STEPS}%+" -q
+            fi
+            ;;
+        down)
+            threshold=$((MIN_BRIGHTNESS + BRIGHTNESS_STEPS))
+            if [ "$current" -le "$threshold" ]; then
+                brightnessctl set "${MIN_BRIGHTNESS}%" -q
+            else
+                brightnessctl set "${BRIGHTNESS_STEPS}%-" -q
+            fi
+            ;;
+    esac
+
+    send_notification "$(get_brightness)"
+}
+
+case $1 in
+    up|down) adjust_brightness "$1" ;;
+    get) send_notification "$(get_brightness)" ;;
+esac

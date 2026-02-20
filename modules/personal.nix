@@ -333,6 +333,7 @@
           ssh.enable = true;
 
           audio.enable = true;
+          display.enable = true;
           keyboard = {
             xremap.enable = true;
           };

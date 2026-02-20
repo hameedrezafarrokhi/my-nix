@@ -252,11 +252,11 @@ super + End
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
-	xbacklight +10
+	brtctl get 1; #xbacklight +10
 
 # Decrease Screen Brightness
 XF86MonBrightnessDown
-	xbacklight -10
+	brtctl get 1; #xbacklight -10
 
 # Take a Screenshot (Region Select)
 super + Print

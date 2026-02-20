@@ -10,6 +10,8 @@ in
 
   options.my.display = {
 
+    enable = lib.mkEnableOption "display";
+
     primary = {
       name = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
@@ -113,6 +115,16 @@ in
         default = null;
       };
     };
+
+  };
+
+  config = lib.mkIf cfg.enable {
+
+    home.packages = [
+
+      (pkgs.writeShellScriptBin "brtctl" '' ${builtins.readFile ./brtctl} '')
+
+    ];
 
   };
 

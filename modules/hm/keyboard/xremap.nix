@@ -592,6 +592,10 @@ in
               launch: [ "xremap-motd" ]
             Super-Ctrl-w:
               launch: [ "xremap-weather" ]
+            Super-Ctrl-KEY_LEFTBRACE:
+              launch: [ "brtctl", "down", "5" ]
+            Super-Ctrl-KEY_RIGHTBRACE:
+              launch: [ "brtctl", "up", "5" ]
 
 
 
