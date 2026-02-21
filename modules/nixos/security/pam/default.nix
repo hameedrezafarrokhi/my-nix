@@ -17,7 +17,7 @@ in
       login = {
         enable = true;
         name = "login";
-       #kwallet = {
+       #kwallet = {          # Causes Brave to take a long time to load on first boot
        #  enable = true;
        # #package = pkgs.kdePackages.kwallet-pam;
        #  forceRun = true;
