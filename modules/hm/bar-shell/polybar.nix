@@ -914,7 +914,7 @@ in
         thermal-zone = lib.mkDefault 0;
         # To Find The Zones: for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
         zone-type = lib.mkDefault "x86_pkg_temp";
-        base-temperature = 50;
+        base-temperature = 45;
         warn-temperature = 80;
         units = false;
        #label = "TEMP %temperature-c%";

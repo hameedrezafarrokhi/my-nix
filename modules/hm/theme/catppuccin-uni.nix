@@ -629,9 +629,10 @@
     };
     bsptab = pkgs.callPackage ../desktops/bspwm/tabbed/bsptab.nix { tabbed = bsp-tabbed; };
 
+    #
     bsp-default-icon = pkgs.writeShellScriptBin "bsp-default-icon" ''
       bspc query -D | while read name; do
-        bspc desktop "$name" -n ""
+        bspc desktop "$name" -n ""
       done
     '';
 
@@ -3802,7 +3803,8 @@ EOF
           line-size = "2pt";
           line-color = Accent;
           width = "99%";
-          radius = 6;
+         #radius = 6;
+          radius = 0;
          #border-size = "4pt";
           border-size = "0pt";
           border-color = Mantle;
@@ -3938,8 +3940,13 @@ EOF
           ramp-3 = "󰞳";
           ramp-4 = "󰞲";
           ramp-5 = "󱟫";
-          label-warn-foreground = "${Red}";
-          ramp-foreground = "${Pink}";
+          label-warn-foreground = "${Yellow}";
+          ramp-0-foreground = "${Blue}";
+          ramp-1-foreground = "${Green}";
+          ramp-2-foreground = "${Yellow}";
+          ramp-3-foreground = "${Maroon}";
+          ramp-4-foreground = "${Red}";
+          ramp-5-foreground = "${Red}";
         };
         "module/battery" = {
           ramp-capacity-0 = "";
@@ -4277,10 +4284,10 @@ glx-use-copysubbuffer-mesa = true;
 no-fading-destroyed-argb = true;
 no-fading-openclose = true;
 shadow = true;
-shadow-color = "#000000";
+shadow-color = "${Black}";
 shadow-offset-x = -15;
 shadow-offset-y = -15;
-shadow-opacity = 0.800000;
+shadow-opacity = 0.850000;
 shadow-radius = 20;
 vsync = true;
 xrender-sync = true;
@@ -4297,7 +4304,7 @@ blur: {
 
 rules: (
 	{
-	      match = "class_g != 'Polybar'";
+	      #match = "class_g != 'Polybar'";
 		shader = {
 		 path = "${config.xdg.configHome}/picom/gamma_brightness.glsl";
 		 #COLOR = "vec4(100.0, 100.0, 100.0, 100.0)";
@@ -4315,12 +4322,12 @@ rules: (
 		fade = true;
 		shadow = true;
 	}, {
-		match = "window_type = 'Polybar' || window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'desktop' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'Dunst'";
+		match = "window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'Dunst'";
 		blur-background = false;
 		clip-shadow-above = false;
 		shadow = false;
 	}, {
-		match = "window_type = 'dock' || class_g = 'Polybar' || window_type = 'desktop' || name = 'Notification' || class_g = 'i3-frame' || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'dockx' || class_g = 'Dockx'";
+		match = "window_type = 'dock' || window_type = 'desktop' || name = 'Notification' || class_g = 'i3-frame' || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'dockx' || class_g = 'Dockx'";
             corner-radius = 0;
 	}, {
 		match = "_GTK_FRAME_EXTENTS@:c && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dockx' || class_g = 'Dockx' || class_g = 'iotas' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'baobab' && (window_type = 'menu' || window_type = 'dropdown_menu')";
@@ -4344,6 +4351,16 @@ rules: (
       #    match = "window_type = 'menu' || role = 'popup' || role = 'bubble'";
       #    shadow = false;
       #},
+      {
+	      match = "class_g = 'Polybar'";
+		shadow = true;
+		#corner-radius = ${toString config.services.polybar.settings."bar/${config.my.poly-name}".radius};
+		#blur-background = false;
+		corner-radius = 6;
+		shadow-radius = 12;
+		shadow-opacity = 0.700000;
+		shadow-color = "${Black}";
+	},
 	{
         match = "window_type = 'normal'";
         animations = (
