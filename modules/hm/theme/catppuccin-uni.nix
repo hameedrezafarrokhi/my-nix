@@ -4292,6 +4292,7 @@ shadow-radius = 20;
 vsync = true;
 xrender-sync = true;
 xrender-sync-fence = true;
+root-pixmap-shader = "${config.xdg.configHome}/picom/gamma_brightness.glsl";
 
 blur: {
   method = "dual_kawase";

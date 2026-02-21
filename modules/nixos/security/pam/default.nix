@@ -17,11 +17,11 @@ in
       login = {
         enable = true;
         name = "login";
-        kwallet = {
-          enable = true;
-         #package = pkgs.kdePackages.kwallet-pam;
-          forceRun = true;
-        };
+       #kwallet = {
+       #  enable = true;
+       # #package = pkgs.kdePackages.kwallet-pam;
+       #  forceRun = true;
+       #};
         gnupg.enable = true;
         enableGnomeKeyring = true;
       };
@@ -32,11 +32,11 @@ in
       sshd = {
         enable = true;
         name = "sshd";
-        kwallet = {
-          enable = true;
-         #package = pkgs.kdePackages.kwallet-pam;
-          forceRun = true;
-        };
+       #kwallet = {
+       #  enable = true;
+       # #package = pkgs.kdePackages.kwallet-pam;
+       #  forceRun = true;
+       #};
         gnupg.enable = true;
         enableGnomeKeyring = true;
       };
