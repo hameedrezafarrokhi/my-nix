@@ -29,6 +29,7 @@ in
     foliate.enable = lib.mkEnableOption "foliate";
     freetube.enable = lib.mkEnableOption "freetube";
     fzf.enable = lib.mkEnableOption "fzf";
+    geany.enable = lib.mkEnableOption "geany";
     git.enable = lib.mkEnableOption "git";
     ghostty.enable = lib.mkEnableOption "ghostty";
     gpg.enable = lib.mkEnableOption "gpg";
@@ -93,6 +94,7 @@ in
       ./foliate.nix
       ./freetube.nix
       ./fzf.nix
+      ./geany.nix
       ./git.nix
       ./ghostty.nix
       ./gpg.nix

@@ -173,6 +173,10 @@ let
     notify-send -u low -t 0 "$(bullshit)"
   '';
 
+  xremap-fortune = pkgs.writeShellScriptBin "xremap-fortune" ''
+    notify-send -u low -t 0 "$(fortune -o)"
+  '';
+
   xremap-help = pkgs.writeShellScriptBin "xremap-help" ''
     ${builtins.readFile ./xremap-help.sh}
   '';
@@ -223,6 +227,7 @@ in
     xremap-time
     xremap-help
     xremap-motd
+    xremap-fortune
     xremap-weather
     xremap-xsession-load
     xremap-xsession-save
@@ -590,6 +595,8 @@ in
               launch: [ "xremap-time" ]
             Super-Ctrl-q:
               launch: [ "xremap-motd" ]
+            Super-Ctrl-r:
+              launch: [ "xremap-fortune" ]
             Super-Ctrl-w:
               launch: [ "xremap-weather" ]
             Super-Ctrl-KEY_LEFTBRACE:

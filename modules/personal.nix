@@ -409,6 +409,7 @@
             foliate.enable = false;
             freetube.enable = true;
             fzf.enable = true;
+            geany.enable = true;
             git.enable = true;
             ghostty.enable = true;
             gpg.enable = true;

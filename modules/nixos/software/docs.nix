@@ -26,6 +26,9 @@
 
     kdePackages.kate              ##text editor GUI (KDE)
 
+   #geany
+    geany-with-vte
+
    #notesnook                     ##Online notes
    #joplin-desktop                ##Online notes
 
@@ -45,7 +48,16 @@
 
    ++
 
-  config.my.software.docs.include;
+  config.my.software.docs.include
+
+ #++ [(pkgs.callPackage ../myPackages/geany-plugins.nix { enableAllPlugins = true; })]
+ #++ [(pkgs.callPackage ../myPackages/geany-plugins-wrapper.nix {
+ #       geany-plugins = pkgs.callPackage ../myPackages/geany-plugins.nix {
+ #         enableAllPlugins = true;
+ #       };
+ #   })]
+
+  ;
 
   programs = {
 
