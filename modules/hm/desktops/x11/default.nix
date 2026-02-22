@@ -480,6 +480,50 @@ let
     xwinwrap -o 100 -fs -s -ni -b -nf -st -sp -ov -- mpv --hwdec=auto --hwdec-codecs=all --no-audio --no-border --no-config --load-scripts=no --scripts= --no-window-dragging --no-input-default-bindings --no-osd-bar --no-sub --loop -wid WID --video-scale-x=1 --video-scale-y=1 --panscan=1.0 --input-ipc-server="$SOCKET" "$1"
   '';
 
+  feha = pkgs.writeShellScriptBin "feha" ''
+    NEW_WALL="$1"
+    [[ -f "$NEW_WALL" ]] || exit 1
+    CACHE="$HOME/.cache/wall-fade"
+    mkdir -p "$CACHE"
+
+    {
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/5:-1,format=rgba,colorchannelmixer=aa=0.05" "$CACHE/new1.png" &
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/5:-1,format=rgba,colorchannelmixer=aa=0.15" "$CACHE/new2.png" &
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/5:-1,format=rgba,colorchannelmixer=aa=0.33" "$CACHE/new3.png" &
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/5:-1,format=rgba,colorchannelmixer=aa=0.66" "$CACHE/new4.png" &
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/5:-1,format=rgba,colorchannelmixer=aa=0.80" "$CACHE/new5.png" &
+        ffmpeg -y -i "$NEW_WALL" -vf "scale=iw/2:-1,format=rgba,colorchannelmixer=aa=0.90" "$CACHE/new6.png" &
+        wait
+    } 2>/dev/null
+
+    if [[ -f "$CACHE/old2.png" ]]; then
+        hsetroot -cover "$CACHE/old6.png"
+        hsetroot -cover "$CACHE/old5.png"
+        hsetroot -cover "$CACHE/old4.png"
+        hsetroot -cover "$CACHE/old3.png"
+        hsetroot -cover "$CACHE/old2.png"
+        hsetroot -cover "$CACHE/old1.png"
+    fi
+
+    hsetroot -cover "$CACHE/new1.png"
+    hsetroot -cover "$CACHE/new2.png"
+    hsetroot -cover "$CACHE/new3.png"
+    hsetroot -cover "$CACHE/new4.png"
+    hsetroot -cover "$CACHE/new5.png"
+    hsetroot -cover "$CACHE/new6.png"
+    #hsetroot -cover "$1"
+    feh --bg-fill "$1"
+
+    # Prepare for next transition
+    rm -f "$CACHE/old1.png" "$CACHE/old2.png" "$CACHE/old3.png" "$CACHE/old4.png" "$CACHE/old5.png" "$CACHE/old6.png"
+    mv "$CACHE/new1.png" "$CACHE/old1.png"
+    mv "$CACHE/new2.png" "$CACHE/old2.png"
+    mv "$CACHE/new3.png" "$CACHE/old3.png"
+    mv "$CACHE/new4.png" "$CACHE/old4.png"
+    mv "$CACHE/new5.png" "$CACHE/old5.png"
+    mv "$CACHE/new6.png" "$CACHE/old6.png"
+  '';
+
 in
 
 {
@@ -524,6 +568,8 @@ in
     home.packages = [
       pkgs.picom
       pkgs.feh
+      pkgs.hsetroot
+      pkgs.xrefresh
       pkgs.xkb-switch
       pkgs.xdotool
       pkgs.pamixer
@@ -552,6 +598,7 @@ in
       xsession-load
       xsession-save
       rofi-monitor
+      feha
       feh-auto
       feh-slide
       feh-rofi
@@ -602,7 +649,7 @@ in
         #blueman-applet &
         #skippy-xd --start-daemon &
         #xclickroot -r xmenu-app &
-
+        rm -rf "$HOME/.cache/wall-fade"
       '';
 
       profileExtra = ''
