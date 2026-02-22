@@ -4960,6 +4960,161 @@ rules: (
       '';
     };
 
+    geany-theme = {
+      target = "geany/colorschemes/hm-theme.conf";
+      text = ''
+        [theme_info]
+        name=Home Manager Theme
+        description=Home Manager Controled Theme
+        version=0.0.0.0
+        author=meeee
+        compat=1.22;1.23;1.23.1;1.24
+
+        [named_colors]
+        rosewater=${Rosewater}
+        flamingo=${Flamingo}
+        pink=${Pink}
+        mauve=${Mauve}
+        red=${Red}
+        maroon=${Maroon}
+        peach=${Peach}
+        yellow=${Yellow}
+        green=${Green}
+        teal=${Teal}
+        sky=${Sky}
+        sapphire=${Sapphire}
+        blue=${Blue}
+        lavender=${Lavender}
+        text=${Text}
+        subtext1=${Subtext1}
+        subtext0=${Subtext0}
+        overlay2=${Overlay2}
+        overlay1=${Overlay1}
+        overlay0=${Overlay0}
+        surface2=${Surface2}
+        surface1=${Surface1}
+        surface0=${Surface0}
+        base=${Base}
+        mantle=${Mantle}
+        crust=${Crust}
+        accent=${Accent}
+
+        [named_styles]
+        operator=blue
+        default=subtext1;base;false;false
+        error=red;yellow;false;true
+        op=blue;base;true;false
+        # Editor UI
+        #  selection: words; background
+        selection=base;rosewater;true;true
+        current_line=;surface0;true
+        brace_good=green;overlay1;true;true
+        brace_bad=red;overlay1;true;true
+        margin_line_number=text;base
+        margin_folding=accent;base
+        fold_symbol_highlight=surface1
+        indent_guide=overlay1
+        caret=text;;false
+        marker_line=yellow;yellow
+        marker_search=mantle;blue
+        marker_mark=green;surface0
+        call_tips=overlay1;text;false;false
+        white_space=overlay1;;true
+
+        # Basic langs
+        comment=overlay0
+        comment_doc=comment
+        comment_line=overlay0
+        comment_line_doc=comment_doc
+        comment_doc_keyword=comment,bold
+        comment_doc_keyword_error=comment,italic
+
+        number=teal
+        number_1=number
+        number_2=number_1
+
+        # class <color()>
+        type=pink;;flase;true;
+
+        class=blue
+        # def <color():>
+        function=teal;;false;true;
+        parameter=peach
+
+        keyword=default
+        # def, for, in
+        keyword_1=red;;false;true
+        keyword_2=default
+        keyword_3=peach
+        keyword_4=keyword_2
+
+        identifier=sky;;false;false
+        # main
+        identifier_1=subtext0;;false;false
+        identifier_2=default
+        identifier_3=identifier_2
+        identifier_4=identifier_2
+
+        string=green;;false;false
+        string_1=green;;false;false
+        string_2=green;;false;false
+        string_3=default
+        string_4=default
+        string_eol=string_1
+        character=string_1
+        backticks=string_2
+        here_doc=string_2
+
+        scalar=string_2
+        label=red
+        preprocessor=green
+        regex=pink
+        operator=lavender;;true;false
+        decorator=string_1
+        other=default
+        extra=keyword;
+
+        # Markup
+        tag=keyword
+        tag_unknown=tag,bold
+        tag_end=tag,bold
+        attribute=type
+        attribute_unknown=attribute,bold
+        value=number
+        entity=number
+
+        # Diff
+        line_added=green
+        line_removed=red
+        line_changed=preprocessor
+      '';
+    };
+
+    geany-conf = {
+      target = "geany/geany.conf";
+      text = lib.mkAfter ''
+        long_line_color=${Accent}
+
+        [VTE]
+        load_vte=true
+        send_cmd_prefix=
+        send_selection_unsafe=false
+        font=Monospace 10
+        scroll_on_key=true
+        scroll_on_out=true
+        enable_bash_keys=true
+        ignore_menu_bar_accel=false
+        follow_path=false
+        run_in_vte=false
+        skip_run_script=false
+        cursor_blinks=false
+        scrollback_lines=500
+        shell=/run/current-system/sw/bin/${config.my.defaultShell}
+        colour_fore=${Text}
+        colour_back=${Base}
+      '';
+    };
+
     glamour-theme = {
       target = "glamour/theme.json";
       text = ''
