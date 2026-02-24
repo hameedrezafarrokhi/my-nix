@@ -5,8 +5,6 @@ source "$ROOT/utils/utils.sh"
 NEW_WALL="$1"
 FRAMES="$2"
 SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
 
 MAX_AMP=50          # maximum wave amplitude (pixels)
 WAVELEN=200         # wavelength (pixels)
@@ -27,8 +25,8 @@ for i in $(seq 1 $FRAMES); do
                   cb='p(X+${amp_new}*sin(2*${PI}*Y/${WAVELEN}),Y)':
                   cr='p(X+${amp_new}*sin(2*${PI}*Y/${WAVELEN}),Y)'[new_wavy];
         [old_wavy][new_wavy]blend=all_expr='A*(1-${f})+B*${f}'[out]
-    " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT"
-    if [ $? -ne 0 ] || [ ! -s "$CACHE/new$i.$FORMAT" ]; then
+    " -map "[out]" -frames:v 1 "$CACHE/new$i.png"
+    if [ $? -ne 0 ] || [ ! -s "$CACHE/new$i.png" ]; then
         echo "Error generating frame $i. Aborting."
         exit 1
     fi

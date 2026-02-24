@@ -5,6 +5,8 @@ source "$ROOT/utils/utils.sh"
 NEW_WALL="$1"
 FRAMES="$2"
 SPEED="$3"
+ANIMATION="$4"
+FORMAT="$5"
 
 MIN_XY=-1080    # at (0,1080) bottom‑left
 MAX_XY=1920     # at (1920,0) top‑right
@@ -17,7 +19,7 @@ for i in $(seq 1 $FRAMES); do
         [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
         nullsrc=size=1920x1080,geq=lum='if(gte(X-Y, ${T}), 255, 0)'[mask];
         [old][new][mask]maskedmerge[out]
-    " -map "[out]" -frames:v 1 "$CACHE/new$i.png" &
+    " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
 done
 wait
 set_walls

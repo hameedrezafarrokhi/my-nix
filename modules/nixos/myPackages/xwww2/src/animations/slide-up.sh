@@ -5,8 +5,6 @@ source "$ROOT/utils/utils.sh"
 NEW_WALL="$1"
 FRAMES="$2"
 SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
 
 setup
 for i in $(seq 1 $FRAMES); do
@@ -17,7 +15,7 @@ for i in $(seq 1 $FRAMES); do
         [old]crop=1920:${crop_pos}:0:$((1080 - crop_pos))[top];
         [new]crop=1920:$((1080 - crop_pos)):0:0[bottom];
         [top][bottom]vstack=inputs=2[out]
-    " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+    " -map "[out]" -frames:v 1 "$CACHE/new$i.png" &
 done
 wait
 set_walls

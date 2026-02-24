@@ -5,8 +5,6 @@ source "$ROOT/utils/utils.sh"
 NEW_WALL="$1"
 FRAMES="$2"
 SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
 
 MAX_BLOCK=64   # maximum pixel block size
 
@@ -29,7 +27,7 @@ for i in $(seq 1 $FRAMES); do
         [old]scale=${w2_old}:${h2_old}:flags=neighbor,scale=1920:1080:flags=neighbor[old_pix];
         [new]scale=${w2_new}:${h2_new}:flags=neighbor,scale=1920:1080:flags=neighbor[new_pix];
         [old_pix][new_pix]blend=all_expr='A*(1-${f})+B*${f}'[out]
-    " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+    " -map "[out]" -frames:v 1 "$CACHE/new$i.png" &
 done
 wait
 set_walls
