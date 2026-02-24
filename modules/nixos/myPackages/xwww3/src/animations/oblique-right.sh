@@ -7,23 +7,23 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
+
+MIN_T=0          # at (0,0)
+MAX_T=3000       # at (1920,1080)
 
 setup
 for i in $(seq 1 $FRAMES); do
-    new_w=$(echo "scale=2; $i * 1920 / $FRAMES" | bc | cut -d. -f1)
-    old_w=$((1920 - new_w))
-    if [ $new_w -eq 0 ]; then
+    T=$(echo "scale=2; $MIN_T + ($i-1) * ($MAX_T - $MIN_T) / ($FRAMES - 1)" | bc | cut -d. -f1)
+    if [ $i -eq 1 ] && [ $T -eq $MIN_T ]; then
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
-    elif [ $old_w -eq 0 ]; then
+    elif [ $i -eq $FRAMES ] && [ $T -ge $MAX_T ]; then
         ffmpeg "${ACCEL[@]}" -y -i "$NEW_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     else
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
             [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[old];
             [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
-            [old]crop=${old_w}:1080:0:0[left];
-            [new]crop=${new_w}:1080:${old_w}:0[right];
-            [left][right]hstack=inputs=2[out]
+            nullsrc=size=1920x1080,geq=lum='if(lte(X+Y, ${T}), 255, 0)'[mask];
+            [old][new][mask]maskedmerge[out]
         " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     fi
 done

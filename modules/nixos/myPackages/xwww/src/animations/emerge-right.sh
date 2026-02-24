@@ -11,8 +11,8 @@ RND="$6"
 
 setup
 for i in $(seq 1 $FRAMES); do
-    new_w=$(echo "scale=2; $i * 1920 / $FRAMES" | bc | cut -d. -f1)
-    old_w=$((1920 - new_w))
+    new_w=$(( i * 1920 / FRAMES ))
+    old_w=$(( 1920 - new_w ))
     if [ $new_w -eq 0 ]; then
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     elif [ $old_w -eq 0 ]; then
@@ -21,9 +21,10 @@ for i in $(seq 1 $FRAMES); do
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
             [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[old];
             [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
-            [old]crop=${old_w}:1080:0:0[left];
-            [new]crop=${new_w}:1080:${old_w}:0[right];
-            [left][right]hstack=inputs=2[out]
+            [old]crop=${old_w}:1080:0:0[old_crop];
+            [old_crop]pad=1920:1080:${new_w}:0:color=black[old_shifted];
+            [new]crop=${new_w}:1080:0:0[new_crop];
+            [old_shifted][new_crop]overlay=0:0:shortest=1[out]
         " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     fi
 done

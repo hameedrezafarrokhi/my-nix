@@ -7,7 +7,6 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
 
 PI=$(echo "scale=10; 4*a(1)" | bc -l)
 

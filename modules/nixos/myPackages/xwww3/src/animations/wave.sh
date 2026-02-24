@@ -7,7 +7,6 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
 
 MAX_AMP=50          # maximum wave amplitude (pixels)
 WAVELEN=200         # wavelength (pixels)

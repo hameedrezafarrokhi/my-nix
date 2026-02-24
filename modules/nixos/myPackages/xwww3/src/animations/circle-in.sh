@@ -7,7 +7,6 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
 
 CX=960  # Center of screen
 CY=540

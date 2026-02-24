@@ -7,7 +7,6 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
 
 setup
 for i in $(seq 1 $FRAMES); do
@@ -21,8 +20,8 @@ for i in $(seq 1 $FRAMES); do
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
             [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[old];
             [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
-            [old]crop=${old_w}:1080:0:0[left];
-            [new]crop=${new_w}:1080:${old_w}:0[right];
+            [new]crop=${new_w}:1080:0:0[left];
+            [old]crop=${old_w}:1080:${new_w}:0[right];
             [left][right]hstack=inputs=2[out]
         " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     fi

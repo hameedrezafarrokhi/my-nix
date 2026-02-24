@@ -7,7 +7,6 @@ FRAMES="$2"
 SPEED="$3"
 ANIMATION="$4"
 FORMAT="$5"
-RND="$6"
 
 CURRENT=$(cat "$HOME/.cache/xwww/current")
 CURRENT_FADE=$(cat "$HOME/.cache/xwww/current-fade")
