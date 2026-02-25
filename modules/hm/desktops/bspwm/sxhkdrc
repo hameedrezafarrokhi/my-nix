@@ -743,8 +743,12 @@ super + w
     pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill feh-slide; pkill feh-auto; pkill paperview-rs; sh -c '$HOME/.fehbg'; touch $HOME/.fehbg
 
 # Feh Slide Show
+#super + alt + w
+#    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill paperview-rs; pkill feh-auto; feh-slide
+
+# xwww (animated transition)
 super + alt + w
-    pkill live-xwin; sleep 0.5; pkill xwinwrap; pkill paperview-rs; pkill feh-auto; feh-slide
+    pkill live-xwin; sleep 0.1; pkill xwinwrap; pkill paperview-rs; pkill feh-auto; xwww $HOME/Pictures/my-wallpapers/go-nord-background-small
 
 # Cycle Feh Wallpapers Next
 super + shift + w

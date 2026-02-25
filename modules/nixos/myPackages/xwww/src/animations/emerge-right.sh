@@ -1,29 +1,20 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/config.sh"
-source "$ROOT/utils/utils.sh"
-NEW_WALL="$1"
-FRAMES="$2"
-SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
-RND="$6"
-
 setup
 for i in $(seq 1 $FRAMES); do
-    new_w=$(( i * 1920 / FRAMES ))
-    old_w=$(( 1920 - new_w ))
+    new_w=$(( i * R_X / FRAMES ))
+    old_w=$(( R_X - new_w ))
     if [ $new_w -eq 0 ]; then
-        ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+        ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     elif [ $old_w -eq 0 ]; then
-        ffmpeg "${ACCEL[@]}" -y -i "$NEW_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+        ffmpeg "${ACCEL[@]}" -y -i "$NEW_WALL" -filter_complex "[0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     else
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
-            [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[old];
-            [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
-            [old]crop=${old_w}:1080:0:0[old_crop];
-            [old_crop]pad=1920:1080:${new_w}:0:color=black[old_shifted];
-            [new]crop=${new_w}:1080:0:0[new_crop];
+            [0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y[old];
+            [1:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y[new];
+            [old]crop=${old_w}:$R_Y:0:0[old_crop];
+            [old_crop]pad=$R_X:$R_Y:${new_w}:0:color=black[old_shifted];
+            [new]crop=${new_w}:$R_Y:0:0[new_crop];
             [old_shifted][new_crop]overlay=0:0:shortest=1[out]
         " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     fi

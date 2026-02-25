@@ -1,27 +1,19 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/config.sh"
-source "$ROOT/utils/utils.sh"
-NEW_WALL="$1"
-FRAMES="$2"
-SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
-RND="$6"
-
 setup
 for i in $(seq 1 $FRAMES); do
     if [ $FRAMES -eq 1 ]; then
-        offset=960
+        offset=$(( R_X / 2 ))
     else
-        offset=$(( (i-1) * 960 / (FRAMES-1) ))
+        H_X=$(( R_X / 2 ))
+        offset=$(( (i-1) * H_X / (FRAMES-1) ))
     fi
     L=$offset
-    R=$((1920 - offset))
+    R=$((R_X - offset))
     ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
-        [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,format=yuv420p[old];
-        [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,format=yuv420p[new];
-        nullsrc=size=1920x1080,
+        [0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y,format=yuv420p[old];
+        [1:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y,format=yuv420p[new];
+        nullsrc=size="$R_X"x"$R_Y",
                geq=lum='if(lt(X,${L}) + gt(X,${R}), 255, 0)',
                format=gray[mask];
         [old][new][mask]maskedmerge[out]

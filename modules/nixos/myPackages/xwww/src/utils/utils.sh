@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/config.sh"
-
 setup() {
   rm -f "$HOME/.cache/xwww/animation"
   mkdir -p "$HOME/.cache/xwww/$ANIMATION"

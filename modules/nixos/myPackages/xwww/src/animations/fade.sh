@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/config.sh"
-source "$ROOT/utils/utils.sh"
-NEW_WALL="$1"
-FRAMES="$2"
-SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
-RND="$6"
-
 CURRENT=$(cat "$HOME/.cache/xwww/current")
 CURRENT_FADE=$(cat "$HOME/.cache/xwww/current-fade")
 setup

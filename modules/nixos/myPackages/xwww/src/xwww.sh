@@ -3,8 +3,14 @@
 export VERSION="{{VERSION}}";
 export ROOT="{{SOURCE_PATH}}";
 
+set -a
 source "$ROOT/utils/config.sh"
+set +a
+
 source "$ROOT/utils/utils.sh"
+export -f setup
+export -f set_walls
+export -f set_fade
 
 if [ $# -lt 1 ]; then
     echo "Error: Path is required"
@@ -23,29 +29,29 @@ if [ -d "$1" ]; then
     set -- "$random_image"
 fi
 
-NEW_WALL="$1"
+export NEW_WALL="$1"
 shift
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --speed)
-            SPEED="$2"
+            export SPEED="$2"
             shift 2
             ;;
         --frame)
-            FRAMES="$2"
+            export FRAMES="$2"
             shift 2
             ;;
         --animation)
-            ANIMATION="$2"
+            export ANIMATION="$2"
             shift 2
             ;;
         --format)
-            FORMAT="$2"
+            export FORMAT="$2"
             shift 2
             ;;
         --random)
-            RND="$2"
+            export RND="$2"
             shift 2
             ;;
         *)
@@ -60,4 +66,11 @@ if [[ -n "$RND" ]]; then
   export ANIMATION=$(eval "echo \${$((RANDOM % $# + 1))}")
 fi
 
-$ROOT/animations/$ANIMATION.sh "$NEW_WALL" "$FRAMES" "$SPEED" "$ANIMATION" "$FORMAT" "$RND"
+if [[ -f "$ROOT/animations/$ANIMATION.sh" ]]; then
+  $ROOT/animations/$ANIMATION.sh
+elif [[ -f "$HOME/.config/xwww/animations/$ANIMATION.sh" ]]; then
+  chmod +x "$HOME/.config/xwww/animations/$ANIMATION.sh"
+  $HOME/.config/xwww/animations/$ANIMATION.sh
+else
+  echo "Animation '$ANIMATION' is not valid"
+fi

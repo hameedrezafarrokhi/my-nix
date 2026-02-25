@@ -1,28 +1,19 @@
 #!/usr/bin/env bash
 
-source "$ROOT/utils/config.sh"
-source "$ROOT/utils/utils.sh"
-NEW_WALL="$1"
-FRAMES="$2"
-SPEED="$3"
-ANIMATION="$4"
-FORMAT="$5"
-RND="$6"
-
 setup
 for i in $(seq 1 $FRAMES); do
-    new_w=$(echo "scale=2; $i * 1920 / $FRAMES" | bc | cut -d. -f1)
-    old_w=$((1920 - new_w))
+    new_w=$(echo "scale=2; $i * $R_X / $FRAMES" | bc | cut -d. -f1)
+    old_w=$((R_X - new_w))
     if [ $new_w -eq 0 ]; then
-        ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+        ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -filter_complex "[0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     elif [ $old_w -eq 0 ]; then
-        ffmpeg "${ACCEL[@]}" -y -i "$NEW_WALL" -filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -frames:v 1 "$CACHE/new$i.$FORMAT" &
+        ffmpeg "${ACCEL[@]}" -y -i "$NEW_WALL" -filter_complex "[0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     else
         ffmpeg "${ACCEL[@]}" -y -i "$CUR_WALL" -i "$NEW_WALL" -filter_complex "
-            [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[old];
-            [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080[new];
-            [new]crop=${new_w}:1080:0:0[left];
-            [old]crop=${old_w}:1080:${new_w}:0[right];
+            [0:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y[old];
+            [1:v]scale=$R_X:$R_Y:force_original_aspect_ratio=increase,crop=$R_X:$R_Y[new];
+            [new]crop=${new_w}:$R_Y:0:0[left];
+            [old]crop=${old_w}:$R_Y:${new_w}:0[right];
             [left][right]hstack=inputs=2[out]
         " -map "[out]" -frames:v 1 "$CACHE/new$i.$FORMAT" &
     fi

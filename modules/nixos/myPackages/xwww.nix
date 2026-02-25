@@ -5,11 +5,17 @@
   git,
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "xwww";
   version = "0.1.0";
 
-  src = ./xwww;
+ #src = ./xwww;
+  src = fetchFromGitHub {
+    owner = "hameedrezafarrokhi";
+    repo = "xwww";
+    rev = "v${version}";
+    sha256 = "sha256-dTWlyYfmDuac+2uoDITY4HL4AHfoAcwNwoNZ7JtjO+A=";
+  };
 
   makeFlags = [ "PREFIX=$(out)" ];
 
