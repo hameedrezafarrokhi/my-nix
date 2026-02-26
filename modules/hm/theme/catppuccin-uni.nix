@@ -70,9 +70,12 @@
     konsole-theme = "Konsole-catppuccin-${flavor}";
     konsole-theme-name = "Catppuccin ${flavorC}";
     kate-theme = "Catppuccin ${flavorC}";
+    ghostwriter-theme = "hm-theme";
     kate-ui = "Catppuccin ${flavorC} ${accentC}";
     kwrite-theme = "Catppuccin ${flavorC}";
     kwrite-color = "Catppuccin ${flavorC} ${accentC}";
+    ark-theme = "Catppuccin ${flavorC}";
+    ark-color = "Catppuccin ${flavorC} ${accentC}";
     marknote-theme = "Catppuccin ${flavorC} ${accentC}";
     okular-theme = "Catppuccin ${flavorC} ${accentC}";
     dolphin-theme = "Catppuccin ${flavorC} ${accentC}";
@@ -1882,6 +1885,15 @@ EOF
           "ColorScheme" = kwrite-color;
         };
       };
+      "/.config/arkrc" = {
+        "KTextEditor Renderer" = {
+          "Color Theme" = ark-theme;
+          "Auto Color Theme Selection" = false;
+        };
+        "UiSettings" = {
+          "ColorScheme" = ark-color;
+        };
+      };
       "/.config/marknoterc" = {
         "General" = {
           "colorScheme" = marknote-theme;
@@ -2106,6 +2118,89 @@ EOF
         };
       };
       ui.colorScheme=kate-ui;
+    };
+    ghostwriter = lib.mkIf config.my.kde.ghostwriter.enable {
+      theme = {
+        name = ghostwriter-theme;
+       #customThemes = { };
+      };
+     #font = {
+     #  wordSpacing
+     #  weight
+     #  underline
+     #  styleStrategy = {
+     #    preferNoShaping
+     #    prefer
+     #    noSubpixelAntialias
+     #    noFontMerging
+     #    matchingPrefer
+     #    antialiasing
+     #  };
+     #  styleName
+     #  styleHint
+     #  style
+     #  strikeOut
+     #  stretch
+     #  pointSize
+     #  pixelSize
+     #  letterSpacingType
+     #  letterSpacing
+     #  fixedPitch
+     #  family
+     #  capitalization
+     #};
+     #preview = {
+     #  textFont = {
+     #    wordSpacing
+     #    weight
+     #    underline
+     #    styleStrategy = {
+     #      preferNoShaping
+     #      prefer
+     #      noSubpixelAntialias
+     #      noFontMerging
+     #      matchingPrefer
+     #      antialiasing
+     #    };
+     #    styleName
+     #    styleHint
+     #    style
+     #    strikeOut
+     #    stretch
+     #    pointSize
+     #    pixelSize
+     #    letterSpacingType
+     #    letterSpacing
+     #    fixedPitch
+     #    family
+     #    capitalization
+     #  };
+     #  codeFont = {
+     #    wordSpacing
+     #    weight
+     #    underline
+     #    styleStrategy = {
+     #      preferNoShaping
+     #      prefer
+     #      noSubpixelAntialias
+     #      noFontMerging
+     #      matchingPrefer
+     #      antialiasing
+     #    };
+     #    styleName
+     #    styleHint
+     #    style
+     #    strikeOut
+     #    stretch
+     #    pointSize
+     #    pixelSize
+     #    letterSpacingType
+     #    letterSpacing
+     #    fixedPitch
+     #    family
+     #    capitalization
+     #  };
+     #};
     };
     kitty = lib.mkIf config.programs.kitty.enable {
       settings = {
@@ -6086,6 +6181,10 @@ rules: (
       if [ -f "$HOME/.audacity-data/audacity.cfg" ]; then
         sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.audacity-data/audacity.cfg
       fi
+    '';
+    ghostwriter-theme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      rm -f $HOME/.local/share/ghostwriter/themes/hm-theme.json
+      echo ' { "dark": { "accent": "${Accent}", "background": "${Base}", "block": "${Green}", "cursor": "${Rosewater}", "emphasis": "${Maroon}", "error": "${Red}", "foreground": "${Text}", "heading": "${Text}", "link": "${Blue}", "markup": "${Overlay0}", "selection": "${Surface2}" }, "light": { "accent": "#209fb5", "background": "#eff1f5", "block": "#40a02b", "cursor": "#dc8a78", "emphasis": "#e64553", "error": "#d20f39", "foreground": "#4c4f69", "heading": "#4c4f69", "link": "#1e66f5", "markup": "#9ca0b0", "selection": "#acb0be" } } ' >> "$HOME/.local/share/ghostwriter/themes/hm-theme.json"
     '';
   };
 
