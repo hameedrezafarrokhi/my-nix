@@ -4387,7 +4387,7 @@ shadow-radius = 20;
 vsync = true;
 xrender-sync = true;
 xrender-sync-fence = true;
-root-pixmap-shader = "${config.xdg.configHome}/picom/gamma_brightness.glsl";
+root-pixmap-shader = "${config.xdg.configHome}/picom/tint_background.glsl";
 
 blur: {
   method = "dual_kawase";
@@ -4402,8 +4402,7 @@ rules: (
 	{
 	      #match = "class_g != 'Polybar'";
 		shader = {
-		 path = "${config.xdg.configHome}/picom/gamma_brightness.glsl";
-		 #COLOR = "vec4(100.0, 100.0, 100.0, 100.0)";
+		 path = "${config.xdg.configHome}/picom/tint.glsl";
 		};
 	}, {
 	      match = "class_g != 'dunst' || class_g != 'Dunst'"
@@ -4695,7 +4694,7 @@ rules: (
 )
     '';
 
-    "picom/gamma_brightness.glsl".text = ''
+    "picom/tint_background.glsl".text = ''
       #version 330
 
       // Changes gamma of windows
@@ -4729,6 +4728,38 @@ rules: (
           c.x *= brightness_level;
           c.y *= brightness_level;
           c.z *= brightness_level;
+
+          return c;
+      }
+    '';
+
+    "picom/tint.glsl".text = ''
+      #version 330
+
+      float gamma = 0.80;
+      float brightness_level = 0.9;
+
+      float inv_gamma = 1.0 / gamma;
+
+      in vec2 texcoord;
+      uniform sampler2D tex;
+
+      vec4 default_post_processing(vec4 c);
+
+      vec4 window_shader() {
+          // picom provides texcoord in pixel space
+          vec4 c = texelFetch(tex, ivec2(texcoord), 0);
+
+          c = default_post_processing(c);
+
+          // gamma
+          c.rgb = pow(c.rgb, vec3(inv_gamma));
+
+          // brightness
+          c.rgb *= brightness_level;
+
+          // dark green tint
+          c.rgb *= vec3(1.4, 1.2, 1.3);
 
           return c;
       }

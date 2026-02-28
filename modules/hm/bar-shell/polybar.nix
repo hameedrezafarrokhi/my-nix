@@ -613,8 +613,8 @@ in
         type = "internal/date";
        #interval = 5;
         interval = 1.0;
-        time = "%l:%M:%S";
-        time-alt = " %H:%M";
+        time = " %H:%M";
+        time-alt = "%l:%M:%S";
        #date = "%l:%M:%S";
        #date = "%l:%M %p";
        #date = "%a-%d %l:%M %p";
