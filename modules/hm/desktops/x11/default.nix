@@ -568,6 +568,7 @@ in
     home.packages = [
       pkgs.picom
       pkgs.feh
+      pkgs.xsetroot
       pkgs.hsetroot
       pkgs.xrefresh
       pkgs.xkb-switch

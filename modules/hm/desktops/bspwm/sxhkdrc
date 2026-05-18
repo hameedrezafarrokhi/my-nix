@@ -748,8 +748,9 @@ super + w
 
 # xwww (animated transition)
 super + alt + w
-    xwww /home/hrf/Pictures/my-wallpapers/xp
+    xwww /home/hrf/Pictures/my-wallpapers/NewFolder
     #pkill live-xwin; sleep 0.1; pkill xwinwrap; pkill paperview-rs; pkill feh-auto; xwww $HOME/Pictures/my-wallpapers/go-nord-background-small
+    #xwww /home/hrf/Pictures/my-wallpapers/xp
     #xwww /home/hrf/Pictures/NewFolder
 
 # Cycle Feh Wallpapers Next

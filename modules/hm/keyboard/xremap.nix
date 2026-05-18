@@ -245,7 +245,7 @@ in
    #userName = admin;
    #userId = 1000;
     watch = true;
-    mouse = true;
+    mouse = false;
    #deviceNames = [ ];
    #extraArgs = [ ];
    #debug = true;

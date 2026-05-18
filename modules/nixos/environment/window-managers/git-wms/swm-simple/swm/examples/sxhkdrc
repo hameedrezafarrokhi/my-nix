@@ -1,0 +1,53 @@
+# application launcher
+ctrl + space
+    rofi -show drun
+
+# close active window
+super + q
+    xdotool getactivewindow windowclose
+
+# toggle active window maximized state
+super + Up
+    wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz
+
+# minimize active window
+super + Down
+    wmctrl -r :ACTIVE: -b add,hidden
+
+# cycle windows
+alt + Tab
+    swmctl cycle-win
+alt + ctrl + Tab
+    swmctl cycle-win-rev
+@Alt_L
+    swmctl cycle-win-end
+
+# tile active window left/right
+super + alt + {Left,Right}
+    swmctl moveresize -o {w,e} -wr .5 -hr 1
+
+# move active window by 20 px west/south/north/east
+ctrl + super + alt + {h, j, k, l}
+    swmctl move -{w,s,n,e} 20
+
+# enlarge active window by 20px west/south/north/east
+super + alt + {h,j,k,l}
+    swmctl resize -{w,s,n,e} 20
+
+# move active window to group 0-9
+ctrl + super + {1-9,0}
+    swmctl group set -g {0-9}
+    # also xdotool getactivewindow set_desktop_for_window {0-9}
+
+# toggle visibility of group 0-9
+super + {1-9,0}
+    swmctl group toggle {0-9}
+
+# show only group 0-9
+shift + super + {1-9,0}
+    swmctl group only {0-9}
+    # also xdotool set_desktop {0-9}
+
+# show only prev/next group
+super + {Left,Right}
+    xdotool set_desktop --relative -- {-1,1}

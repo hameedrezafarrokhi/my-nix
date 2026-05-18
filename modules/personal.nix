@@ -116,6 +116,12 @@
      #"hypr"
      #"oxwm"
 
+     #"hana"
+      "suswm"
+
+      "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy"
+     #"qvwm" "aewmpp" "clarawm" "simplewm"
+
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
     x11.enable = true;
@@ -365,7 +371,7 @@
           i3.enable = false;
           openbox.enable = true;
          #xmonad.enable = true;
-          awesome.enable = false;
+         #awesome.enable = true;
          #qtile.enable = true;
           bspwm.enable = true;
          #spectrwm.enable = true;

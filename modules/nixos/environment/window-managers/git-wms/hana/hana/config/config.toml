@@ -1,0 +1,238 @@
+### akai_hana's personal hana WM config.toml :-) ###
+
+# TOML config files to load.
+# - Files placed on main directory are automatically loaded.
+# - Files placed on sub-directories are ignored, so they must be added manually.
+# - Multiple files loaded together will be unified on runtime.
+include = ["themes/akai.toml"]
+
+[tiling]
+enabled = true
+global_layout = false # Make layouts either per-workspace or global.
+                      #TODO: rename to per-workspace_layouts
+
+# Enabled layouts
+# - Layouts not defined on the array will not be available in runtime.
+# - Not defining the array at all enables all layouts in `src/tiling/layouts/.`
+
+#       Layout          Variation  Workspaces Variants
+layouts = [                                 # (default/alternative) 
+	"master-stack",                     # "lifo"/"fifo"
+	"monocle",      "gaps",    # "5",   # "gapless"/"gaps"
+	"grid",         "relaxed", # "6,8", # "rigid"/"relaxed"
+	"fibonacci",                        # no variants
+        "scroll",
+        # "leaf",
+]
+
+[tiling.layouts.master-stack]
+# Number of windows in master area
+count = 1 # [1..]
+                  #TODO: rename to master_size
+side  = "left"    # "left"/"right" / 'L'/'R'; main side
+                  #TODO: rename to master_side
+width = 50%       # [5%-95%] / (0-N] px
+                  #TODO: rename to master_width
+variants = "lifo" # "lifo"/"fifo"; New window spawns on master (lifo) / stack (fifo)
+
+# Override the 3-character indicator shown in the bar for this layout.
+# Defaults to the variants name ("LIF" or "FIF") when not set.
+# indicator = "M-S"
+
+### TODO: review from here on down
+
+[tiling.layouts.monocle]
+# Behavioral variants for monocle:
+#   "gaps"    = honour window gap settings like every other layout
+#   "gapless" = true fullscreen — ignore gap settings (default)
+variants = "gaps"
+
+# Override the 3-character indicator shown in the bar for this layout.
+# Defaults to the variants name ("GAP" or "GLS") when not set.
+# indicator = "MON"
+
+[tiling.layouts.grid]
+# Behavioral variants for grid:
+#   "rigid"   = strict grid; empty cells left in an incomplete last row (default)
+#   "relaxed" = last window in an incomplete row expands to fill the row
+variants = "relaxed"
+
+# Override the 3-character indicator shown in the bar for this layout.
+# Defaults to the variants name ("RGD" or "RLX") when not set.
+# indicator = "GRD"
+
+[tiling.layouts.fibonacci]
+# Fibonacci has no behavioral variants.
+# Optionally override the 3-character indicator shown in the bar for this layout.
+# indicator = "FIB"
+
+[drag]
+snap_distance = 16
+
+[bar]
+enabled  = true
+position = "bottom" # can be switched on runtime
+
+# Configurable bar layout
+# You can rearrange segments however you like
+# Available segments: "workspaces", "title", "clock", "layout"
+
+# Bar layout
+# Anchors: left/center/right
+[bar.layout.left]
+segments = ["workspaces", "layout", "variants"]
+
+[bar.layout.center]
+segments = ["title"]
+
+[bar.layout.right]
+segments = ["clock"]
+
+# Bar module configurations
+[bar.modules.workspaces]
+count = 8  # Number of workspaces
+
+[binds]
+# Convenience alias
+## Parameter placeholders
+Mod = "Super" # Super/Mod4, Alt/Mod1
+
+## Value placeholders ({})
+kill = "pkill -9" # program kill value placeholder
+
+# WM interactions
+Mod+F = "toggle_fullscreen"
+Mod+Shift+Return = "{kill} Xorg; {kill} hana" # quit wm
+Mod+Shift+F = "close_window"     # Close focused window
+Mod+Shift+Y = "reload"           # Config hot-reload
+
+Mod+T           = "minimize_window"
+Mod+Shift+T     = "unminimize_lifo"
+Mod+Alt+T       = "unminimize_fifo"
+Mod+Shift+Alt+T = "unminimize_all"
+
+# wallpaper
+## start shader wallpaper
+Mod+G = "~/eudaimonia/shader-wallpaper/shadow/scripts/shader-switch.sh" 
+## stop shader wallpaper
+Mod+Shift+G = "~/eudaimonia/shader-wallpaper/shadow/scripts/shader-stop.sh"
+
+# Tiling
+#Mod+?           = "?"                      # Enter/exit floating layout
+Mod+space        = "toggle_layout"          # Cycle layouts forward
+Mod+Shift+space  = "toggle_layout_reverse"  # Cycle layouts backward
+Mod+Alt+space    = "cycle_layout_variants"  # Cycle current layout's variants (Super+V)
+Mod+Tab          = "swap_master"            # Swap focused window with the previously focused window
+Mod+Shift+Tab    = "swap_master_focus_swap" # Swap focused window with the previously focused window
+Mod+grave        = "toggle_prompt"
+Mod+Middle_click = "toggle_floating_window" # Toggle clicked window between tiled and floating
+Mod+scroll_up    = "scroll_view_right"
+Mod+scroll_down  = "scroll_view_left"
+
+# Layouts
+## Master-stack
+Mod+H       = "decrease_master"
+Mod+L       = "increase_master" # Increase master area width
+Mod+Shift+L = "increase_master_count"
+Mod+Shift+H = "decrease_master_count"
+
+# Focus cycling
+## k = next/right (master → stack → ... → wrap), j = prev/left
+Mod+k = "focus_next_window"
+Mod+j = "focus_prev_window"
+Mod+Shift+k = "move_window_next"
+Mod+Shift+j = "move_window_prev"
+
+# Workspaces
+## Switch to workspace N
+### Keys are assigned workspace indices by their position in the list.
+Mod+{1-4,Q,W,E,R} = "workspace" #TODO: rename to "switch_to_workspace"
+#TODO: change to Mod+{1-4,Q,W,E,R} = "workspace" + {1-9}
+Mod+5 = "all_workspaces"
+#TODO: change to Mod+5 = "workspace_" + {1-9}
+# the difference is that i'm first matching a range against a range, so all binds get bound in pairs (e.g. Mod+1 = "workspace_1", Mod+2 = "workspace_2", etc. 
+
+## Workspace window sending
+Mod+Shift+{1-4,Q,W,E,R} = "move_to_workspace"
+Mod+Alt+{1-4,Q,W,E,R}   = "toggle_tag" #TODO: rename to toggle_to_workspace
+
+Mod+Shift+5 = "move_to_all_workspaces"
+
+# Bar
+Mod+B       = "toggle_bar_visibility"  # shown/hidden
+Mod+Shift+B = "toggle_bar_position"    # top/bottom
+
+# Program binds
+
+## Misc
+Mod+A       = "MOZ_USE_XINPUT2=1 firefox"
+Mod+Shift+A = "{kill} firefox"
+
+Mod+S       = "flatpak run org.equicord.equibop"
+Mod+Shift+S = "{kill} equibop"
+
+Mod+D       = "ghostty"
+Mod+I       = "xeyes"
+Mod+Shift+D = "{kill} ghostty"
+
+# Noita
+Mod+Z       = "flatpak run com.valvesoftware.Steam steam://rungameid/881100"
+Mod+Shift+Z = "pkill noita"
+
+# Mod+Z       = "cd ~/Games/isaac-repentance+; wine isaac-ng.exe"
+# Mod+Shift+Z = "pkill isaac-ng"
+
+Mod+X       = "~/Games/t-client/DDNet"
+Mod+Shift+X = "{kill} DDNet"
+
+# ULTRAKILL
+Mod+C       = "flatpak run com.valvesoftware.Steam steam://rungameid/1229490"
+Mod+Shift+C = "{kill} steam"
+
+Mod+V       = "flatpak run com.github.th_ch.youtube_music"
+Mod+Shift+V = "{kill} youtube-music"
+
+Mod+Y       = "thunar"
+Mod+Shift+Y = "{kill} thunar"
+
+# Emergency/Debug
+# Emergency recovery: Disables tiling, clears fullscreen, maps all windows, stops drag
+Mod+Shift+Escape = "emergency_recover" #TODO: remove. this is hacky and assumes the program bugging out is a recurrent issue. therefore it is unneeded.
+
+# Workspace rules
+
+# Available formats:
+# 
+# - Per-workspace rules
+# Example:
+#
+# ```toml
+# [workspace.rules.N] # N = workspace number
+# <program_name>
+# ```
+#
+# - Rule arrays
+# Example:
+#
+# ```toml
+# 1 = ["<program_1>", "<program_2>"] # Workspace 1
+# 2 = ["<program_3>"]                # Workspace 2
+# ```
+
+[workspace.rules]
+# Browser
+1 = ["firefox", "Navigator"]
+# Socials
+2 = ["discord", "vesktop", "equibop", "electron"]
+# Music
+3 = ["com.github.th_ch.youtube_music"]
+# Launchers
+4 = ["OpenTabletDriver.UX"]
+# Games
+5 = ["steam", "noita", "wine", "proton", "noita", "osu!", "DDNet", "isaac-ng.exe"]
+# Editors
+6 = ["emacs"]
+# Media
+7 = ["prismlauncher", "freetube", "gimp"]
+# Torrenting
+8 = ["deluge"]

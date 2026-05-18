@@ -1,0 +1,79 @@
+#!/bin/sh
+# Copyright 2020, Alisa Bedard
+#set -x
+OS=`uname -s`
+CF=config.mk
+echo "# Configuration for $OS" > $CF
+echo "CFLAGS=${CFLAGS}" >> $CF
+echo "LDFLAGS=${LDFLAGS}" >> $CF
+echo "DESTDIR=${DESTDIR}" >> $CF
+echo "PREFIX=${PREFIX:-/usr/local}" >> $CF
+DEBUG=false USE_GDB=false SMALL=false USE_XFT=false USE_XOSD=false
+while getopts 'dghoSsx' opt; do
+    case $opt in
+        d) DEBUG=true ;;
+        g) USE_GDB=true ;;
+        o) USE_XOSD=true ;;
+        S) USE_GDB=true SMALL=true ;;
+        s) SMALL=true ;;
+        x) USE_XFT=true ;;
+        h|?) for line in \
+            '-d enable debugging with verbose log output' \
+            '-g enable debug symbols' \
+            '-h show configure usage' \
+            '-S optimize for size with symbols' \
+            '-s optimize for size' \
+            '-x use Xft fonts' \
+            '-o use xosd library' \
+            '-? show usage' \
+            ; do
+                echo $line
+            done
+            exit 0 ;;
+    esac
+done
+# Append path if exists: 1:path, 2:destinatio, 3:prefix
+check(){
+    local path=$1 dest=$2 prefix=$3
+    echo -n "Checking for $1... "
+    if [ -d $path ]; then
+        echo 'found'
+        eval "$dest=\"\$$dest $prefix$path\""
+        # For NetBSD:
+        if [ "$prefix" = "-L" ]; then
+            eval "$dest=\"\$$dest -Wl,-R$path\""
+        fi
+        return 0
+    fi
+    echo 'not found'
+    return 1
+}
+check /usr/local/include jbwm_cflags -I
+check /usr/X11R7/include jbwm_cflags -I
+check /usr/X11R6/include jbwm_cflags -I
+check /usr/X11R7/include/freetype2 jbwm_cflags -I
+check /usr/X11R6/include/freetype2 jbwm_cflags -I
+check /usr/local/lib jbwm_ldflags -L
+check /usr/X11R7/lib jbwm_ldflags -L
+check /usr/X11R6/lib jbwm_ldflags -L
+echo "jbwm_cflags=$jbwm_cflags" >> $CF
+echo "jbwm_ldflags=$jbwm_ldflags" >> $CF
+if $SMALL; then
+    echo SMALL
+    echo 'jbwm_cflags+=-DJBWM_SMALL -Os' >> $CF
+fi
+if $DEBUG; then
+    echo DEBUG
+    echo 'include debug.mk' >> $CF
+fi
+if $USE_GDB; then
+    echo USE_GDB
+    echo 'jbwm_cflags+=-ggdb -O0' >> $CF
+    echo 'include debug_gcc.mk' >> $CF
+fi
+if $USE_XFT; then
+    echo 'include xft.mk' >> $CF
+fi
+if $USE_XOSD; then
+    echo 'include xosd.mk'  >> $CF
+fi

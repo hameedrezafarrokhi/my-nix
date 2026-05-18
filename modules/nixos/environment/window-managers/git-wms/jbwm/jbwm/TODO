@@ -1,0 +1,13 @@
+Issues:
+
+	* Maximization of shaped windows
+
+Ideas follow:
+
+	***Would love others to test this and help out***
+	* Too much preprocessor goop.
+	* Xft alternative
+	* Possible xcb port
+	* Too many choices for compile time.
+	* Too many globals.
+

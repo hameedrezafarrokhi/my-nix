@@ -140,6 +140,11 @@
    #++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
    #++ [(pkgs.callPackage ../myPackages/gray.nix { })]
    #++ [(pkgs.callPackage ../myPackages/run-widget.nix { })]
+
+
+   #++ [(pkgs.callPackage ../myPackages/wms/sowm.nix { })]
+
+
   ;
 
   programs = {

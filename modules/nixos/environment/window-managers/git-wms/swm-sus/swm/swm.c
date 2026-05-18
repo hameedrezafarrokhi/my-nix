@@ -1,0 +1,1011 @@
+#define _POSIX_C_SOURCE 200809L
+#include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <X11/keysym.h>
+#include <X11/Xatom.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+
+#define BUTTONMASK    (ButtonPressMask|ButtonReleaseMask)
+#define MOUSEMASK     (BUTTONMASK|PointerMotionMask)
+#define CLEANMASK(m)  ((m) & ~(numlockmask|LockMask) & \
+	(ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+#define VIS(c)        ((c)->tags & ts[sg])
+#define W(c)          ((c)->w + ((c)->bw << 1))
+#define H(c)          ((c)->h + ((c)->bw << 1))
+#define TM            ((1u << LEN(tags)) - 1)
+#define LEN(x)        (sizeof(x)/sizeof(*(x)))
+#define MAX(a,b)      ((a)>(b)?(a):(b))
+#define MIN(a,b)      ((a)<(b)?(a):(b))
+
+typedef union  { int i; unsigned int ui; float f; const void *v; } A;
+typedef struct { unsigned int click, mask, button; void (*fn)(const A*); A arg; } B;
+typedef struct { unsigned int mod; KeySym key; void (*fn)(const A*); A arg; } K;
+typedef struct { void (*ar)(void); } L;
+typedef struct C C;
+
+struct C {
+	float mina, maxa;
+	int x, y, w, h, oldx, oldy, oldw, oldh;
+	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+	int bw, oldbw;
+	unsigned int tags;
+	unsigned int isfixed:1, isfloating:1, isurgent:1, neverfocus:1, oldstate:1, isfullscreen:1, hintsvalid:1;
+	C *next, *snext;
+	Window win;
+};
+
+enum { ClkClientWin, ClkRootWin };
+enum { NetWMState, NetWMFullscreen, NetActiveWindow,
+       NetWMWindowType, NetWMWindowTypeDialog, NetClientList, NetLast };
+enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast };
+
+static void ar(void);
+static void at(C*);
+static void bp(XEvent*);
+static void chkwm(void);
+static void cleanup(void);
+static void cmsg(XEvent*);
+static void configure(C*);
+static void cfgreq(XEvent*);
+static void destnot(XEvent*);
+static void detach(C*);
+static void detachstack(C*);
+static void entnot(XEvent*);
+static void fc(C*);
+static void focusin(XEvent*);
+static void focusstack(const A*);
+static Atom getatom(C*, Atom);
+static int  getrootptr(int*, int*);
+static long getstate(Window);
+static void grabbuttons(C*, int);
+static void grabkeys(void);
+static void incnmaster(const A*);
+static void kp(XEvent*);
+static void killclient(const A*);
+static void mg(Window, XWindowAttributes*);
+static void mapnot(XEvent*);
+static void mapreq(XEvent*);
+static void monocle(void);
+static void mv(const A*);
+static C   *nexttiled(C*);
+static void pop(C*);
+static void propnot(XEvent*);
+static void quit(const A*);
+static void rs(C*, int, int, int, int, int);
+static void rcl(C*, int, int, int, int);
+static void rz(const A*);
+static void restack(void);
+static void run(void);
+static void scan(void);
+static int  sendevent(C*, Atom);
+static void setclientstate(C*, long);
+static void setfocus(C*);
+static void setfullscreen(C*, int);
+static void setlayout(const A*);
+static void setmfact(const A*);
+static void setup(void);
+static void seturgent(C*, int);
+static void showhide(C*);
+static void spawn(const A*);
+static void tag(const A*);
+static void tile(void);
+static void tglfl(const A*);
+static void tglfs(const A*);
+static void toggletag(const A*);
+static void toggleview(const A*);
+static void unfocus(C*, int);
+static void unmanage(C*, int);
+static void unmapnotify(XEvent*);
+static void updcl(void);
+static void updnm(void);
+static void updsz(C*);
+static void updtype(C*);
+static void updwmh(C*);
+static void view(const A*);
+static C   *wintoclient(Window);
+static int  xerror(Display*, XErrorEvent*);
+static int  xe0(Display*, XErrorEvent*);
+static int  xerrorstart(Display*, XErrorEvent*);
+static void zoom(const A*);
+
+static Display      *d;
+static Window        r, wmcheck;
+static int           screen, sw, sh, wx, wy, ww, wh;
+static int           running = 1;
+static unsigned int  numlockmask, sg, lt2, ts[2];
+static float         mf;
+static int           nm;
+static Cursor        cursor[3];
+static Atom          wmatom[WMLast], netatom[NetLast];
+static C            *cs, *s, *st;
+static const L      *lt[2];
+static unsigned long nborder, sborder, uborder;
+static int         (*xerrorxlib)(Display*, XErrorEvent*);
+
+static void (*handler[LASTEvent])(XEvent*) = {
+	[ButtonPress]      = bp,
+	[ClientMessage]    = cmsg,
+	[ConfigureRequest] = cfgreq,
+	[DestroyNotify]    = destnot,
+	[EnterNotify]      = entnot,
+	[FocusIn]          = focusin,
+	[KeyPress]         = kp,
+	[MappingNotify]    = mapnot,
+	[MapRequest]       = mapreq,
+	[PropertyNotify]   = propnot,
+	[UnmapNotify]      = unmapnotify,
+};
+
+#include "swm.h"
+
+static void
+die(const char *fmt, ...) {
+	va_list ap;
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fputc('\n', stderr);
+	if (d) XCloseDisplay(d);
+	exit(1);
+}
+
+static int
+aph(C *c, int *x, int *y, int *w, int *h, int i) {
+	int bw2 = c->bw << 1;
+	*w = MAX(1, *w);
+	*h = MAX(1, *h);
+	if (i) {
+		if (*x > sw)            *x = sw - (*w + bw2);
+		if (*y > sh)            *y = sh - (*h + bw2);
+		if (*x + *w + bw2 < 0) *x = 0;
+		if (*y + *h + bw2 < 0) *y = 0;
+	} else {
+		if (*x >= wx+ww)             *x = wx+ww - (*w + bw2);
+		if (*y >= wy+wh)             *y = wy+wh - (*h + bw2);
+		if (*x + *w + bw2 <= wx)     *x = wx;
+		if (*y + *h + bw2 <= wy)     *y = wy;
+	}
+	int noar = c->isfloating || !lt[lt2]->ar;
+	if (noar) {
+		if (!c->hintsvalid) updsz(c);
+		*w -= c->basew; *h -= c->baseh;
+		if (c->mina > 0 && c->maxa > 0 && *w > 0 && *h > 0) {
+			if      (c->maxa < (float)*w / *h) *w = (int)(*h * c->maxa + 0.5f);
+			else if (c->mina < (float)*h / *w) *h = (int)(*w * c->mina + 0.5f);
+		}
+		if (c->incw) *w -= *w % c->incw;
+		if (c->inch) *h -= *h % c->inch;
+		*w = MAX(*w + c->basew, c->minw);
+		*h = MAX(*h + c->baseh, c->minh);
+		if (c->maxw) *w = MIN(*w, c->maxw);
+		if (c->maxh) *h = MIN(*h, c->maxh);
+	}
+	return *x != c->x || *y != c->y || *w != c->w || *h != c->h;
+}
+
+static void ar(void) { showhide(st); if (lt[lt2]->ar) lt[lt2]->ar(); restack(); }
+
+static void at(C *c) {
+	if (attachbottom) {
+		C **tc;
+		for (tc = &cs; *tc; tc = &(*tc)->next);
+		c->next = NULL; *tc = c;
+	} else {
+		c->next = cs; cs = c;
+	}
+	c->snext = st; st = c;
+}
+
+static void bp(XEvent *e) {
+	unsigned int i, click = ClkRootWin;
+	XButtonPressedEvent *ev = &e->xbutton;
+	C *c;
+	if ((c = wintoclient(ev->window))) {
+		fc(c); restack();
+		XAllowEvents(d, ReplayPointer, CurrentTime);
+		click = ClkClientWin;
+	}
+	for (i = 0; i < LEN(buttons); i++)
+		if (click == buttons[i].click && buttons[i].fn
+		&& buttons[i].button == ev->button
+		&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
+			buttons[i].fn(&buttons[i].arg);
+}
+
+static void chkwm(void) {
+	xerrorxlib = XSetErrorHandler(xerrorstart);
+	XSelectInput(d, DefaultRootWindow(d), SubstructureRedirectMask);
+	XSync(d, False);
+	XSetErrorHandler(xerror);
+	XSync(d, False);
+}
+
+static void cleanup(void) {
+	A a = {.ui = ~0u};
+	unsigned int i;
+	view(&a);
+	while (st) unmanage(st, 0);
+	XUngrabKey(d, AnyKey, AnyModifier, r);
+	for (i = 0; i < 3; i++) XFreeCursor(d, cursor[i]);
+	XDeleteProperty(d, r, netatom[NetClientList]);
+	XDestroyWindow(d, wmcheck);
+	XSync(d, False);
+	XSetInputFocus(d, PointerRoot, RevertToPointerRoot, CurrentTime);
+}
+
+static void cmsg(XEvent *e) {
+	XClientMessageEvent *ev = &e->xclient;
+	C *c = wintoclient(ev->window);
+	if (!c) return;
+	if (ev->message_type == netatom[NetWMState]
+	&& (ev->data.l[1] == (long)netatom[NetWMFullscreen]
+	||  ev->data.l[2] == (long)netatom[NetWMFullscreen]))
+		setfullscreen(c, ev->data.l[0] == 1
+			|| (ev->data.l[0] == 2 && !c->isfullscreen));
+	else if (ev->message_type == netatom[NetActiveWindow] && c != s && !c->isurgent)
+		seturgent(c, 1);
+}
+
+static void configure(C *c) {
+	XConfigureEvent ev = {
+		.type = ConfigureNotify, .display = d, .event = c->win, .window = c->win,
+		.x = c->x, .y = c->y, .width = c->w, .height = c->h,
+		.border_width = c->bw, .above = None, .override_redirect = False,
+	};
+	XSendEvent(d, c->win, False, StructureNotifyMask, (XEvent*)&ev);
+}
+
+static void cfgreq(XEvent *e) {
+	XConfigureRequestEvent *ev = &e->xconfigurerequest;
+	C *c = wintoclient(ev->window);
+	XWindowChanges wc;
+	if (c) {
+		if (ev->value_mask & CWBorderWidth) {
+			c->bw = ev->border_width;
+			XSetWindowBorderWidth(d, c->win, c->bw);
+			ar();
+		} else if (c->isfloating || !lt[lt2]->ar) {
+			if (ev->value_mask & CWX)      { c->oldx = c->x; c->x = ev->x; }
+			if (ev->value_mask & CWY)      { c->oldy = c->y; c->y = ev->y; }
+			if (ev->value_mask & CWWidth)  { c->oldw = c->w; c->w = ev->width; }
+			if (ev->value_mask & CWHeight) { c->oldh = c->h; c->h = ev->height; }
+			if ((ev->value_mask & (CWX|CWY)) && !(ev->value_mask & (CWWidth|CWHeight)))
+				configure(c);
+			if (VIS(c))
+				XMoveResizeWindow(d, c->win, c->x, c->y, c->w, c->h);
+		} else {
+			configure(c);
+		}
+	} else {
+		wc.x = ev->x; wc.y = ev->y; wc.width = ev->width; wc.height = ev->height;
+		wc.border_width = ev->border_width; wc.sibling = ev->above; wc.stack_mode = ev->detail;
+		XConfigureWindow(d, ev->window, ev->value_mask, &wc);
+	}
+}
+
+static void destnot(XEvent *e) {
+	C *c;
+	if ((c = wintoclient(e->xdestroywindow.window))) unmanage(c, 1);
+}
+
+static void detach(C *c) {
+	C **tc;
+	for (tc = &cs; *tc && *tc != c; tc = &(*tc)->next);
+	if (*tc) *tc = c->next;
+}
+
+static void detachstack(C *c) {
+	C **tc, *t;
+	for (tc = &st; *tc && *tc != c; tc = &(*tc)->snext);
+	if (*tc) *tc = c->snext;
+	if (c == s) {
+		for (t = st; t && !VIS(t); t = t->snext);
+		s = t;
+	}
+}
+
+static void entnot(XEvent *e) {
+	XCrossingEvent *ev = &e->xcrossing;
+	C *c;
+	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior) && ev->window != r)
+		return;
+	if ((c = wintoclient(ev->window)) && c != s) fc(c);
+}
+
+static void fc(C *c) {
+	C **tc;
+	if (!c || !VIS(c))
+		for (c = st; c && !VIS(c); c = c->snext);
+	if (s && s != c) unfocus(s, 0);
+	if (c) {
+		if (c->isurgent) seturgent(c, 0);
+		for (tc = &st; *tc && *tc != c; tc = &(*tc)->snext);
+		if (*tc) *tc = c->snext;
+		c->snext = st; st = c;
+		grabbuttons(c, 1);
+		XSetWindowBorder(d, c->win, sborder);
+		setfocus(c);
+	} else {
+		XSetInputFocus(d, r, RevertToPointerRoot, CurrentTime);
+		XDeleteProperty(d, r, netatom[NetActiveWindow]);
+	}
+	s = c;
+}
+
+static void focusin(XEvent *e) { if (s && e->xfocus.window != s->win) setfocus(s); }
+
+static void focusstack(const A *arg) {
+	C *c = NULL, *i;
+	if (!s || s->isfullscreen) return;
+	if (arg->i > 0) {
+		for (c = s->next; c && !VIS(c); c = c->next);
+		if (!c) for (c = cs; c && !VIS(c); c = c->next);
+	} else {
+		for (i = cs; i != s; i = i->next) if (VIS(i)) c = i;
+		if (!c) for (; i; i = i->next)    if (VIS(i)) c = i;
+	}
+	if (c) { fc(c); restack(); }
+}
+
+static Atom getatom(C *c, Atom prop) {
+	int di; unsigned long dl, dl2; unsigned char *p = NULL; Atom da, a = None;
+	if (XGetWindowProperty(d, c->win, prop, 0L, 1L, False, XA_ATOM,
+		&da, &di, &dl, &dl2, &p) == Success && p) {
+		if (da == XA_ATOM) memcpy(&a, p, sizeof(Atom));
+		XFree(p);
+	}
+	return a;
+}
+
+static int getrootptr(int *x, int *y) {
+	int di; unsigned int dui; Window dw;
+	return XQueryPointer(d, r, &dw, &dw, x, y, &di, &di, &dui);
+}
+
+static long getstate(Window w) {
+	int fmt; long res = -1; unsigned char *p = NULL; unsigned long n, ex; Atom real;
+	if (XGetWindowProperty(d, w, wmatom[WMState], 0L, 2L, False, wmatom[WMState],
+		&real, &fmt, &n, &ex, &p) == Success && n && fmt == 32) {
+		memcpy(&res, p, sizeof(long)); XFree(p);
+	}
+	return res;
+}
+
+static void grabbuttons(C *c, int focused) {
+	unsigned int mods[] = { 0, LockMask, numlockmask, numlockmask|LockMask };
+	unsigned int i, j;
+	XUngrabButton(d, AnyButton, AnyModifier, c->win);
+	if (!focused) {
+		XGrabButton(d, AnyButton, AnyModifier, c->win, False,
+			BUTTONMASK, GrabModeSync, GrabModeSync, None, None);
+		return;
+	}
+	for (i = 0; i < LEN(buttons); i++)
+		if (buttons[i].click == ClkClientWin)
+			for (j = 0; j < 4; j++)
+				XGrabButton(d, buttons[i].button, buttons[i].mask | mods[j],
+					c->win, False, BUTTONMASK, GrabModeAsync, GrabModeSync, None, None);
+}
+
+static void grabkeys(void) {
+	unsigned int mods[] = { 0, LockMask, numlockmask, numlockmask|LockMask };
+	unsigned int i, j; KeyCode code;
+	updnm();
+	XUngrabKey(d, AnyKey, AnyModifier, r);
+	for (i = 0; i < LEN(keys); i++)
+		if ((code = XKeysymToKeycode(d, keys[i].key)))
+			for (j = 0; j < 4; j++)
+				XGrabKey(d, code, keys[i].mod | mods[j],
+					r, True, GrabModeAsync, GrabModeAsync);
+}
+
+static void incnmaster(const A *arg) { nm = nm + arg->i > 0 ? nm + arg->i : 0; ar(); }
+
+static void kp(XEvent *e) {
+	unsigned int i;
+	XKeyEvent *ev = &e->xkey;
+	KeySym sym = XLookupKeysym(ev, 0);
+	for (i = 0; i < LEN(keys); i++)
+		if (sym == keys[i].key
+		&& CLEANMASK(keys[i].mod) == CLEANMASK(ev->state)
+		&& keys[i].fn)
+			keys[i].fn(&keys[i].arg);
+}
+
+static void killclient(const A *arg) {
+	(void)arg;
+	if (!s) return;
+	if (!sendevent(s, wmatom[WMDelete])) {
+		XGrabServer(d);
+		XSetErrorHandler(xe0);
+		XSetCloseDownMode(d, DestroyAll);
+		XKillClient(d, s->win);
+		XSync(d, False);
+		XSetErrorHandler(xerror);
+		XUngrabServer(d);
+	}
+}
+
+static void mg(Window w, XWindowAttributes *wa) {
+	C *c, *t = NULL;
+	Window trans = None;
+	XWindowChanges wc;
+	if (!(c = malloc(sizeof(C)))) die("swm: malloc");
+	c->win   = w;
+	c->x     = c->oldx = wa->x;
+	c->y     = c->oldy = wa->y;
+	c->w     = c->oldw = wa->width;
+	c->h     = c->oldh = wa->height;
+	c->oldbw = wa->border_width;
+	updsz(c);
+	updwmh(c);
+	c->tags = ts[sg];
+	if (XGetTransientForHint(d, w, &trans) && (t = wintoclient(trans)))
+		c->tags = t->tags;
+	c->bw = borderpx;
+	if (c->x + W(c) > wx+ww) c->x = wx+ww - W(c);
+	if (c->y + H(c) > wy+wh) c->y = wy+wh - H(c);
+	c->x = MAX(c->x, wx);
+	c->y = MAX(c->y, wy);
+	wc.border_width = c->bw;
+	XConfigureWindow(d, w, CWBorderWidth, &wc);
+	XSetWindowBorder(d, w, nborder);
+	configure(c);
+	updtype(c);
+	XSelectInput(d, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
+	grabbuttons(c, 0);
+	c->isfloating = c->oldstate = trans != None || c->isfixed;
+	if (c->isfloating) XRaiseWindow(d, c->win);
+	at(c);
+	XChangeProperty(d, r, netatom[NetClientList], XA_WINDOW, 32,
+		PropModeAppend, (unsigned char*)&w, 1);
+	setclientstate(c, NormalState);
+	ar();
+	XMapWindow(d, c->win);
+	fc(focusonopen ? c : NULL);
+}
+
+static void mapnot(XEvent *e) {
+	XRefreshKeyboardMapping(&e->xmapping);
+	if (e->xmapping.request == MappingKeyboard) grabkeys();
+}
+
+static void mapreq(XEvent *e) {
+	static XWindowAttributes wa;
+	if (!XGetWindowAttributes(d, e->xmaprequest.window, &wa) || wa.override_redirect) return;
+	if (!wintoclient(e->xmaprequest.window)) mg(e->xmaprequest.window, &wa);
+}
+
+static void monocle(void) {
+	C *c;
+	int g = gappx;
+	for (c = nexttiled(cs); c; c = nexttiled(c->next))
+		rs(c, wx+g, wy+g, ww - (c->bw << 1) - 2*g, wh - (c->bw << 1) - 2*g, 0);
+}
+
+static void mv(const A *arg) {
+	(void)arg;
+	int x, y, ocx, ocy, nx, ny, needar = 0;
+	XEvent ev;
+	Time last = 0;
+	C *c = s;
+	const L *l = lt[lt2];
+	if (!c || c->isfullscreen) return;
+	restack();
+	ocx = c->x; ocy = c->y;
+	if (XGrabPointer(d, r, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
+		None, cursor[1], CurrentTime) != GrabSuccess) return;
+	if (!getrootptr(&x, &y)) { XUngrabPointer(d, CurrentTime); return; }
+	do {
+		XMaskEvent(d, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
+		if (ev.type == ConfigureRequest || ev.type == Expose || ev.type == MapRequest)
+			handler[ev.type](&ev);
+		else if (ev.type == MotionNotify) {
+			if (ev.xmotion.time - last <= 1000/60) continue;
+			last = ev.xmotion.time;
+			nx = ocx + ev.xmotion.x - x;
+			ny = ocy + ev.xmotion.y - y;
+			int right = wx + ww - W(c);
+			int bot   = wy + wh - H(c);
+			if (abs(wx - nx)    < (int)snap) nx = wx;
+			else if (abs(right - nx) < (int)snap) nx = right;
+			if (abs(wy - ny)    < (int)snap) ny = wy;
+			else if (abs(bot - ny)   < (int)snap) ny = bot;
+			if (!c->isfloating && l->ar
+			&& (abs(nx-c->x) > (int)snap || abs(ny-c->y) > (int)snap)) {
+				c->isfloating = 1; needar = 1;
+			}
+			if (!l->ar || c->isfloating)
+				rs(c, nx, ny, c->w, c->h, 1);
+		}
+	} while (ev.type != ButtonRelease);
+	XUngrabPointer(d, CurrentTime);
+	if (needar) ar();
+}
+
+static C *nexttiled(C *c) {
+	for (; c && (c->isfloating || !VIS(c)); c = c->next);
+	return c;
+}
+
+static void pop(C *c) { detach(c); at(c); fc(c); ar(); }
+
+static void propnot(XEvent *e) {
+	XPropertyEvent *ev = &e->xproperty;
+	C *c;
+	if (ev->state == PropertyDelete || !(c = wintoclient(ev->window))) return;
+	if      (ev->atom == XA_WM_HINTS)               updwmh(c);
+	else if (ev->atom == XA_WM_NORMAL_HINTS)         c->hintsvalid = 0;
+	else if (ev->atom == netatom[NetWMWindowType])   updtype(c);
+}
+
+static void quit(const A *arg) { (void)arg; running = 0; }
+
+static void rs(C *c, int x, int y, int w, int h, int i) {
+	if (i || c->isfloating || !lt[lt2]->ar) {
+		if (aph(c, &x, &y, &w, &h, i)) rcl(c, x, y, w, h);
+	} else {
+		rcl(c, x, y, w, h);
+	}
+}
+
+static void rcl(C *c, int x, int y, int w, int h) {
+	XWindowChanges wc;
+	c->oldx = c->x; c->x = wc.x      = x;
+	c->oldy = c->y; c->y = wc.y      = y;
+	c->oldw = c->w; c->w = wc.width   = w;
+	c->oldh = c->h; c->h = wc.height  = h;
+	wc.border_width = c->bw;
+	XConfigureWindow(d, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+	configure(c);
+}
+
+static void rz(const A *arg) {
+	(void)arg;
+	int ocx, ocy, nw, nh, needar = 0;
+	XEvent ev;
+	Time last = 0;
+	C *c = s;
+	const L *l = lt[lt2];
+	if (!c || c->isfullscreen) return;
+	restack();
+	ocx = c->x; ocy = c->y;
+	if (XGrabPointer(d, r, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
+		None, cursor[2], CurrentTime) != GrabSuccess) return;
+	XWarpPointer(d, None, c->win, 0, 0, 0, 0, c->w + c->bw - 1, c->h + c->bw - 1);
+	do {
+		XMaskEvent(d, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
+		if (ev.type == ConfigureRequest || ev.type == Expose || ev.type == MapRequest)
+			handler[ev.type](&ev);
+		else if (ev.type == MotionNotify) {
+			if (ev.xmotion.time - last <= 1000/60) continue;
+			last = ev.xmotion.time;
+			nw = MAX(ev.xmotion.x - ocx - (c->bw << 1) + 1, 1);
+			nh = MAX(ev.xmotion.y - ocy - (c->bw << 1) + 1, 1);
+			if (!c->isfloating && l->ar
+			&& (abs(nw-c->w) > (int)snap || abs(nh-c->h) > (int)snap)) {
+				c->isfloating = 1; needar = 1;
+			}
+			if (!l->ar || c->isfloating)
+				rs(c, c->x, c->y, nw, nh, 1);
+		}
+	} while (ev.type != ButtonRelease);
+	XWarpPointer(d, None, c->win, 0, 0, 0, 0, c->w + c->bw - 1, c->h + c->bw - 1);
+	XUngrabPointer(d, CurrentTime);
+	if (needar) ar();
+}
+
+static void restack(void) {
+	C *c;
+	const L *l = lt[lt2];
+	XWindowChanges wc;
+	if (!s) return;
+	if (s->isfloating || !l->ar) XRaiseWindow(d, s->win);
+	if (l->ar) {
+		wc.stack_mode = Below; wc.sibling = r;
+		for (c = st; c; c = c->snext)
+			if (!c->isfloating && VIS(c)) {
+				XConfigureWindow(d, c->win, CWSibling|CWStackMode, &wc);
+				wc.sibling = c->win;
+			}
+	}
+}
+
+static void run(void) {
+	XEvent ev;
+	XSync(d, False);
+	while (running && !XNextEvent(d, &ev))
+		if (handler[ev.type]) handler[ev.type](&ev);
+}
+
+static void scan(void) {
+	unsigned int i, n;
+	Window d1, d2, *wins = NULL;
+	XWindowAttributes wa;
+	if (!XQueryTree(d, r, &d1, &d2, &wins, &n)) return;
+	for (i = 0; i < n; i++) {
+		if (!XGetWindowAttributes(d, wins[i], &wa)
+		|| wa.override_redirect || XGetTransientForHint(d, wins[i], &d1)) continue;
+		if (wa.map_state == IsViewable || getstate(wins[i]) == IconicState)
+			mg(wins[i], &wa);
+	}
+	for (i = 0; i < n; i++) {
+		if (!XGetWindowAttributes(d, wins[i], &wa)) continue;
+		if (XGetTransientForHint(d, wins[i], &d1)
+		&& (wa.map_state == IsViewable || getstate(wins[i]) == IconicState))
+			mg(wins[i], &wa);
+	}
+	XFree(wins);
+}
+
+static int sendevent(C *c, Atom proto) {
+	int n, exists = 0; Atom *prots; XEvent ev;
+	if (XGetWMProtocols(d, c->win, &prots, &n)) {
+		while (!exists && n--) exists = prots[n] == proto;
+		XFree(prots);
+	}
+	if (exists) {
+		ev.type                  = ClientMessage;
+		ev.xclient.window        = c->win;
+		ev.xclient.message_type  = wmatom[WMProtocols];
+		ev.xclient.format        = 32;
+		ev.xclient.data.l[0]     = proto;
+		ev.xclient.data.l[1]     = CurrentTime;
+		XSendEvent(d, c->win, False, NoEventMask, &ev);
+	}
+	return exists;
+}
+
+static void setclientstate(C *c, long state) {
+	long data[] = { state, None };
+	XChangeProperty(d, c->win, wmatom[WMState], wmatom[WMState], 32,
+		PropModeReplace, (unsigned char*)data, 2);
+}
+
+static void setfocus(C *c) {
+	if (!c->neverfocus) {
+		XSetInputFocus(d, c->win, RevertToPointerRoot, CurrentTime);
+		XChangeProperty(d, r, netatom[NetActiveWindow], XA_WINDOW, 32,
+			PropModeReplace, (unsigned char*)&c->win, 1);
+	}
+	sendevent(c, wmatom[WMTakeFocus]);
+}
+
+static void setfullscreen(C *c, int fs) {
+	if (fs && !c->isfullscreen) {
+		XChangeProperty(d, c->win, netatom[NetWMState], XA_ATOM, 32,
+			PropModeReplace, (unsigned char*)&netatom[NetWMFullscreen], 1);
+		c->isfullscreen = 1;
+		c->oldstate = c->isfloating; c->oldbw = c->bw;
+		c->bw = 0; c->isfloating = 1;
+		rcl(c, 0, 0, sw, sh);
+		XRaiseWindow(d, c->win);
+	} else if (!fs && c->isfullscreen) {
+		XChangeProperty(d, c->win, netatom[NetWMState], XA_ATOM, 32,
+			PropModeReplace, (unsigned char*)"", 0);
+		c->isfullscreen = 0; c->isfloating = c->oldstate; c->bw = c->oldbw;
+		rcl(c, c->oldx, c->oldy, c->oldw, c->oldh);
+		ar();
+	}
+}
+
+static void setlayout(const A *arg) {
+	if (arg && arg->v) {
+		if (arg->v == lt[lt2]) lt2 ^= 1;
+		lt[lt2] = (const L*)arg->v;
+	} else lt2 ^= 1;
+	if (s) ar();
+}
+
+static void setmfact(const A *arg) {
+	float f;
+	if (!arg || !lt[lt2]->ar) return;
+	f = arg->f < 1.0f ? arg->f + mf : arg->f - 1.0f;
+	if (f < 0.05f || f > 0.95f) return;
+	mf = f; ar();
+}
+
+static void setup(void) {
+	XSetWindowAttributes wa;
+	XColor xc; Colormap cmap;
+
+	struct sigaction sa = { .sa_handler = SIG_IGN, .sa_flags = SA_RESTART };
+	sigaction(SIGCHLD, &sa, NULL);
+	screen = DefaultScreen(d);
+	sw = DisplayWidth(d, screen);
+	sh = DisplayHeight(d, screen);
+	r = RootWindow(d, screen);
+	wx = wy = 0; ww = sw; wh = sh;
+
+	cmap = DefaultColormap(d, screen);
+	if (!XAllocNamedColor(d, cmap, col_nborder, &xc, &xc)) die("swm: cannot allocate color");
+	nborder = xc.pixel;
+	if (!XAllocNamedColor(d, cmap, col_sborder, &xc, &xc)) die("swm: cannot allocate color");
+	sborder = xc.pixel;
+	if (!XAllocNamedColor(d, cmap, col_uborder, &xc, &xc)) die("swm: cannot allocate color");
+	uborder = xc.pixel;
+
+	if (!(cursor[0] = XCreateFontCursor(d, 68)))  die("swm: XCreateFontCursor");
+	if (!(cursor[1] = XCreateFontCursor(d, 52)))  die("swm: XCreateFontCursor");
+	if (!(cursor[2] = XCreateFontCursor(d, 120))) die("swm: XCreateFontCursor");
+
+	wmatom[WMProtocols] = XInternAtom(d, "WM_PROTOCOLS",      False);
+	wmatom[WMDelete]    = XInternAtom(d, "WM_DELETE_WINDOW",   False);
+	wmatom[WMState]     = XInternAtom(d, "WM_STATE",           False);
+	wmatom[WMTakeFocus] = XInternAtom(d, "WM_TAKE_FOCUS",      False);
+	netatom[NetWMState]            = XInternAtom(d, "_NET_WM_STATE",              False);
+	netatom[NetWMFullscreen]       = XInternAtom(d, "_NET_WM_STATE_FULLSCREEN",   False);
+	netatom[NetActiveWindow]       = XInternAtom(d, "_NET_ACTIVE_WINDOW",         False);
+	netatom[NetWMWindowType]       = XInternAtom(d, "_NET_WM_WINDOW_TYPE",        False);
+	netatom[NetWMWindowTypeDialog] = XInternAtom(d, "_NET_WM_WINDOW_TYPE_DIALOG", False);
+	netatom[NetClientList]         = XInternAtom(d, "_NET_CLIENT_LIST",           False);
+
+	wmcheck = XCreateSimpleWindow(d, r, 0, 0, 1, 1, 0, 0, 0);
+	XChangeProperty(d, wmcheck,
+		XInternAtom(d, "_NET_SUPPORTING_WM_CHECK", False),
+		XA_WINDOW, 32, PropModeReplace, (unsigned char*)&wmcheck, 1);
+	XChangeProperty(d, wmcheck,
+		XInternAtom(d, "_NET_WM_NAME", False),
+		XA_STRING, 8, PropModeReplace, (unsigned char*)"swm", 3);
+	XChangeProperty(d, r,
+		XInternAtom(d, "_NET_SUPPORTING_WM_CHECK", False),
+		XA_WINDOW, 32, PropModeReplace, (unsigned char*)&wmcheck, 1);
+	XDeleteProperty(d, r, netatom[NetClientList]);
+
+	ts[0] = ts[1] = 1;
+	mf  = mfact;
+	nm  = nmaster;
+	lt[0] = &layouts[0];
+	lt[1] = &layouts[1 % LEN(layouts)];
+
+	grabkeys();
+	wa.cursor     = cursor[0];
+	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
+	              | ButtonPressMask|PointerMotionMask|EnterWindowMask
+	              | StructureNotifyMask|PropertyChangeMask;
+	XChangeWindowAttributes(d, r, CWEventMask|CWCursor, &wa);
+	fc(NULL);
+}
+
+static void seturgent(C *c, int urg) {
+	XWMHints *wh;
+	c->isurgent = urg;
+	XSetWindowBorder(d, c->win, urg ? uborder : (c == s ? sborder : nborder));
+	if (!(wh = XGetWMHints(d, c->win))) return;
+	wh->flags = urg ? wh->flags | XUrgencyHint : wh->flags & ~XUrgencyHint;
+	XSetWMHints(d, c->win, wh); XFree(wh);
+}
+
+static void showhide(C *c) {
+	const L *l = lt[lt2];
+	for (; c; c = c->snext) {
+		if (VIS(c)) {
+			XMoveWindow(d, c->win, c->x, c->y);
+			if ((!l->ar || c->isfloating) && !c->isfullscreen)
+				rs(c, c->x, c->y, c->w, c->h, 0);
+		} else {
+			XMoveWindow(d, c->win, W(c) * -2, c->y);
+		}
+	}
+}
+
+static void spawn(const A *arg) {
+	pid_t pid = fork();
+	if (pid == -1) return;
+	if (pid == 0) {
+		struct sigaction sa = { .sa_handler = SIG_DFL };
+		sigaction(SIGCHLD, &sa, NULL);
+		if (d) close(ConnectionNumber(d));
+		setsid();
+		execvp(((char**)arg->v)[0], (char**)arg->v);
+		d = NULL; die("swm: execvp %s", ((char**)arg->v)[0]);
+	}
+}
+
+static void tag(const A *arg) {
+	if (s && arg->ui & TM) { s->tags = arg->ui & TM; fc(NULL); ar(); }
+}
+
+static void tile(void) {
+	C *c;
+	unsigned int i, n, nmv, ns;
+	int g = gappx, mw, mch, sch;
+	for (n = 0, c = nexttiled(cs); c; c = nexttiled(c->next), n++);
+	if (!n) return;
+	nmv = (unsigned)nm < n ? (unsigned)nm : n;
+	ns  = n > nmv ? n - nmv : 0;
+	mw  = nmv && ns ? (int)((ww - 2*g) * mf) + g : ww;
+	mch = nmv ? (wh - (int)(nmv + 1) * g) / (int)nmv : 0;
+	sch = ns  ? (wh - (int)(ns  + 1) * g) / (int)ns  : 0;
+	for (i = 0, c = nexttiled(cs); c; c = nexttiled(c->next), i++) {
+		if (i < nmv) {
+			int y0 = wy + g + (int)i * (mch + g);
+			rs(c, wx + g, y0, mw - (c->bw << 1) - 2*g, mch - (c->bw << 1), 0);
+		} else {
+			int y0 = wy + g + (int)(i - nmv) * (sch + g);
+			rs(c, wx + mw + g, y0, ww - mw - (c->bw << 1) - 2*g, sch - (c->bw << 1), 0);
+		}
+	}
+}
+
+static void tglfl(const A *arg) {
+	(void)arg;
+	if (!s || s->isfullscreen) return;
+	s->isfloating = !s->isfloating || s->isfixed;
+	if (s->isfloating) rs(s, s->x, s->y, s->w, s->h, 0);
+	ar();
+}
+
+static void tglfs(const A *arg) {
+	(void)arg;
+	if (s) setfullscreen(s, !s->isfullscreen);
+}
+
+static void toggletag(const A *arg) {
+	unsigned int t;
+	if (!s || !(t = s->tags ^ (arg->ui & TM))) return;
+	s->tags = t; fc(NULL); ar();
+}
+
+static void toggleview(const A *arg) {
+	unsigned int t = ts[sg] ^ (arg->ui & TM);
+	if (t) { ts[sg] = t; fc(NULL); ar(); }
+}
+
+static void unfocus(C *c, int sf) {
+	if (!c) return;
+	grabbuttons(c, 0);
+	XSetWindowBorder(d, c->win, c->isurgent ? uborder : nborder);
+	if (sf) {
+		XSetInputFocus(d, r, RevertToPointerRoot, CurrentTime);
+		XDeleteProperty(d, r, netatom[NetActiveWindow]);
+	}
+}
+
+static void unmanage(C *c, int destroyed) {
+	XWindowChanges wc;
+	detach(c); detachstack(c);
+	if (!destroyed) {
+		wc.border_width = c->oldbw;
+		XGrabServer(d);
+		XSetErrorHandler(xe0);
+		XSelectInput(d, c->win, NoEventMask);
+		XConfigureWindow(d, c->win, CWBorderWidth, &wc);
+		XUngrabButton(d, AnyButton, AnyModifier, c->win);
+		setclientstate(c, WithdrawnState);
+		XSync(d, False);
+		XSetErrorHandler(xerror);
+		XUngrabServer(d);
+	}
+	free(c);
+	fc(NULL); updcl(); ar();
+}
+
+static void unmapnotify(XEvent *e) {
+	XUnmapEvent *ev = &e->xunmap;
+	C *c;
+	if ((c = wintoclient(ev->window))) {
+		if (ev->send_event) setclientstate(c, WithdrawnState);
+		else unmanage(c, 0);
+	}
+}
+
+static void updcl(void) {
+	C *c;
+	XDeleteProperty(d, r, netatom[NetClientList]);
+	for (c = cs; c; c = c->next)
+		XChangeProperty(d, r, netatom[NetClientList], XA_WINDOW, 32,
+			PropModeAppend, (unsigned char*)&c->win, 1);
+}
+
+static void updnm(void) {
+	unsigned int i;
+	int j;
+	KeyCode nlk;
+	XModifierKeymap *mm = XGetModifierMapping(d);
+	if (!mm) return;
+	numlockmask = 0;
+	nlk = XKeysymToKeycode(d, XK_Num_Lock);
+	if (nlk)
+		for (i = 0; i < 8; i++)
+			for (j = 0; j < mm->max_keypermod; j++)
+				if (mm->modifiermap[i*mm->max_keypermod+j] == nlk) {
+					numlockmask = 1 << i;
+					goto done;
+				}
+	done:
+	XFreeModifiermap(mm);
+}
+
+static void updsz(C *c) {
+	long ms; XSizeHints sz;
+	if (!XGetWMNormalHints(d, c->win, &sz, &ms)) sz.flags = PSize;
+	c->basew = (sz.flags & PBaseSize) ? sz.base_width  : (sz.flags & PMinSize) ? sz.min_width  : 0;
+	c->baseh = (sz.flags & PBaseSize) ? sz.base_height : (sz.flags & PMinSize) ? sz.min_height : 0;
+	c->incw  = (sz.flags & PResizeInc) ? sz.width_inc  : 0;
+	c->inch  = (sz.flags & PResizeInc) ? sz.height_inc : 0;
+	c->maxw  = (sz.flags & PMaxSize)   ? sz.max_width  : 0;
+	c->maxh  = (sz.flags & PMaxSize)   ? sz.max_height : 0;
+	c->minw  = (sz.flags & PMinSize)   ? sz.min_width  : c->basew;
+	c->minh  = (sz.flags & PMinSize)   ? sz.min_height : c->baseh;
+	if ((sz.flags & PAspect) && sz.min_aspect.x && sz.max_aspect.y) {
+		c->mina = (float)sz.min_aspect.y / sz.min_aspect.x;
+		c->maxa = (float)sz.max_aspect.x / sz.max_aspect.y;
+	} else {
+		c->maxa = c->mina = 0.0f;
+	}
+	c->isfixed = (c->maxw && c->maxh && c->maxw == c->minw && c->maxh == c->minh);
+	c->hintsvalid = 1;
+}
+
+static void updtype(C *c) {
+	if (getatom(c, netatom[NetWMState])      == netatom[NetWMFullscreen])       setfullscreen(c, 1);
+	if (getatom(c, netatom[NetWMWindowType]) == netatom[NetWMWindowTypeDialog]) c->isfloating = 1;
+}
+
+static void updwmh(C *c) {
+	XWMHints *wh;
+	if (!(wh = XGetWMHints(d, c->win))) return;
+	if (c == s && wh->flags & XUrgencyHint) {
+		wh->flags &= ~XUrgencyHint; XSetWMHints(d, c->win, wh);
+	} else {
+		c->isurgent = (wh->flags & XUrgencyHint) ? 1 : 0;
+	}
+	c->neverfocus = (wh->flags & InputHint) ? !wh->input : 0;
+	XFree(wh);
+}
+
+static void view(const A *arg) {
+	if ((arg->ui & TM) == ts[sg]) return;
+	sg ^= 1;
+	if (arg->ui & TM) ts[sg] = arg->ui & TM;
+	fc(NULL); ar();
+}
+
+static C *wintoclient(Window w) {
+	C *c;
+	for (c = cs; c; c = c->next) if (c->win == w) return c;
+	return NULL;
+}
+
+static int xerror(Display *dpy, XErrorEvent *ee) {
+	if (ee->error_code == BadWindow
+	|| (ee->request_code == 42  && ee->error_code == BadMatch)
+	|| (ee->request_code == 74  && ee->error_code == BadDrawable)
+	|| (ee->request_code == 70  && ee->error_code == BadDrawable)
+	|| (ee->request_code == 66  && ee->error_code == BadDrawable)
+	|| (ee->request_code == 12  && ee->error_code == BadMatch)
+	|| (ee->request_code == 28  && ee->error_code == BadAccess)
+	|| (ee->request_code == 33  && ee->error_code == BadAccess)
+	|| (ee->request_code == 62  && ee->error_code == BadDrawable))
+		return 0;
+	fprintf(stderr, "swm: error req=%d code=%d\n", ee->request_code, ee->error_code);
+	return xerrorxlib(dpy, ee);
+}
+
+static int xe0(Display *dpy, XErrorEvent *e) { (void)dpy; (void)e; return 0; }
+static int xerrorstart(Display *dpy, XErrorEvent *e) { (void)dpy; (void)e; die("swm: another wm is running"); return -1; }
+
+static void zoom(const A *arg) {
+	(void)arg;
+	C *c = s;
+	if (!lt[lt2]->ar || !c || c->isfloating) return;
+	if (c == nexttiled(cs) && !(c = nexttiled(c->next))) return;
+	pop(c);
+}
+
+int main(int argc, char *argv[]) {
+	if (argc == 2 && !strcmp("-v", argv[1])) die("swm-1.1");
+	else if (argc != 1) die("usage: swm [-v]");
+	if (!(d = XOpenDisplay(NULL))) die("swm: cannot open display");
+	chkwm();
+	setup();
+	scan(); run(); cleanup();
+	XCloseDisplay(d);
+	return 0;
+}

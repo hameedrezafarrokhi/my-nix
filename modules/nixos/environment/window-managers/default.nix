@@ -28,6 +28,11 @@ in
 
        "oxwm"
 
+       "hana" "suswm"
+
+       "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
+       "aewmpp" "clarawm" "simplewm" "sophy"
+
       ]);
      default = [ ];
 
@@ -61,9 +66,9 @@ in
     ./niri.nix
 
     ./dwm.nix
-    ./dwm/chadwm/chadwm.nix
-    ./dwm/drewwm/drewwm.nix
-    ./dwm/tituswm/tituswm.nix
+    ./dwm/chadwm
+    ./dwm/drewwm
+    ./dwm/tituswm
     ./dwl.nix
 
     ./xmonad.nix
@@ -117,6 +122,23 @@ in
 
     ./rices-shells/niri-noctalia.nix
     ./rices-shells/niri-dms.nix
+
+    ./git-wms/hana
+    ./git-wms/swm-sus
+
+    ./git-wms/sowm
+    ./git-wms/aphelia
+    ./git-wms/mcwm
+    ./git-wms/jbwm
+    ./git-wms/qvwm
+    ./git-wms/ewm
+    ./git-wms/safwm
+    ./git-wms/aewmpp
+    ./git-wms/clarawm
+    ./git-wms/swm-simple
+    ./git-wms/sophy
+
+
 
   ];
 
