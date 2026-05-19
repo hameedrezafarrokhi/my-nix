@@ -32,6 +32,9 @@
     nix-locate bin/hello                                                 ## search for a binary
     nix store ?? has lots of commands??
 
+    # Packages and Dev
+    nix-build -E 'with import <nixpkgs> {}; callPackage ./default.nix {}' ## build and test a package
+
     nix-instantiate sarek.nix                                            ## Make a Derivation file
 
     nix-top                                                              ## htop for nix prossecces

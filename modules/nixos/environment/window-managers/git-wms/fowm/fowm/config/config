@@ -1,0 +1,36 @@
+Cursor "left_ptr"
+CursorColor "white" "black"
+SnapDistance 5
+MaxMenuWidth 512
+Workspaces 3
+
+Include "og/theme"
+Include "menus"
+
+Modifier Mod4 1
+
+ButtonPress   1 0 CloseMenus
+ButtonRelease 2 0 WindowMenu
+ButtonRelease 3 0 Menu "Exec"
+ButtonPress   4 0 GotoPrev
+ButtonPress   5 0 GotoNext
+
+ButtonPress   1 1 Move
+ButtonRelease 1 1 Raise
+ButtonRelease 2 1 Lower
+ButtonPress   3 1 Resize
+ButtonRelease 3 1 Menu "WindowOps"
+ButtonPress   4 1 Shade
+ButtonPress   5 1 UnShade
+
+ButtonRelease 1 2 Close
+ButtonRelease 3 2 Kill
+
+ButtonRelease 1 3 Iconify
+
+ButtonRelease 1 4 Maximize
+ButtonRelease 2 4 MaximizeVert
+ButtonRelease 3 4 MaximizeHoriz
+
+Key Mod4 Tab GotoNext
+Key Mod1 Tab CirculateUp

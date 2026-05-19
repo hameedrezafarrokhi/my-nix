@@ -1,0 +1,480 @@
+.TH FOWM 1 "April 2025" "Version 1.0"
+.SH NAME
+fowm \- A Window Manager for the X Window System
+.SH SYNOPSIS
+.B fowm \fR[ \-display \fIdpy \fR] [ \-config \fIdir \fR]
+.SH DESCRIPTION
+.B fowm
+is a stacking and reparenting window manager.
+It is small and customisable.
+.PP
+It enforces a focus follows mouse policy.
+.PP
+It does not contain any default configuration.
+So it need a configuration file to be useful.
+.PP
+By default all configuration files and pixmaps are looked for in
+.B $HOME/.fowm
+which can be changed with the \fB\-config\fR option.
+.PP
+When \fBfowm\fR starts up is read the configuration file \fBconfig\fR.
+.SH CONFIGURATION
+The lines of the configuration files are parsed much like shell commands.
+With each line containing a command followed by a number of arguments.
+Each separated by space characters.
+Empty lines are ignored.
+The # character can be used to comment out the rest of the line.
+Double quote and a the backslash can be used for quoting.
+.PP
+The following commands are understood:
+.TP
+.B Include \fIfile
+Read the specified configuration file.
+.TP
+.B Font \fIname size
+Sets the font to be used.
+The \fIsize\fR is in pixels.
+.TP
+.B Cursor \fIname
+Set the cursor to be used from one of the cursor font cursors.
+.TP
+.B CursorColor \fIforeground background
+This recolors the cursor.
+As such it only works when used after the
+.B Cursor
+command.
+.TP
+.B SnapDistance \fIdistance\fR...
+Can be used to enable snapping when moving windows.
+Anything from one to five distances can be specified.
+.IP
+If five distances are given the first two are for window to screen edge snapping,
+the second two are for window to window snapping.
+The first number being the maximum number of pixels the window will be moved
+towards the other edge and the second being the pixels it will be moved away.
+The fifth distance is for snapping to the center of the screen.
+.IP
+If four distances are given it is the same as setting the center snapping to zero.
+.IP
+If three distances are given it is the equivalent to setting the second pair the
+same as the first.  And the third distance is for center snapping.
+.IP
+If two distances are given it is the same as with three distances and setting
+center snapping to zero.
+.IP
+With one distance it is the same as setting all four values to the same thing.
+.TP
+.B Workspaces \fInumber
+Sets the number of virtual workspaces.
+This is implemented by mapping the windows that on the current workspace and
+unmapping the rest.
+.TP
+.B MaxMenuWidth \fIwidth
+Sets a maximum with for the window menu.
+.TP
+.B Modifier \fImodifier group
+Sets the modifier and button group to be used for button grabs on client
+windows.
+This allows for window actions to be performed with button clicks in client
+windows.
+.IP
+The \fImodifier\fR can be any of \fBshift\fR, \fBlock\fR, \fBcontrol\fR,
+\fBmod1\fR, \fBmod2\fR, \fBmod3\fR, \fBmod4\fR or \fBmod5\fR.
+.IP
+The \fIgroup\fR is the button group that matches what is specified in
+the \fBButtonPress\fR and \fBButtonRelease\fR commands.
+.TP
+.B ButtonPress \fIbutton group action \fR[ \fIarg \fR]
+Bind an action to a button press event.
+The \fIbutton\fR is which mouse button must be pressed.
+And the \fIgroup\fR is used to determine which window or decoration parts
+this is for.
+.IP
+The root window always uses group 0.
+The client window uses what was used in the \fBModifier\fR command.
+And the groups for window decoration is set with the \fBTitleBar\fR
+and \fBBorder\fR commands.
+.TP
+.B ButtonRelease \fIbutton group action \fR[ \fIarg \fR]
+Same as the \fBButtonPress\fR command only for button release events.
+.IP
+If the \fBButtonPress\fR event for the same button and group is either
+the \fBMove\fR or \fBResize\fR action then the action will not trigger
+if either of those actions received a motion event.
+.TP
+.B Key \fImodifier key action \fR[ \fIarg \fR]
+Adds a key grab with the given modifier and keysym.
+Actions that work on windows will work on the window the mouse is over
+not the window that has focus.
+.TP
+.B Menu \fIname
+Creates a menu with the given name.
+.TP
+.B MenuItem \fIlabel action \fR[ \fIarg \fR]
+Adds an entry to the last created window.
+.TP
+.B SubMenu \fIname
+Adds a sub menu the the last created menu.
+The \fIname\fR must refer to a previously created menu.
+.TP
+.B Style \fIstyle
+Sets the decoration style that subsequent commands are to set the details for.
+.IP
+There are 5 decoration styles that be set.
+3 are for managed windows \fBNormal\fR, \fBNoBorder\fR and \fBNoTitle\fR.
+And the remaining 2 are for the 2 types of special windows that this
+window manager creates, \fBInfo\fR and \fBMenu\fR.
+The is also a another style for undecorated windows.
+.IP
+The \fBInfo\fR window is used to show the window's geometry when moving or
+resizing.
+.IP
+The remaining configuration commands set the details of the currently
+selected decoration style.
+.TP
+.B BorderWidth \fItop left right bottom
+Sets the amount of space around the window to be used for decoration.
+This space needs to be exactly filled by the rectangles specified by
+the \fBBorder\fR and \fBTitleBar\fR commands.
+.IP
+This is useful for all decoration styles.
+.TP
+.B NumBorder \fInumber
+Sets the number of border decoration pieces.
+This needs to be done for each decoration style that uses them and before
+any \fBBorder\fR, \fBBorderColor\fR or \fBBorderPixmap\fR commands are used.
+.IP
+This is useful for all decoration styles since it is used for any decoration
+that is not the title bar, such as title bar buttons.
+.TP
+.B Border \fIindex group left top right bottom
+This sets the rectangle that this border piece will occupy.
+Positive values are relative to the left or top edge of the window
+and negative values are relative to the right or bottom edge of the window.
+.IP
+Since the value for the left and top edge are 0 and the value for the
+right and bottom edge are -1, negative values will seem to be offset by 1.
+.IP
+This \fIindex\fR selected which border piece is being set.
+They are numbered from zero.
+.TP
+.B BorderColor \fIindex color\fR...
+Sets the colors of a border piece.
+Up to 4 colors can be specified.  They are for unfocused windows,
+focused windows, when the mouse is over the title bar
+and when a mouse button has been pressed over the title bar.
+In that order.
+.IP
+This \fIindex\fR is the same as the \fBBorder\fR command.
+.TP
+.B BorderPixmap \fIindex pixmap\fR...
+Set a pixmaps to be used for the border piece.
+Each \fIpixmap\fRs should be a path relative to the configuration directory
+of an xpm file to use.
+The pixmaps will be tiled across the rectangle.
+.IP
+Up to 4 pixmaps can be specified, the same as for colors with \fBBorderColor\fR.
+.IP
+This \fIindex\fR is the same as the \fBBorder\fR command.
+.IP
+Will override \fBBorderColor\fR.
+.TP
+.B TitleBar \fIgroup left top right bottom
+The sets the rectangle that the body of the title bar will occupy.
+Same coordinate system as for the \fBBorder\fR command.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleBGColor \fIcolor\fR...
+Sets the background colors to be used for the title bar.
+Up to 4 colors can be specified, same as for \fBBorderColor\fR.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleFGColor \fIcolor\fR...
+Sets the colors used for title text.
+Up to 4 colors can be specified, same as for \fBBorderColor\fR.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitlePixmap \fIpixmap\fR...
+Sets the background pixmaps used for the title bar.
+Much the same as \fBBorderPixmap\fR.
+.IP
+Will override \fBTitleBGColor\fR.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleText \fIleft top right bottom
+Describes a rectangle within the title bar.
+Similar coordinate system as for the \fBBorder\fR command
+except instead of being relative the the window edges it is relative to
+the rectangle specified by the \fBTitleBar\fR command.
+.IP
+It will try to center the window title text in this rectangle.
+If the title text is too wide to fit it will the aligned to the left edge of
+this rectangle.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B NumTitleDecor \fInumber
+Sets the number of titlebar decoration pieces.
+This needs to be done for each decoration style that uses them and before
+any \fBTileDecor\fR, \fBTitleDecorColor\fR or \fBTitleDecorPixmap\fR
+commands are used.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleDecor \fIindex left top right bottom
+This sets the rectangle that this titlebar decoration piece will occupy.
+Similar coordinate system as for the \fBBorder\fR command only it is
+within the titlebar and not the window frame.
+.IP
+This \fIindex\fR selected which decoration piece is being set.
+They are numbered from zero.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleDecorColor \fIindex color\fR...
+Sets the colors of a tilebar decoration piece.
+.IP
+Up to 4 colors can be specified, same as for \fBBorderColor\fR.
+.IP
+This \fIindex\fR is the same as the \fBTitleDecor\fR command.
+.IP
+Will override \fBTitleDecorPixmap\fR.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B TitleDecorPixmap \fIindex pixmap\fR...
+Sets the pixmaps to be used for a title decoration piece.
+The \fIpixmap\fRs should be a path relative to the configuration directory
+of an xpm file to use.
+The pixmaps will be tiled across the rectangle.
+.IP
+Up to 4 pixmaps can be specified, the same as for colors with \fBBorderColor\fR.
+.IP
+This \fIindex\fR is the same as the \fBTitleDecor\fR command.
+.IP
+Will override \fBTitleDecorColor\fR.
+.IP
+Only useful for \fBNormal\fR and \fBNoBorder\fR styles.
+.TP
+.B InfoText \fIleft right height
+Sets the \fIleft\fR and \fIright\fR padding and the \fIheight\fR of the text
+in the \fBInfo\fR window.
+.IP
+Should only be used for the \fBInfo\fR style.
+.TP
+.B InfoBGColor \fIcolor
+Sets the background color of the \fBInfo\fR window.
+Only one color need be specified.
+.IP
+Should only be used for the \fBInfo\fR style.
+.TP
+.B InfoFGColor \fIcolor
+Sets the color of text in the \fBInfo\fR window.
+Only one color need be specified.
+.IP
+Should only be used for the \fBInfo\fR style.
+.TP
+.B InfoPixmap \fIpixmap
+Sets the pixmap text in the \fBInfo\fR window.
+The \fIpixmap\fR should be a path relative to the configuration directory
+of an xpm file to use.
+The pixmap will be tiled across the window.
+Only one pixmap need be specified.
+.IP
+Will override \fBInfoBGColor\fR.
+.IP
+Should only be used for the \fBInfo\fR style.
+.TP
+.B MenuText \fIleft right height
+Sets the \fIleft\fR and \fIright\fR padding and the \fIheight\fR of the text
+of the \fBMenu\fR entries.
+.IP
+Should only be used for the \fBMenu\fR style.
+.TP
+.B MenuBGColor \fIcolor\fR...
+Sets the background colors of the \fBMenu\fR entries.
+Up to two colors can be specified one for normal and one for when the mouse is
+over the menu entry.
+.IP
+Should only be used for the \fBMenu\fR style.
+.TP
+.B MenuFGColor \fIcolor\fR...
+Sets the colors to be use for the text of \fBMenu\fR entries.
+Up to two colors can be specified, same as for \fBMenuBGColor\fR.
+.IP
+Should only be used for the \fBMenu\fR style.
+.TP
+.B MenuPixmap \fIpixmap\fR...
+Sets the background pixmaps to use for \fBMenu\fR entries.
+The \fIpixmap\fRs should be a path relative to the configuration directory
+of an xpm file to use.
+Up to two pixmaps can be specified, same as for the colors of \fBMenuBGColor\fR.
+.IP
+Will override \fBMenuBGColor\fR.
+.IP
+Should only be used for the \fBMenu\fR style.
+.TP
+.B MenuArrow \fIpixmap\fR...
+Sets pixmaps to be used as a symbol to indicate the menu entry is for a
+sub menu.
+Up to two pixmaps can be specified, much the same as for \fBMenuPixmap\fR.
+.SH ACTIONS
+These are the various actions that can be assigned to mouse events, key grabs
+and menu items.
+.TP
+.B Menu \fIname
+Opens the menu with the given \fIname\fR.
+.TP
+.B Exec \fIcommand
+Executes the give shell \fIcommand\fR.
+.TP
+.B SendTo \fInumber
+Moves the window the the given workspace.
+If \fInumber\fR is greater than that set with the \fBWorkspaces\fR command
+then it uses that number.
+.TP
+.B Goto \fInumber
+Changes the current workspace to \fInumber\fR.
+If \fInumber\fR is greater than that set with the \fBWorkspaces\fR command
+then it uses that number.
+.TP
+.B Raise
+Raises the window.
+.TP
+.B Lower
+Lowers the window.
+.TP
+.B RaiseLower
+Raises the window unless it is already on top then it lowers the window.
+.TP
+.B Maximize
+Resizes the window to be a large as possible and still fit on the screen.
+Unless it has already been maximized and then it reverts the window to its
+original size and position.
+.TP
+.B MaximizeHoriz
+Like \fBMaximize\fR but only adjusts the window's width.
+.TP
+.B MaximizeVert
+Like \fBMaximize\fR but only adjusts the window's height.
+.TP
+.B Shade
+Sets the window into a state where the visible window frame is resized such
+that only the title bar and border are visible.
+The client window itself is not resized.
+.TP
+.B UnShade
+Removed the window from the shaded state.
+.TP
+.B ToggleShade
+Toggles the shaded state.
+.TP
+.B Stick
+Make the window appear on all workspaces.
+.TP
+.B Unstick
+If the window is sticky make it only appear on the current workspace.
+.TP
+.B ToggleSticky
+Toggles the window sticky state.
+.TP
+.B SetBorder
+Changes the windows decoration style so there is a border.
+.TP
+.B UnsetBorder
+Changes the windows decoration style so there is no border.
+.TP
+.B ToggleBorder
+Changes the windows decoration style to toggle the border.
+.TP
+.B SetTitlebar
+Changes the windows decoration style so there is a tile bar.
+.TP
+.B UnsetTitlebar
+Changes the windows decoration style so there is no tile bar.
+.TP
+.B ToggleTitlebar
+Changes the windows decoration style to toggle the title bar.
+.TP
+.B DecorNone
+Set the window decoration style to \fBNone\fR.
+.TP
+.B DecorNoTitle
+Set the window decoration style to \fBNoTitle\fR.
+.TP
+.B DecorNoBorder
+Set the window decoration style to \fBNoBorder\fR.
+.TP
+.B DecorNormal
+Set the window decoration style to \fBNormal\fR.
+.TP
+.B ToggleDecoration
+Changes the windows decoration style to toggle both the title bar
+and the border.
+.TP
+.B SendToNext
+Moves the window to the next workspace numerically.
+If the window in on the last workspace it is moved to the first.
+.TP
+.B SendToPrev
+Moves the window the the previous workspace numerically.
+If the window in on the first workspace it is moved to the last.
+.TP
+.B Iconify
+Iconifies the window.
+Iconfied windows are simply unmapped and can be accessed from the window menu.
+.TP
+.B Close
+Closes the window.  Using a WM_DELETE_WINDOW message if the window supports it
+or an XKillClient(3) if it does not.
+.TP
+.B Kill
+Calls XKillClient(3).
+.TP
+.B Move
+Allow the use to move the window by holding the button down and dragging
+with the mouse.
+Must be assigned with a \fBButtonPress\fR to work.
+.TP
+.B Resize
+Allow the use to resize the window by holding the button down and dragging
+with the mouse.
+Must be assigned with a \fBButtonPress\fR to work.
+.TP
+.B CirculateUp
+Calls XCirculateSubwindowsUp(3) on the root window.
+.TP
+.B CirculateDown
+Calls XCirculateSubwindowsDown(3) on the root window.
+.TP
+.B WindowMenu
+Opens the window menu.
+.TP
+.B CloseMenus
+Closes all menus.
+.TP
+.B GotoNext
+Changes the workspace to the next one numerically.
+If on the last workspace it goes to the first.
+.TP
+.B GotoPrev
+Changes the workspace to the previous one numerically.
+If on the first workspace it goes to the last.
+.TP
+.B Exit
+Causes the window manager to exit.
+.TP
+.B Restart
+Causes the window manager to restart.
+Useful to reload the configuration file.
+.TP
+.B nop
+Does nothing.
+.SH AUTHOR
+Christopher John Purnell
+.SH COPYRIGHT
+Copyright (C) 2025 Christopher John Purnell

@@ -1,0 +1,288 @@
+#include <poll.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <unistd.h>
+
+#include "custard.h"
+#include "config.h"
+#include "decorations.h"
+#include "handlers.h"
+#include "monitor.h"
+#include "rules.h"
+#include "window.h"
+
+#include "../vector.h"
+
+#include "../ipc/ipc.h"
+#include "../ipc/parsing.h"
+#include "../ipc/socket.h"
+#include "../xcb/connection.h"
+#include "../xcb/ewmh.h"
+#include "../xcb/window.h"
+#include "../xcb/xrandr.h"
+
+char *rc_path = NULL;
+unsigned short loglevel = 1;
+unsigned short custard_is_running = 0;
+
+int custard(int argc, char **argv) {
+    rc_path = (char *)calloc(512, sizeof(char));
+
+    /* Process arguments */
+
+    char *argument;
+    int index = 1;
+
+    while (index < argc) {
+        argument = argv[index++];
+        log_message("arg = %s", argument);
+
+        if (!argv[index] || !strlen(argv[index])) {
+            log_fatal("No argument provided with %s, exiting.", argument);
+            return EXIT_FAILURE;
+        }
+
+        if (!strcmp(argument, "--rc")) {
+            strcpy(rc_path, argv[index]);
+        } else if (!strcmp(argument, "--loglevel")) {
+            loglevel = (short)string_to_integer(argv[index]);
+        }
+
+        index++;
+    }
+
+    /* initialize window manager */
+
+    log_debug("Initializing window manager connections");
+    if (!initialize()) {
+        log_fatal("Initialization of window manager failed");
+        finalize();
+        return EXIT_FAILURE;
+    }
+
+
+    if (!strlen(rc_path)) {
+        char *xdg_config_home = getenv("XDG_CONFIG_HOME");
+        char *home_directory = getenv("HOME");
+
+        if (xdg_config_home && strlen(xdg_config_home))
+            sprintf(rc_path, "%s/custard/rc", xdg_config_home);
+        else if (home_directory && strlen(home_directory))
+            sprintf(rc_path, "%s/.config/custard/rc", home_directory);
+        else
+            log_debug("%s %s",
+                "Unable to determine default rc path.",
+                "Are $HOME or $XDG_CONFIG_HOME set?");
+    }
+
+    if (strlen(rc_path) && access(rc_path, X_OK | F_OK | R_OK) > -1) {
+        log_debug("Attempting to execute file at %s", rc_path);
+        if (fork() == 0)
+            execl(rc_path, rc_path, NULL);
+    }
+
+    custard_is_running = 1;
+    manage_pre_existing_windows();
+
+    xcb_generic_event_t *xcb_event;
+    unsigned int xcb_event_type;
+
+    struct pollfd descriptors[2] = {
+        { xcb_file_descriptor,    .events = POLLIN },
+        { socket_file_descriptor, .events = POLLIN }
+    };
+
+    log_debug("Starting event loop");
+    while (custard_is_running) {
+
+        if (poll(descriptors, 2, -1)) {
+            if (descriptors[0].revents & POLLIN) {
+                while ((xcb_event = xcb_poll_for_event(xcb_connection))) {
+                    xcb_event_type = xcb_event->response_type & ~0x80;
+
+                    if (xcb_events[xcb_event_type])
+                        xcb_events[xcb_event_type](xcb_event);
+
+                }
+            }
+
+            if (descriptors[1].revents & POLLIN)
+                ipc_process_input(read_from_socket());
+        }
+    }
+
+    finalize();
+
+    return EXIT_SUCCESS;
+}
+
+unsigned short initialize() {
+    if (!initialize_xcb() || !initialize_ewmh() || !initialize_socket())
+        return 0;
+    log_debug("XCB, EWMH, and socket setup");
+
+    setup_monitors();
+    log_debug("Monitors setup");
+    setup_global_configuration();
+    log_debug("Global configuration setup");
+
+    unsigned int index = 0;
+    for (; index < SIGUNUSED; index++)
+        if (signals[index])
+            signal(index, signals[index]);
+    index = 0;
+    log_debug("Signal handlers setup");
+
+    return 1;
+}
+
+void manage_pre_existing_windows() {
+    unsigned int index = 0;
+    xcb_query_tree_cookie_t query_cookie;
+    query_cookie = xcb_query_tree(xcb_connection,
+        xcb_screen->root);
+
+    xcb_query_tree_reply_t *tree_reply;
+    tree_reply = xcb_query_tree_reply(xcb_connection, query_cookie, NULL);
+
+    if (!tree_reply)
+        return;
+
+    window_t *window = NULL;
+    xcb_window_t child;
+    xcb_window_t *children = xcb_query_tree_children(tree_reply);
+    unsigned int number_of_children = (unsigned int)
+        xcb_query_tree_children_length(tree_reply);
+
+    for (; index < number_of_children; index++) {
+        child = children[index];
+
+        if (window_should_be_managed(child)) {
+            window = manage_window(child);
+            map_window(child);
+            xcb_grab_button(xcb_connection, 0, child,
+                XCB_EVENT_MASK_BUTTON_PRESS,
+                XCB_GRAB_MODE_ASYNC, XCB_GRAB_MODE_ASYNC,
+                XCB_NONE, XCB_NONE,  XCB_BUTTON_INDEX_ANY, XCB_MOD_MASK_ANY);
+            decorate(window);
+            log_debug("Pre-existing window(%08x) managed",
+                child, window->workspace);
+        }
+
+    }
+
+    if (window) {
+    // Raise and focus the last window
+        focused_window = window->id;
+        xcb_ungrab_button(xcb_connection,
+            XCB_BUTTON_INDEX_ANY, focused_window, XCB_MOD_MASK_ANY);
+        raise_window(window->parent);
+        focus_window(window->id);
+        decorate(window);
+    }
+
+    apply();
+}
+
+void finalize() {
+    /* Free used memory for windows */
+    if (windows) {
+        log_debug("Freeing memory for windows");
+        window_t *window;
+        while ((window = vector_iterator(windows)))
+            unmanage_window(window->id);
+        deconstruct_vector(windows);
+    }
+
+    kv_pair_t *kv_pair;
+    monitor_t *monitor;
+    labeled_grid_geometry_t *labeled_geometry;
+    if (monitors) {
+        log_debug("Freeing memory for monitors");
+        while ((monitor = vector_iterator(monitors))) {
+            free(monitor->name);
+            free(monitor->geometry);
+
+            if (monitor->geometries) {
+                while ((labeled_geometry = vector_iterator(
+                    monitor->geometries))) {
+                    free(labeled_geometry->label);
+                    free(labeled_geometry->geometry);
+                    free(labeled_geometry);
+                }
+                deconstruct_vector(monitor->geometries);
+            }
+
+            if (monitor->configuration) {
+                while ((kv_pair = vector_iterator(monitor->configuration))) {
+                    free(kv_pair->key);
+                    free(kv_pair->value);
+                    free(kv_pair);
+                }
+                deconstruct_vector(monitor->configuration);
+            }
+        }
+    }
+
+    if (configuration) {
+        log_debug("Freeing memory for configuration");
+        while ((kv_pair = vector_iterator(configuration))) {
+            free(kv_pair->key);
+            free(kv_pair->value);
+            free(kv_pair);
+        }
+        deconstruct_vector(configuration);
+    }
+
+    /* Free rules, if any */
+
+    if (rules) {
+        log_debug("Freeing memory for rules");
+        rule_t *rule;
+        while ((rule = vector_iterator(rules))) {
+            free(rule->expression);
+
+            if (rule->rules) {
+                while ((kv_pair = vector_iterator(rule->rules))) {
+                    free(kv_pair->key);
+                    free(kv_pair->value);
+                    free(kv_pair);
+                }
+                deconstruct_vector(rule->rules);
+            }
+        }
+        deconstruct_vector(rules);
+    }
+
+    finalize_xcb();
+    finalize_ewmh();
+    finalize_socket();
+
+    free(rc_path);
+}
+
+void _log(unsigned short level, const char *file, const char *function,
+    const int line, char *formatting, ...) {
+
+    /*
+     * Loglevels:
+     * 0 - Absolutely fucking nothing
+     * 1 - Fatal
+     * 2 - Message
+     * 3 - Debug
+     */
+
+     if (loglevel < level)
+        return;
+
+    fprintf(stderr, "%s:%s L%d: ", file, function, line);
+
+    va_list ap;
+    va_start(ap, formatting);
+    vfprintf(stderr, formatting, ap);
+    va_end(ap);
+
+    fputs("\n", stderr);
+}

@@ -1,0 +1,110 @@
+Font "sans" 12
+
+Style Normal
+BorderWidth 19 3 3 3
+TitleBar 1 19 3 -36 19
+TitleText 2 1 -3 -2
+TitleFGColor "rgb:8/8/8" "rgb:c/c/c" "rgb:f/f/f" "rgb:f/f/f"
+TitlePixmap "og/title-un.xpm" "og/title-fo.xpm" "og/title-fo.xpm" "og/title-pr.xpm"
+NumTitleDecor 2
+TitleDecor 0 0 0 1 -1
+TitleDecorPixmap 0 "og/title-le-un.xpm" "og/title-le-fo.xpm" "og/title-le-fo.xpm" "og/title-le-pr.xpm"
+TitleDecor 1 -2 0 -1 -1
+TitleDecorPixmap 1 "og/title-ri-un.xpm" "og/title-ri-fo.xpm" "og/title-ri-fo.xpm" "og/title-ri-pr.xpm"
+NumBorder 11
+Border 0 2 3 3 19 19
+BorderPixmap 0 "og/btn-clo-un.xpm" "og/btn-clo-fo.xpm" "og/btn-clo-ho.xpm" "og/btn-clo-pr.xpm"
+Border 1 3 -36 3 -20 19
+BorderPixmap 1 "og/btn-min-un.xpm" "og/btn-min-fo.xpm" "og/btn-min-ho.xpm" "og/btn-min-pr.xpm"
+Border 2 4 -20 3 -4 19
+BorderPixmap 2 "og/btn-max-un.xpm" "og/btn-max-fo.xpm" "og/btn-max-ho.xpm" "og/btn-max-pr.xpm"
+Border 3 1 0 0 3 3
+BorderPixmap 3 "og/top-le-un.xpm" "og/top-le-fo.xpm"
+Border 4 1 3 0 -4 3
+BorderPixmap 4 "og/top-un.xpm" "og/top-fo.xpm"
+Border 5 1 -4 0 -1 3
+BorderPixmap 5 "og/top-ri-un.xpm" "og/top-ri-fo.xpm"
+Border 6 1 0 3 3 -4
+BorderPixmap 6 "og/side-un.xpm" "og/side-fo.xpm"
+Border 7 1 -4 3 -1 -4
+BorderPixmap 7 "og/side-un.xpm" "og/side-fo.xpm"
+Border 8 1 0 -4 3 -1
+BorderPixmap 8 "og/btm-le-un.xpm" "og/btm-le-fo.xpm"
+Border 9 1 3 -4 -4 -1
+BorderPixmap 9 "og/top-un.xpm" "og/top-fo.xpm"
+Border 10 1 -4 -4 -1 -1
+BorderPixmap 10 "og/btm-ri-un.xpm" "og/btm-ri-fo.xpm"
+
+Style NoBorder
+BorderWidth 16 0 0 0
+TitleBar 1 16 0 -33 16
+TitleText 2 1 -3 -2
+TitleFGColor "rgb:8/8/8" "rgb:c/c/c" "rgb:f/f/f" "rgb:f/f/f"
+TitlePixmap "og/title-un.xpm" "og/title-fo.xpm" "og/title-fo.xpm" "og/title-pr.xpm"
+NumTitleDecor 2
+TitleDecor 0 0 0 1 -1
+TitleDecorPixmap 0 "og/title-le-un.xpm" "og/title-le-fo.xpm" "og/title-le-fo.xpm" "og/title-le-pr.xpm"
+TitleDecor 1 -2 0 -1 -1
+TitleDecorPixmap 1 "og/title-ri-un.xpm" "og/title-ri-fo.xpm" "og/title-ri-fo.xpm" "og/title-ri-pr.xpm"
+NumBorder 3
+Border 0 2 0 0 16 16
+BorderPixmap 0 "og/btn-clo-un.xpm" "og/btn-clo-fo.xpm" "og/btn-clo-ho.xpm" "og/btn-clo-pr.xpm"
+Border 1 3 -33 0 -17 16
+BorderPixmap 1 "og/btn-min-un.xpm" "og/btn-min-fo.xpm" "og/btn-min-ho.xpm" "og/btn-min-pr.xpm"
+Border 2 4 -17 0 -1 16
+BorderPixmap 2 "og/btn-max-un.xpm" "og/btn-max-fo.xpm" "og/btn-max-ho.xpm" "og/btn-max-pr.xpm"
+
+Style NoTitle
+BorderWidth 3 3 3 3
+NumBorder 8
+Border 0 1 0 0 3 3
+BorderPixmap 0 "og/top-le-un.xpm" "og/top-le-fo.xpm"
+Border 1 1 3 0 -4 3
+BorderPixmap 1 "og/top-un.xpm" "og/top-fo.xpm"
+Border 2 1 -4 0 -1 3
+BorderPixmap 2 "og/top-ri-un.xpm" "og/top-ri-fo.xpm"
+Border 3 1 0 3 3 -4
+BorderPixmap 3 "og/side-un.xpm" "og/side-fo.xpm"
+Border 4 1 -4 3 -1 -4
+BorderPixmap 4 "og/side-un.xpm" "og/side-fo.xpm"
+Border 5 1 0 -4 3 -1
+BorderPixmap 5 "og/btm-le-un.xpm" "og/btm-le-fo.xpm"
+Border 6 1 3 -4 -4 -1
+BorderPixmap 6 "og/top-un.xpm" "og/top-fo.xpm"
+Border 7 1 -4 -4 -1 -1
+BorderPixmap 7 "og/btm-ri-un.xpm" "og/btm-ri-fo.xpm"
+
+Style Info
+BorderWidth 0 2 2 0
+InfoText 1 1 20
+InfoPixmap "og/info.xpm"
+InfoFgColor "rgb:f/f/f"
+NumBorder 2
+Border 0 0 0 0 2 20
+BorderPixmap 0 "og/info-le.xpm"
+Border 1 0 -3 0 -1 20
+BorderPixmap 1 "og/info-ri.xpm"
+
+Style Menu
+BorderWidth 3 3 3 3
+MenuText 1 1 16
+MenuBgColor "rgb:4/4/4" "rgb:5/a/f"
+MenuFgColor "rgb:f/f/f" "rgb:0/0/0"
+MenuArrow "og/arrow.xpm" "og/arrow-sel.xpm"
+NumBorder 8
+Border 0 0 0 0 3 3
+BorderPixmap 0 "og/menu-top-le.xpm"
+Border 1 0 3 0 -4 3
+BorderPixmap 1 "og/menu-top.xpm"
+Border 2 0 -4 0 -1 3
+BorderPixmap 2 "og/menu-top-ri.xpm"
+Border 3 0 0 3 3 -4
+BorderPixmap 3 "og/menu-le.xpm"
+Border 4 0 -4 3 -1 -4
+BorderPixmap 4 "og/menu-ri.xpm"
+Border 5 0 0 -4 3 -1
+BorderPixmap 5 "og/menu-btm-le.xpm"
+Border 6 0 3 -4 -4 -1
+BorderPixmap 6 "og/menu-btm.xpm"
+Border 7 0 -4 -4 -1 -1
+BorderPixmap 7 "og/menu-btm-ri.xpm"

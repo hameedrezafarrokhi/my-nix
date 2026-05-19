@@ -1,0 +1,27 @@
+#!/bin/bash
+
+custard - configure \
+    grid.rows               2 \
+    grid.columns            3 \
+    grid.margins            0 \
+    grid.margin.top         0 \
+    grid.margin.bottom      0 \
+    grid.margin.left        0 \
+    grid.margin.right       0 \
+    borders                 0 \
+    border.size.inner       0 \
+    border.size.outer       0 \
+    border.color.focused    '#ffffffff' \
+    border.color.unfocused  '#676767ff' \
+    border.color.background '#000000ff' \
+    workspaces              1
+
+custard - geometry \
+    '*' 'Full'                   3x2 0,0 \
+    '*' 'Half-horizontal-top'    3x1 0,0 \
+    '*' 'Half-horizontal-bottom' 3x1 0,1 \
+    '*' 'Third-pane-left'        1x2 0,0 \
+    '*' 'Third-pane-left'        1x2 1,0 \
+    '*' 'Third-pane-left'        1x2 2,0 \
+
+sxhkd -c ~/.config/sxhkdrc &

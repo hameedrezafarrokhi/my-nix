@@ -116,11 +116,11 @@
      #"hypr"
      #"oxwm"
 
-     #"hana"
-      "suswm"
+     #"hana" "custard"
+      "suswm" "chibiwm"
 
-      "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy"
-     #"qvwm" "aewmpp" "clarawm" "simplewm"
+      "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
+     #"qvwm" "aewmpp" "clarawm" "simplewm" "fowm" "cygnus" "sewm" "fxwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

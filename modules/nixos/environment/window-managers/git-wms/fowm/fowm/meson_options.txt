@@ -1,0 +1,1 @@
+option('xft', type : 'boolean', value : true)

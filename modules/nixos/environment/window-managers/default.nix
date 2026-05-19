@@ -28,10 +28,11 @@ in
 
        "oxwm"
 
-       "hana" "suswm"
+       "hana" "suswm" "chibiwm" "custard"
 
        "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
-       "aewmpp" "clarawm" "simplewm" "sophy"
+       "aewmpp" "clarawm" "simplewm" "sophy" "fowm"
+       "sewm" "fxwm" "cygnus" "rwm"
 
       ]);
      default = [ ];
@@ -125,6 +126,8 @@ in
 
     ./git-wms/hana
     ./git-wms/swm-sus
+    ./git-wms/chibiwm
+    ./git-wms/custard
 
     ./git-wms/sowm
     ./git-wms/aphelia
@@ -137,7 +140,11 @@ in
     ./git-wms/clarawm
     ./git-wms/swm-simple
     ./git-wms/sophy
-
+    ./git-wms/fowm
+    ./git-wms/sewm
+    ./git-wms/cygnus
+    ./git-wms/fxwm
+    ./git-wms/rwm
 
 
   ];

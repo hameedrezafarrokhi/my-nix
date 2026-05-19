@@ -1,0 +1,30 @@
+Menu "Maximize"
+MenuItem "Full" Maximize
+MenuItem "Hoizontal" MaximizeHoriz
+MenuItem "Vertical" MaximizeVert
+
+Menu "Decorations"
+MenuItem "Toggle Border" ToggleBorder
+MenuItem "Toggle Titlebar" ToggleTitlebar
+MenuItem "Toggle All" ToggleDecoration
+
+Menu "Send To"
+MenuItem "Next Workspace" SendToNext
+MenuItem "Prev Workspace" SendToPrev
+
+Menu "WindowOps"
+MenuItem "Stick" ToggleSticky
+MenuItem "Shade" ToggleShade
+MenuItem "Iconify" Iconify
+MenuItem "Raise" Raise
+MenuItem "Lower" Lower
+SubMenu "Maximize"
+SubMenu "Decorations"
+SubMenu "Send To"
+MenuItem "Close" Close
+MenuItem "Kill" Kill
+
+Menu "Exec"
+MenuItem "XTerm" Exec "xterm"
+MenuItem "Restart" Restart
+MenuItem "Exit" Exit

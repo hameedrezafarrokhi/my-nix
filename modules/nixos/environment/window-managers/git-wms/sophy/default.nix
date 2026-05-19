@@ -47,11 +47,8 @@ in
     services.xserver.windowManager.session = singleton {
       name = "sophy";
       start = ''
-        export _JAVA_AWT_WM_NONREPARENTING=1
-        xsetroot -cursor_name left_ptr &
         ${cfg.extraSessionCommands}
-        ${sophy}/usr/local/bin/sophy &
-        waitPID=$!
+        ${sophy}/usr/bin/sophy
       '';
     };
 
