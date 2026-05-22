@@ -87,44 +87,47 @@
     window-managers = [
 
       # Wayland
+
+        # Tiling
       "hyprland"
      #"niri"
-     #"sway"
-     #"qtile"
-     #"dwl"
-     #"mango"
-     #"labwc"
-     #"river"
-     #"wayfire"
+     #"qtile" "dwl" "mango"
+     #"sway" "river"
 
-      # Mir
+       # Floating
+     #"wayfire" "labwc"
      #"miracle-wm" "miriway"
 
       # X11
-     #"icewm" "fluxbox"
-      "openbox"
-     #"windowlab" "windowmaker"
-     #"i3"
-     #"spectrwm" "herbstluftwm" "dk"
-      "titus-wm" #"drew-wm" #"dwm" #"chadwm"
-      "bspwm"
-     #"awesome"
-     #"xmonad"
-     #"exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
-     #"fvwm2" "fvwm3" "leftwm" "berry" "sawfish"
-     #"twm" "jwm" "ratpoison" "e16"
-     #"hypr"
-     #"oxwm"
 
+        # Manual
+     #"i3" "herbstluftwm" "notion" "ratpoison" "hypr"
+      "bspwm"
+
+        # Dynamic
+     #"awesome" "xmonad" "oxwm" "dk" "leftwm" "wmderland" "ragnarwm"
+     #"sawfish" "jwm" "spectrwm"  "pekwm" "exwm"
+      "titus-wm" #"drew-wm" #"dwm" #"chadwm"
+
+        # Floating
+     #"icewm" "fluxbox" "windowlab" "windowmaker"
+     #"fvwm2" "fvwm3" "mlvwm" "berry" "e16" "twm"
+      "openbox"
+
+      # Git-Wms
+
+        # Dynamic
       "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
-      "meow" "meowwm" "sexywm"
+      "meow" "meowwm" "sexywm" "mmwm" "coma"
      #"hana"
+     #"fluorite"
 
+        # Floating
       "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
-      "fowm" "hogewm"
+      "fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"qvwm" "aewmpp" "fxwm" "clarawm"
-     #"cygnus" "sewm" "simplewm" "superiorxwm"
+     #"cygnus" "sewm" "simplewm" "superiorxwm" "vswm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

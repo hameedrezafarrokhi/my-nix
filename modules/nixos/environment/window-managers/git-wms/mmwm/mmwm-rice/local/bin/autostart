@@ -1,0 +1,4 @@
+setxkbmap dvorak -option caps:escape
+feh --bg-scale ~/.config/wal/staryroad.jpg
+wal -R
+picom --experimental-backends &

@@ -30,12 +30,12 @@ in
 
        "hana" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb"
        "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
-       "moody" "meowwm" "meow" "sexywm"
+       "moody" "meowwm" "meow" "sexywm" "mmwm" "coma" "fluorite"
 
        "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm"
        "sewm" "fxwm" "cygnus" "rwm" "hogewm"
-       "superiorxwm"
+       "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
 
 
       ]);
@@ -144,6 +144,9 @@ in
     ./git-wms/meow
     ./git-wms/meowwm
     ./git-wms/sexywm
+    ./git-wms/mmwm
+    ./git-wms/coma
+    ./git-wms/fluorite
 
     ./git-wms/sowm
     ./git-wms/aphelia
@@ -163,7 +166,11 @@ in
     ./git-wms/rwm
     ./git-wms/hogewm
     ./git-wms/superiorxwm
-
+    ./git-wms/barigui
+    ./git-wms/iguassu
+    ./git-wms/vswm
+    ./git-wms/verysmallwm
+    ./git-wms/verystupidwm
 
 
 
