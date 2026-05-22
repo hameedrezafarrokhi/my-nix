@@ -1,0 +1,79 @@
+From 103f792720f758fc3d353f2f8832a481b0e6b58b Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 26 Jan 2012 13:04:51 +0200
+Subject: [PATCH] fibonacci layout mode
+
+---
+ config.def.h |  1 +
+ monsterwm.c  | 22 ++++++++++++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 4b2175d..c43f623 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -78,6 +78,7 @@ static Key keys[] = {
+     {  MOD1|SHIFT,       XK_b,          switch_mode,       {.i = BSTACK}},
+     {  MOD1|SHIFT,       XK_g,          switch_mode,       {.i = GRID}},
+     {  MOD1|SHIFT,       XK_f,          switch_mode,       {.i = FLOAT}},
++    {  MOD1|SHIFT,       XK_i,          switch_mode,       {.i = FIBONACCI}},
+     {  MOD1|CONTROL,     XK_r,          quit,              {.i = 0}}, /* quit with exit value 0 */
+     {  MOD1|CONTROL,     XK_q,          quit,              {.i = 1}}, /* quit with exit value 1 */
+     {  MOD1|SHIFT,       XK_Return,     spawn,             {.com = termcmd}},
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..9e3c718 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -20,7 +20,7 @@
+ #define ROOTMASK        SubstructureRedirectMask|ButtonPressMask|SubstructureNotifyMask|PropertyChangeMask
+ 
+ enum { RESIZE, MOVE };
+-enum { TILE, MONOCLE, BSTACK, GRID, FLOAT, MODES };
++enum { TILE, MONOCLE, BSTACK, GRID, FLOAT, FIBONACCI, MODES };
+ enum { WM_PROTOCOLS, WM_DELETE_WINDOW, WM_COUNT };
+ enum { NET_SUPPORTED, NET_FULLSCREEN, NET_WM_STATE, NET_ACTIVE, NET_COUNT };
+ 
+@@ -148,6 +148,7 @@ static void deletewindow(Window w);
+ static void desktopinfo(void);
+ static void destroynotify(XEvent *e);
+ static void enternotify(XEvent *e);
++static void fibonacci(int x, int y, int w, int h, const Desktop *d);
+ static void focus(Client *c, Desktop *d);
+ static void focusin(XEvent *e);
+ static unsigned long getcolor(const char* color, const int screen);
+@@ -216,7 +217,7 @@ static void (*events[LASTEvent])(XEvent *e) = {
+  * d - the desktop to tile its clients
+  */
+ static void (*layout[MODES])(int x, int y, int w, int h, const Desktop *d) = {
+-    [TILE] = stack, [BSTACK] = stack, [GRID] = grid, [MONOCLE] = monocle,
++    [TILE] = stack, [BSTACK] = stack, [GRID] = grid, [MONOCLE] = monocle, [FIBONACCI] = fibonacci
+ };
+ 
+ /**
+@@ -457,6 +458,23 @@ void enternotify(XEvent *e) {
+     if (p) XChangeWindowAttributes(dis, p->win, CWEventMask, &(XSetWindowAttributes){.event_mask = EnterWindowMask});
+ }
+ 
++/**
++ * fibonacci mode / fibonacci layout
++ * tile the windows based on the fibonacci series pattern.
++ * arrange windows in such a way that every new window shares
++ * half the space of the space taken by the last window.
++ */
++void fibonacci(int x, int y, int w, int h, const Desktop *d) {
++    int j = -1, cw = w - BORDER_WIDTH, ch = h - BORDER_WIDTH;
++    for (Client *n, *c = d->head; c; c = c->next) {
++        if (ISFFT(c)) continue; else j++;
++        for (n = c->next; n; n = n->next) if (!ISFFT(n)) break;
++        if (n) (j&1) ? (ch /= 2) : (cw /= 2);
++        if (j) (j&1) ? (x += cw) : (y += ch);
++        XMoveResizeWindow(dis, c->win, x, y, cw - BORDER_WIDTH, ch - BORDER_WIDTH);
++    }
++}
++
+ /**
+  * 1. set current/active/focused and previously focused client
+  *    in other words, manage curr and prev references
+-- 
+2.52.0
+

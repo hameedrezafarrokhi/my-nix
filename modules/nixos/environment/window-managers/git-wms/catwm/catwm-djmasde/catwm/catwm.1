@@ -1,0 +1,152 @@
+.TH catwm 1 catwm\-VERSION
+.SH NAME
+catwm \- cute and little tile window manager
+.SH SYNOPSIS
+.B catwm
+.RB [ \-v ]
+.SH DESCRIPTION
+catwm is a cute tiling window manager for X. It manages windows in tiled, monocle
+and horizontal stack. Either layout can be applied dynamically, optimising the
+environment for the application in use and the task performed.
+.P
+In tiled layouts windows are managed in a master and stacking area. The master
+area contains the window which currently needs most attention, whereas the
+stacking area contains all other windows. In monocle layout all windows are
+maximised to the screen size. In horizontal stack layout windows are equal in
+tiled, but horizontal. Dialog windows are always managed floating, regardless of the
+layout applied.
+.P
+This window manager are like, ratpoison, no mouse management, except, for dialogs
+of gtk, qt, mplayer, etc...
+.P
+Windows are grouped by tags. Each window can be tagged with one or multiple
+tags. Selecting certain tags displays all windows with these tags.
+.P
+Each screen contains a small status bar which displays all available tags, the
+layout, the title of the focused window, and the text read from the root window
+name property, if the screen is focused. The tags which are applied to one or more windows are
+indicated with an empty square in the top left corner.
+.P
+Note: Mod4 key is a windows key or aka super key, Shiftmask is a Shift key, Return key is intro.
+.P
+Please install rxvt-unicode to use urxvt, but the default launcher is easy to edited in
+config.h and changes urxvt to uxterm...
+.P
+catwm draws a small border around windows to indicate the focus state.
+.P
+Multihead is supported, aka multimonitor.
+.SH OPTIONS
+.TP
+.B \-v
+prints version information to standard output, then exits.
+.SH USAGE
+.SS Status bar
+.TP
+.B X root window name
+is read and displayed in the status text area. It can be set with the
+.BR dzen2 (1)
+command.
+.SS Keyboard commands
+.TP
+.B Mod4\-Shift\-Return
+.TP
+Start
+.BR urxvt (1).
+.TP
+.B Mod4\-p
+.TP
+Launches dmenu_run.
+.TP
+.B Mod4\-ShiftMask\-n
+.TP
+Sets focused window to master.
+.TP
+.B Mod4\-ShiftMask\-h
+.TP
+Sets vertical tiling layout.
+.TP
+.B Mod1\-ShiftMask\-v
+.TP
+Sets horizontal tiling layout.
+.TP
+.B Mod4\-ShiftMask\-m
+.TP
+Sets monocle layout.
+.TP
+.B Mod4\-j
+.TP
+Focus next window.
+.TP
+.B Mod4\-k
+.TP
+Focus previous window.
+.TP
+.B Mod4\-Tab
+.TP
+Focus next focused window like, Alt+Tab.
+.TP
+.B Mod4\-h
+.TP
+Increase master area size.
+.TP
+.B Mod4\-l
+.TP
+Decrease master area size.
+.TP
+.B Mod4\-Shift\-c
+.TP
+Close focused window.
+.TP
+.B Mod4\-[1..n]
+.TP
+View all windows with any tag.
+.TP
+.B Mod4\-0
+.TP
+View all windows with any tag, (tag 10).
+.TP
+.B Mod4\-Shift\-[1..n]
+.TP
+Move selected window to other tag (desktop).
+.TP
+.B Mod4\-Shift\-q
+.TP
+Quit catwm.
+.SH CUSTOMIZATION
+catwm is customized by creating a custom config.h and (re)compiling the source
+code. This keeps it fast, secure and simple.
+.SH SEE ALSO
+.BR dmenu (1)
+.SH BUGS
+Java applications which use the XToolkit/XAWT backend may draw grey windows
+only. The XToolkit/XAWT backend breaks ICCCM-compliance in recent JDK 1.5 and early
+JDK 1.6 versions, because it assumes a reparenting window manager. Possible workarounds
+are using JDK 1.4 (which doesn't contain the XToolkit/XAWT backend) or setting the
+environment variable
+.BR AWT_TOOLKIT=MToolkit
+(to use the older Motif backend instead) or running
+.B xprop -root -f _NET_WM_NAME 32a -set _NET_WM_NAME LG3D
+or
+.B wmname LG3D
+(to pretend that a non-reparenting window manager is running that the
+XToolkit/XAWT backend can recognize) or when using OpenJDK setting the environment variable
+.BR _JAVA_AWT_WM_NONREPARENTING=1 .
+.P
+GTK 2.10.9+ versions contain a broken
+.BR Save\-As
+file dialog implementation,
+which requests to reconfigure its window size in an endless loop. However, its
+window is still respondable during this state, so you can simply ignore the flicker
+until a new GTK version appears, which will fix this bug, approximately
+GTK 2.10.12+ versions.
+.SH NOTICE
+The original catwm from pyknite is more buggy, numlock affects the window manager shortcuts.
+In qt/gtk dialogs, catwm crashed, if close firefox, thunderbird, qupzilla new window, or other dialogs, 
+the desktop management aka tags, are runs bad, and little buggy, etc.
+.P
+In this fork runs very stable. desktop tags aka workspaces, or tags, runs ok, catwm not crashed with,
+qt/gtk dialogs, if close new window of thunderbird, firefox, qupzilla, numlock on not affects the
+keyboard shotcuts, and etc.
+.P
+In catwm 0.0.5 not crashes if resized in excess any window, in horizontal, and vertical stack.
+Monocle mode, forbids resize any window.

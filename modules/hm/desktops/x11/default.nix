@@ -573,7 +573,11 @@ in
       pkgs.xrefresh
       pkgs.xkb-switch
       pkgs.xdotool
+      pkgs.wmutils-core
+      pkgs.wmutils-opt
+      pkgs.wmutils-libwm
       pkgs.pamixer
+      pkgs.numlockx
       pkgs.wayback-x11
       pkgs.xdo
       pkgs.xbacklight

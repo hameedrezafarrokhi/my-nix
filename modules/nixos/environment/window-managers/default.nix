@@ -28,11 +28,15 @@ in
 
        "oxwm"
 
-       "hana" "suswm" "chibiwm" "custard"
+       "hana" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb"
+       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
+       "moody" "meowwm" "meow" "sexywm"
 
        "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm"
-       "sewm" "fxwm" "cygnus" "rwm"
+       "sewm" "fxwm" "cygnus" "rwm" "hogewm"
+       "superiorxwm"
+
 
       ]);
      default = [ ];
@@ -128,6 +132,18 @@ in
     ./git-wms/swm-sus
     ./git-wms/chibiwm
     ./git-wms/custard
+    ./git-wms/catwm/catwm-og
+    ./git-wms/catwm/catwm-djmasde
+    ./git-wms/catwm/catwm-ahmadinne
+    ./git-wms/catwm/dminiwm
+    ./git-wms/catwm/sara
+    ./git-wms/catwm/eowm
+    ./git-wms/monsterwm
+    ./git-wms/monsterwm-xcb
+    ./git-wms/moody
+    ./git-wms/meow
+    ./git-wms/meowwm
+    ./git-wms/sexywm
 
     ./git-wms/sowm
     ./git-wms/aphelia
@@ -145,6 +161,10 @@ in
     ./git-wms/cygnus
     ./git-wms/fxwm
     ./git-wms/rwm
+    ./git-wms/hogewm
+    ./git-wms/superiorxwm
+
+
 
 
   ];

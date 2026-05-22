@@ -1,0 +1,66 @@
+From 85b7a116ba73f2391e5846ff1bdc8fb85e3d22e1 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Sat, 9 Jun 2012 12:57:47 +0300
+Subject: [PATCH] draw only a rectangle when moving/resizing
+
+this keeps resources low, ie when using
+the wm through an shh X-forworded session
+on low bandwidth, it is costly to redraw
+the whole window contents on resize/move.
+drawing just a rectangle to represent the
+new position/size of the window, addresses
+this issue.
+---
+ monsterwm.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..33a42b2 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -764,17 +764,39 @@ void mousemotion(const Arg *arg) {
+ 
+     if (!d->curr->isfloat && !d->curr->istrans) { d->curr->isfloat = True; tile(d); focus(d->curr, d); }
+ 
++    /* init rectangle properties */
++    XGCValues gv = { .function = GXinvert, .subwindow_mode = IncludeInferiors, .line_width = BORDER_WIDTH };
++    GC gc = XCreateGC(dis, root, GCFunction|GCSubwindowMode|GCLineWidth, &gv);
++
++    /* draw rectangle */
++    if (arg->i == MOVE) XDrawRectangle(dis, root, gc, xw = wa.x, yh = wa.y, wa.width, wa.height);
++    else XDrawRectangle(dis, root, gc, wa.x, wa.y, xw = wa.width, yh = wa.height);
++
+     do {
+         XMaskEvent(dis, BUTTONMASK|PointerMotionMask|SubstructureRedirectMask, &ev);
+         if (ev.type == MotionNotify) {
++            /* clear rectangle from prev position */
++            if (arg->i == MOVE) XDrawRectangle(dis, root, gc, xw, yh, wa.width, wa.height);
++            else if (arg->i == RESIZE) XDrawRectangle(dis, root, gc, wa.x, wa.y, xw, yh);
++
+             xw = (arg->i == MOVE ? wa.x:wa.width)  + ev.xmotion.x - rx;
+             yh = (arg->i == MOVE ? wa.y:wa.height) + ev.xmotion.y - ry;
+-            if (arg->i == RESIZE) XResizeWindow(dis, d->curr->win,
+-                    xw > MINWSZ ? xw:wa.width, yh > MINWSZ ? yh:wa.height);
+-            else if (arg->i == MOVE) XMoveWindow(dis, d->curr->win, xw, yh);
++
++            /* draw rectangle in new position */
++            if (arg->i == MOVE) XDrawRectangle(dis, root, gc, xw, yh, wa.width, wa.height);
++            else if (arg->i == RESIZE) XDrawRectangle(dis, root, gc, wa.x, wa.y, xw, yh);
+         } else if (ev.type == ConfigureRequest || ev.type == MapRequest) events[ev.type](&ev);
+     } while (ev.type != ButtonRelease);
+ 
++    /* clear rectangle from last position */
++    if (arg->i == MOVE) XDrawRectangle(dis, root, gc, xw, yh, wa.width, wa.height);
++    else if (arg->i == RESIZE) XDrawRectangle(dis, root, gc, wa.x, wa.y, xw, yh);
++
++    /* actually move/resize the window to the new position/size */
++    if (arg->i == RESIZE) XResizeWindow(dis, d->curr->win,
++            xw > MINWSZ ? xw:wa.width, yh > MINWSZ ? yh:wa.height);
++    else if (arg->i == MOVE) XMoveWindow(dis, d->curr->win, xw, yh);
++
+     XUngrabPointer(dis, CurrentTime);
+ }
+ 
+-- 
+2.52.0
+

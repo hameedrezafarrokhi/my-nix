@@ -1,0 +1,57 @@
+From 8c712e02cbce7b1efeac65057fa36dd31105fc59 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 12 Apr 2012 14:29:43 +0300
+Subject: [PATCH] center new floating windows - center any window with a
+ shortcut
+
+---
+ config.def.h |  1 +
+ monsterwm.c  | 13 +++++++++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 4b2175d..d089c4b 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -59,6 +59,7 @@ static Key keys[] = {
+     {  MOD1,             XK_b,          togglepanel,       {NULL}},
+     {  MOD1,             XK_BackSpace,  focusurgent,       {NULL}},
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
++    {  MOD4,             XK_c,          centerwindow,      {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
+     {  MOD1,             XK_h,          resize_master,     {.i = -10}}, /* decrease size in px */
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..a1b7d1c 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -79,6 +79,7 @@ typedef struct {
+ 
+ /* exposed function prototypes sorted alphabetically */
+ static void change_desktop(const Arg *arg);
++static void centerwindow();
+ static void client_to_desktop(const Arg *arg);
+ static void focusurgent();
+ static void killclient();
+@@ -281,6 +282,18 @@ void change_desktop(const Arg *arg) {
+     desktopinfo();
+ }
+ 
++/**
++ * place the current window in the center of the screen floating
++ */
++void centerwindow(void) {
++    XWindowAttributes wa;
++    Desktop *d = &desktops[currdeskidx];
++    if (!d->curr || !XGetWindowAttributes(dis, d->curr->win, &wa)) return;
++    if (!d->curr->isfloat && !d->curr->istrans) { d->curr->isfloat = True; tile(d); }
++    XRaiseWindow(dis, d->curr->win);
++    XMoveWindow(dis, d->curr->win, (ww - wa.width)/2, (wh - wa.height)/2);
++}
++
+ /**
+  * remove all windows in all desktops by sending a delete window message
+  */
+-- 
+2.52.0
+

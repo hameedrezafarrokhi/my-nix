@@ -116,11 +116,15 @@
      #"hypr"
      #"oxwm"
 
-     #"hana" "custard"
-      "suswm" "chibiwm"
+      "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
+      "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
+      "meow" "meowwm" "sexywm"
+     #"hana"
 
       "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
-     #"qvwm" "aewmpp" "clarawm" "simplewm" "fowm" "cygnus" "sewm" "fxwm"
+      "fowm" "hogewm"
+     #"qvwm" "aewmpp" "fxwm" "clarawm"
+     #"cygnus" "sewm" "simplewm" "superiorxwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

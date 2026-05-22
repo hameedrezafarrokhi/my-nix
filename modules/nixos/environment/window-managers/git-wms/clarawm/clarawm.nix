@@ -4,7 +4,7 @@
   fetchFromGitHub,
   libX11,
   libXext,
-  clang,
+  clang-tools,
 }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-8iOcL1SzVrOJcSCseGrfd8nuEnTnAp3nSFBKxKntE3o=";
   };
 
-  nativeBuildInputs = [ clang ];
+  nativeBuildInputs = [ clang-tools ];
 
   buildInputs = [ libX11 libXext ];
 

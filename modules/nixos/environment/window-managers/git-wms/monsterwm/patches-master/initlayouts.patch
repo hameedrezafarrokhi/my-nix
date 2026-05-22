@@ -1,0 +1,52 @@
+From d653fa980146c8b9a3d09b38acdfa8435b100f72 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Mon, 26 Mar 2012 15:11:50 +0300
+Subject: [PATCH] initial layouts per desktop
+
+---
+ config.def.h | 8 +++++++-
+ monsterwm.c  | 2 +-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 4b2175d..f7456ef 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -25,7 +25,12 @@
+ #define UNFOCUS         "#444444" /* unfocused window border color  */
+ #define MINWSZ          50        /* minimum window size in pixels  */
+ #define DEFAULT_DESKTOP 0         /* the desktop to focus initially */
+-#define DESKTOPS        4         /* number of desktops - edit DESKTOPCHANGE keys to suit */
++#define DESKTOPS        5         /* number of desktops - edit DESKTOPCHANGE keys to suit */
++
++/**
++ * layouts for each desktops
++ */
++static const int initlayouts[] = { TILE, BSTACK, GRID, MONOCLE, FLOAT, };
+ 
+ /**
+  * open applications to specified desktop with specified mode.
+@@ -94,6 +99,7 @@ static Key keys[] = {
+        DESKTOPCHANGE(    XK_F2,                             1)
+        DESKTOPCHANGE(    XK_F3,                             2)
+        DESKTOPCHANGE(    XK_F4,                             3)
++       DESKTOPCHANGE(    XK_F5,                             4)
+ };
+ 
+ /**
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..db4ee8e 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -1026,7 +1026,7 @@ void setup(void) {
+ 
+     /* initialize mode and panel visibility for each desktop */
+     for (unsigned int d = 0; d < DESKTOPS; d++)
+-        desktops[d] = (Desktop){ .mode = DEFAULT_MODE, .sbar = SHOW_PANEL };
++        desktops[d] = (Desktop){ .mode = initlayouts[d], .sbar = SHOW_PANEL };
+ 
+     /* get color for focused and unfocused client borders */
+     win_focus = getcolor(FOCUS, screen);
+-- 
+2.52.0
+

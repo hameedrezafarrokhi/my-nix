@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
     owner = "ColleagueRiley";
     repo = "RWM";
     rev = "main";
-    hash = "sha256-AAAsU5K86pAAAQNlzfxgyoEAAApBaZQmFAAAFnmoAAA=";
+    hash = "sha256-vJLRXxN6mZnHLT3oRZuH3jNcZBeaxuWq9YnBmQ947kg=";
   };
 
   nativeBuildInputs = [ gcc ];
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ libX11 ];
 
   buildPhase = ''
-    gcc rwm.c -lX11 -lO3 -o rwm
+    gcc rwm.c -lX11 -O3 -o rwm
   '';
 
   installPhase = ''

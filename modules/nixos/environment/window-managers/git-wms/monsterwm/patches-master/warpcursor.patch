@@ -1,0 +1,48 @@
+From 3fe4c01caeb8a9aff4e1383e08fa1488b5a8422c Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 26 Jan 2012 18:05:56 +0200
+Subject: [PATCH] warpcursor to the center of the current client
+
+---
+ monsterwm.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..2f2ba7d 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -167,6 +167,7 @@ static void sigchld(int sig);
+ static void stack(int x, int y, int w, int h, const Desktop *d);
+ static void tile(Desktop *d);
+ static void unmapnotify(XEvent *e);
++static void warpcursor(Client *c);
+ static Bool wintoclient(Window w, Client **c, Desktop **d);
+ static int xerror(Display *dis, XErrorEvent *ee);
+ static int xerrorstart(Display *dis, XErrorEvent *ee);
+@@ -552,6 +553,7 @@ void focus(Client *c, Desktop *d) {
+     XChangeProperty(dis, root, netatoms[NET_ACTIVE], XA_WINDOW, 32,
+                     PropModeReplace, (unsigned char *)&d->curr->win, 1);
+ 
++    warpcursor(d->curr);
+     XSync(dis, False);
+ }
+ 
+@@ -1208,6 +1210,15 @@ Bool wintoclient(Window w, Client **c, Desktop **d) {
+     return (*c != NULL);
+ }
+ 
++/**
++ * warps the mouse pointer to the center of the client c
++ */
++void warpcursor(Client *c) {
++    XWindowAttributes wa;
++    if (c && XGetWindowAttributes(dis, c->win, &wa))
++        XWarpPointer(dis, None, c->win, 0,0,0,0, wa.width/2, wa.height/2);
++}
++
+ /**
+  * There's no way to check accesses to destroyed windows,
+  * thus those cases are ignored (especially on UnmapNotify's).
+-- 
+2.52.0
+

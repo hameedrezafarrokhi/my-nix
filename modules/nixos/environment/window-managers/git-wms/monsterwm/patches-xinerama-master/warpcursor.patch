@@ -1,0 +1,813 @@
+From 5f4c250dfccca65f7547b7d5546aa67a2d2ad46a Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:33:17 +0200
+Subject: [PATCH 01/13] make panel toggleable with a shortcut
+
+---
+ config.def.h |  2 ++
+ monsterwm.c  | 19 ++++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 7dfe268..0e301d3 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -11,6 +11,7 @@
+ 
+ /** generic settings **/
+ #define MASTER_SIZE     0.52
++#define SHOW_PANEL      True      /* show panel by default on exec */
+ #define TOP_PANEL       True      /* False means panel is on bottom */
+ #define PANEL_HEIGHT    18        /* 0 for no space for panel, thus no panel */
+ #define DEFAULT_MODE    TILE      /* initial layout/mode: TILE MONOCLE BSTACK GRID FLOAT */
+@@ -50,6 +51,7 @@ static const char *termcmd[] = { "xterm", NULL };
+  */
+ static Key keys[] = {
+     /* modifier          key            function           argument */
++    {  MOD1,             XK_b,          togglepanel,       {NULL}},
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
+diff --git a/monsterwm.c b/monsterwm.c
+index b1109f3..008e421 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -91,6 +91,7 @@ static void quit();
+ static void spawn(const Arg *arg);
+ static void swap_master();
+ static void switch_mode(const Arg *arg);
++static void togglepanel();
+ 
+ #include "config.h"
+ 
+@@ -121,10 +122,12 @@ typedef struct Client {
+  * head - the start of the client list
+  * curr - the currently highlighted window
+  * prev - the client that previously had focus
++ * sbar - the visibility status of the panel/statusbar
+  */
+ typedef struct {
+     int mode;
+     Client *head, *curr, *prev;
++    Bool sbar;
+ } Desktop;
+ 
+ /* hidden function prototypes sorted alphabetically */
+@@ -957,8 +960,9 @@ void setup(void) {
+     ww = XDisplayWidth(dis,  screen);
+     wh = XDisplayHeight(dis, screen) - PANEL_HEIGHT;
+ 
+-    /* initialize mode for each desktop */
+-    for (unsigned int d = 0; d < DESKTOPS; d++) desktops[d] = (Desktop){ .mode = DEFAULT_MODE };
++    /* initialize mode and panel visibility for each desktop */
++    for (unsigned int d = 0; d < DESKTOPS; d++)
++        desktops[d] = (Desktop){ .mode = DEFAULT_MODE, .sbar = SHOW_PANEL };
+ 
+     /* get color for focused and unfocused client borders */
+     win_focus = getcolor(FOCUS, screen);
+@@ -1084,7 +1088,16 @@ void switch_mode(const Arg *arg) {
+  */
+ void tile(Desktop *d) {
+     if (!d->head || d->mode == FLOAT) return; /* nothing to arange */
+-    layout[d->head->next ? d->mode:MONOCLE](0, TOP_PANEL ? PANEL_HEIGHT:0, ww, wh, d);
++    layout[d->head->next ? d->mode:MONOCLE](0, TOP_PANEL && d->sbar ? PANEL_HEIGHT:0,
++                                                  ww, wh + (d->sbar ? 0:PANEL_HEIGHT), d);
++}
++
++/**
++ * toggle visibility state of the panel/bar
++ */
++void togglepanel(void) {
++    desktops[currdeskidx].sbar = !desktops[currdeskidx].sbar;
++    tile(&desktops[currdeskidx]);
+ }
+ 
+ /**
+-- 
+2.52.0
+
+
+From 90335c584b26c0d35424d538428c478c11334695 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:29:51 +0200
+Subject: [PATCH 02/13] toggle to previously focused desktop
+
+---
+ config.def.h |  1 +
+ monsterwm.c  | 12 ++++++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 0e301d3..3c2c7cf 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -55,6 +55,7 @@ static Key keys[] = {
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
++    {  MOD1,             XK_Tab,        last_desktop,      {NULL}},
+     {  MOD1,             XK_Return,     swap_master,       {NULL}},
+     {  MOD1|SHIFT,       XK_j,          move_down,         {NULL}},
+     {  MOD1|SHIFT,       XK_k,          move_up,           {NULL}},
+diff --git a/monsterwm.c b/monsterwm.c
+index 008e421..71e2d04 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -81,6 +81,7 @@ typedef struct {
+ static void change_desktop(const Arg *arg);
+ static void client_to_desktop(const Arg *arg);
+ static void killclient();
++static void last_desktop();
+ static void move_down();
+ static void move_up();
+ static void moveresize(const Arg *arg);
+@@ -177,7 +178,7 @@ static int xerrorstart(Display *dis, XErrorEvent *ee);
+  * currdeskidx  - which desktop is currently active
+  */
+ static Bool running = True;
+-static int wh, ww, currdeskidx;
++static int wh, ww, currdeskidx, prevdeskidx;
+ static unsigned int numlockmask, win_unfocus, win_focus;
+ static Display *dis;
+ static Window root;
+@@ -262,7 +263,7 @@ void buttonpress(XEvent *e) {
+  */
+ void change_desktop(const Arg *arg) {
+     if (arg->i == currdeskidx || arg->i < 0 || arg->i >= DESKTOPS) return;
+-    Desktop *d = &desktops[currdeskidx], *n = &desktops[(currdeskidx = arg->i)];
++    Desktop *d = &desktops[(prevdeskidx = currdeskidx)], *n = &desktops[(currdeskidx = arg->i)];
+     if (n->curr) XMapWindow(dis, n->curr->win);
+     for (Client *c = n->head; c; c = c->next) XMapWindow(dis, c->win);
+     XChangeWindowAttributes(dis, root, CWEventMask, &(XSetWindowAttributes){.do_not_propagate_mask = SubstructureNotifyMask});
+@@ -656,6 +657,13 @@ void killclient(void) {
+     if (prot) XFree(prot);
+ }
+ 
++/**
++ * focus the previously/last focused desktop
++ */
++void last_desktop(void) {
++    change_desktop(&(Arg){.i = prevdeskidx});
++}
++
+ /**
+  * a map request is received when a window wants to display itself.
+  * if the window has override_redirect flag set,
+-- 
+2.52.0
+
+
+From 946c57212c5456786306525f59c479a8a357a7de Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:35:07 +0200
+Subject: [PATCH 03/13] specify default desktop
+
+---
+ config.def.h | 7 ++++---
+ monsterwm.c  | 1 +
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 3c2c7cf..3683ee5 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -21,9 +21,10 @@
+ #define CLICK_TO_FOCUS  True      /* focus an unfocused window when clicked  */
+ #define FOCUS_BUTTON    Button3   /* mouse button to be used along with CLICK_TO_FOCUS */
+ #define BORDER_WIDTH    2         /* window border width */
+-#define FOCUS           "#ff950e" /* focused window border color   */
+-#define UNFOCUS         "#444444" /* unfocused window border color */
+-#define MINWSZ          50        /* minimum window size in pixels */
++#define FOCUS           "#ff950e" /* focused window border color    */
++#define UNFOCUS         "#444444" /* unfocused window border color  */
++#define MINWSZ          50        /* minimum window size in pixels  */
++#define DEFAULT_DESKTOP 0         /* the desktop to focus initially */
+ #define DESKTOPS        4         /* number of desktops - edit DESKTOPCHANGE keys to suit */
+ 
+ /**
+diff --git a/monsterwm.c b/monsterwm.c
+index 71e2d04..428a311 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -1007,6 +1007,7 @@ void setup(void) {
+     XSync(dis, False);
+ 
+     grabkeys();
++    if (DEFAULT_DESKTOP >= 0 && DEFAULT_DESKTOP < DESKTOPS) change_desktop(&(Arg){.i = DEFAULT_DESKTOP});
+ }
+ 
+ void sigchld(__attribute__((unused)) int sig) {
+-- 
+2.52.0
+
+
+From d93a13f4261d4ab183715cc6157a72ac1187ead9 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:36:35 +0200
+Subject: [PATCH 04/13] exit with specified value
+
+---
+ config.def.h | 3 ++-
+ monsterwm.c  | 9 +++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 3683ee5..81d7dec 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -65,7 +65,8 @@ static Key keys[] = {
+     {  MOD1|SHIFT,       XK_b,          switch_mode,       {.i = BSTACK}},
+     {  MOD1|SHIFT,       XK_g,          switch_mode,       {.i = GRID}},
+     {  MOD1|SHIFT,       XK_f,          switch_mode,       {.i = FLOAT}},
+-    {  MOD1|CONTROL,     XK_q,          quit,              {NULL}},
++    {  MOD1|CONTROL,     XK_r,          quit,              {.i = 0}}, /* quit with exit value 0 */
++    {  MOD1|CONTROL,     XK_q,          quit,              {.i = 1}}, /* quit with exit value 1 */
+     {  MOD1|SHIFT,       XK_Return,     spawn,             {.com = termcmd}},
+     {  MOD4,             XK_j,          moveresize,        {.v = (int []){   0,  25,   0,   0 }}}, /* move down  */
+     {  MOD4,             XK_k,          moveresize,        {.v = (int []){   0, -25,   0,   0 }}}, /* move up    */
+diff --git a/monsterwm.c b/monsterwm.c
+index 428a311..bb1795e 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -88,7 +88,7 @@ static void moveresize(const Arg *arg);
+ static void mousemotion(const Arg *arg);
+ static void next_win();
+ static void prev_win();
+-static void quit();
++static void quit(const Arg *arg);
+ static void spawn(const Arg *arg);
+ static void swap_master();
+ static void switch_mode(const Arg *arg);
+@@ -178,7 +178,7 @@ static int xerrorstart(Display *dis, XErrorEvent *ee);
+  * currdeskidx  - which desktop is currently active
+  */
+ static Bool running = True;
+-static int wh, ww, currdeskidx, prevdeskidx;
++static int wh, ww, currdeskidx, prevdeskidx, retval;
+ static unsigned int numlockmask, win_unfocus, win_focus;
+ static Display *dis;
+ static Window root;
+@@ -905,7 +905,8 @@ void propertynotify(XEvent *e) {
+  * to quit just stop receiving events
+  * run is stopped and control is back to main
+  */
+-void quit(void) {
++void quit(const Arg *arg) {
++    retval = arg->i;
+     running = False;
+ }
+ 
+@@ -1161,7 +1162,7 @@ int main(int argc, char *argv[]) {
+     run();
+     cleanup();
+     XCloseDisplay(dis);
+-    return 0;
++    return retval;
+ }
+ 
+ /* vim: set expandtab ts=4 sts=4 sw=4 : */
+-- 
+2.52.0
+
+
+From 579de40d8b20378169ca537cafa157526bc99051 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Tue, 10 Jul 2012 03:49:24 +0300
+Subject: [PATCH 05/13] config: add dmenu
+
+---
+ config.def.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index 81d7dec..9185f39 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -41,7 +41,8 @@ static const AppRule rules[] = { \
+  * custom commands
+  * must always end with ', NULL };'
+  */
+-static const char *termcmd[] = { "xterm", NULL };
++static const char *termcmd[] = { "xterm",     NULL };
++static const char *menucmd[] = { "dmenu_run", NULL };
+ 
+ #define DESKTOPCHANGE(K,N) \
+     {  MOD1,             K,              change_desktop, {.i = N}}, \
+@@ -68,6 +69,7 @@ static Key keys[] = {
+     {  MOD1|CONTROL,     XK_r,          quit,              {.i = 0}}, /* quit with exit value 0 */
+     {  MOD1|CONTROL,     XK_q,          quit,              {.i = 1}}, /* quit with exit value 1 */
+     {  MOD1|SHIFT,       XK_Return,     spawn,             {.com = termcmd}},
++    {  MOD4,             XK_v,          spawn,             {.com = menucmd}},
+     {  MOD4,             XK_j,          moveresize,        {.v = (int []){   0,  25,   0,   0 }}}, /* move down  */
+     {  MOD4,             XK_k,          moveresize,        {.v = (int []){   0, -25,   0,   0 }}}, /* move up    */
+     {  MOD4,             XK_l,          moveresize,        {.v = (int []){  25,   0,   0,   0 }}}, /* move right */
+@@ -88,6 +90,7 @@ static Key keys[] = {
+ static Button buttons[] = {
+     {  MOD1,    Button1,     mousemotion,   {.i = MOVE}},
+     {  MOD1,    Button3,     mousemotion,   {.i = RESIZE}},
++    {  MOD4,    Button3,     spawn,         {.com = menucmd}},
+ };
+ #endif
+ 
+-- 
+2.52.0
+
+
+From 91d40f6c978c94e61b3b8b4b1af2954edd68001e Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:40:05 +0200
+Subject: [PATCH 06/13] config: add SHCMD helper to run shell commands
+
+---
+ config.def.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 9185f39..7b46a87 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -37,6 +37,9 @@ static const AppRule rules[] = { \
+     { "Gimp",        0,    False,  True  },
+ };
+ 
++/* helper for spawning shell commands */
++#define SHCMD(cmd) {.com = (const char*[]){"/bin/sh", "-c", cmd, NULL}}
++
+ /**
+  * custom commands
+  * must always end with ', NULL };'
+-- 
+2.52.0
+
+
+From 56c613830041d6902d97ac93f8bb7eb704d95039 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:28:00 +0200
+Subject: [PATCH 07/13] focus urgent window with a shortcut
+
+---
+ config.def.h |  1 +
+ monsterwm.c  | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 7b46a87..666a11d 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -57,6 +57,7 @@ static const char *menucmd[] = { "dmenu_run", NULL };
+ static Key keys[] = {
+     /* modifier          key            function           argument */
+     {  MOD1,             XK_b,          togglepanel,       {NULL}},
++    {  MOD1,             XK_BackSpace,  focusurgent,       {NULL}},
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
+diff --git a/monsterwm.c b/monsterwm.c
+index bb1795e..00027af 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -80,6 +80,7 @@ typedef struct {
+ /* exposed function prototypes sorted alphabetically */
+ static void change_desktop(const Arg *arg);
+ static void client_to_desktop(const Arg *arg);
++static void focusurgent();
+ static void killclient();
+ static void last_desktop();
+ static void move_down();
+@@ -563,6 +564,15 @@ void focusin(XEvent *e) {
+     if (d->curr && d->curr->win != e->xfocus.window) focus(d->curr, d);
+ }
+ 
++/**
++ * find and focus the first client which received
++ * an urgent hint in the current desktop
++ */
++void focusurgent(void) {
++    Desktop *d = &desktops[currdeskidx];
++    for (Client *c = d->head; c; c = c->next) if (c->isurgn) focus(c, d);
++}
++
+ /**
+  * get a pixel with the requested color to
+  * fill some window area (such as borders)
+-- 
+2.52.0
+
+
+From 202edd8b7056cdeca02dbef0c165ce1986f7844e Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Fri, 16 Mar 2012 03:42:39 +0200
+Subject: [PATCH 08/13] focus clients with urgent hint on other desktops
+
+---
+ monsterwm.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/monsterwm.c b/monsterwm.c
+index 00027af..52cbd61 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -565,12 +565,15 @@ void focusin(XEvent *e) {
+ }
+ 
+ /**
+- * find and focus the first client which received
+- * an urgent hint in the current desktop
++ * find and focus the first client that received an urgent hint
++ * first look in the current desktop then on other desktops
+  */
+ void focusurgent(void) {
+-    Desktop *d = &desktops[currdeskidx];
+-    for (Client *c = d->head; c; c = c->next) if (c->isurgn) focus(c, d);
++    Client *c = NULL;
++    int d = -1;
++    for (c = desktops[currdeskidx].head; c && !c->isurgn; c = c->next);
++    while (!c && d < DESKTOPS-1) for (c = desktops[++d].head; c && !c->isurgn; c = c->next);
++    if (c) { if (d != -1) change_desktop(&(Arg){.i = d}); focus(c, &desktops[currdeskidx]); }
+ }
+ 
+ /**
+-- 
+2.52.0
+
+
+From 2cfded4c873ba0ec4401c9c155505c16931f5f06 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:41:50 +0200
+Subject: [PATCH 09/13] rotate desktops with shortcuts
+
+---
+ config.def.h | 2 ++
+ monsterwm.c  | 8 ++++++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 666a11d..1dfe4fe 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -61,6 +61,8 @@ static Key keys[] = {
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
++    {  MOD1|CONTROL,     XK_h,          rotate,            {.i = -1}},
++    {  MOD1|CONTROL,     XK_l,          rotate,            {.i = +1}},
+     {  MOD1,             XK_Tab,        last_desktop,      {NULL}},
+     {  MOD1,             XK_Return,     swap_master,       {NULL}},
+     {  MOD1|SHIFT,       XK_j,          move_down,         {NULL}},
+diff --git a/monsterwm.c b/monsterwm.c
+index 52cbd61..78cb34a 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -90,6 +90,7 @@ static void mousemotion(const Arg *arg);
+ static void next_win();
+ static void prev_win();
+ static void quit(const Arg *arg);
++static void rotate(const Arg *arg);
+ static void spawn(const Arg *arg);
+ static void swap_master();
+ static void switch_mode(const Arg *arg);
+@@ -940,6 +941,13 @@ void removeclient(Client *c, Desktop *d) {
+     desktopinfo();
+ }
+ 
++/**
++ * jump and focus the next or previous desktop
++ */
++void rotate(const Arg *arg) {
++    change_desktop(&(Arg){.i = (DESKTOPS + currdeskidx + arg->i) % DESKTOPS});
++}
++
+ /**
+  * main event loop
+  * on receival of an event call the appropriate handler
+-- 
+2.52.0
+
+
+From 60abc2c323fa0355d6cd52005561e262efc1b23c Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 1 Mar 2012 19:42:56 +0200
+Subject: [PATCH 10/13] rotate non-empty desktops with shortcuts
+
+---
+ config.def.h |  2 ++
+ monsterwm.c  | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 1dfe4fe..835d2b3 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -63,6 +63,8 @@ static Key keys[] = {
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
+     {  MOD1|CONTROL,     XK_h,          rotate,            {.i = -1}},
+     {  MOD1|CONTROL,     XK_l,          rotate,            {.i = +1}},
++    {  MOD1|SHIFT,       XK_h,          rotate_filled,     {.i = -1}},
++    {  MOD1|SHIFT,       XK_l,          rotate_filled,     {.i = +1}},
+     {  MOD1,             XK_Tab,        last_desktop,      {NULL}},
+     {  MOD1,             XK_Return,     swap_master,       {NULL}},
+     {  MOD1|SHIFT,       XK_j,          move_down,         {NULL}},
+diff --git a/monsterwm.c b/monsterwm.c
+index 78cb34a..ff1eefb 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -91,6 +91,7 @@ static void next_win();
+ static void prev_win();
+ static void quit(const Arg *arg);
+ static void rotate(const Arg *arg);
++static void rotate_filled(const Arg *arg);
+ static void spawn(const Arg *arg);
+ static void swap_master();
+ static void switch_mode(const Arg *arg);
+@@ -948,6 +949,15 @@ void rotate(const Arg *arg) {
+     change_desktop(&(Arg){.i = (DESKTOPS + currdeskidx + arg->i) % DESKTOPS});
+ }
+ 
++/**
++ * jump and focus the next non-empty desktop
++ */
++void rotate_filled(const Arg *arg) {
++    int n = arg->i;
++    while (n < DESKTOPS && !desktops[(DESKTOPS + currdeskidx + n) % DESKTOPS].head) (n += arg->i);
++    change_desktop(&(Arg){.i = (DESKTOPS + currdeskidx + n) % DESKTOPS});
++}
++
+ /**
+  * main event loop
+  * on receival of an event call the appropriate handler
+-- 
+2.52.0
+
+
+From c0f9bd21642ac9f8e9084307759a9e77e1658bf4 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Sun, 4 Mar 2012 03:57:23 +0200
+Subject: [PATCH 11/13] resize master area with shortcuts
+
+---
+ config.def.h |  2 ++
+ monsterwm.c  | 20 +++++++++++++++++---
+ 2 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 835d2b3..faaa9a5 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -61,6 +61,8 @@ static Key keys[] = {
+     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
+     {  MOD1,             XK_j,          next_win,          {NULL}},
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
++    {  MOD1,             XK_h,          resize_master,     {.i = -10}}, /* decrease size in px */
++    {  MOD1,             XK_l,          resize_master,     {.i = +10}}, /* increase size in px */
+     {  MOD1|CONTROL,     XK_h,          rotate,            {.i = -1}},
+     {  MOD1|CONTROL,     XK_l,          rotate,            {.i = +1}},
+     {  MOD1|SHIFT,       XK_h,          rotate_filled,     {.i = -1}},
+diff --git a/monsterwm.c b/monsterwm.c
+index ff1eefb..4886d68 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -90,6 +90,7 @@ static void mousemotion(const Arg *arg);
+ static void next_win();
+ static void prev_win();
+ static void quit(const Arg *arg);
++static void resize_master(const Arg *arg);
+ static void rotate(const Arg *arg);
+ static void rotate_filled(const Arg *arg);
+ static void spawn(const Arg *arg);
+@@ -122,6 +123,7 @@ typedef struct Client {
+ /**
+  * properties of each desktop
+  *
++ * masz - the size of the master area
+  * mode - the desktop's tiling layout mode
+  * head - the start of the client list
+  * curr - the currently highlighted window
+@@ -129,7 +131,7 @@ typedef struct Client {
+  * sbar - the visibility status of the panel/statusbar
+  */
+ typedef struct {
+-    int mode;
++    int mode, masz;
+     Client *head, *curr, *prev;
+     Bool sbar;
+ } Desktop;
+@@ -942,6 +944,18 @@ void removeclient(Client *c, Desktop *d) {
+     desktopinfo();
+ }
+ 
++/**
++ * resize the master size
++ * we should check for window size limits for both master and
++ * stack clients. the size of a window can't be less than MINWSZ
++ */
++void resize_master(const Arg *arg) {
++    Desktop *d = &desktops[currdeskidx];
++    int msz = (d->mode == BSTACK ? wh:ww) * MASTER_SIZE + (d->masz += arg->i);
++    if (msz >= MINWSZ && (d->mode == BSTACK ? wh:ww) - msz >= MINWSZ) tile(d);
++    else d->masz -= arg->i; /* reset master area size */
++}
++
+ /**
+  * jump and focus the next or previous desktop
+  */
+@@ -1064,13 +1078,13 @@ void spawn(const Arg *arg) {
+  */
+ void stack(int x, int y, int w, int h, const Desktop *d) {
+     Client *c = NULL, *t = NULL; Bool b = (d->mode == BSTACK);
+-    int n = 0, p = 0, z = (b ? w:h), ma = (b ? h:w) * MASTER_SIZE;
++    int n = 0, p = 0, z = (b ? w:h), ma = (b ? h:w) * MASTER_SIZE + d->masz;
+ 
+     /* count stack windows and grab first non-floating, non-fullscreen window */
+     for (t = d->head; t; t = t->next) if (!ISFFT(t)) { if (c) ++n; else c = t; }
+ 
+     /* if there is only one window, it should cover the available screen space
+-     * if there is only one stack window (n == 1) then we don't care about the adjustments
++     * if there is only one stack window (n == 1) then we don't care about growth
+      * if more than one stack windows (n > 1) on screen then adjustments may be needed
+      *   - p is the num of pixels than remain when spliting
+      *   the available width/height to the number of windows
+-- 
+2.52.0
+
+
+From eb3820f877a624e00be5a0ee28feb943889cb915 Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Sun, 4 Mar 2012 05:06:42 +0200
+Subject: [PATCH 12/13] resize stack with shortcuts
+
+---
+ config.def.h |  2 ++
+ monsterwm.c  | 57 ++++++++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 48 insertions(+), 11 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index faaa9a5..4b2175d 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -63,6 +63,8 @@ static Key keys[] = {
+     {  MOD1,             XK_k,          prev_win,          {NULL}},
+     {  MOD1,             XK_h,          resize_master,     {.i = -10}}, /* decrease size in px */
+     {  MOD1,             XK_l,          resize_master,     {.i = +10}}, /* increase size in px */
++    {  MOD1,             XK_o,          resize_stack,      {.i = -10}}, /* shrink   size in px */
++    {  MOD1,             XK_p,          resize_stack,      {.i = +10}}, /* grow     size in px */
+     {  MOD1|CONTROL,     XK_h,          rotate,            {.i = -1}},
+     {  MOD1|CONTROL,     XK_l,          rotate,            {.i = +1}},
+     {  MOD1|SHIFT,       XK_h,          rotate_filled,     {.i = -1}},
+diff --git a/monsterwm.c b/monsterwm.c
+index 4886d68..8d0b9d9 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -91,6 +91,7 @@ static void next_win();
+ static void prev_win();
+ static void quit(const Arg *arg);
+ static void resize_master(const Arg *arg);
++static void resize_stack(const Arg *arg);
+ static void rotate(const Arg *arg);
+ static void rotate_filled(const Arg *arg);
+ static void spawn(const Arg *arg);
+@@ -124,6 +125,7 @@ typedef struct Client {
+  * properties of each desktop
+  *
+  * masz - the size of the master area
++ * sasz - additional size of the first stack window area
+  * mode - the desktop's tiling layout mode
+  * head - the start of the client list
+  * curr - the currently highlighted window
+@@ -131,7 +133,7 @@ typedef struct Client {
+  * sbar - the visibility status of the panel/statusbar
+  */
+ typedef struct {
+-    int mode, masz;
++    int mode, masz, sasz;
+     Client *head, *curr, *prev;
+     Bool sbar;
+ } Desktop;
+@@ -956,6 +958,14 @@ void resize_master(const Arg *arg) {
+     else d->masz -= arg->i; /* reset master area size */
+ }
+ 
++/**
++ * resize the first stack window
++ */
++void resize_stack(const Arg *arg) {
++    desktops[currdeskidx].sasz += arg->i;
++    tile(&desktops[currdeskidx]);
++}
++
+ /**
+  * jump and focus the next or previous desktop
+  */
+@@ -1083,26 +1093,51 @@ void stack(int x, int y, int w, int h, const Desktop *d) {
+     /* count stack windows and grab first non-floating, non-fullscreen window */
+     for (t = d->head; t; t = t->next) if (!ISFFT(t)) { if (c) ++n; else c = t; }
+ 
+-    /* if there is only one window, it should cover the available screen space
+-     * if there is only one stack window (n == 1) then we don't care about growth
+-     * if more than one stack windows (n > 1) on screen then adjustments may be needed
+-     *   - p is the num of pixels than remain when spliting
+-     *   the available width/height to the number of windows
+-     *   - z is the clients' height/width
++    /* if there is only one window (c && !n), it should cover the available screen space
++     * if there is only one stack window, then we don't care about growth
++     * if more than one stack windows (n > 1) adjustments may be needed.
++     *
++     *   - p is the num of pixels than remain when spliting the
++     *       available width/height to the number of windows
++     *   - z is each client's height/width
++     *
++     *      ----------  --.    ----------------------.
++     *      |   |----| }--|--> sasz                  }--> first client will have
++     *      |   | 1s |    |                          |    z+p+sasz height/width.
++     *      | M |----|-.  }--> screen height (h)  ---'
++     *      |   | 2s | }--|--> client height (z)    two stack clients on tile mode
++     *      -----------' -'                         ::: ascii art by c00kiemon5ter
++     *
++     * what we do is, remove the sasz from the screen height/width and then
++     * divide that space with the windows on the stack so all windows have
++     * equal height/width: z = (z - sasz)/n
++     *
++     * sasz was left out (subtrackted), to later be added to the first client
++     * height/width. before we do that, there will be cases when the num of
++     * windows cannot be perfectly divided with the available screen height/width.
++     * for example: 100px scr. height, and 3 stack windows: 100/3 = 33,3333..
++     * so we get that remaining space and merge it to sasz: p = (z - sasz) % n + sasz
++     *
++     * in the end, we know each client's height/width (z), and how many pixels
++     * should be added to the first stack client (p) so that it satisfies sasz,
++     * and also, does not result in gaps created on the bottom of the screen.
+      */
+     if (c && !n) XMoveResizeWindow(dis, c->win, x, y, w - 2*BORDER_WIDTH, h - 2*BORDER_WIDTH);
+-    if (!c || !n) return; else if (n > 1) { p = z%n; z /= n; }
++    if (!c || !n) return; else if (n > 1) { p = (z - d->sasz)%n + d->sasz; z = (z - d->sasz)/n; }
+ 
+     /* tile the first non-floating, non-fullscreen window to cover the master area */
+     if (b) XMoveResizeWindow(dis, c->win, x, y, w - 2*BORDER_WIDTH, ma - BORDER_WIDTH);
+     else   XMoveResizeWindow(dis, c->win, x, y, ma - BORDER_WIDTH, h - 2*BORDER_WIDTH);
+ 
++    /* tile the next non-floating, non-fullscreen (and first) stack window adding p */
++    for (c = c->next; c && ISFFT(c); c = c->next);
+     int cw = (b ? h:w) - 2*BORDER_WIDTH - ma, ch = z - BORDER_WIDTH;
++    if (b) XMoveResizeWindow(dis, c->win, x, y += ma, ch - BORDER_WIDTH + p, cw);
++    else   XMoveResizeWindow(dis, c->win, x += ma, y, cw, ch - BORDER_WIDTH + p);
+ 
+-    for (x += b ? 0:ma, y += b ? ma:0, c = c->next; c; c = c->next) {
++    /* tile the rest of the non-floating, non-fullscreen stack windows */
++    for (b ? (x += ch+p):(y += ch+p), c = c->next; c; c = c->next) {
+         if (ISFFT(c)) continue;
+-        for (t = c->next; t && ISFFT(t); t = t->next);
+-        if (!t) ch += p - BORDER_WIDTH; /* add remaining space to last window */
+         if (b) { XMoveResizeWindow(dis, c->win, x, y, ch, cw); x += z; }
+         else   { XMoveResizeWindow(dis, c->win, x, y, cw, ch); y += z; }
+     }
+-- 
+2.52.0
+
+
+From 3fe4c01caeb8a9aff4e1383e08fa1488b5a8422c Mon Sep 17 00:00:00 2001
+From: Ivan Kanakarakis <ivan.kanak@gmail.com>
+Date: Thu, 26 Jan 2012 18:05:56 +0200
+Subject: [PATCH 13/13] warpcursor to the center of the current client
+
+---
+ monsterwm.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/monsterwm.c b/monsterwm.c
+index 8d0b9d9..2f2ba7d 100644
+--- a/monsterwm.c
++++ b/monsterwm.c
+@@ -167,6 +167,7 @@ static void sigchld(int sig);
+ static void stack(int x, int y, int w, int h, const Desktop *d);
+ static void tile(Desktop *d);
+ static void unmapnotify(XEvent *e);
++static void warpcursor(Client *c);
+ static Bool wintoclient(Window w, Client **c, Desktop **d);
+ static int xerror(Display *dis, XErrorEvent *ee);
+ static int xerrorstart(Display *dis, XErrorEvent *ee);
+@@ -552,6 +553,7 @@ void focus(Client *c, Desktop *d) {
+     XChangeProperty(dis, root, netatoms[NET_ACTIVE], XA_WINDOW, 32,
+                     PropModeReplace, (unsigned char *)&d->curr->win, 1);
+ 
++    warpcursor(d->curr);
+     XSync(dis, False);
+ }
+ 
+@@ -1208,6 +1210,15 @@ Bool wintoclient(Window w, Client **c, Desktop **d) {
+     return (*c != NULL);
+ }
+ 
++/**
++ * warps the mouse pointer to the center of the client c
++ */
++void warpcursor(Client *c) {
++    XWindowAttributes wa;
++    if (c && XGetWindowAttributes(dis, c->win, &wa))
++        XWarpPointer(dis, None, c->win, 0,0,0,0, wa.width/2, wa.height/2);
++}
++
+ /**
+  * There's no way to check accesses to destroyed windows,
+  * thus those cases are ignored (especially on UnmapNotify's).
+-- 
+2.52.0
+
