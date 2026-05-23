@@ -1,0 +1,17 @@
+diff '--color=auto' -ruN src/events.c srcmod/events.c
+--- src/events.c	2022-01-11 10:37:48.918635298 +0530
++++ srcmod/events.c	2022-01-11 10:33:40.808638819 +0530
+@@ -81,10 +81,11 @@
+ 
+     if (c -> isfloating) {
+         XGetWindowAttributes(dpy, c -> win, &attr);
+-        c -> x = attr.x;
+-        c -> y = attr.y;
++        c -> x = XDisplayWidth(dpy, screen)/2 - attr.width/2;
++        c -> y = XDisplayHeight(dpy, screen)/2 - attr.height/2;
+         c -> width = attr.width;
+         c -> height = attr.height;
++        XMoveWindow(dpy, c -> win, c -> x, c -> y);
+     } else if (c -> isfullscr) lock_fullscr(c);
+     else tile();
+ 

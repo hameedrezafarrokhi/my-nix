@@ -1,0 +1,12 @@
+--- config.h	2022-01-11 10:52:07.608623111 +0530
++++ mod_config.h	2022-01-11 10:50:06.868624824 +0530
+@@ -107,6 +107,9 @@
+     {MODKEY|ShiftMask, XK_7, tag, {.ui = 1 << 6}},
+     {MODKEY|ShiftMask, XK_8, tag, {.ui = 1 << 7}},
+     {MODKEY|ShiftMask, XK_9, tag, {.ui = 1 << 8}},
++
++    {MODKEY, XK_equal, incgap, {.i = 2}},
++    {MODKEY, XK_minus, incgap, {.i = -2}},
+ };
+ 
+ #endif
