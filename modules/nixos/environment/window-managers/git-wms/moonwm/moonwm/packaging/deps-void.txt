@@ -1,0 +1,32 @@
+# Make dependencies:
+binutils
+gcc
+libX11-devel
+libXft-devel
+libXinerama-devel
+make
+
+# Runtime dependencies
+ImageMagick
+arandr
+dmenu
+ffmpeg
+geoclue2
+i3lock
+libX11
+libXft
+libXinerama
+libnotify
+light
+network-manager-applet
+pamixer
+picom
+polkit-gnome
+psmisc
+setxkbmap
+slop
+xfce4-power-manager
+xmodmap
+xrandr
+xrdb
+xwallpaper

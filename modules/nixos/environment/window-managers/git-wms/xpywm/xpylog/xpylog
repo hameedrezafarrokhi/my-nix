@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+#
+# An xconsole-like syslog monitor on X11.
+# Copyright (c) 2018-2019, Hiroyuki Ohsaki.
+# All rights reserved.
+#
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+from collections import deque
+import re
+import subprocess
+import time
+
+from Xlib import X, display
+import x11util
+
+COLOR_TABLE = {
+    'normal': [None, 'aquamarine1'], 'alert':
+    [r'(warning|notice|sudo|ssh)', 'orange'], 'critical': [
+        r'(error|unable|invalid|illegal|failed|failure|critical|refused)',
+        'OrangeRed'
+    ]
+}
+NLINES = 150
+MAX_FPS = 10
+X_OFFSET = 0
+Y_OFFSET = x11util.FONT_HEIGHT + 1
+
+def find_color(line):
+    """Pick the appropriate color according to the content of LINE."""
+    for categ in ['critical', 'alert']:
+        regexp, color = COLOR_TABLE[categ]
+        if re.search(regexp, line):
+            return color
+    return COLOR_TABLE['normal'][1]
+
+def main_loop(disp, screen, window, gcs):
+    # main loop
+    proc = subprocess.Popen(['journalctl', '-f'],
+                            stdout=subprocess.PIPE,
+                            encoding='ascii',
+                            errors='backslashreplace')
+    recent_logs = deque(maxlen=NLINES)
+    last_update = 0
+    while True:
+        line = proc.stdout.readline().rstrip()
+        recent_logs.appendleft(line)
+
+        # limit the frame rate by MAX_FPS after the screen is well populated
+        if len(recent_logs) >= NLINES:
+            elapsed = time.time() - last_update
+            if elapsed < 1 / MAX_FPS:
+                continue
+
+        # display log messages in the window
+        x11util.clear(window)
+        for i, line in enumerate(recent_logs):
+            color = find_color(line)
+            level = 100 - int(50 * i / NLINES)
+            x11util.draw_str(disp,
+                             screen,
+                             window,
+                             gcs,
+                             line,
+                             1,
+                             i,
+                             color=color,
+                             level=level)
+        x11util.flush(disp, screen)
+        window.configure(stack_mode=X.Below)
+        last_update = time.time()
+
+def main():
+    disp = display.Display()
+    font = x11util.load_font(disp)
+    screen = disp.screen()
+    width, height = screen.width_in_pixels - X_OFFSET, screen.height_in_pixels - Y_OFFSET
+    window = x11util.create_window(disp,
+                                   screen,
+                                   width=width,
+                                   height=height,
+                                   x=X_OFFSET,
+                                   y=Y_OFFSET)
+    window.configure(stack_mode=X.Below)
+    gcs = x11util.create_gcs(disp, screen, window, font)
+    main_loop(disp, screen, window, gcs)
+
+if __name__ == "__main__":
+    main()

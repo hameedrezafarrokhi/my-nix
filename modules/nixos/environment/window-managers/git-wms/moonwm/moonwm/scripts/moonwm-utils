@@ -1,0 +1,268 @@
+#!/bin/sh
+
+LOCK_TMP_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/pademelon/background"
+
+autostart () {
+    # load xmenu theming
+    load_xmenu_defaults ()
+
+    # refresh xdg-xmenu cache
+    if [ -d "${XDG_CACHE_HOME:-$HOME/.cache}/xdg-xmenu" ]; then
+        (sleep 120; nice xdg-xmenu -e > /dev/null 2>&1) &
+    else
+        nice xdg-xmenu -f > /dev/null 2>&1 &
+    fi
+}
+
+default_dmenu_run () {
+    dmenu_path | \
+    	$0 dmenu "$@" | \
+        sh
+}
+
+dmenu_drun () {
+    list="$(xdg-xmenu -at | sort)"
+    selected="$(echo "$list" | cut -f1 | $0 dmenu -i "$@")"
+    [ -z "$selected" ] && return
+    case $selected in
+        \!*) eval ${selected#?} ;;
+        \?*) eval $BROWSER \"${selected#?}\" ;;
+        \:*) eval $TERMINAL -e \"${selected#?}\" ;;
+        '') ;;
+        *)
+            if [ -n "$selected" ] && echo "$list" | grep -F "$selected" > /dev/null; then
+                eval "$(echo "$list" | grep -F "$selected" | head -n 1 | cut -f2)"
+            else
+                eval "$selected"
+            fi ;;
+    esac
+}
+
+dmenu_windows () {
+    list="$(moonctl windows)"
+    selected="$(echo "$list" | $0 dmenu -p Windows -l 15 -i | cut -f1 -d' ')"
+    [ -z "$selected" ] && return
+    moonctl activate "$selected"
+}
+
+dmenu_wrapper () {
+    if env_def_true THEMEDDMENU; then
+        normal_bg="$(xrdb_get_def "moonwm.statusBg" '#1d2021')"
+        normal_fg="$(xrdb_get_def "moonwm.statusFg" '#ebdbb2')"
+        selected_bg="$(xrdb_get_def "moonwm.menuBg" '#fb4934')"
+        selected_fg="$(xrdb_get_def "moonwm.menuFg" '#1d2021')"
+        exec dmenu -i -nb "$normal_bg" -nf "$normal_fg" -sb "$selected_bg" -sf "$selected_fg" \
+            -fn 'FiraCode Nerd Font:size=10' "$@"
+    else
+       	exec dmenu "$@"
+   	fi
+}
+
+env_is_set_nopref () {
+    env | grep "^$1=" > /dev/null
+}
+
+env_is_set () {
+    env | grep "^MOONWM\_$1=" > /dev/null
+}
+
+# for settings that default to false
+env_def_false () {
+    env_is_set "$1" && [ "$(eval echo "\$${MOONWM}_${1}")" = "1" ]
+}
+
+# for settings that default to true
+env_def_true () {
+    (! env_is_set "$1") || [ "$(eval echo "\$${MOONWM}_${1}")" = "1" ]
+}
+
+env_str () {
+    eval echo "\$${MOONWM}_${1}"
+}
+
+load_env_defaults () {
+    if (! env_is_set_nopref TERMINAL) && get_default_terminal; then
+        export TERMINAL="$(get_default_terminal)"
+        export TERM="xterm-256color"
+    fi
+    if (! env_is_set_nopref BROWSER) && get_default_browser; then
+        export BROWSER="$(get_default_browser)"
+    fi
+    if ! env_is_set_nopref DMENUCMD; then
+        export DMENUCMD="$(get_default_dmenucmd)"
+    fi
+    if [ -z "$STATUSCMD" ]; then
+        export STATUSCMD="moonwm-status"
+    fi
+}
+
+load_xmenu_value () {
+    if ! xrdb_has "$1"; then
+        temp="$(xrdb_get "$2")"
+        xrdb_set "$1" "${temp:-$3}"
+    fi
+}
+
+load_xmenu_defaults () {
+    env_def_true THEMEDXMENU || return
+    load_xmenu_value '\*background'     "moonwm.focusedTitleBg"     '#1d2021'
+    load_xmenu_value '\*foreground'     "moonwm.focusedTitleFg"     '#ebdbb2'
+    load_xmenu_value xmenu.border       "moonwm.unfocusedBorder"    '#282828'
+    load_xmenu_value xmenu.foreground   "moonwm.focusedTitleFg"     '#ebdbb2'
+    load_xmenu_value xmenu.background   "moonwm.focusedTitleBg"     '#1d2021'
+    load_xmenu_value xmenu.selforeground "moonwm.focusedTitleBg"    '#1d2021'
+    load_xmenu_value xmenu.selbackground "moonwm.focusedTitleFg"    '#ebdbb2'
+    load_xmenu_value xmenu.font         ''          'FiraCode Nerd Font:size=9,monospace:size=9'
+    load_xmenu_value xmenu.borderWidth  ''                          2
+    load_xmenu_value xmenu.separator    "moonwm.focusedTitleFg"     '#ebdbb2'
+}
+
+launch_minimal () {
+    exec moonwm
+}
+
+lock () {
+    if pidof lightdm > /dev/null; then
+        dm-tool lock
+    else
+        [ -f "$LOCK_TMP_FILE" ] || generate_lock_file
+        i3lock -c 1d2021 -i "$LOCK_TMP_FILE"
+    fi
+}
+
+play () {
+    if command -v pw-play > /dev/null; then
+        pw-play "$1" &
+    else
+        ffplay -nodisp -autoexit "$1" 2> /dev/null &
+    fi
+}
+
+run () {
+    # 1: executable to test for
+    # 2: command to execute
+    # 3: '1' to run synchronously
+    if ( [ -z "$1" ] || command -v "$1" > /dev/null 2>&1 ); then
+        if [ "$3" = 1 ]; then
+            echo "$2" | sh
+        else
+            echo "$2" | sh &
+        fi
+    fi
+}
+
+screenshot () {
+    dest="$XDG_PICTURES_DIR"
+    [ -d "$dest" ] || dest="$HOME/Pictures"
+    [ -d "$dest" ] || dest="$HOME/"
+    dest="$dest/Screenshots/"
+    [ -d "$dest" ] || mkdir -p "$dest"
+
+    filename="$(date +'Screenshot_%Y-%m-%d_%H-%M-%S.png')"
+    success="-1"
+
+    case $1 in
+        "")
+            scrot -s -f "$filename" -e "mv -f \$f $dest"
+            success="$?"
+            ;;
+        screen)
+            scrot "$filename" -e "mv -f \$f $dest"
+            success="$?"
+            ;;
+        focused)
+            scrot -u "$filename" -e "mv -f \$f $dest"
+            success="$?"
+            ;;
+    esac
+
+    if [ "$success" = 0 ]; then
+        play /usr/share/sounds/freedesktop/stereo/screen-capture.oga
+
+        if command -v xclip > /dev/null && [ -z "$MOONWM_SCREENSHOT_NO_CLIP" ]; then
+            xclip -i -sel clip -t image/png "$dest/$filename"
+        fi
+
+        if command -v dunstify > /dev/null 2>&1; then
+            dunstify -a Screenshot -i "$dest/$filename" "Successfully taken screenshot" "file://$dest/$filename" \
+                --action "$FILEMANAGER $dest,open" | sh 2> /dev/null
+        else
+            notify-send -a Screenshot -i "$dest/$filename" "Successfully taken screenshot" "file://$dest/$filename"
+        fi
+    fi
+}
+
+xrdb_get () {
+    xrdb -query -all | grep "^$1": | sed 's/.*#/#/g' | sort | head -n 1
+}
+
+xrdb_get_def () {
+    if xrdb_has "$1"; then
+        xrdb_get "$1"
+    else
+        echo "$2"
+    fi
+}
+
+xrdb_has () {
+    xrdb -query -all | grep "^$1": > /dev/null
+}
+
+xrdb_set () {
+    echo "$1: $2" | xrdb -merge
+}
+
+xrdb_refresh () {
+    moonctl xrdb
+    load_xmenu_defaults
+}
+
+helptext="
+$(basename $0) [-h] [-r] command
+
+options:
+    -h    Prints this help text
+    -r    Check if MoonWM is running first
+
+commands:
+    dmenu          Themed wrapper for dmenu (for use in scripts etc.)
+    drun           Default application launcher
+    help           Prints this help text
+    lock           Locks the screen
+    run            Launcher with all exectutables in \$PATH
+    screenshot     Take a screenshot (optionally takes 'screen' or 'focused' as arguments)
+    start          Some internal jobs moonwm runs on startup
+    windows        Show window selector
+    xrdb           Refresh xrdb values of moonwm and utils
+"
+
+while getopts "hr" arg; do
+    case "$arg" in
+        h)
+            echo "$helptext"
+            exit
+            ;;
+        r)
+            if ! pidof moonwm > /dev/null; then
+                echo "MoonWM is not running."
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+
+case $1 in
+    dmenu) shift; dmenu_wrapper "$@";;
+    drun) shift; dmenu_drun "$@";;
+    windows) dmenu_windows "$@";;
+    help) echo "$helptext"; exit;;
+    launch-minimal) launch_minimal;;
+    lock) lock;;
+    run) shift; default_dmenu_run "$@";;
+    screenshot) screenshot "$2";;
+    xrdb) xrdb_refresh ;;
+    *) printf "Unknown operation '$1'.\nTry '$0 -h' for more information.\n"; exit 1;;
+esac
+

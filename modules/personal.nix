@@ -120,13 +120,14 @@
       "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
       "meow" "meowwm" "sexywm" "mmwm" "coma"
-     #"hana"
+     #"hana" "moonwm"
      #"fluorite"
 
         # Floating
       "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
       "fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
-     #"qvwm" "aewmpp" "fxwm" "clarawm"
+      "xpywm"
+     #"qvwm" "aewmpp" "fxwm" "clarawm" "biscuitwm"
      #"cygnus" "sewm" "simplewm" "superiorxwm" "vswm"
 
     ];

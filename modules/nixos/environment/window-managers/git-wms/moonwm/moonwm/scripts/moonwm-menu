@@ -1,0 +1,178 @@
+#!/bin/sh
+
+MAINMENU="Applications
+$(xdg-xmenu -l | sed -e 's/^/	/')
+
+Power
+	Shutdown		systemctl poweroff || loginctl poweroff
+	Reboot			systemctl reboot || loginctl reboot
+	Suspend			moonwm-utils lock; loginctl suspend || systemctl suspend
+Log out			moonctl quit
+
+Settings
+	Pademelon		pademelon-settings
+	Audio Setup		pavucontrol
+	Display Setup	arandr
+Reload			killall -SIGUSR1 pademelon-daemon"
+
+MAINMENU_NF="  Applications
+$(xdg-xmenu -l | sed -e 's/^/	/')
+
+拉  Power
+	  Shutdown			systemctl poweroff || loginctl poweroff
+	  Reboot			systemctl reboot || loginctl reboot
+	  Suspend			moonwm-utils lock; loginctl suspend || systemctl suspend
+  Log out			moonctl quit
+
+漣  Settings
+	煉  Pademelon		pademelon-settings
+	墳  Audio Setup		pavucontrol
+	  Display Setup	arandr
+  Reload			killall -SIGUSR1 pademelon-daemon"
+
+CONTEXTMENU_NF="Close			close
+Move			mousemove
+Resize			resize
+
+Floating			float
+Center				center
+Fullscreen		fullscreen
+
+Layouts
+$(moonctl printlayouts | nl -v0 -w1 | sed 's/\s*[a-z]*$//;s/\([[:digit:]]*\)\t\(.*\)/\2\tsetlayout \1/' | sed -e 's/^/	/')
+More
+	Close multiple		closemult
+	Draw resize			rioresize
+	Floating and move	floatingmove
+	Reset size hints		resetfacts
+"
+
+CONTEXTMENU_NF="  Close			close
+  Move			mousemove
+ﭔ  Resize			resize
+
+  Floating			float
+  Center				center
+  Fullscreen		fullscreen
+
+  Layouts
+$(moonctl printlayouts | nl -v0 -w1 | sed 's/\s*[a-z]*$//;s/\([[:digit:]]*\)\t\(.*\)/\2\tsetlayout \1/' | sed -e 's/^/	/')
+  More
+	  Close multiple		closemult
+	鉶  Draw resize			rioresize
+	  Floating and move	floatingmove
+	  Reset size hints		resetfacts
+"
+
+SLOPBW="$(moonctl borderwidth)" || SLOPBW="2"
+SLOPSTYLE="-b $SLOPBW -c ${MOONWM_WINSELECTION_COL:-0.98,0.28,0.20} -p -$SLOPBW -t 999999"
+
+context () {
+    if [ "$MOONWM_NERDFONT" != "0" ]; then
+        action="$(printf "$CONTEXTMENU_NF" | xmenu -i)"
+    else
+        action="$(printf "$CONTEXTMENU" | xmenu -i)"
+    fi
+    [ -z "$action" ] && exit
+    if [ "$1" = select ] && [ "$action" != closemult ] && [ "$action" != resetfacts ]; then
+        case $action in
+            close)
+                moonctl important "Select a window to close." ;;
+            resize)
+                moonctl important "Select a window to resize." ;;
+            float)
+                moonctl important "Select a window to float/unfloat." ;;
+            fullscreen)
+                moonctl important "Select a window enter/exit fullscreen." ;;
+            center)
+                moonctl important "Select a window to center" ;;
+        esac
+        # select window
+        wid="$(slop $SLOPSTYLE -f %i)"
+        moonctl important close
+        [ -z "$wid" ] && exit
+        moonctl activate "$wid" 3000 || exit
+        [ "$wid" = "$(moonctl rootwid)" ] && exit
+    fi
+    case $action in
+        close) moonctl killclient ;;
+        resize) moonctl rioresize ;;
+        float) moonctl togglefloating ;;
+        fullscreen) moonctl togglefullscr ;;
+        center) moonctl center ;;
+        resetfacts) moonctl resetfacts 0 ;;
+        mousemove) moonctl mousemove 0 ;;
+        floatingmove) moonctl togglefloating; moonctl mousemove 0 ;;
+        closemult)
+            while [ 1 = 1 ]; do
+                moonctl important "Select multiple windows to close; Exit with <Esc> or right click."
+                wid="$(slop $SLOPSTYLE -f %i)"
+                moonctl important close
+                [ -z "$wid" ] && exit
+                moonctl activate "$wid" 3000 || exit
+                moonctl killclient
+            done
+            ;;
+        *)
+            moonctl $action
+            ;;
+    esac
+}
+
+expose () {
+    moonctl viewall
+    moonctl setlayout grid
+    moonctl important "Select a window to activate."
+    sleep 0.2
+    wid="$(slop $SLOPSTYLE -f %i)" \
+            || { moonctl important close; moonctl view 0; exit 1; }
+    moonctl important close
+    moonctl activate "$wid"
+    moonctl winview
+}
+
+favorites () {
+    cat "${XDG_CONFIG_HOME:-$HOME/.config}/moonwm/favorites.xmenu" | \
+        grep -v '^#.*' | xmenu $(menupos) | sh
+}
+
+favorites_pie () {
+    cat "${XDG_CONFIG_HOME:-$HOME/.config}/moonwm/favorites.xmenu" | \
+        grep -v '^#.*' | pmenu | sh
+}
+
+layouts () {
+    moonctl setlayout "$(layouts_classic)"
+}
+
+layouts_classic () {
+    moonctl printlayouts | nl -v0 -w1 | sed 's/\s*[a-z]*$//;s/\([[:digit:]]*\)\t\(.*\)/\2\t\1/' | xmenu -i
+}
+
+mainmenu () {
+    if [ "$MOONWM_NERDFONT" != "0" ]; then
+        echo "$MAINMENU_NF" | xmenu $(menupos) | sh
+    else
+        echo "$MAINMENU" | xmenu $(menupos) | sh
+    fi
+}
+
+
+menupos () {
+    if ! [ "$MOONWM_TOPBAR" = 0 ]; then
+        echo -p 0x0:current
+    fi
+}
+
+
+case $1 in
+    1 | expose) expose ;;
+    2 | favorites) favorites ;;
+    favorites-pie) favorites_pie ;;
+    3 | main) mainmenu ;;
+    '' | context) context client ;;
+    select | context-select) context select ;;
+    layouts) layouts ;;
+    layouts-classic) layouts_classic ;;
+esac
+
