@@ -10,10 +10,6 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send -t 7000 "Screenshot saved" "Saved to ~/Pictures"
   '';
 
-  xlock = pkgs.writeShellScriptBin "xlock" ''
-    x-lock
-  '';
-
   xss-kill = pkgs.writeShellScriptBin "xss-kill" ''
     pkill .xscreensaver-w
     pkill xscreensaver-sy
@@ -66,15 +62,11 @@ let
     notify-send -e -u critical -t 3000 "Lock Activated "
   '';
 
-  xremap-x-lock-sleep = pkgs.writeShellScriptBin "xremap-x-lock-sleep" ''
-    ${config.services.screen-locker.lockCmd}
-  '';
-
   xremap-lock-button = pkgs.writeShellScriptBin "xremap-lock-button" ''
     if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         systemctl suspend
     else
-        xlock
+        x-lock -o 20
     fi
   '';
 
@@ -214,11 +206,9 @@ in
     pkgs.yq
     girm-full
     grim-slurp
-    xlock
     xss-kill
     lock-kill
     lock-restart
-    xremap-x-lock-sleep
     xremap-lock-button
     x-logout
     xremap-picom-toggle
@@ -552,9 +542,9 @@ in
 
 
             Super-Shift-Ctrl-l:
-                      launch: [ "xlock" ]
+                      launch: [ "x-lock", "-o", "20" ]
             Super-Shift-Ctrl-KEY_SEMICOLON:
-                      launch: [ "xremap-x-lock-sleep" ]
+                      launch: [ "x-lock", "-s" ]
             Super-Shift-Ctrl-x:
                       launch: [ "xss-kill" ]
             Super-Shift-Ctrl-p:

@@ -16,52 +16,15 @@ let
   };
 
   # ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
- #x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
- #  # Time before sleep (in seconds)
- #  DELAY0=120  # 2 minutes
- #  DELAY=180   # 3 minutes
- #
- #  yes | xsession-manager -s temp &
- #  dunstctl set-paused true
- #
- #  ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 30 --show-layout &
- #  LOCK_PID=$!
- #
- #  # Wait for delay
- #  sleep "$DELAY0"
- #
- #  # If i3lock is still running, system is still locked
- #  if kill -0 "$LOCK_PID" 2>/dev/null; then
- #      xset dpms force standby
- #  fi
- #
- #  # Wait for delay
- #  sleep "$DELAY"
- #
- #  # If i3lock is still running, system is still locked
- #  if kill -0 "$LOCK_PID" 2>/dev/null; then
- #      systemctl suspend
- #  fi
- #
- #  # Just in case: when i3lock exits, kill this script
- #  wait "$LOCK_PID"
- #'';
 
   x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
-    echo "y" | xsession-manager -s temp
-    dunstctl set-paused true
-    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 120 --show-layout
-    sleep 180
-    if pgrep betterlock > /dev/null; then
-        systemctl suspend
-    fi
+    x-lock -s
   '';
 
   x-lock = pkgs.writeShellScriptBin "x-lock" ''
-    echo "y" | xsession-manager -s temp
-    dunstctl set-paused true
-    ${pkgs.betterlockscreen}/bin/betterlockscreen -l dimblur --off 120 --show-layout
+    ${builtins.readFile ./x-lock}
   '';
+
 
   xsession-save = pkgs.writeShellScriptBin "xsession-save" ''
     OUT="$HOME/.cache/xsession-restore"
