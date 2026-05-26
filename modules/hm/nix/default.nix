@@ -99,14 +99,14 @@ in
         trusted-users = [ "root" "@wheel" admin ];
         allowed-users = [ "*" ];
 
-        substituters = lib.mkForce [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ]; #WARNING CHANGE AFTER INTERNET
+       #substituters = lib.mkForce [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ]; #WARNING CHANGE AFTER INTERNET
 
-       #substituters = [
-       #  "https://cache.nixos.org/"
-       # #"https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-       # #"https://catppuccin.cachix.org/"
-       # #"https://nix-community.cachix.org/"
-       #];
+        substituters = [
+          "https://cache.nixos.org/"
+         #"https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+         #"https://catppuccin.cachix.org/"
+         #"https://nix-community.cachix.org/"
+        ];
        #extra-substituters = [
        #  "https://cache.nixos.org/"
        # #"https://catppuccin.cachix.org/"

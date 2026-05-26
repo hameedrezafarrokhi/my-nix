@@ -7,26 +7,19 @@ DO_SUSPEND=false
 SCREEN_OFF_TIME=30
 SUSPEND_TIME=60
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        -s)
+while getopts "st:o:" opt; do
+    case $opt in
+        s)
             DO_SUSPEND=true
-            shift
             ;;
-        -t)
-            SUSPEND_TIME="$2"
-            shift 2
+        t)
+            SUSPEND_TIME="$OPTARG"
             ;;
-        -o)
-            SCREEN_OFF_TIME="$2"
-            shift 2
+        o)
+            SCREEN_OFF_TIME="$OPTARG"
             ;;
-        -detectSleep)
-            DO_SUSPEND=true
-            shift
-            ;;
-        *)
-            echo "Unknown option: $1"
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
             exit 1
             ;;
     esac
@@ -129,19 +122,20 @@ restore_dpms() {
 handle_dpms
 pause_dunst
 
-if ! pgrep betterlock > /dev/null; then
-    betterlockscreen -l dimblur --off 120 --show-layout
-    resume_dunst
-    restore_dpms
-    if [[ $DUNST_STATE != "off" ]]; then
-      notify-send -e -u low -t 1 "Hello:)"
-    fi
+if ! pgrep -x "betterlockscreen" > /dev/null; then
+    betterlockscreen -l dimblur --off 120 --show-layout &
 else
     echo "betterlockscreen already running"
-fi &
+fi
 
 if [ "$DO_SUSPEND" = true ]; then
     echo "y" | xsession-manager -s temp
     systemctl suspend
 fi
 
+wait_for_lockscreen
+resume_dunst
+restore_dpms
+if [[ $DUNST_STATE != "off" ]]; then
+  notify-send -e -u low -t 1 "Hello:)"
+fi
