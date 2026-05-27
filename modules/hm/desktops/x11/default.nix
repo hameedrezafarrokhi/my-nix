@@ -554,6 +554,7 @@ in
       pkgs.pmenu
       pkgs.xmessage
       pkgs.gxmessage
+      pkgs.herbe
      #pkgs.deadd-notification-center
       (pkgs.xmenu.override {
         imlib2 = pkgs.imlib2Full;
@@ -692,7 +693,7 @@ in
         xautolock = {
           enable = true; # Either This Or XSS, ONLY ONE CAN BE USED (xauto lock uses loginctl (which doesnt work on x) and doesnt set xset s AND doesnt use lockCMD instead uses its own things (llisted below) BUT Detects sleep and other features, xss Uses lockCMD And sets xset s BUT its bear bones)
           package = pkgs.xautolock; # pkgs.xidlehook
-          detectSleep = true;
+          detectSleep = false;
           extraOptions = [
            #"-time mins         " # time before locking the screen [1 <= mins <= 60]. # IS DEFINED WITH inactiveInterval
            #"-locker locker     " # program used to lock.                             # IS DEFINED WITH lockCmd

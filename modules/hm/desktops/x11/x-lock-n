@@ -1,25 +1,32 @@
 #!/bin/bash
 
-STATE_FILE="$HOME/.cache/dunst_suspended_state"
+STATE_FILE="/tmp/dunst_suspended_state"
 DPMS_STATE_FILE="/tmp/dpms_state"
 LOCK_CHECK_INTERVAL=5
 DO_SUSPEND=false
-SCREEN_OFF_TIME=180
-SUSPEND_TIME=20
+SCREEN_OFF_TIME=30
+SUSPEND_TIME=60
 
-while getopts "st:o:" opt; do
-    case $opt in
-        s)
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -s)
             DO_SUSPEND=true
+            shift
             ;;
-        t)
-            SUSPEND_TIME="$OPTARG"
+        -t)
+            SUSPEND_TIME="$2"
+            shift 2
             ;;
-        o)
-            SCREEN_OFF_TIME="$OPTARG"
+        -o)
+            SCREEN_OFF_TIME="$2"
+            shift 2
             ;;
-        \?)
-            echo "Invalid option: -$OPTARG" >&2
+        -detectSleep)
+            DO_SUSPEND=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
             exit 1
             ;;
     esac
@@ -34,8 +41,6 @@ is_dunst_running() {
 }
 
 pause_dunst() {
-  if ! pgrep betterlock > /dev/null; then
-    DUP_LOCK="true"
     if ! is_dunst_running; then
         echo "Dunst not running - skipping pause"
         export DUNST_STATE="on"
@@ -51,7 +56,6 @@ pause_dunst() {
     dunstctl set-paused true
     echo "suspended" > "$STATE_FILE"
     echo "Dunst paused"
-  fi
 }
 
 resume_dunst() {
@@ -86,32 +90,29 @@ wait_for_lockscreen() {
 }
 
 handle_dpms() {
-    if ! pgrep betterlock > /dev/null; then
-      DUP_LOCK="true"
-      # Get current DPMS settings (standby and off)
-      current_standby=$(xset q | grep -A 1 "DPMS" | grep "Standby:" | awk '{print $2}')
-      current_off=$(xset q | grep -A 1 "DPMS" | grep "Off:" | awk '{print $2}')
+    # Get current DPMS settings (standby and off)
+    current_standby=$(xset q | grep -A 1 "DPMS" | grep "Standby:" | awk '{print $2}')
+    current_off=$(xset q | grep -A 1 "DPMS" | grep "Off:" | awk '{print $2}')
 
-      # Check if DPMS is disabled (0) AND user provided -t or -o flags
-      if [ "$current_standby" = "0" ] || [ "$current_off" = "0" ]; then
-          if [ "$SUSPEND_TIME" != "60" ] || [ "$SCREEN_OFF_TIME" != "30" ]; then
-              # User provided custom timers, save current state and apply new ones
-              echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
-              echo "DPMS was disabled, saving state and setting new timers"
-              xset dpms "$SUSPEND_TIME" "$SUSPEND_TIME" "$SCREEN_OFF_TIME"
-              echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
-          else
-              echo "DPMS disabled and no custom timers provided, skipping"
-          fi
-      elif [ -n "$current_standby" ]; then
-          # DPMS was enabled, save and apply new timers
-          echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
-          echo "Saved DPMS settings - Standby: $current_standby, Off: $current_off"
-          xset dpms "$SUSPEND_TIME" "$SUSPEND_TIME" "$SCREEN_OFF_TIME"
-          echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
-      else
-          echo "DPMS not available"
-      fi
+    # Check if DPMS is disabled (0) AND user provided -t or -o flags
+    if [ "$current_standby" = "0" ] || [ "$current_off" = "0" ]; then
+        if [ "$SUSPEND_TIME" != "60" ] || [ "$SCREEN_OFF_TIME" != "30" ]; then
+            # User provided custom timers, save current state and apply new ones
+            echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
+            echo "DPMS was disabled, saving state and setting new timers"
+            xset dpms "$SCREEN_OFF_TIME" "$SCREEN_OFF_TIME" "$SUSPEND_TIME"
+            echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
+        else
+            echo "DPMS disabled and no custom timers provided, skipping"
+        fi
+    elif [ -n "$current_standby" ]; then
+        # DPMS was enabled, save and apply new timers
+        echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
+        echo "Saved DPMS settings - Standby: $current_standby, Off: $current_off"
+        xset dpms "$SCREEN_OFF_TIME" "$SCREEN_OFF_TIME" "$SUSPEND_TIME"
+        echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
+    else
+        echo "DPMS not available"
     fi
 }
 
@@ -129,7 +130,7 @@ handle_dpms
 pause_dunst
 
 if ! pgrep betterlock > /dev/null; then
-    betterlockscreen -l dimblur --off "$SUSPEND_TIME" --show-layout
+    betterlockscreen -l dimblur --off 120 --show-layout
     resume_dunst
     restore_dpms
     if [[ $DUNST_STATE != "off" ]]; then
@@ -140,8 +141,7 @@ else
 fi &
 
 if [ "$DO_SUSPEND" = true ]; then
-  if [[ $DUP_LOCK != "true" ]]; then
     echo "y" | xsession-manager -s temp
     systemctl suspend
-  fi
 fi
+
