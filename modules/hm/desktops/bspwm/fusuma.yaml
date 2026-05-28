@@ -78,7 +78,7 @@ swipe:
      #    threshold: 0.7
     up:
       begin:
-        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme .config/rofi/themes/main.rasi'
+        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme $HOME/.config/rofi/themes/main.rasi'
         threshold: 2
       update:
        #command: 'xdotool key ctrl+Tab'
@@ -87,7 +87,7 @@ swipe:
         interval: 5
     down:
       begin:
-        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme .config/rofi/themes/main.rasi'
+        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme $HOME/.config/rofi/themes/main.rasi'
         threshold: 2
       update:
        #command: 'xdotool key ctrl+shift+Tab'

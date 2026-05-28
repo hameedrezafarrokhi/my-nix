@@ -201,6 +201,7 @@
     bspTabFont = "monospace:size=${toString BspTabSize}";
     xfilesFont = "${Sans}";
     jgmenuFont = "${MonoSpace}; ${toString JgmenuSize}";
+    alttabFont = "xft:${MonoSpace}:size=${toString AlttabSize}";
 
     MonoSize = 10;
     SansSize = 10;
@@ -225,6 +226,7 @@
     BspTabSize = 11;
     StSize = 12;
     DmenuSize = 16;
+    AlttabSize = 12;
 
     sound = "ocean";
 
@@ -276,6 +278,7 @@
     alt-Mantle =     "1e2030"; Mantle =    "#${alt-Mantle}";    Calt-Mantle =    lib.strings.toUpper alt-Mantle;    CMantle =    lib.strings.toUpper Mantle;
     alt-Crust =      "181926"; Crust =     "#${alt-Crust}";     Calt-Crust =     lib.strings.toUpper alt-Crust;     CCrust =     lib.strings.toUpper Crust;
     alt-Black =      "11111b"; Black =     "#${alt-Black}";     Calt-Black =     lib.strings.toUpper alt-Black;     CBlack =     lib.strings.toUpper Black;
+    alt-TBlack =     "000000"; TBlack =    "#${alt-TBlack}";    Calt-TBlack =    lib.strings.toUpper alt-TBlack;    CTBlack =    lib.strings.toUpper TBlack;
 
 
     rgb-alt-Accent =    hexToRgb alt-Accent;    rgb-Accent =    "rgb(${rgb-alt-Accent})";
@@ -308,6 +311,7 @@
     rgb-alt-Mantle =    hexToRgb alt-Mantle;    rgb-Mantle =    "rgb(${rgb-alt-Mantle})";
     rgb-alt-Crust =     hexToRgb alt-Crust;     rgb-Crust =     "rgb(${rgb-alt-Crust})";
     rgb-alt-Black =     hexToRgb alt-Black;     rgb-Black =     "rgb(${rgb-alt-Black})";
+    rgb-alt-TBlack =    hexToRgb alt-TBlack;    rgb-TBlack =    "rgb(${rgb-alt-TBlack})";
 
 
     starship1 =  "#3B4252";  obs-selection = "#3a3d53";   Transparent = "#FF00000";
@@ -1779,9 +1783,12 @@ EOF
   };
   xsession.windowManager.bspwm = lib.mkIf config.xsession.windowManager.bspwm.enable {
     extraConfig = ''
-      #bspc rule -a '*' type=dialog state=floating border_color="${Yellow}"
-      bspc rule -a ".blueman-manager-wrapped" border_color="${Blue}"
       #fehw &
+      if hash alttab >/dev/null 2>&1; then
+        pkill alttab
+        sleep 0.5
+        alttab -mk "Alt_L" -kk grave -w 1 -d 1 -s 2 -p "center" -ck Escape -dk c -sc 1 -nk Right -pk Left -bk "Shift_L" -t 150x150 -i 60x60 -vp "focus" -s 2 -theme ${gtk-icon} -bg "${Crust}" -fg "${Text}" -frame "${Accent}" -inact "${Overlay0}" -bw 7 -bc "${TBlack}" -font "${alttabFont}" -b 1 -ns &
+      fi &
   '';
     settings = {
       border_width = 4;
@@ -4596,7 +4603,7 @@ rules: (
 	    }
 	    )
       }, {
-        match = "class_g = 'Rofi'";
+        match = "class_g = 'Rofi' || class_g = 'AltTab'";
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];

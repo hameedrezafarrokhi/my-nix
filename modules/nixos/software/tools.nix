@@ -19,6 +19,10 @@
 
     kdePackages.kruler            ##KDE ruler
 
+    xcalc
+   #xclock
+    oclock
+
    #crow-translate                ##Translation
    #dialect                       ##Translation
 

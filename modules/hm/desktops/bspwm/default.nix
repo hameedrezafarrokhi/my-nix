@@ -126,7 +126,12 @@ in
         systemctl --user restart bsppoly.service &
         systemctl --user restart bsptint.service &
         #bsp-touchegg &
-        fusuma -c ${nix-path}/modules/hm/desktops/bspwm/fusuma.yaml -d &
+
+        if hash fusuma >/dev/null 2>&1; then
+        	  pkill fusuma
+        	  sleep 0.5
+        	  fusuma -c ${nix-path}/modules/hm/desktops/bspwm/fusuma.yaml -d &
+        fi &
 
         pw-play "$HOME/.local/share/desktop-sounds/startup" &
 
@@ -146,6 +151,7 @@ in
         bspc rule -a ulauncher border=off
         bspc rule -a Ulauncher border=off
         bspc rule -a scratchpad state=floating layer=normal
+        bspc rule -a XCalc state=floating
         bspc rule -a ".blueman-manager-wrapped" state=floating
         bspc rule -a bluetuith state=floating
         bspc rule -a pavucontrol state=floating

@@ -727,6 +727,7 @@ in
       pkgs.xmessage
       pkgs.gxmessage
       pkgs.herbe
+      pkgs.alttab
      #pkgs.deadd-notification-center
       (pkgs.xmenu.override {
         imlib2 = pkgs.imlib2Full;

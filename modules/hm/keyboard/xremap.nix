@@ -332,6 +332,8 @@ in
                       launch: [ "onlyoffice-desktopeditors" ]
                     m:
                       launch: [ "vlc" ]
+                    c:
+                      launch: [ "xcalc" ]
                     a:
                       launch: [ "amberol" ]
                     v:
