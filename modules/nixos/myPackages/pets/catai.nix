@@ -33,7 +33,7 @@ let
     owner = "gnutux95";
     repo = "catai";
     rev = "main";
-    hash = "sha256-Z/XIzkfMlENd5uStLswNRGZ9/T+qkpQtuv8i5Zi02YQ=";
+    hash = "sha256-7sJKL10NKvCEW/sy5HwoP3KdN+PuwMKFdaR8Z3ddWJ8=";
   };
 
   ename = "catai";

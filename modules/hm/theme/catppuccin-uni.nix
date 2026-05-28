@@ -1298,7 +1298,33 @@ EOF
     xfiles-root-script
     xfiles-theme
 
-  ];
+  ]
+
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-x.nix {
+    herbH = ''
+      static const char *background_color = "${Base}";
+      static const char *border_color = "${Accent}";
+      static const char *font_color = "${Text}";
+      static const char *font_pattern = "monospace:size=10";
+      static unsigned line_spacing = 8;
+      static unsigned int padding = 15;
+      static unsigned int width = 350;
+      static unsigned int border_size = 3;
+      static unsigned int pos_x = 30;
+      static unsigned int pos_y = 60;
+      enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+      enum corners corner = TOP_LEFT;
+      static unsigned int duration = 10; /* in seconds */
+      #define DISMISS_BUTTON Button1
+      #define ACTION_BUTTON Button3
+    '';
+  })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xm.nix { })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix { })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmrv.nix { })]
+ #++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmd.nix { })]
+
+  ;
 
   gtk = {
     enable = true;
@@ -4553,8 +4579,8 @@ rules: (
               shadow-offset-x = "offset-x";
               shadow-offset-y = "offset-y";
           },
-        )
-    }, {
+          )
+      }, {
         match = "class_g = 'Dunst'";
 	  animations = (
 	    {
@@ -4568,8 +4594,8 @@ rules: (
 		 direction = "right";	#-dunst-open-direction
 		 duration = 0.2;
 	    }
-	  )
-    }, {
+	    )
+      }, {
         match = "class_g = 'Rofi'";
 	  animations = (
 	    {
@@ -4583,8 +4609,8 @@ rules: (
 		 direction = "down";	#-dunst-open-direction
 		 duration = 0.2;
 	    }
-	  )
-    }, {
+	    )
+      }, {
       	match = "class_g = 'jgmenu'";
       	animations = (
       	{
@@ -4690,7 +4716,22 @@ rules: (
 			duration = 0.1;
 		}
 		)
-	},
+	}, {
+        match = "class_g = 'herbx'";
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "left";
+		 duration = 0.2;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "left";
+		 duration = 0.2;
+	    }
+	  )
+      }
 )
     '';
 

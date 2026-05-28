@@ -113,6 +113,8 @@ in
       # polybar -c ~/.config/bspwm/polybar/config.ini &
       extraConfig = ''
 
+        numlockx on
+
         rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
         if hash sxhkd >/dev/null 2>&1; then
@@ -123,7 +125,7 @@ in
 
         systemctl --user restart bsppoly.service &
         systemctl --user restart bsptint.service &
-        bsp-touchegg &
+        #bsp-touchegg &
 
         pw-play "$HOME/.local/share/desktop-sounds/startup"
 

@@ -31,7 +31,8 @@
       dbus.enable = true;
       fwupd.enable = true;
       libinput.enable = true;
-      touchegg.enable = true;
+      touchegg.enable = false;
+      fusuma.enable = true;
       keyboard = {
         enable = true;
        #xremap.enable = false;
@@ -120,15 +121,14 @@
       "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
       "meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-     #"hana" "moonwm"
-     #"fluorite"
+     #"hana" requiers zig master
+     #"fluorite" "moonwm"
 
         # Floating
       "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
       "fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
-      "xpywm" "xswm"
-     #"qvwm" "aewmpp" "fxwm" "clarawm" "biscuitwm"
-     #"cygnus" "sewm" "simplewm" "superiorxwm" "vswm"
+      "xpywm" "xswm" "biscuitwm"
+     # "aewmpp" "clarawm" "fxwm" "qvwm" "cygnus" "sewm" "simplewm" "superiorxwm" "vswm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
@@ -423,6 +423,7 @@
             foliate.enable = false;
             freetube.enable = true;
             fzf.enable = true;
+            fusuma.enable = false;
             geany.enable = true;
             git.enable = true;
             ghostty.enable = true;

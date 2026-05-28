@@ -554,7 +554,7 @@ struct animation animations[] = {
    ++ [(pkgs.callPackage ../myPackages/pets/xpet-with-config.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/petpepe.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/Konqi-Pet.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]  # WARNING Needs After Internet
+   ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
   #++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING Needs After Internet
 
   ;

@@ -15,6 +15,7 @@
     ./keyboard
     ./libinput
     ./touchegg
+    ./fusuma
     ./dbus
     ./storage
     ./gamepads

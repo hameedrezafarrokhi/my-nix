@@ -30,7 +30,7 @@ let
     configparser
     xlib
     setuptools
-   #ewmh # WARNING Need After Internet
+    ewmh
   ]);
 
   scriptRepo = fetchFromGitHub {

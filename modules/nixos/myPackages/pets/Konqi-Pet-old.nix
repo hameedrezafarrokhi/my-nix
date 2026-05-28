@@ -21,7 +21,7 @@ let
     requests
     xlib
     psutil
-   #ewmh          # WARNING Need After Internet
+    ewmh
     pygobject3
     configparser
   ]);

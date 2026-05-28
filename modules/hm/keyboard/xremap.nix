@@ -66,7 +66,7 @@ let
     if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         systemctl suspend
     else
-        x-lock -o 20
+        x-lock -t 20
     fi
   '';
 
@@ -542,7 +542,7 @@ in
 
 
             Super-Shift-Ctrl-l:
-                      launch: [ "x-lock", "-o", "20" ]
+                      launch: [ "x-lock", "-t", "20" ]
             Super-Shift-Ctrl-KEY_SEMICOLON:
                       launch: [ "x-lock", "-s" ]
             Super-Shift-Ctrl-x:

@@ -50,7 +50,7 @@ in
      #  else [];
      #''
 
-      settings = config.home-manager.users.${admin}.nix.settings; # WARNING Need After Internet
+      settings = config.home-manager.users.${admin}.nix.settings;
 
      #settings = {
      #

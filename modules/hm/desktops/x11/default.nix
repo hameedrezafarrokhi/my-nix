@@ -21,8 +21,160 @@ let
     x-lock -s
   '';
 
+ #x-lock = pkgs.writeShellScriptBin "x-lock" ''
+ #  ${builtins.readFile ./x-lock}
+ #'';
+
+  xlockcmd = pkgs.writeShellScriptBin "xlockcmd" ''
+    ${config.services.screen-locker.cmd} && notify-send -e -u low -t 1 'Hello:)'
+  '';
+
   x-lock = pkgs.writeShellScriptBin "x-lock" ''
-    ${builtins.readFile ./x-lock}
+    STATE_FILE="$HOME/.cache/dunst_suspended_state"
+    DPMS_STATE_FILE="/tmp/dpms_state"
+    LOCK_CHECK_INTERVAL=5
+    DO_SUSPEND=false
+    SCREEN_OFF_TIME=${config.services.screen-locker.xss-lock.dpms-off}
+    SUSPEND_TIME=${config.services.screen-locker.xss-lock.dpms-standby}
+
+    while getopts "st:o:" opt; do
+        case $opt in
+            s)
+                DO_SUSPEND=true
+                ;;
+            t)
+                SUSPEND_TIME="$OPTARG"
+                ;;
+            o)
+                SCREEN_OFF_TIME="$OPTARG"
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                exit 1
+                ;;
+        esac
+    done
+
+    is_dunst_running() {
+        if  pgrep dunst; then
+          return 0
+        else
+          return 1
+        fi
+    }
+
+    pause_dunst() {
+      if ! pgrep ${config.services.screen-locker.grep} > /dev/null; then
+        DUP_LOCK="true"
+        if ! is_dunst_running; then
+            echo "Dunst not running - skipping pause"
+            export DUNST_STATE="on"
+            return 0
+        fi
+
+        if ! dunstctl is-paused 2>/dev/null | grep -q "false"; then
+            echo "Dunst unreachable or already paused - skipping"
+            export DUNST_STATE="off"
+            return 0
+        fi
+
+        dunstctl set-paused true
+        echo "suspended" > "$STATE_FILE"
+        echo "Dunst paused"
+      fi
+    }
+
+    resume_dunst() {
+        if [ ! -f "$STATE_FILE" ]; then
+            return
+        fi
+
+        if ! is_dunst_running; then
+            echo "Dunst not running - removing stale state file"
+            rm -f "$STATE_FILE"
+            return
+        fi
+
+        if dunstctl set-paused false 2>/dev/null; then
+            echo "Dunst resumed"
+            rm -f "$STATE_FILE"
+        else
+            echo "Failed to resume dunst - dunst may be unresponsive"
+        fi
+    }
+
+    wait_for_lockscreen() {
+        if ! pgrep ${config.services.screen-locker.grep} > /dev/null; then
+            return
+        fi
+
+        echo "Waiting for ${config.services.screen-locker.grep} to exit..."
+        while pgrep ${config.services.screen-locker.grep} > /dev/null; do
+            sleep "$LOCK_CHECK_INTERVAL"
+        done
+        echo "${config.services.screen-locker.grep} finished"
+    }
+
+    handle_dpms() {
+        if ! pgrep ${config.services.screen-locker.grep} > /dev/null; then
+          DUP_LOCK="true"
+          # Get current DPMS settings (standby and off)
+          current_standby=$(xset q | grep -A 1 "DPMS" | grep "Standby:" | awk '{print $2}')
+          current_off=$(xset q | grep -A 1 "DPMS" | grep "Off:" | awk '{print $2}')
+
+          # Check if DPMS is disabled (0) AND user provided -t or -o flags
+          if [ "$current_standby" = "0" ] || [ "$current_off" = "0" ]; then
+              if [ "$SUSPEND_TIME" != "${config.services.screen-locker.xss-lock.dpms-standby}" ] || [ "$SCREEN_OFF_TIME" != "${config.services.screen-locker.xss-lock.dpms-off}" ]; then
+                  # User provided custom timers, save current state and apply new ones
+                  echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
+                  echo "DPMS was disabled, saving state and setting new timers"
+                  xset dpms "$SUSPEND_TIME" "$SCREEN_OFF_TIME" "$SCREEN_OFF_TIME"
+                  echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
+              else
+                  echo "DPMS disabled and no custom timers provided, skipping"
+              fi
+          elif [ -n "$current_standby" ]; then
+              # DPMS was enabled, save and apply new timers
+              echo "$current_standby $current_off" > "$DPMS_STATE_FILE"
+              echo "Saved DPMS settings - Standby: $current_standby, Off: $current_off"
+              xset dpms "$SUSPEND_TIME" "$SCREEN_OFF_TIME" "$SCREEN_OFF_TIME"
+              echo "Set screen off to '$SCREEN_OFF_TIME's, suspend to '$SUSPEND_TIME's"
+          else
+              echo "DPMS not available"
+          fi
+        fi
+    }
+
+    restore_dpms() {
+        if [ -f "$DPMS_STATE_FILE" ]; then
+            read original_standby original_off < "$DPMS_STATE_FILE"
+            xset dpms "$original_standby" "$original_off" "$original_off"
+            echo "Restored DPMS - Standby: $original_standby, Off: $original_off"
+            rm -f "$DPMS_STATE_FILE"
+        fi
+    }
+
+    # Main execution
+    handle_dpms
+    pause_dunst
+
+    if ! pgrep ${config.services.screen-locker.grep} > /dev/null; then
+        ${config.services.screen-locker.cmd}
+        resume_dunst
+        restore_dpms
+        if [[ $DUNST_STATE != "off" ]]; then
+          notify-send -e -u low -t 1 "Hello:)"
+        fi
+    else
+        echo "${config.services.screen-locker.grep} already running"
+    fi &
+
+    if [ "$DO_SUSPEND" = true ]; then
+     #if [[ $DUP_LOCK != "true" ]]; then
+        echo "y" | xsession-manager -s temp
+        systemctl suspend
+     #fi
+    fi
   '';
 
 
@@ -495,17 +647,37 @@ in
 
     my.x11.enable =  lib.mkEnableOption "x11 configs";
 
-    services.screen-locker.inactiveIntervalString = lib.mkOption {
-       type = lib.types.nullOr (lib.types.str);
-       default = "6000";
-    };
-
-    services.screen-locker.xss-lock.screensaverCycleString = lib.mkOption {
-       type = lib.types.nullOr (lib.types.str);
-       default = "6000";
+    services.screen-locker = {
+      inactiveIntervalString = lib.mkOption {
+        type = lib.types.nullOr (lib.types.str);
+        default = "6000";
+      };
+      xss-lock = {
+        dpms-standby = lib.mkOption {
+          type = lib.types.nullOr (lib.types.str);
+          default = "20";
+        };
+        dpms-off = lib.mkOption {
+          type = lib.types.nullOr (lib.types.str);
+          default = "180";
+        };
+        screensaverCycleString = lib.mkOption {
+          type = lib.types.nullOr (lib.types.str);
+          default = "6000";
+        };
+      };
+      cmd = lib.mkOption {
+        type = lib.types.nullOr (lib.types.str);
+        default = "betterlockscreen -l dimblur --off ${config.services.screen-locker.xss-lock.dpms-standby} --show-layout";
+      };
+      grep = lib.mkOption {
+        type = lib.types.nullOr (lib.types.str);
+        default = "betterlock";
+      };
     };
 
   };
+
 
   config = lib.mkIf cfg.enable {
 
@@ -564,6 +736,7 @@ in
       x-cursor
       x-lock-sleep
       x-lock
+      xlockcmd
       xsession-load
       xsession-save
       rofi-monitor
@@ -594,7 +767,7 @@ in
     xsession = {
 
       enable = true;
-      numlock.enable = true;
+      numlock.enable = false;
       preferStatusNotifierItems = true;
       profilePath = ".xprofile";
       scriptPath = ".xsession";
@@ -647,15 +820,15 @@ in
       windowManager.command = lib.mkForce "test -n \"$1\" && eval \"$@\"";
     };
 
-    systemd.user.services.xautolock-session.Service.ExecStart = lib.mkForce (lib.concatStringsSep " " (
-      [
-        "${config.services.screen-locker.xautolock.package}/bin/xautolock"
-        "-time ${toString config.services.screen-locker.inactiveInterval}"
-        "-locker '${config.services.screen-locker.lockCmd}'"
-      ]
-      ++ lib.optional config.services.screen-locker.xautolock.detectSleep "-detectsleep"
-      ++ config.services.screen-locker.xautolock.extraOptions
-    ));
+   #systemd.user.services.xautolock-session.Service.ExecStart = lib.mkForce (lib.concatStringsSep " " (
+   #  [
+   #    "${config.services.screen-locker.xautolock.package}/bin/xautolock"
+   #    "-time ${toString config.services.screen-locker.inactiveInterval}"
+   #    "-locker '${config.services.screen-locker.lockCmd}'"
+   #  ]
+   #  ++ lib.optional config.services.screen-locker.xautolock.detectSleep "-detectsleep"
+   #  ++ config.services.screen-locker.xautolock.extraOptions
+   #));
 
 
     services = {
@@ -684,7 +857,7 @@ in
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
-        lockCmd = "${x-lock-sleep}/bin/x-lock-sleep";
+        lockCmd = "${xlockcmd}/bin/xlockcmd";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default"
         #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";
@@ -693,7 +866,7 @@ in
         xautolock = {
           enable = true; # Either This Or XSS, ONLY ONE CAN BE USED (xauto lock uses loginctl (which doesnt work on x) and doesnt set xset s AND doesnt use lockCMD instead uses its own things (llisted below) BUT Detects sleep and other features, xss Uses lockCMD And sets xset s BUT its bear bones)
           package = pkgs.xautolock; # pkgs.xidlehook
-          detectSleep = false;
+          detectSleep = true;
           extraOptions = [
            #"-time mins         " # time before locking the screen [1 <= mins <= 60]. # IS DEFINED WITH inactiveInterval
            #"-locker locker     " # program used to lock.                             # IS DEFINED WITH lockCmd
@@ -727,7 +900,7 @@ in
           package = pkgs.xss-lock;
           extraOptions = [ ];
           screensaverCycle = (config.services.screen-locker.inactiveInterval * 60); # 1800; # max 3600;
-          screensaverCycleString = "1800";
+          screensaverCycleString = toString (config.services.screen-locker.inactiveInterval * 60);
         };
       };
      #betterlockscreen = {
