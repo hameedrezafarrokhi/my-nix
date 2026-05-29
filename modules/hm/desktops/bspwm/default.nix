@@ -113,7 +113,7 @@ in
       # polybar -c ~/.config/bspwm/polybar/config.ini &
       extraConfig = ''
 
-        numlockx on
+        numlockx on &
 
         rm -f "$HOME/.cache/bsp"* 2>/dev/null
 
@@ -121,25 +121,26 @@ in
         	  pkill sxhkd
         	  sleep 0.5
         	  sxhkd -c "${nix-path}/modules/hm/desktops/bspwm/sxhkdrc" &
-        fi
+        fi &
 
         systemctl --user restart bsppoly.service &
         systemctl --user restart bsptint.service &
         #bsp-touchegg &
+        fusuma -c ${nix-path}/modules/hm/desktops/bspwm/fusuma.yaml -d &
 
-        pw-play "$HOME/.local/share/desktop-sounds/startup"
+        pw-play "$HOME/.local/share/desktop-sounds/startup" &
 
         if [ -f "$HOME/.bsp_conf" ]; then
             "$HOME/.bsp_conf"
-        fi
+        fi &
         if [ -f "$HOME/.bsp_conf_color" ]; then
             "$HOME/.bsp_conf_color"
-        fi
+        fi &
         if [ -f "$HOME/.config/bspwm/bsp-power-state" ]; then
             bsp-power-man $(cat $HOME/.config/bspwm/bsp-power-state)
         else
             bsp-power-man manual
-        fi
+        fi &
 
         bspc rule -a Tilda state=floating # rectangle=0x0+0+0
         bspc rule -a ulauncher border=off

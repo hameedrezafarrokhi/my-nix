@@ -3,7 +3,7 @@ super + space
    	rofi -show drun -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme $HOME/.config/rofi/themes/main.rasi
 
 # Set Window State: Floating Mode
-super + shift + f
+super + f
 	bspc node -t ~floating
 
 # Set Window State: Fullscreen Mode
@@ -122,7 +122,7 @@ super + minus
 super + shift + {1-9,0}
 	bspc node --to-desktop ^{1-9,10}
 
-# Move Focused Window to Next Free Workspace
+# Move Focused Window to Next Empty Workspace
 super + shift + {backslash}
 	bspc node --to-desktop 'next.!occupied'
 
@@ -130,9 +130,9 @@ super + shift + {backslash}
 super + shift + ctrl + {1-9,0}
       bsp-send-follow {1-9,10}
 
-# Move Focused Window to Next Free Workspace AND Follow
+# Move Focused Window to Next Empty Workspace AND Follow
 super + shift + ctrl + {backslash}
-      bsp-send-follow 'next.!occupied'
+      bsp-send-follow-empty
 
 # Move Focused Desktop to Desktop 1-10
 super + shift + alt + {1-9,0}
@@ -429,14 +429,6 @@ super + alt + bracketright
 # Floating Layout
 super + shift + alt + f
 	bsp-remove-layout; bsp-cache-layout; bsp-float; polybar-msg action "#bspwm.hook.1"; notify-send -e -u low -t 2000 "Floating Layout"
-
-# Simple Full Screen
-super + f
-	bspc node -t fullscreen; polybar-msg cmd toggle
-
-# Simple Full Screen Exit
-super + alt + f
-	bspc node -t tiled; polybar-msg cmd toggle
 
 # Layout Menu Selection
 super + l

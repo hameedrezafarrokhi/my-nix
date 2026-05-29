@@ -1,0 +1,250 @@
+swipe:
+  3:
+   #right:
+   #  begin:
+   #    command: 'wmctrl -s $(( $(xdotool get_desktop) + 1 ))'
+   #    threshold: 2
+   #  update:
+   #    command: 'wmctrl -s $(( $(xdotool get_desktop) + 1 ))'
+   #    interval: 2
+   #    threshold: 3
+   #left:
+   #  begin:
+   #    command: 'wmctrl -s $(( $(xdotool get_desktop) - 1 ))'
+   #    threshold: 2
+   #  update:
+   #    command: 'wmctrl -s $(( $(xdotool get_desktop) - 1 ))'
+   #    interval: 2
+   #    threshold: 3
+    right:
+     #workspace: 'next'
+     #threshold: 0.7
+      begin:
+        workspace: 'next'
+        threshold: 2
+        keypress:
+          LEFTMETA:
+            window: 'next'
+            threshold: 0.7
+          LEFTALT:
+            command: 'sh -c bsp-send-follow-empty'
+            threshold: 0.7
+          LEFTCTRL:
+            command: 'sh -c bsp-send-next-empty'
+            threshold: 0.7
+      update:
+        workspace: 'next'
+        interval: 5
+        threshold: 4
+     #keypress:
+     #  LEFTMETA:
+     #    window: 'next'
+     #    threshold: 0.7
+     #  LEFTALT:
+     #    command: 'sh -c bsp-send-follow-empty'
+     #    threshold: 0.7
+     #  LEFTCTRL:
+     #    command: 'sh -c bsp-send-next-empty'
+     #    threshold: 0.7
+    left:
+     #workspace: 'prev'
+     #threshold: 0.7
+      begin:
+        workspace: 'prev'
+        threshold: 2
+        keypress:
+          LEFTMETA:
+            window: 'prev'
+            threshold: 0.7
+          LEFTALT:
+            command: 'sh -c bsp-send-prev-follow-empty'
+            threshold: 0.7
+          LEFTCTRL:
+            command: 'sh -c bsp-send-prev-empty'
+            threshold: 0.7
+      update:
+        workspace: 'prev'
+        interval: 5
+        threshold: 4
+     #keypress:
+     #  LEFTMETA:
+     #    window: 'prev'
+     #    threshold: 0.7
+     #  LEFTALT:
+     #    command: 'sh -c bsp-send-prev-follow-empty'
+     #    threshold: 0.7
+     #  LEFTCTRL:
+     #    command: 'sh -c bsp-send-prev-empty'
+     #    threshold: 0.7
+    up:
+      begin:
+        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme .config/rofi/themes/main.rasi'
+        threshold: 2
+      update:
+       #command: 'xdotool key ctrl+Tab'
+        sendkey: "LEFTCTRL+TAB"
+        threshold: 3
+        interval: 5
+    down:
+      begin:
+        command: 'rofi -show drun -modi drun,drun,run,emoji,ssh,window,windowcd,combi,keys,filebrowser,calc,top,blezz,games,nerdy,file-browser-extended -show-icons -theme .config/rofi/themes/main.rasi'
+        threshold: 2
+      update:
+       #command: 'xdotool key ctrl+shift+Tab'
+        sendkey: "LEFTCTRL+LEFTSHIFT+TAB"
+        threshold: 3
+        interval: 5
+  4:
+    right:
+      begin:
+       #command: 'xdotool key super+apostrophe'
+        sendkey: "LEFTMETA+APOSTROPHE"
+        threshold: 0.5
+      update:
+       #command: 'xdotool key super+alt+apostrophe'
+        sendkey: "LEFTMETA+LEFTALT+APOSTROPHE"
+        threshold: 10
+        interval: 7
+    left:
+     #command: 'xdotool key super+g'
+      sendkey: "LEFTMETA+G"
+      threshold: 0.5
+    down:
+     #command: 'xdotool key super+f'
+      sendkey: "LEFTMETA+F"
+      threshold: 0.5
+      keypress:
+        LEFTMETA:
+          window: 'close'
+    up:
+     #command: 'xdotool key super+Return'
+     #sendkey: "LEFTMETA+RETURN"
+      window:
+        fullscreen: toggle
+      threshold: 0.5
+      keypress:
+        LEFTMETA:
+          window:
+            maximized: toggle
+
+hold:
+ #4:
+ #  window: 'close'
+ #  threshold: 2
+ #3:
+ #  sendkey: "LEFTMETA+D"
+ #  threshold: 2
+ #  keypress:
+ #    LEFTMETA:
+ #      sendkey: "LEFTMETA+LEFTALT+SPACE"
+ #      threshold: 2
+ #  keypress:
+ #    LEFTSHIFT:
+ #      sendkey: "LEFTMETA+LEFTSHIFT+D"
+ #      threshold: 20
+ #  keypress:
+ #    LEFTALT:
+ #      sendkey: "LEFTMETA+LEFTALT+D"
+ #      threshold: 20
+  2:
+    sendkey: "LEFTMETA+GRAVE"
+    threshold: 0.8
+    keypress:
+      LEFTMETA:
+        sendkey: "LEFTMETA+LEFTSHIFT+GRAVE"
+        threshold: 0.8
+
+#rotate:
+#  2:
+#    clockwise:
+#      command: 'xdotool key super+g'
+#    counterclockwise:
+#      command: 'xdotool key super+s'
+
+pinch:
+  2:
+    in:
+      begin:
+     #command: 'xdotool keydown ctrl click 4 keyup ctrl & xdotool key ctrl+shift+equal'
+       #command: 'xdotool key ctrl+equal & xdotool key ctrl+shift+equal'
+        sendkey: ["LEFTCTRL+EQUAL", "LEFTCTRL+LEFTSHIFT+EQUAL"]
+     #command: 'xdotool keydown ctrl key plus keyup ctrl'
+     #sendkey: "LEFTCTRL+EQUAL"
+        threshold: 0.5
+      update:
+       #command: 'xdotool key ctrl+equal & xdotool key ctrl+shift+equal'
+        sendkey: ["LEFTCTRL+EQUAL", "LEFTCTRL+LEFTSHIFT+EQUAL"]
+        interval: 5
+        threshold: 1
+    out:
+      begin:
+      #command: 'xdotool keydown ctrl click 5 keyup ctrl & xdotool key ctrl+shift+minus'
+       #command: 'xdotool key ctrl+minus & xdotool key ctrl+shift+minus'
+        sendkey: ["LEFTCTRL+MINUS", "LEFTCTRL+LEFTSHIFT+MINUS"]
+     #command: 'xdotool keydown ctrl key minus keyup ctrl'
+     #sendkey: "LEFTCTRL+MINUS"
+        threshold: 0.5
+      update:
+       #command: 'xdotool key ctrl+minus & xdotool key ctrl+shift+minus'
+        sendkey: ["LEFTCTRL+MINUS", "LEFTCTRL+LEFTSHIFT+MINUS"]
+        interval: 5
+        threshold: 1
+
+threshold:
+  swipe: 2
+  pinch: 2
+
+interval:
+  swipe: 2
+  pinch: 2
+
+#---
+#context:
+#  plugin_defaults: libinput_command_input
+#plugin:
+#  inputs:
+#    libinput_command_input:
+#---
+#context:
+#  plugin_defaults: keypress_filter
+#plugin:
+#  inputs:
+#    libinput_command_input:
+#      show-keycodes: true
+#  filters:
+#    keypress_filter:
+#      keep_device_names:
+#---
+#context:
+#  plugin_defaults: sendkey_executor
+#plugin:
+#  executors:
+#    sendkey_executor:
+#      device_name: keyboard|Keyboard|KEYBOARD
+#---
+#context:
+#  plugin_defaults: wmctrl_executor
+#plugin:
+#  executors:
+#    wmctrl_executor:
+#      wrap-navigation: false
+#      matrix-col-size:
+#
+
+---
+context:
+  application:
+    - kitty
+    - Kitty
+pinch:
+  2:
+    in:
+     #command: 'xdotool keydown ctrl click 4 keyup ctrl'
+     #command: 'xdotool keydown ctrl key plus keyup ctrl'
+      sendkey: "LEFTCTRL+LEFTSHIFT+EQUAL"
+      threshold: 0.5
+    out:
+     #command: 'xdotool keydown ctrl click 5 keyup ctrl'
+     #command: 'xdotool keydown ctrl key minus keyup ctrl'
+      sendkey: "LEFTCTRL+LEFTSHIFT+MINUS"
+      threshold: 0.5

@@ -38,7 +38,7 @@ let
 
       function send_notification() {
       	volume=$(pamixer --get-volume)
-      	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
+      	notify-send -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
       }
 
       case $1 in
@@ -56,7 +56,7 @@ let
       mute)
       	pamixer -t
       	if $(pamixer --get-mute); then
-      		dunstify -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
+      		notify-send -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
       	else
       		send_notification up
       	fi
@@ -685,6 +685,54 @@ let
 
     # focus the node itself
     bspc node "$NODE" --focus
+  '';
+
+  bsp-send-follow-empty = pkgs.writeShellScriptBin "bsp-send-follow-empty" ''
+    bspc node --to-desktop
+
+    DEST='next.!occupied'  # e.g., 1-10
+
+    # move the focused node
+    NODE=$(bspc query -N -n focused)
+    bspc node "$NODE" --to-desktop "$DEST"
+
+    # get the monitor of that desktop
+    MONITOR=$(bspc query -M -d "$DEST")
+
+    # focus the monitor and desktop
+    bspc monitor "$MONITOR" --focus
+    bspc desktop "$DEST" --focus
+
+    # focus the node itself
+    bspc node "$NODE" --focus
+  '';
+
+  bsp-send-prev-follow-empty = pkgs.writeShellScriptBin "bsp-send-prev-follow-empty" ''
+    bspc node --to-desktop
+
+    DEST='prev.!occupied'  # e.g., 1-10
+
+    # move the focused node
+    NODE=$(bspc query -N -n focused)
+    bspc node "$NODE" --to-desktop "$DEST"
+
+    # get the monitor of that desktop
+    MONITOR=$(bspc query -M -d "$DEST")
+
+    # focus the monitor and desktop
+    bspc monitor "$MONITOR" --focus
+    bspc desktop "$DEST" --focus
+
+    # focus the node itself
+    bspc node "$NODE" --focus
+  '';
+
+  bsp-send-prev-empty = pkgs.writeShellScriptBin "bsp-send-prev-empty" ''
+    bspc node --to-desktop 'prev.!occupied'
+  '';
+
+  bsp-send-next-empty = pkgs.writeShellScriptBin "bsp-send-next-empty" ''
+    bspc node --to-desktop 'next.!occupied'
   '';
 
   bsp-gaps-toggle = pkgs.writeShellScriptBin "bsp-gaps-toggle" ''
@@ -1872,6 +1920,10 @@ in
       scratchpad
       bspi
       tint-go-below
+      bsp-send-follow-empty
+      bsp-send-prev-follow-empty
+      bsp-send-prev-empty
+      bsp-send-next-empty
 
     ];
 

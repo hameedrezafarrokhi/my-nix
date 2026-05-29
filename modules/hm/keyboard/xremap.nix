@@ -96,7 +96,7 @@ let
 
       function send_notification() {
       	volume=$(pamixer --get-volume)
-      	dunstify -a "changevolume" -r "9993" -u low -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
+      	notify-send -a "changevolume" -r "9993" -u low -h int:value:"$volume" -i "volume-$1" "Volume: ${volume}%" -t 5000
       }
 
       case $1 in
@@ -114,7 +114,7 @@ let
       mute)
       	pamixer -t
       	if $(pamixer --get-mute); then
-      		dunstify -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
+      		notify-send -i volume-mute -a "changevolume" -t 5000 -r 9993 -u critical "Muted"
       	else
       		send_notification up
       	fi
