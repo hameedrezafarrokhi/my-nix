@@ -36,6 +36,9 @@
             };
           };
         };
+        xsession.initExtra = ''
+          vibrant-cli ${config.home-manager.users.${admin}.my.display.primary.name} 1.15 &
+        '';
         programs.fish.shellAbbrs = {
           nof = "__NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only";
         };

@@ -752,6 +752,7 @@ in
         format = "%{O-11pt}<label>%{O-2pt}";
         initial = "2";
         click-left = "xmenu-power";
+        double-click-left = "gsimplecal";
         click-right = "poly-super";
         click-middle = "poly-fetch";
       };

@@ -4,7 +4,7 @@
   fetchFromGitHub,
   libX11,
   libXext,
-  clang-tools,
+  clang,
 }:
 
 stdenv.mkDerivation rec {
@@ -18,12 +18,17 @@ stdenv.mkDerivation rec {
     hash = "sha256-8iOcL1SzVrOJcSCseGrfd8nuEnTnAp3nSFBKxKntE3o=";
   };
 
-  nativeBuildInputs = [ clang-tools ];
+  nativeBuildInputs = [ clang ];
 
   buildInputs = [ libX11 libXext ];
 
   buildPhase = ''
-    clang clarawm.c -o clarawm -02 -Wall -Werror -lX11
+    clang clarawm.c -o clarawm -lX11 -O2 -Wall -Werror
+  '';
+
+  installPhase = ''
+    mkdir -p $out/bin
+    cp clarawm $out/bin/
   '';
 
   meta = with lib; {

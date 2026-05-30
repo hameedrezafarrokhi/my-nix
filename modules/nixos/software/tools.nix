@@ -22,6 +22,7 @@
     xcalc
    #xclock
     oclock
+    gsimplecal
 
    #crow-translate                ##Translation
    #dialect                       ##Translation

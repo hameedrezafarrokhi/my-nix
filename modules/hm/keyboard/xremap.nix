@@ -342,6 +342,10 @@ in
                       launch: [ "Telegram" ]
                     k:
                       launch: [ "kdeconnect-app" ]
+                    y:
+                      launch: [ "gsimplecal" ]
+                    d:
+                      launch: [ "xclock" ]
                     g:
                       remap:
                             s:
@@ -500,6 +504,7 @@ in
                       remap:
                             c:
                               launch: [ "xremap-pr-count" ]
+
 
 
 

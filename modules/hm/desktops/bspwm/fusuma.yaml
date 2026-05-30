@@ -127,7 +127,7 @@ swipe:
           window:
             maximized: toggle
 
-hold:
+#hold:
  #4:
  #  window: 'close'
  #  threshold: 2
@@ -146,13 +146,13 @@ hold:
  #    LEFTALT:
  #      sendkey: "LEFTMETA+LEFTALT+D"
  #      threshold: 20
-  2:
-    sendkey: "LEFTMETA+GRAVE"
-    threshold: 0.8
-    keypress:
-      LEFTMETA:
-        sendkey: "LEFTMETA+LEFTSHIFT+GRAVE"
-        threshold: 0.8
+ #2:
+ #  sendkey: "LEFTMETA+GRAVE"
+ #  threshold: 0.8
+ #  keypress:
+ #    LEFTMETA:
+ #      sendkey: "LEFTMETA+LEFTSHIFT+GRAVE"
+ #      threshold: 0.8
 
 #rotate:
 #  2:

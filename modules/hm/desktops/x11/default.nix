@@ -18,7 +18,7 @@ let
   # ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
 
   x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
-    x-lock -s
+    x-lock -s && notify-send -e -u low -t 1 'Hello:)'
   '';
 
  #x-lock = pkgs.writeShellScriptBin "x-lock" ''
@@ -728,6 +728,8 @@ in
       pkgs.gxmessage
       pkgs.herbe
       pkgs.alttab
+      pkgs.libvibrant
+      pkgs.gummy
      #pkgs.deadd-notification-center
       (pkgs.xmenu.override {
         imlib2 = pkgs.imlib2Full;
@@ -858,7 +860,8 @@ in
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
-        lockCmd = "${xlockcmd}/bin/xlockcmd";
+       #lockCmd = "${xlockcmd}/bin/xlockcmd";
+        lockCmd = "${x-lock-sleep}/bin/x-lock-sleep";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default"
         #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";

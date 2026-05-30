@@ -364,6 +364,14 @@
      #tweaks = [ "black" ];
     };
 
+    xclock = pkgs.writeShellScriptBin "xclock" ''
+      if pgrep oclock > /dev/null; then
+        pkill oclock
+      else
+        oclock -geometry 200x200+45+505 -fg "${Text}" -bg "${Crust}" -bd "${TBlack}" -bw 10 -minute "${Accent}" -hour "${Text}" -jewel "${Rosewater}"
+      fi
+    '';
+
     cat-gif = pkgs.writeShellScriptBin "cat-gif" ''
       ${builtins.readFile ./cat_gif}
     '';
@@ -1295,6 +1303,8 @@ EOF
     xmenu-power
     xmenu-bsp
     xmenu-fetch
+
+    xclock
 
     (pkgs.writeShellScriptBin "tcmatrix" ''${config.my.default.terminal} --name cmatrix --class cmatrix sh -c 'cmatrix -C ${cmatrix}' '')
 
@@ -2734,6 +2744,104 @@ EOF
       settings = {
         ui.theme = tv-theme;
         previewers.file.theme = tv-preview;
+      };
+    };
+    broot = {
+      settings = {
+   #    skin = {
+   #      default = "${rgb-Text} none / ${rgb-Subtext1} none";
+   #      tree = "${rgb-Accent} none / ${rgb-Surface2} none";
+   #      parent = "${rgb-Surface2} none / ${rgb-Surface1} none";
+   #      file = "${rgb-Text} none / ${rgb-Subtext1} none";
+   #      directory = "${rgb-Blue} none Bold / ${rgb-Subtext0} none bold";
+   #      exe = "${rgb-Green} none";
+   #      link = "${rgb-Teal} none";
+   #      pruning = "${rgb-Overlay0} none Italic";
+   #      perm__ = "${rgb-Surface2} none";
+   #      perm_r = "${rgb-Sky} none";
+   #      perm_w = "${rgb-Maroon} none";
+   #      perm_x = "${rgb-Green} none";
+   #      owner = "${rgb-Lavender} none";
+   #      group = "${rgb-Mauve} none";
+   #      count = "${rgb-Peach} ${rgb-Surface2}";
+   #      dates = "${rgb-Accent} none";
+   #      sparse = "${rgb-Yellow} none";
+   #      content_extract = "${rgb-Teal} none";
+   #      content_match = "${rgb-Green} none";
+   #      device_id_major = "${rgb-Lavender} none";
+   #      device_id_sep = "${rgb-Surface2} none";
+   #      device_id_minor = "${rgb-Lavender} none";
+   #      git_branch = "${rgb-Accent} none";
+   #      git_insertions = "${rgb-Green} none";
+   #      git_deletions = "${rgb-Red} none";
+   #      git_status_current = "${rgb-Subtext1} none";
+   #      git_status_modified = "${rgb-Yellow} none";
+   #      git_status_new = "${rgb-Sky} none Bold";
+   #      git_status_ignored = "${rgb-Surface2} none";
+   #      git_status_conflicted = "${rgb-Red} none";
+   #      git_status_other = "${rgb-Red} none";
+   #      selected_line = "none ${rgb-Surface1} / none ${rgb-Surface0}";
+   #      char_match = "${rgb-Green} none Bold";
+   #      file_error = "${rgb-Red} none";
+   #      flag_label = "${rgb-Subtext1} none";
+   #      flag_value = "${rgb-Accent} none Bold";
+   #      input = "${rgb-Text} none / ${rgb-Subtext1} ${rgb-Surface2}";
+   #      status_error = "${rgb-Text} ${rgb-Red}";
+   #      status_job = "${rgb-Yellow} ${rgb-Surface1}";
+   #      status_normal = "${rgb-Text} ${rgb-Surface2}";
+   #      status_italic = "${rgb-Accent} ${rgb-Surface2} Italic";
+   #      status_bold = "${rgb-Accent} ${rgb-Surface2} Bold";
+   #      status_code = "${rgb-Rosewater} ${rgb-Surface2}";
+   #      status_ellipsis = "${rgb-Subtext1} ${rgb-Surface1}";
+   #      purpose_normal = "${rgb-Text} ${rgb-Surface0}";
+   #      purpose_italic = "${rgb-Yellow} ${rgb-Surface0} Italic";
+   #      purpose_bold = "${rgb-Yellow} ${rgb-Surface0} Bold";
+   #      purpose_ellipsis = "${rgb-Text} ${rgb-Surface0}";
+   #      scrollbar_track = "${rgb-Surface2} none / ${rgb-Surface1} none";
+   #      scrollbar_thumb = "${rgb-Surface1} none / ${rgb-Surface0} none";
+   #      help_paragraph = "${rgb-Text} none";
+   #      help_bold = "${rgb-Accent} none Bold";
+   #      help_italic = "${rgb-Maroon} none Italic";
+   #      help_code = "${rgb-Text} ${rgb-Surface2}";
+   #      help_headers = "${rgb-Accent} none";
+   #      help_table_border = "${rgb-Surface2} none";
+   #      preview_title = "${rgb-Subtext1} none / ${rgb-Surface0} none";
+   #      preview = "${rgb-Text} ${rgb-Surface1} / ${rgb-Subtext1} ${rgb-Surface0}";
+   #      preview_separator = "${rgb-Accent} none / ${rgb-Surface2} none";
+   #      preview_line_number = "${rgb-Subtext0} ${rgb-Surface2}";
+   #      preview_match = "none ${rgb-Green}";
+   #      hex_null = "${rgb-Overlay0} none";
+   #      hex_ascii_graphic = "${rgb-Surface1} none";
+   #      hex_ascii_whitespace = "${rgb-Yellow} none";
+   #      hex_ascii_other = "${rgb-Peach} none";
+   #      hex_non_ascii = "${rgb-Red} none";
+   #      staging_area_title = "${rgb-Subtext1} none / ${rgb-Surface0} none";
+   #      mode_command_mark = "${rgb-Surface2} ${rgb-Red} Bold";
+   #      good_to_bad_0 = "rgb(199, 232, 188)";
+   #      good_to_bad_1 = "rgb(183, 225, 169)";
+   #      good_to_bad_2 = "${rgb-Green}";
+   #      good_to_bad_3 = "rgb(170, 211, 157)";
+   #      good_to_bad_4 = "${rgb-Yellow}";
+   #      good_to_bad_5 = "${rgb-Peach}";
+   #      good_to_bad_6 = "rgb(238, 170, 134)";
+   #      good_to_bad_7 = "rgb(240, 158, 170)";
+   #      good_to_bad_8 = "${rgb-Red}";
+   #      good_to_bad_9 = "rgb(230, 90, 111)";
+   #    };
+        imports = [
+            "verbs.hjson"
+            {
+                luma = [
+                    "dark"
+                    "unknown"
+                ];
+                file = "skins/hm-theme.hjson";
+            }
+            {
+                luma = "light";
+                file = "skins/hm-theme.hjson";
+            }
+        ];
       };
     };
     starship = lib.mkIf config.programs.starship.enable {
@@ -4588,7 +4696,7 @@ rules: (
           },
           )
       }, {
-        match = "class_g = 'Dunst'";
+        match = "class_g = 'Dunst' || class_g = 'Gsimplecal'";
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];
@@ -4738,6 +4846,21 @@ rules: (
 		 duration = 0.2;
 	    }
 	  )
+      }, {
+        match = "class_g = 'Clock'";
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "down";
+		 duration = 0.2;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "down";
+		 duration = 0.2;
+	    }
+	    )
       }
 )
     '';
@@ -5988,11 +6111,271 @@ rules: (
       '';
     };
 
-    test = {
-      target = "test.txt";
+    broot-theme = {
+      target = "broot/skins/hm-theme.hjson";
       text = ''
-        ${hexToRgb alt-Base}
-        rgb(${hexToRgb alt-Accent})
+        skin: {
+            input: ${rgb-Text} none
+            # fg:none bg:$surface2
+            selected_line: none ${rgb-Surface2}
+            # fg:$text bg:none
+            default: ${rgb-Text} none
+            # fg:$overlay0 bg:none
+            tree: ${rgb-Overlay0} none
+            # fg:$sapphire bg:none
+            parent: ${rgb-Accent} none
+            file: none none
+        #
+        ### PERMISSIONS
+        #
+            perm__: ${rgb-Subtext1} none
+            # $peach
+            perm_r: ${rgb-Peach} none
+            # $maroon
+            perm_w: ${rgb-Maroon} none
+            # $green
+            perm_x: ${rgb-Green} none
+            # $teal
+            owner: ${rgb-Teal} none
+            # $sky
+            group: ${rgb-Sky} none
+        #
+        ### DATE
+        #
+            # $subtext1
+            dates: ${rgb-Subtext1} none
+        #
+        ### DIRECTORY
+        #
+            # $lavender
+            directory: ${rgb-Lavender} none Bold
+            # $green
+            exe: ${rgb-Green} none
+            # $yellow
+            link: ${rgb-Yellow} none
+            # $subtext0
+            pruning: ${rgb-Subtext0} none Italic
+        #
+        ### PREVIEW
+        #
+            # fg:$text bg:$mantle
+            preview_title: ${rgb-Text} ${rgb-Mantle}
+            # fg:$text bg:$mantle
+            preview: ${rgb-Text} ${rgb-Mantle}
+            # fg:$overlay0
+            preview_line_number: ${rgb-Overlay0} none
+            # fg:$overlay0
+            preview_separator: ${rgb-Overlay0} none
+        #
+        ### MATCH
+        #
+            char_match: ${rgb-Yellow} ${rgb-Surface1} Bold Italic
+            content_match: ${rgb-Yellow} ${rgb-Surface1} Bold Italic
+            preview_match: ${rgb-Yellow} ${rgb-Surface1} Bold Italic
+
+            # children count
+            # fg:$yellow bg:none
+            count: ${rgb-Yellow} none
+            sparse: ${rgb-Red} none
+            content_extract: ${rgb-Red} none Italic
+        #
+        ### GIT
+        #
+            git_branch: ${rgb-Peach} none
+            git_insertions: ${rgb-Peach} none
+            git_deletions: ${rgb-Peach} none
+            git_status_current: ${rgb-Peach} none
+            git_status_modified: ${rgb-Peach} none
+            git_status_new: ${rgb-Peach} none Bold
+            git_status_ignored: ${rgb-Peach} none
+            git_status_conflicted: ${rgb-Peach} none
+            git_status_other: ${rgb-Peach} none
+            staging_area_title: ${rgb-Peach} none
+        #
+        ### FLAG
+        #
+            flag_label: ${rgb-Red} none
+            flag_value: ${rgb-Red} none Bold
+        #
+        ### STATUS
+        #
+            # fg:none #bg:$mantle
+            status_normal: none ${rgb-Mantle}
+            # fg:$red bg:$mantle
+            status_italic: ${rgb-Red} ${rgb-Mantle} Italic
+            # fg:$maroon bg:$mantle
+            status_bold: ${rgb-Maroon} ${rgb-Mantle} Bold
+            # fg:$maroon bg:$mantle
+            status_ellipsis: ${rgb-Maroon} ${rgb-Mantle} Bold
+            # fg:$text bg:$red
+            status_error: ${rgb-Text} ${rgb-Red}
+            # fg:$maroon bg:$mantle
+            status_job: ${rgb-Maroon} ${rgb-Brown}
+            # fg:$maroon bg:$mantle
+            status_code: ${rgb-Maroon} ${rgb-Mantle} Italic
+            # fg:$maroon bg:$mantle
+            mode_command_mark: ${rgb-Maroon} ${rgb-Mantle} Bold
+        #
+        ### HELP
+        #
+            # fg:$text
+            help_paragraph: ${rgb-Text} none
+            # fg:$red
+            help_headers: ${rgb-Red} none Bold
+            # fg:$peach
+            help_bold: ${rgb-Peach} none Bold
+            # fg:$yellow
+            help_italic: ${rgb-Yellow} none Italic
+            # fg:green bg:$surface0
+            help_code: ${rgb-Green} ${rgb-Surface0}
+            # fg:$overlay0
+            help_table_border: ${rgb-Overlay0} none
+        #
+        ### HEX
+        #
+            # fg:$text
+            hex_null: ${rgb-Text} none
+            # fg:$peach
+            hex_ascii_graphic: ${rgb-Peach} none
+            # fg:$green
+            hex_ascii_whitespace: ${rgb-Green} none
+            # fg: teal
+            hex_ascii_other: ${rgb-Teal} none
+            # fg: red
+            hex_non_ascii: ${rgb-Red} none
+
+            # fg:$text bg:$red
+            file_error: ${rgb-Red} none
+        #
+        ### PURPOSE
+        #
+            purpose_normal: none none
+            purpose_italic: ${rgb-Orange} none Italic
+            purpose_bold: ${rgb-Orange} none Bold
+            purpose_ellipsis: none none
+        #
+        ### SCROLLBAR
+        #
+            # fg:$surface0
+            scrollbar_track: ${rgb-Surface0} none
+            # fg:$surface1
+            scrollbar_thumb: ${rgb-Surface2} none
+        #
+        ### GOODTOBAD
+        #
+            good_to_bad_0: ${rgb-Green} none
+            good_to_bad_1: ${rgb-Teal} none
+            good_to_bad_2: ${rgb-Sky} none
+            good_to_bad_3: ${rgb-Accent} none
+            good_to_bad_4: ${rgb-Blue} none
+            good_to_bad_5: ${rgb-Lavender} none
+            good_to_bad_6: ${rgb-Mauve} none
+            good_to_bad_7: ${rgb-Peach} none
+            good_to_bad_8: ${rgb-Maroon} none
+            good_to_bad_9: ${rgb-Red} none
+        }
+
+      '';
+    };
+
+    test = {
+      target = "colors.txt";
+      text = ''
+
+        ${nameC} ${flavorC} ${accentC}
+
+        Base =      ${Base}
+        Accent =    ${Accent}
+        Text =      ${Text}
+
+        Accent =    ${Accent}
+        Rosewater = ${Rosewater}
+        Flamingo =  ${Flamingo}
+        Orange =    ${Orange}
+        Pink =      ${Pink}
+        Mauve =     ${Mauve}
+        Red =       ${Red}
+        Maroon =    ${Maroon}
+        Peach =     ${Peach}
+        Yellow =    ${Yellow}
+        Green =     ${Green}
+        Teal =      ${Teal}
+        Sky =       ${Sky}
+        Sapphire =  ${Sapphire}
+        Blue =      ${Blue}
+        Lavender =  ${Lavender}
+        Brown =     ${Brown}
+        Text =      ${Text}
+        Subtext1 =  ${Subtext1}
+        Subtext0 =  ${Subtext0}
+        Overlay2 =  ${Overlay2}
+        Overlay1 =  ${Overlay1}
+        Overlay0 =  ${Overlay0}
+        Surface2 =  ${Surface2}
+        Surface1 =  ${Surface1}
+        Surface0 =  ${Surface0}
+        Base =      ${Base}
+        Mantle =    ${Mantle}
+        Crust =     ${Crust}
+        Black =     ${Black}
+        TBlack =    ${TBlack}
+
+        Accent =    ${rgb-Accent}
+        Rosewater = ${rgb-Rosewater}
+        Flamingo =  ${rgb-Flamingo}
+        Orange =    ${rgb-Orange}
+        Pink =      ${rgb-Pink}
+        Mauve =     ${rgb-Mauve}
+        Red =       ${rgb-Red}
+        Maroon =    ${rgb-Maroon}
+        Peach =     ${rgb-Peach}
+        Yellow =    ${rgb-Yellow}
+        Green =     ${rgb-Green}
+        Teal =      ${rgb-Teal}
+        Sky =       ${rgb-Sky}
+        Sapphire =  ${rgb-Sapphire}
+        Blue =      ${rgb-Blue}
+        Lavender =  ${rgb-Lavender}
+        Brown =     ${rgb-Brown}
+        Text =      ${rgb-Text}
+        Subtext1 =  ${rgb-Subtext1}
+        Subtext0 =  ${rgb-Subtext0}
+        Overlay2 =  ${rgb-Overlay2}
+        Overlay1 =  ${rgb-Overlay1}
+        Overlay0 =  ${rgb-Overlay0}
+        Surface2 =  ${rgb-Surface2}
+        Surface1 =  ${rgb-Surface1}
+        Surface0 =  ${rgb-Surface0}
+        Base =      ${rgb-Base}
+        Mantle =    ${rgb-Mantle}
+        Crust =     ${rgb-Crust}
+        Black =     ${rgb-Black}
+        TBlack =    ${rgb-TBlack}
+
+        base00 =    ${Base}
+        base01 =    ${Red}
+        base02 =    ${Green}
+        base03 =    ${Yellow}
+        base04 =    ${Blue}
+        base05 =    ${Pink}
+        base06 =    ${Teal}
+        base07 =    ${Subtext1}
+        base08 =    ${Surface2}
+        base09 =    ${Red}
+        base0A =    ${Green}
+        base0B =    ${Yellow}
+        base0C =    ${Blue}
+        base0D =    ${Pink}
+        base0E =    ${Teal}
+        base0F =    ${Subtext0}
+
+        starship1 = ${starship1};
+        starship2 = ${starship2};
+        starship3 = ${starship3};
+        starship4 = ${starship4};
+        starship5 = ${starship5};
+        starship6 = ${starship6};
+
       '';
     };
   };

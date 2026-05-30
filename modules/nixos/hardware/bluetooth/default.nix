@@ -44,6 +44,7 @@
       bluez-tools
      #blueman
      #bluedevil
+      bluetui
 
     ];
 

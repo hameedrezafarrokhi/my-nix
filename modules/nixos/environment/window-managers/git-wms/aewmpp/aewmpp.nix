@@ -22,15 +22,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libX11 libXext ];
 
-  makeFlags = [
-    "CC=${clang}/bin/clang++"
-    "prefix=$(out)"
-  ];
-
-  preBuild = ''
-    export LDPATH="-L${libX11.out}/lib -L${libXext.out}/lib"
-    export INCLUDES="-I${libX11.dev}"/include -I${libXext.dev}/include"
-  '';
+  makeFlags = [ "prefix=$(out)" ];
 
   installPhase = ''
     mkdir -p $out/bin

@@ -7,6 +7,7 @@
   (utils.removePackagesByName ( with pkgs; [
 
     solfege                       ##Learn music
+   #kord                                           # WARNING BROKEN
    #timidity
    #tuxguitar                     ##Tableture app
    #gmetronome                    ##Metronome app

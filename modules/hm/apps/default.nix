@@ -16,6 +16,7 @@ in
     bazaar.enable = lib.mkEnableOption "bazaar";
     bluetuith.enable = lib.mkEnableOption "bluetuith";
     borg.enable = lib.mkEnableOption "borg";
+    broot.enable = lib.mkEnableOption "broot";
     btop.enable = lib.mkEnableOption "btop";
     cava.enable = lib.mkEnableOption "cava";
     copyq.enable = lib.mkEnableOption "copyq";
@@ -82,6 +83,7 @@ in
       ./bazaar.nix
       ./bluetuith.nix
       ./borg.nix
+      ./broot.nix
       ./btop.nix
       ./cava.nix
       ./copyq.nix

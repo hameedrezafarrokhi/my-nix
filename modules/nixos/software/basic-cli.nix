@@ -58,6 +58,8 @@
 
     figlet
 
+    broot
+
   ] ) config.my.software.basic-cli.exclude)
 
    ++

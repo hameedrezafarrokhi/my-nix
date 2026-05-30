@@ -121,14 +121,15 @@
       "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
       "meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-     #"hana" requiers zig master
+     #"hana"
      #"fluorite" "moonwm"
 
         # Floating
       "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
       "fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
-      "xpywm" "xswm" "biscuitwm"
-     # "aewmpp" "clarawm" "fxwm" "qvwm" "cygnus" "sewm" "simplewm" "superiorxwm" "vswm"
+      "xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
+     #"fxwm" "sewm" "simplewm" "superiorxwm"
+     #"qvwm" "cygnus" "vswm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
@@ -190,7 +191,7 @@
     containers = {
       flatpak.enable = true;
       appimage.enable = true;
-      podman.enable = false;
+      podman.enable = true;
       docker.enable = false;
       waydroid.enable = false;
     };
@@ -393,7 +394,7 @@
 
           ];
 
-          distrobox.enable = false;
+          distrobox.enable = true;
 
           bar-shell.shells = [
             # wayland
@@ -410,6 +411,7 @@
             bazaar.enable = false;
             bluetuith.enable = true;
             borg.enable = true;
+            broot.enable = true;
             btop.enable = true;
             cava.enable = true;
             copyq.enable = true;
