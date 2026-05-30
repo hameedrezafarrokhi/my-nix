@@ -202,6 +202,7 @@
     xfilesFont = "${Sans}";
     jgmenuFont = "${MonoSpace}; ${toString JgmenuSize}";
     alttabFont = "xft:${MonoSpace}:size=${toString AlttabSize}";
+    herbbspFont = "${MonoSpace}:size=${toString HerbbspSize}:weight=${herbbspWeight}";
 
     MonoSize = 10;
     SansSize = 10;
@@ -227,6 +228,8 @@
     StSize = 12;
     DmenuSize = 16;
     AlttabSize = 12;
+    HerbbspSize = 10;
+    herbbspWeight = "bold";
 
     sound = "ocean";
 
@@ -406,6 +409,14 @@
       DIR=$HOME/Pictures/my-wallpapers/gowall/"${gowall-name}"
       mkdir -p "$DIR"
       gowall convert --dir "$1" --output "$DIR" -f "png" -t "hm-theme"
+    '';
+
+    xobvolume = pkgs.writeShellScriptBin "xobvolume" ''
+      xobvol | xob
+    '';
+
+    xobbrightness = pkgs.writeShellScriptBin "xobbrightness" ''
+      xobbright | xob
     '';
 
    #fehw = pkgs.writeShellScriptBin "fehw" ''
@@ -1312,23 +1323,29 @@ EOF
     xfiles-root-script
     xfiles-theme
 
+   #xobbars
+    xobbrightness
+    xobvolume
+
   ]
 
-  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-x.nix {
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+    herbN = "herbbsp";
     herbH = ''
+      static const int use_primary_monitor = 0;
       static const char *background_color = "${Base}";
       static const char *border_color = "${Accent}";
       static const char *font_color = "${Text}";
-      static const char *font_pattern = "monospace:size=10";
-      static unsigned line_spacing = 8;
-      static unsigned int padding = 15;
-      static unsigned int width = 350;
+      static const char *font_pattern = "${herbbspFont}";
+      static unsigned line_spacing = 11;
+      static unsigned int padding = 13;
+      static unsigned int width = 180;
       static unsigned int border_size = 3;
       static unsigned int pos_x = 30;
       static unsigned int pos_y = 60;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = TOP_LEFT;
-      static unsigned int duration = 10; /* in seconds */
+      static unsigned int duration = 2; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -1455,6 +1472,8 @@ EOF
     ${fehw}/bin/fehw &
     ${betterlock-init}/bin/betterlock-init &
     #${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
+    systemctl --user restart xobbright.service &
+    systemctl --user restart xobvol.service &
   '';
   xsession.profileExtra = lib.mkIf config.xsession.enable ''
     xsetroot -cursor_name left_ptr &
@@ -4550,7 +4569,7 @@ rules: (
 		opacity = 0.85;
 		opacity-override = false;
 	}, {
-	      match = "focused || group_focused || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'firefox' || class_g = 'chromium' || class_g = 'brave-browser' || class_g = 'Polybar' || class_g *= 'Brave-browser' || class_g = 'brave' || class_g = 'Brave' || class_name *= 'Dunst' || class_name *= 'dunst' || class_g = 'mpv' || class_g = 'mpv' && !focused || class_g = 'mpvk' || name = 'mpv' || name = 'mpvk' || window_id = '0x5600002' || class_g = 'Xwinwrap' || class_g = 'xwinwrap' || name = 'Xwinwrap' || name = 'xwinwrap' || (class_g *= 'xwin' || name *= 'xwin')"
+	      match = "focused || group_focused || class_g = 'dunst' || class_g = 'herbbsp' || class_g = 'Dunst' || class_g = 'firefox' || class_g = 'chromium' || class_g = 'brave-browser' || class_g = 'Polybar' || class_g *= 'Brave-browser' || class_g = 'brave' || class_g = 'Brave' || class_name *= 'Dunst' || class_name *= 'dunst' || class_g = 'mpv' || class_g = 'mpv' && !focused || class_g = 'mpvk' || name = 'mpv' || name = 'mpvk' || window_id = '0x5600002' || class_g = 'Xwinwrap' || class_g = 'xwinwrap' || name = 'Xwinwrap' || name = 'xwinwrap' || (class_g *= 'xwin' || name *= 'xwin')"
 		opacity = 1.0;
 		opacity-override = false;
 	}, {
@@ -4558,7 +4577,7 @@ rules: (
 		fade = true;
 		shadow = true;
 	}, {
-		match = "window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'Dunst'";
+		match = "window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'herbbsp' || class_g = 'Dunst'";
 		blur-background = false;
 		clip-shadow-above = false;
 		shadow = false;
@@ -4832,7 +4851,8 @@ rules: (
 		}
 		)
 	}, {
-        match = "class_g = 'herbx'";
+        match = "class_g = 'herbx' || class_g = 'herbbsp'";
+	  corner-radius = 5;
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];
@@ -6663,6 +6683,29 @@ rules: (
    #Install = {
    #  WantedBy = [ "graphical-session.target" ];
    #};
+  };
+
+  systemd.user.services.xobvol = {
+    Unit = {
+     Description = "xob progress bars for volume";
+     ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${xobvolume}/bin/xobvolume";
+      Restart = "on-failure";
+    };
+  };
+  systemd.user.services.xobbright = {
+    Unit = {
+     Description = "xob progress bars for brightness";
+     ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${xobbrightness}/bin/xobbrightness";
+      Restart = "on-failure";
+    };
   };
 
  #catppuccin = {

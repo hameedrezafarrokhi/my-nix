@@ -1,5 +1,6 @@
 { lib
 , stdenv
+, fetchFromGitHub
 , python3
 , wrapGAppsHook3
 , glib
@@ -17,9 +18,14 @@ in
 
 stdenv.mkDerivation rec {
   pname = "vboard";
-  version = "0.1.0";
+  version = "2025-10-05";
 
-  src = ./.;
+  src = fetchFromGitHub {
+    owner = "mdev588";
+    repo = "vboard";
+    rev = "main";
+    hash = "sha256-3ai7X5G8nA4yBO5zCONNYgJBSBJNVt+n891Me5JIJXU=";
+  };
 
   nativeBuildInputs = [
     wrapGAppsHook3
@@ -70,8 +76,8 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "A virtual keyboard using GTK and uinput";
-    homepage = "https://example.com"; # Replace with actual homepage if available
-    license = licenses.mit; # Adjust license as needed
+    homepage = "https://github.com/mdev588/vboard";
+    license = licenses.mit;
     maintainers = with maintainers; [ ];
     platforms = platforms.linux;
   };

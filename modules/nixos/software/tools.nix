@@ -562,6 +562,10 @@ struct animation animations[] = {
    ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
   #++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING Needs After Internet
 
+   ++ [(pkgs.callPackage ../myPackages/xidle.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xobbright.nix { })]
+
   ;
 
   programs = {

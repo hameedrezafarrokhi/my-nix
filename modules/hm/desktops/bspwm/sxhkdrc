@@ -815,7 +815,15 @@ super + shift + alt + j
 
 # Clear Notifications
 super + n
-    dunstctl close-all
+    dunstctl close-all; pkill herb
+
+# Clear Notifications One By One
+alt + n
+    pkill -n herb || dunstctl close
+
+# Herbe Notification Action
+ctrl + alt + n
+    pkill -SIGUSR2 -n herb
 
 # Show Notifications one by one
 super + shift + n
@@ -954,7 +962,7 @@ super + p ; {t,e,v,s,d,r,p,i,b}
     {tkcs,ekcs,vkcs,mkcs,fkcs,akcs,pkcs,pkcr,bkcs}
 
 # Hide Kitty Picker
-super + i
+super + shift + p
     xdotool search --classname picker > /dev/null && bspc node $(xdotool search --classname picker) --flag hidden=on
 
 # Dekstop Sounds Toggle

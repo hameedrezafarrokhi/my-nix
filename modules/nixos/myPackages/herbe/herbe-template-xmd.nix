@@ -336,6 +336,12 @@ int main(int argc, char *argv[])
 	window = XCreateWindow(display, RootWindow(display, screen), x, y, width, height, border_size, DefaultDepth(display, screen),
 						   CopyFromParent, visual, CWOverrideRedirect | CWBackPixel | CWBorderPixel, &attributes);
 
+      XStoreName(display, window, "${herbN}");
+      XClassHint class_hint;
+      class_hint.res_name = "${herbN}";
+      class_hint.res_class = "${herbN}";
+      XSetClassHint(display, window, &class_hint);
+
 	XftDraw *draw = XftDrawCreate(display, window, visual, colormap);
 	XftColorAllocName(display, visual, colormap, font_color, &color);
 

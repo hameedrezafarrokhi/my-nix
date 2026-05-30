@@ -10,6 +10,16 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send -t 7000 "Screenshot saved" "Saved to ~/Pictures"
   '';
 
+  xremap-sleep = pkgs.writeShellScriptBin "xremap-sleep" ''
+    if systemctl --user is-active --quiet xautolock-session.service; then
+      lock-kill
+      x-lock -s
+      lock-restart
+    else
+      systemctl suspend
+    fi
+  '';
+
   xss-kill = pkgs.writeShellScriptBin "xss-kill" ''
     pkill .xscreensaver-w
     pkill xscreensaver-sy
@@ -222,6 +232,7 @@ in
     xremap-xsession-load
     xremap-xsession-save
     xremap-pr-count
+    xremap-sleep
    #vlc-env
   ];
 
@@ -549,9 +560,9 @@ in
 
 
             Super-Shift-Ctrl-l:
-                      launch: [ "x-lock", "-t", "20" ]
+                      launch: [ "xlock" ]
             Super-Shift-Ctrl-KEY_SEMICOLON:
-                      launch: [ "x-lock", "-s" ]
+                      launch: [ "x-lock-sleep" ]
             Super-Shift-Ctrl-x:
                       launch: [ "xss-kill" ]
             Super-Shift-Ctrl-p:

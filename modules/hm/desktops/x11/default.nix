@@ -17,16 +17,34 @@ let
 
   # ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
 
+ #x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
+ #  if systemctl --user is-active --quiet xautolock-session.service; then
+ #    x-lock -t 5
+ #  else
+ #    x-lock -s
+ #  fi
+ #'';
+
   x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
-    x-lock -s && notify-send -e -u low -t 1 'Hello:)'
+    x-lock -s
+    #&& notify-send -e -u low -t 1 'Hello:)'
   '';
 
  #x-lock = pkgs.writeShellScriptBin "x-lock" ''
  #  ${builtins.readFile ./x-lock}
  #'';
 
+ #xlockcmd = pkgs.writeShellScriptBin "xlockcmd" ''
+ #  x-lock -s
+ #'';
+
   xlockcmd = pkgs.writeShellScriptBin "xlockcmd" ''
-    ${config.services.screen-locker.cmd} && notify-send -e -u low -t 1 'Hello:)'
+    ${config.services.screen-locker.cmd}
+    notify-send -e -u low -t 1 'Hello:)'
+  '';
+
+  xlock = pkgs.writeShellScriptBin "xlock" ''
+    x-lock -t ${config.services.screen-locker.xss-lock.dpms-standby}
   '';
 
   x-lock = pkgs.writeShellScriptBin "x-lock" ''
@@ -730,6 +748,8 @@ in
       pkgs.alttab
       pkgs.libvibrant
       pkgs.gummy
+      pkgs.xob
+      pkgs.xprintidle-ng
      #pkgs.deadd-notification-center
       (pkgs.xmenu.override {
         imlib2 = pkgs.imlib2Full;
@@ -739,6 +759,7 @@ in
       x-cursor
       x-lock-sleep
       x-lock
+      xlock
       xlockcmd
       xsession-load
       xsession-save
@@ -860,8 +881,8 @@ in
         lockCmdEnv = [
           "XSECURELOCK_PAM_SERVICE=xsecurelock"
         ];
-       #lockCmd = "${xlockcmd}/bin/xlockcmd";
-        lockCmd = "${x-lock-sleep}/bin/x-lock-sleep";
+        lockCmd = "${xlockcmd}/bin/xlockcmd";
+       #lockCmd = "${x-lock-sleep}/bin/x-lock-sleep";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default";
         # "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a -p default"
         #lib.mkDefault "${pkgs.i3lock}/bin/i3lock -n -c 000000 -f -k ";
