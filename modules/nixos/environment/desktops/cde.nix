@@ -14,7 +14,7 @@
 
     extraPackages = mkOption {
       type = with types; listOf package;
-      default = with mypkgs.stable.xorg; [
+      default = with mypkgs.stable; [
         xclock
         bitmap
         xlsfonts
@@ -27,7 +27,7 @@
         xwud
       ];
       defaultText = literalExpression ''
-        with mypkgs.stable.xorg; [
+        with mypkgs.stable; [
           xclock bitmap xlsfonts xfd xrefresh xload xwininfo xdpyinfo xwd xwud
         ]
       '';
@@ -42,7 +42,7 @@
 
    services.xserver.desktopManager.mycde = {
      enable = true;
-     extraPackages = with mypkgs.stable.xorg; [
+     extraPackages = with mypkgs.stable; [
        xclock
        bitmap
        xlsfonts

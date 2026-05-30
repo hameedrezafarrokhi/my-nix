@@ -412,11 +412,12 @@
     '';
 
     xobvolume = pkgs.writeShellScriptBin "xobvolume" ''
-      xobvol | xob
+      sleep 5
+      xobvol | xob -t 3000 -c $HOME/.config/xob/config.cfg -s bottom-volume -m 100 -q
     '';
 
     xobbrightness = pkgs.writeShellScriptBin "xobbrightness" ''
-      xobbright | xob
+      xobbright | xob -t 3000 -c $HOME/.config/xob/config.cfg -s bottom-brightness -m 100 -q
     '';
 
    #fehw = pkgs.writeShellScriptBin "fehw" ''
@@ -1346,6 +1347,48 @@ EOF
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = TOP_LEFT;
       static unsigned int duration = 2; /* in seconds */
+      #define DISMISS_BUTTON Button1
+      #define ACTION_BUTTON Button3
+    '';
+  })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+    herbN = "herbvolume";
+    herbH = ''
+      static const int use_primary_monitor = 0;
+      static const char *background_color = "${Accent}";
+      static const char *border_color = "${Accent}";
+      static const char *font_color = "${Crust}";
+      static const char *font_pattern = "${herbbspFont}";
+      static unsigned line_spacing = 11;
+      static unsigned int padding = 13;
+      static unsigned int width = 50;
+      static unsigned int border_size = 0;
+      static unsigned int pos_x = 280;
+      static unsigned int pos_y = 175;
+      enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+      enum corners corner = BOTTOM_LEFT;
+      static unsigned int duration = 3; /* in seconds */
+      #define DISMISS_BUTTON Button1
+      #define ACTION_BUTTON Button3
+    '';
+  })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+    herbN = "herbbright";
+    herbH = ''
+      static const int use_primary_monitor = 0;
+      static const char *background_color = "${Yellow}";
+      static const char *border_color = "${Yellow}";
+      static const char *font_color = "${Crust}";
+      static const char *font_pattern = "${herbbspFont}";
+      static unsigned line_spacing = 11;
+      static unsigned int padding = 13;
+      static unsigned int width = 50;
+      static unsigned int border_size = 0;
+      static unsigned int pos_x = 280;
+      static unsigned int pos_y = 115;
+      enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+      enum corners corner = BOTTOM_LEFT;
+      static unsigned int duration = 3; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -4881,6 +4924,46 @@ rules: (
 		 duration = 0.2;
 	    }
 	    )
+      }, {
+        match = "class_g = 'herbvolume' || class_g = 'herbbright'";
+        corner-radius = 5;
+        opacity = 1.0;
+        opacity-override = false;
+        transparent-clipping = false;
+        fading = false;
+        shadow = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "disappear";
+		 direction = "down";
+		 duration = 0.0001;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "appear";
+		 direction = "down";
+		 duration = 0.0001;
+	    }
+	    )
+      }, {
+        match = "class_g = 'xob'";
+        corner-radius = 5;
+        opacity = 1.0;
+        opacity-override = false;
+        transparent-clipping = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "down";
+		 duration = 0.2;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "down";
+		 duration = 0.2;
+	    }
+	    )
       }
 )
     '';
@@ -6295,6 +6378,79 @@ rules: (
             good_to_bad_9: ${rgb-Red} none
         }
 
+      '';
+    };
+
+    xob-theme = {
+      target = "xob/config.cfg";
+      text = ''
+        bottom-volume = {
+            x         = {relative = 0.5; offset = 0;};
+            y         = {relative = 0.75; offset = 0;};
+            length    = {relative = 0.5; offset = 0;};
+            thickness = 24;
+            outline   = 0;
+            border    = 4;
+            padding   = 0;
+            orientation = "horizontal";
+            overflow = "proportional";
+            color = {
+                normal = {
+                    fg     = "${Accent}";
+                    bg     = "${Crust}85";
+                    border = "${Accent}";
+                };
+                alt = {
+                    fg     = "${Surface0}";
+                    bg     = "${Crust}85";
+                    border = "${Surface0}";
+                };
+                overflow = {
+                    fg     = "${Red}";
+                    bg     = "${Crust}85";
+                    border = "${Maroon}";
+                };
+                altoverflow = {
+                    fg     = "${Rosewater}";
+                    bg     = "${Crust}85";
+                    border = "${Flamingo}";
+                };
+            };
+        };
+
+        bottom-brightness = {
+            x         = {relative = 0.5; offset = 0;};
+            y         = {relative = 0.75; offset = 60;};
+            length    = {relative = 0.5; offset = 0;};
+            thickness = 24;
+            outline   = 0;
+            border    = 4;
+            padding   = 0;
+            orientation = "horizontal";
+            overflow = "proportional";
+            color = {
+                normal = {
+                    fg     = "${Yellow}";
+                    bg     = "${Crust}85";
+                    border = "${Yellow}";
+                };
+                alt = {
+                    fg     = "${Surface0}";
+                    bg     = "${Crust}85";
+                    border = "${Surface0}";
+                };
+                overflow = {
+                    fg     = "${Red}";
+                    bg     = "${Crust}85";
+                    border = "${Maroon}";
+                };
+                altoverflow = {
+                    fg     = "${Rosewater}";
+                    bg     = "${Crust}85";
+                    border = "${Flamingo}";
+                };
+            };
+        };
       '';
     };
 

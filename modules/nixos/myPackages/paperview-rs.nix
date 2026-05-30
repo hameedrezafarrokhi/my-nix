@@ -5,7 +5,6 @@
   pkg-config,
   stdenv,
   libX11,
-  xorg,
   imlib2,
 }:
 

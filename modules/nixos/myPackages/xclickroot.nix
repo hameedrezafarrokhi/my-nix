@@ -9,7 +9,6 @@
   libXcursor,
   libXrender,
   libXpm,
-  xorg,
 }:
 
 stdenv.mkDerivation (finalAttrs: {

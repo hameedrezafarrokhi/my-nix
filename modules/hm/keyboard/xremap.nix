@@ -101,6 +101,30 @@ let
   '';
 
   volume= "$(pamixer --get-volume)";
+
+  vol-up = pkgs.writeShellScriptBin "vol-up" ''
+    pamixer -i 2 --allow-boost &
+    pw-play $HOME/.local/share/desktop-sounds/focus &
+    herbvolume 'Vol' && pavucontrol
+  '';
+
+  vol-down = pkgs.writeShellScriptBin "vol-down" ''
+    pamixer -d 2 --allow-boost &
+    pw-play $HOME/.local/share/desktop-sounds/focus &
+    herbvolume 'Vol' && pavucontrol
+  '';
+
+  vol-mute = pkgs.writeShellScriptBin "vol-mute" ''
+    MUTE_GET=$(pamixer --get-mute)
+    pamixer -t &
+    pw-play $HOME/.local/share/desktop-sounds/focus &
+    if [[ $MUTE_GET == "true" ]]; then
+      herbvolume 'Vol' && pavucontrol
+    else
+      herbvolume 'Mut' && pavucontrol
+    fi
+  '';
+
   xremap-volume = pkgs.writeShellScriptBin "xremap-volume" ''
       #!/bin/bash
 
@@ -234,6 +258,11 @@ in
     xremap-pr-count
     xremap-sleep
    #vlc-env
+
+    vol-up
+    vol-down
+    vol-mute
+
   ];
 
  #xdg.desktopEntries = {
@@ -618,11 +647,11 @@ in
         - name: Media-Control
           remap:
             Super-Ctrl-p:
-              launch: [ "xremap-volume", "up" ]
+              launch: [ "vol-up" ]
             Super-Ctrl-o:
-              launch: [ "xremap-volume", "down" ]
+              launch: [ "vol-down" ]
             Super-Ctrl-i:
-              launch: [ "xremap-volume", "mute" ]
+              launch: [ "vol-mute" ]
             Super-Ctrl-l:
               launch: [ "playerctl", "play-pause" ]
             Super-Ctrl-k:
@@ -654,7 +683,7 @@ in
             KEY_NEXT:
               launch: [ "playerctl", "next" ]
             KEY_MUTE:
-              launch: [ "xremap-volume", "mute" ]
+              launch: [ "vol-mute" ]
             Super-KEY_PROG3:
               launch: [ "playerctl", "play-pause" ]
 

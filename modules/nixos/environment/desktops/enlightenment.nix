@@ -43,7 +43,7 @@ in
       enlightenment.ephoto
       enlightenment.rage
       enlightenment.terminology
-      xorg.xcursorthemes
+      xcursorthemes
     ];
 
     environment.pathsToLink = [

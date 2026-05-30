@@ -228,15 +228,15 @@ super + ctrl + alt + shift + Down
 
 # Increase Volume
 XF86AudioRaiseVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+; pw-play "$HOME/.local/share/desktop-sounds/focus"
+      vol-up ; #wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
 
 # Decrease Volume
 XF86AudioLowerVolume
-      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; ; pw-play "$HOME/.local/share/desktop-sounds/focus"
+      vol-down ; #wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 
 # Mute Volume (notify)
 super + Insert
-      bsp-volume mute
+      vol-mute ; #bsp-volume mute
 
 # Cancel Mouse Super
 super + Delete
@@ -252,11 +252,11 @@ super + End
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
-	brtctl get 1; #xbacklight +10
+	sleep 0.2 ; herbbright "Bri" ; #brtctl get 1; #xbacklight +10
 
 # Decrease Screen Brightness
 XF86MonBrightnessDown
-	brtctl get 1; #xbacklight -10
+	sleep 0.2 ; herbbright "Bri" ; #brtctl get 1; #xbacklight -10
 
 # Take a Screenshot (Region Select)
 super + Print
