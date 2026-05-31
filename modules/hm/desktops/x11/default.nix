@@ -15,6 +15,32 @@ let
     '';
   };
 
+  xidlesuspend = pkgs.writeShellScriptBin "xidlesuspend" ''
+    MANUAL_CONFIG="$HOME/.sleeptime"
+    IDLE_LIMIT=${config.services.screen-locker.xss-lock.sleep}
+    SAFETY_MARGIN=60
+    while true; do
+        if [[ -f "$MANUAL_CONFIG" ]]; then
+          source "$MANUAL_CONFIG"
+        fi
+        CURRENT_IDLE=$(xidle -s)
+        if [[ -z "$CURRENT_IDLE" ]]; then
+          sleep 5
+          continue
+        fi
+        if [[ $CURRENT_IDLE -ge $IDLE_LIMIT ]]; then
+          systemctl suspend
+          sleep 10
+        elif [[ $CURRENT_IDLE -ge $((IDLE_LIMIT / 2)) ]]; then
+          NEXT_WAIT=$((IDLE_LIMIT - CURRENT_IDLE + SAFETY_MARGIN))
+          [[ $NEXT_WAIT -lt 60 ]] && NEXT_WAIT=60
+          sleep $NEXT_WAIT
+        else
+          sleep $IDLE_LIMIT
+        fi
+    done
+  '';
+
   # ${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 10 -n -c 24273a &
 
  #x-lock-sleep = pkgs.writeShellScriptBin "x-lock-sleep" ''
@@ -668,20 +694,24 @@ in
     services.screen-locker = {
       inactiveIntervalString = lib.mkOption {
         type = lib.types.nullOr (lib.types.str);
-        default = "6000";
+        default = "6000"; # seconds
       };
       xss-lock = {
         dpms-standby = lib.mkOption {
           type = lib.types.nullOr (lib.types.str);
-          default = "20";
+          default = "20"; # seconds
         };
         dpms-off = lib.mkOption {
           type = lib.types.nullOr (lib.types.str);
-          default = "180";
+          default = "180"; # seconds
         };
         screensaverCycleString = lib.mkOption {
           type = lib.types.nullOr (lib.types.str);
-          default = "6000";
+          default = "6000"; # seconds
+        };
+        sleep = lib.mkOption {
+          type = lib.types.nullOr (lib.types.str);
+          default = "3600"; # minutes
         };
       };
       cmd = lib.mkOption {
@@ -756,6 +786,7 @@ in
       })
 
 
+      xidlesuspend
       x-cursor
       x-lock-sleep
       x-lock
@@ -1045,6 +1076,23 @@ in
          #++ cfg.extraArgs
         );
         Restart = "always";
+        RestartSec = 3;
+      };
+    };
+
+    systemd.user.services.xidlesuspend = {
+      Unit = {
+        Description = "idle suspend";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+        ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${xidlesuspend}/bin/xidlesuspend";
+        Restart = "on-failure";
         RestartSec = 3;
       };
     };

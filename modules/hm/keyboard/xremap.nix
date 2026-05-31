@@ -38,6 +38,7 @@ let
   lock-kill = pkgs.writeShellScriptBin "lock-kill" ''
     systemctl --user stop xautolock-session.service
     systemctl --user stop xss-lock.service
+    systemctl --user stop xidlesuspend.service
     systemctl --user stop swayidle-mango.service
     systemctl --user stop swayidle-niri.service
     systemctl --user stop swayidle-sway.service
@@ -55,6 +56,7 @@ let
   lock-restart = pkgs.writeShellScriptBin "lock-restart" ''
     systemctl --user restart xautolock-session.service
     systemctl --user restart xss-lock.service
+    systemctl --user restart xidlesuspend.service
     systemctl --user restart swayidle-mango.service
     systemctl --user restart swayidle-niri.service
     systemctl --user restart swayidle-sway.service

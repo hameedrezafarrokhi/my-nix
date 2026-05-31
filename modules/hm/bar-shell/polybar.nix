@@ -48,6 +48,7 @@ let
         xset dpms $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) $(( ${toString config.services.screen-locker.inactiveInterval} * 60 ))
         systemctl --user restart xautolock-session.service
         systemctl --user restart xss-lock.service
+        systemctl --user restart xidlesuspend.service
     else
         # Disable idle
         pkill .xscreensaver-w
@@ -55,6 +56,7 @@ let
         pkill .xscreensaver-s
         systemctl --user stop xautolock-session.service
         systemctl --user stop xss-lock.service
+        systemctl --user stop xidlesuspend.service
         xset s noblank
         xset s off
         xset s 0 0
