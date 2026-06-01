@@ -150,7 +150,9 @@ in
         bspc rule -a Tilda state=floating # rectangle=0x0+0+0
         bspc rule -a ulauncher border=off
         bspc rule -a Ulauncher border=off
-        bspc rule -a scratchpad state=floating layer=normal
+        bspc rule -a "scratchpad" state=floating layer=normal
+        bspc rule -a "scratchpad-ext" state=floating layer=normal marked=on
+        bspc rule -a "scratchpad-sticky" state=floating sticky=on layer=above rectangle=720x360+320+60
         bspc rule -a XCalc state=floating
         bspc rule -a ".blueman-manager-wrapped" state=floating
         bspc rule -a bluetuith state=floating
@@ -175,6 +177,7 @@ in
         bspc rule -a "baobab" state=floating
         bspc rule -a "fehprev" state=floating
         bspc rule -a mpv:mpvprev state=floating
+        bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
 
         xdotool keyup Super_L
         rm -f "$HOME/.cache/poly-super-state"

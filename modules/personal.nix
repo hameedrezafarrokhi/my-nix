@@ -407,6 +407,7 @@
           apps = {
             alacritty.enable = true;
             amberol.enable = true;
+            atuin.enable = true;
             bat.enable = true;
             bazaar.enable = false;
             bluetuith.enable = true;

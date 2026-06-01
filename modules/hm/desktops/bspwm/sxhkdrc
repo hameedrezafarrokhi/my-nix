@@ -252,11 +252,11 @@ super + End
 
 # Increase Screen Brightness
 XF86MonBrightnessUp
-	sleep 0.2 ; herbbright "Bri" ; #brtctl get 1; #xbacklight +10
+	sleep 0.2 ; herbbright "Bri" ; #brightnessctl s +10 ; #brtctl up 1; #xbacklight -inc 10
 
 # Decrease Screen Brightness
 XF86MonBrightnessDown
-	sleep 0.2 ; herbbright "Bri" ; #brtctl get 1; #xbacklight -10
+	sleep 0.2 ; herbbright "Bri" ; #brightnessctl s 10- ; #brtctl down 1; #xbacklight -dec 10
 
 # Take a Screenshot (Region Select)
 super + Print
@@ -504,7 +504,7 @@ super + shift + alt + h
 
 # Scratchpad Sticky Kitty
 super + ctrl + Return
-      {bspc rule -a \* -o state=floating sticky=on layer=above rectangle=720x360+320+60 && kitty}
+      kitty --name scratchpad-sticky --class scratchpad-sticky
 
 # Audio/Pavucontrol
 super + v
@@ -520,7 +520,7 @@ super + shift + apostrophe
 
 # Scratchpad Toggle
 super + apostrophe
-      bspad toggle
+      scratch-tog
 
 # Scratchpad Cycle
 super + alt + apostrophe

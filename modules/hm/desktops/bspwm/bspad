@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 usage() {
     printf "usage: bspad COMMAND                                \n" 
@@ -13,8 +13,21 @@ usage() {
 }
 
 getid() {
-    bspc query -N -n "${1:-}.window"
+    bspc query -N -n "${1:-}.window" | grep -v -F -f <(xdo id -N Better_control.py; xdo id -N scratchpad; xdo id -N scratchpad-sticky)
 }
+
+#if [[ -z $(xdo id -N scratchpad-ext) ]] || { [[ -z $(getid .marked) && -z $(getid .hidden) ]]; }; then
+#  #bspc rule -a scratchpad-ext -o state=floating --flag marked=on && kitty --name scratchpad-ext --class scratchpad-ext &>/dev/null & disown
+#  kitty --name scratchpad-ext --class scratchpad-ext &
+#  sleep 0.5
+#  if [[ -z $(xdo id -N scratchpad-ext) ]]; then
+#    sleep 1
+#  fi
+#  if [[ -z $(xdo id -N scratchpad-ext) ]]; then
+#    sleep 1
+#  fi
+#  bspc node "$(xdo id -N scratchpad-ext)" --flag marked=on --state floating -g hidden
+#fi
 
 nextid() {
     { getid "${marked}.!hidden"; getid .hidden; } |

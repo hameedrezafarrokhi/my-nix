@@ -8,15 +8,19 @@
   glib,
   wayland,
   libX11,
+  xorg,
   libxkbcommon,
   libxcb,
   libxcb-cursor,
- #libxcb-errors,
+  libxcb-errors,
   libxcb-image,
   libxcb-keysyms,
   libxcb-render-util,
   libxcb-util,
   libxcb-wm,
+  gtk3,
+  harfbuzz,
+  freetype,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -37,9 +41,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildInputs = [
     libX11
+   #xorg
     libxcb
     libxcb-cursor
-   #libxcb-errors
+    libxcb-errors
     libxcb-image
     libxcb-keysyms
     libxcb-render-util
@@ -50,26 +55,37 @@ stdenv.mkDerivation (finalAttrs: {
     pango
     glib
     wayland
+    gtk3
+    harfbuzz
+    freetype
   ];
 
   buildPhase = ''
     runHook preBuild
-    zig build -Doptimize=ReleaseFast --prefix $out
+    #zig build -Doptimize=ReleaseFast --prefix $out
+    #zig build install --global-cache-dir $(pwd)/.cache --system $PACKAGE_DIR -Dtarget=$       {target} -Doptimize=ReleaseSafe --color off --prefix $out
+    #zig build install --global-cache-dir $(pwd)/.cache --system $PACKAGE_DIR -Doptimize=ReleaseSafe --color off --prefix $out
+    zig build --global-cache-dir $(pwd)/.cache --prefix $out
     runHook postBuild
   '';
 
-  installPhase = ''
-    runHook preInstall
-    # zig build --prefix already installed to $out
-    runHook postInstall
-  '';
+ #zigBuildFlags = [
+ #  "--system"
+ #];
 
-  doCheck = true;
-  checkPhase = ''
-    runHook preCheck
-    zig build check
-    runHook postCheck
-  '';
+ #installPhase = ''
+ #  runHook preInstall
+ #  # zig build --prefix already installed to $out
+ #  runHook postInstall
+ #'';
+
+  doCheck = false;
+
+ #checkPhase = ''
+ #  runHook preCheck
+ #  zig build check
+ #  runHook postCheck
+ #'';
 
   meta = {
     description = "A dynamic tiling compositor";

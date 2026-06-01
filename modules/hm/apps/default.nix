@@ -12,6 +12,7 @@ in
 
     alacritty.enable = lib.mkEnableOption "alacritty";
     amberol.enable = lib.mkEnableOption "amberol";
+    atuin.enable = lib.mkEnableOption "atuin";
     bat.enable = lib.mkEnableOption "bat";
     bazaar.enable = lib.mkEnableOption "bazaar";
     bluetuith.enable = lib.mkEnableOption "bluetuith";
@@ -79,6 +80,7 @@ in
 
       ./alacritty.nix
       ./amberol.nix
+      ./atuin.nix
       ./bat.nix
       ./bazaar.nix
       ./bluetuith.nix

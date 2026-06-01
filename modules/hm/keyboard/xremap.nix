@@ -10,6 +10,31 @@ let
     grim -g "$(slurp)" ~/Pictures/Screenshot-$(date +%F_%H-%M-%S).png && notify-send -t 7000 "Screenshot saved" "Saved to ~/Pictures"
   '';
 
+  ccenter = pkgs.writeShellScriptBin "ccenter" ''
+    if pgrep better-control > /dev/null; then
+      if pgrep bspwm > /dev/null; then
+        bspc node $(xdotool search --class Better_control.py) -g hidden && \
+        #bspc node -f $(xdotool search --class Better_control.py) && \
+        #ps -o state= -p $(pgrep better-control) | grep -q T && \
+        #pkill -CONT better-control || pkill -STOP better-control
+        if [[ $(bspc query -T -n "$(xdo id -N 'Better_control.py')" | jq '.hidden') == "true" ]]; then
+          pkill -STOP better-control
+        else
+          pkill -CONT better-control
+          bspc node -f $(xdotool search --class Better_control.py)
+        fi
+
+     #elif pgrep i3 > /dev/null; then
+     #  something
+
+      else
+        pkill better-control
+      fi
+    else
+      better-control
+    fi
+  '';
+
   xremap-sleep = pkgs.writeShellScriptBin "xremap-sleep" ''
     if systemctl --user is-active --quiet xautolock-session.service; then
       lock-kill
@@ -240,6 +265,7 @@ in
   home.packages = [
     pkgs.xremap
     pkgs.yq
+    ccenter
     girm-full
     grim-slurp
     xss-kill
@@ -362,6 +388,8 @@ in
               remap:
                     Enter:
                       launch: [ "kitty" ]
+                    q:
+                      launch: [ "ccenter" ]
                     b:
                       launch: [ "brave" ]
                     e:

@@ -683,6 +683,7 @@ in
         label = " ";
         click-left = "xmenu-app";
         click-right = "xfiles-float-script";
+        click-middle = "ccenter";
       };
 
      #"module/idle" = {

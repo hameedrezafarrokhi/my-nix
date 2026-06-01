@@ -6,6 +6,8 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
+    better-control   usbguard
+
     libnotify
 
     onboard                       ##Onscreen keyboard

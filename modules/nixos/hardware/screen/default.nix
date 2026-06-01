@@ -47,14 +47,14 @@ in
 
     programs = {
 
-      light = {
-        enable = true;
-        brightnessKeys = {
-          enable = true;
-          minBrightness = 0.1;
-          step = 2;
-        };
-      };
+     #light = {            # DEPRICATED
+     #  enable = true;
+     #  brightnessKeys = {
+     #    enable = true;
+     #    minBrightness = 0.1;
+     #    step = 2;
+     #  };
+     #};
 
     };
 

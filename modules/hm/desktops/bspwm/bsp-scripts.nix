@@ -380,6 +380,14 @@ let
     ${builtins.readFile ./scratchpad}
   '';
 
+  scratch-tog = pkgs.writeShellScriptBin "scratch-tog" ''
+    if [[ -z $(xdo id -N scratchpad-ext) ]]; then
+      kitty --name scratchpad-ext --class scratchpad-ext &
+    else
+      bspad toggle
+    fi
+  '';
+
   bspad = pkgs.writeShellScriptBin "bspad" ''
     ${builtins.readFile ./bspad}
   '';
@@ -1918,6 +1926,7 @@ in
       pidswallow
       bspad
       scratchpad
+      scratch-tog
       bspi
       tint-go-below
       bsp-send-follow-empty

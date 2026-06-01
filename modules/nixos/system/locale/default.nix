@@ -32,7 +32,7 @@ in
     # time zone.
     time = {
       timeZone = config.my.timeZone;
-      hardwareClockInLocalTime = true;
+      hardwareClockInLocalTime = lib.mkDefault true;
     };
 
     # locale.

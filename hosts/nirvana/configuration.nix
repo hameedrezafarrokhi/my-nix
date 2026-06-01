@@ -12,6 +12,8 @@
     };
   };
 
+  time.hardwareClockInLocalTime = false;
+
   home-manager = {
     users = {
       ${admin} = {

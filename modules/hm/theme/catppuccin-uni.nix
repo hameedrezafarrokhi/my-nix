@@ -566,6 +566,7 @@
               ".blueman-manager-wrapped") color="${Blue}" ;;
               bluetuith) color="${Blue}" ;;
               scratchpad) color="${Green}" ;;
+              scratchpad-ext) color="${Rosewater}" ;;
               ".protonvpn-app-wrapped") color="${Mauve}" ;;
               eyedropper) color="${Mauve}" ;;
               pavucontrol) color="${Yellow}" ;;
@@ -576,6 +577,7 @@
               Xmessage) color="${Red}" ;;
               Gxmessage) color="${Red}" ;;
               baobab) color="${Green}" ;;
+              "Better_control.py") color="${Red}" ;;
             esac
 
             case "$popup" in
@@ -2808,7 +2810,7 @@ EOF
         previewers.file.theme = tv-preview;
       };
     };
-    broot = {
+    broot = lib.mkIf config.programs.broot.enable {
       settings = {
    #    skin = {
    #      default = "${rgb-Text} none / ${rgb-Subtext1} none";
@@ -3057,6 +3059,24 @@ EOF
           format = "[](fg:${starship2})";
           when = true;
           style = "fg:${starship2}";
+        };
+      };
+    };
+    atuin = lib.mkIf config.programs.atuin.enable {
+      settings.theme.name = "hm-theme";
+      themes = {
+        "hm-theme" = {
+          theme.name = "hm-theme";
+          colors = {
+            AlertInfo = "${Green}";
+            AlertWarn = "${Peach}";
+            AlertError = "${Red}";
+            Annotation = "${Accent}";
+            Base = "${Text}";
+            Guidance = "${Overlay2}";
+            Important = "${Red}";
+            Title = "${Accent}";
+          };
         };
       };
     };
@@ -4803,7 +4823,7 @@ rules: (
       	}
       	)
       }, {
-		match = "class_g = 'scratchpad' || class_g = 'Tilda' || class_g = 'Ulauncher' || class_g = 'XFilesFloat' || class_g = 'tetris'";
+		match = "class_g = 'scratchpad' || class_g = 'scratchpad-ext' || class_g = 'scratchpad-sticky' || class_g = 'Tilda' || class_g = 'Ulauncher' || class_g = 'XFilesFloat' || class_g = 'tetris'";
 		animations = (
 		{
 			triggers = ["close", "hide"];
@@ -4961,6 +4981,22 @@ rules: (
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "down";
+		 duration = 0.2;
+	    }
+	    )
+      }, {
+        match = "class_g = 'Better_control.py'";
+	  fading = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "up";
+		 duration = 0.2;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "up";
 		 duration = 0.2;
 	    }
 	    )

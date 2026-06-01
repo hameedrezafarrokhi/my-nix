@@ -110,7 +110,8 @@ case "$TERMINAL_CMD" in
 esac
 
 # Check if scratchpad exists
-id=$(xdotool search --class "$SCRATCHPAD_CLASS")
+#id=$(xdotool search --class "$SCRATCHPAD_CLASS")
+id=$(xdo id -N scratchpad)
 
 if [ -z "$id" ]; then
     # Launch scratchpad if it doesn't exist

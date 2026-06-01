@@ -123,6 +123,7 @@ in
     home.packages = [
 
       (pkgs.writeShellScriptBin "brtctl" '' ${builtins.readFile ./brtctl} '')
+      pkgs.brightnessctl
 
     ];
 
