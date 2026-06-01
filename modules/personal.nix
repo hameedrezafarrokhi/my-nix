@@ -410,6 +410,7 @@
             atuin.enable = true;
             bat.enable = true;
             bazaar.enable = false;
+            better-control.enable = true;
             bluetuith.enable = true;
             borg.enable = true;
             broot.enable = true;

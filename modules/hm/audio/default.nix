@@ -20,6 +20,7 @@ in
     home.packages = [
 
       pkgs.pamixer
+      pkgs.volctl
 
     ];
 

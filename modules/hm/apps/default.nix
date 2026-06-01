@@ -15,6 +15,7 @@ in
     atuin.enable = lib.mkEnableOption "atuin";
     bat.enable = lib.mkEnableOption "bat";
     bazaar.enable = lib.mkEnableOption "bazaar";
+    better-control.enable = lib.mkEnableOption "better-control";
     bluetuith.enable = lib.mkEnableOption "bluetuith";
     borg.enable = lib.mkEnableOption "borg";
     broot.enable = lib.mkEnableOption "broot";
@@ -83,6 +84,7 @@ in
       ./atuin.nix
       ./bat.nix
       ./bazaar.nix
+      ./better-control.nix
       ./bluetuith.nix
       ./borg.nix
       ./broot.nix

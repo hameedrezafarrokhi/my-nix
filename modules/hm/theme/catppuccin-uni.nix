@@ -860,6 +860,7 @@ playing() {
 
 xmenu <<EOF | sh &
 󱡫  Audio Control			pavucontrol
+󱡫  App Vol Tray			volctl
   Bluetooth			bluetuith-gui
 $(echo "        󰇘󰇘󰇘󰇘 ")
   Mute				pamixer --mute
@@ -2094,6 +2095,19 @@ EOF
       key-stroke-gradient = 40.0;
       key-stroke-width = 100.0;
       roundrect-radius = 22.0;
+    };
+
+    "apps/volctl" = {
+      allow-extra-volume = true;
+      auto-close = true;
+      mixer-command = "pavucontrol";
+      mouse-wheel-step= 5;
+      osd-enabled = false;
+      osd-timeout = 0000;
+      prefer-gtksi = false;
+      show-percentage = true;
+      timeout = 4000;
+      vu-enabled = true;
     };
 
   };
@@ -6488,6 +6502,52 @@ rules: (
             };
         };
       '';
+    };
+
+    "better-control/settings.json" = lib.mkForce {
+      text = builtins.toJSON {
+        "visibility" = {};
+        "positions" = {};
+        "usbguard_hidden_devices" = [];
+        "language" = "en";
+        "vertical_tabs" = true;
+        "vertical_tabs_icon_only" = true;
+      };
+    };
+    "better-control/power_settings.json" = lib.mkForce {
+      text = builtins.toJSON {
+        "lock" = true;
+        "logout" = true;
+        "suspend" = true;
+        "hibernate" = true;
+        "reboot" = true;
+        "shutdown" = true;
+        "commands" = {
+          "lock" = "x-lock -t 20";
+          "logout" = "loginctl terminate-user $USER";
+          "suspend" = "systemctl suspend";
+          "hibernate" = "systemctl hibernate";
+          "reboot" = "systemctl reboot";
+          "shutdown" = "systemctl poweroff";
+        };
+        "colors" = {
+          "lock" = "${Accent}";
+          "logout" = "${Accent}";
+          "suspend" = "${Accent}";
+          "hibernate" = "${Green}";
+          "reboot" = "${Yellow}";
+          "shutdown" = "${Red}";
+        };
+        "shortcuts" = {
+          "lock" = "l";
+          "logout" = "e";
+          "suspend" = "s";
+          "hibernate" = "h";
+          "reboot" = "r";
+          "shutdown" = "p";
+        };
+        "show_keybinds" = true;
+      };
     };
 
     test = {
