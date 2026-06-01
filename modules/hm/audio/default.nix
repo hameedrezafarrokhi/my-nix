@@ -21,6 +21,7 @@ in
 
       pkgs.pamixer
       pkgs.volctl
+      pkgs.mictray
 
     ];
 

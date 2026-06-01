@@ -125,6 +125,10 @@ let
         notify-send -e -u low -t 2000 "Picom Activated"
     fi
     polybar-msg action "#picom.hook.1"
+    sleep 0.5
+    if systemctl --user is-active --quiet bsptint.service; then
+      systemctl --user restart bsptint.service
+    fi
   '';
 
   volume= "$(pamixer --get-volume)";

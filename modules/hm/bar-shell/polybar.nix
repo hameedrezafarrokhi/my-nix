@@ -28,9 +28,17 @@ let
 
     if [ "$1" = "--status" ]; then
         if [ "$CURRENT_TIMEOUT" -eq 0 ]; then
+          if systemctl --user is-active --quiet xidlesuspend.service; then
+            echo ""
+          else
             echo ""
+          fi
         else
+          if systemctl --user is-active --quiet xidlesuspend.service; then
             echo ""
+          else
+            echo ""
+          fi
         fi
         exit 0
     fi
@@ -162,6 +170,10 @@ let
         systemctl --user restart picom.service
     fi
     polybar-msg action "#picom.hook.1"
+    sleep 0.5
+    if systemctl --user is-active --quiet bsptint.service; then
+      systemctl --user restart bsptint.service
+    fi
   '';
 
   poly-bsp-float = pkgs.writeShellScriptBin "poly-bsp-float" ''

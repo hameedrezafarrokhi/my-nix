@@ -683,6 +683,7 @@
 
     xmenu-app = pkgs.writeShellScriptBin "xmenu-app" ''
 xmenu <<EOF | sh &
+  Panel		ccenter
   Run			rofi -show run -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
 󰀻  All Apps		xdg-xmenu
 󰮫  JGMenu  		jgmenu_run
@@ -845,6 +846,34 @@ $(echo "       󰇘󰇘󰇘󰇘 ")
 EOF
     '';
 
+    volctl-menu = pkgs.writeShellScriptBin "volctl-menu" ''
+      if pgrep volctl > /dev/null; then
+        pkill volctl
+      else
+        volctl
+      fi
+    '';
+    mictray-menu = pkgs.writeShellScriptBin "mictray-menu" ''
+      if pgrep mictray > /dev/null; then
+        pkill mictray
+      else
+        mictray
+      fi
+    '';
+    pavu-menu = pkgs.writeShellScriptBin "pavu-menu" ''
+      if pgrep pavucontrol > /dev/null; then
+        pkill pavucontrol
+      else
+        pavucontrol &
+      fi
+    '';
+    blue-menu = pkgs.writeShellScriptBin "blue-menu" ''
+      if pgrep bluetuith > /dev/null; then
+        pkill bluetuith
+      else
+        bluetuith-gui &
+      fi
+    '';
     xmenu-audio = pkgs.writeShellScriptBin "xmenu-audio" ''
 playing() {
     echo ""
@@ -859,9 +888,10 @@ playing() {
 }
 
 xmenu <<EOF | sh &
-󱡫  Audio Control			pavucontrol
-󱡫  App Vol Tray			volctl
-  Bluetooth			bluetuith-gui
+󱡫  Audio Control			pavu-menu
+󱕎  App Vol Tray			pkill volctl; volctl
+  Mic Tray  			pkill mictray; mictray
+  Bluetooth			blue-menu
 $(echo "        󰇘󰇘󰇘󰇘 ")
   Mute				pamixer --mute
   Unmute				pamixer --unmute
@@ -943,6 +973,18 @@ if [ "$xss" = "active" ]; then
 else
   xss_status="Inactive"
 fi
+xauto=$(systemctl --user is-active xautolock-session.service)
+if [ "$xauto" = "active" ]; then
+  xauto_status="Active"
+else
+  xauto_status="Inactive"
+fi
+xidles=$(systemctl --user is-active xidlesuspend.service)
+if [ "$xidles" = "active" ]; then
+  xidles_status="Active"
+else
+  xidles_status="Inactive"
+fi
 
 xmenu <<EOF | sh &
   Uptime
@@ -959,6 +1001,9 @@ xmenu <<EOF | sh &
 
   Auto Lock
        $(echo "$xss_status")
+       $(echo "$xauto_status")
+  Auto Suspend
+       $(echo "$xidles_status")
 
 󰍹  Display
      $(xset q | grep -E "Monitor is")
@@ -1318,6 +1363,11 @@ EOF
     xmenu-power
     xmenu-bsp
     xmenu-fetch
+
+    pavu-menu
+    mictray-menu
+    volctl-menu
+    blue-menu
 
     xclock
 
@@ -3831,24 +3881,24 @@ EOF
       border_color_pressed = #000000 0
       # Background 2: Default task, Iconified task
       rounded = 2
-      border_width = 0
+      border_width = 1
       border_sides = TBLR
       border_content_tint_weight = 0
       background_content_tint_weight = 0
-      background_color = ${Subtext1} 100
-      border_color = #000000 0
+      background_color = ${Base} 100
+      border_color = ${Subtext1} 100
       background_color_hover = ${Rosewater} 22
       border_color_hover = #000000 0
       background_color_pressed = ${Accent} 100
       border_color_pressed = #000000 0
       # Background 3: Active task
       rounded = 2
-      border_width = 0
+      border_width = 1
       border_sides = TBLR
       border_content_tint_weight = 0
       background_content_tint_weight = 0
       background_color = ${Accent} 100
-      border_color = #000000 0
+      border_color = ${Subtext1} 100
       background_color_hover = ${Accent} 70
       border_color_hover = #000000 0
       background_color_pressed = ${Accent} 100
@@ -6549,6 +6599,15 @@ rules: (
         "show_keybinds" = true;
       };
     };
+
+    "mictray/mictray.conf".text = ''
+      [Options]
+      use_default_source=true
+      source_name=alsa_input.platform-snd_aloop.0.analog-stereo
+      mixer=pavucontrol
+      volume_increment=3
+      show_notifications=true
+    '';
 
     test = {
       target = "colors.txt";

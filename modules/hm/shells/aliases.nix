@@ -5,6 +5,7 @@ let
  #nix-path = ../../../../.;
 
   myRM.myDelete = "sudo rm -f $HOME/.config/fontconfig/conf.d/10-hm-fonts.conf.backup $HOME/.config/mimeapps.list.backup $HOME/.config/better-control/settings.json.backup $HOME/.config/better-control/power_settings.json.backup";
+  postBuild = '' polybar-msg action "#idle.hook.1" '';
 
 in
 
@@ -28,7 +29,8 @@ in
 
     flu = "builtin cd ${nix-path} && sudo nix flake update && builtin cd
     ${myRM.myDelete}
-    sudo nixos-rebuild switch --upgrade --flake ${nix-path}";
+    sudo nixos-rebuild switch --upgrade --flake ${nix-path}
+    ${postBuild}";
     shit = "${myRM.myDelete}
     sudo nixos-rebuild switch --flake ${nix-path}";
     cleanboy = "nh clean all
@@ -37,30 +39,38 @@ in
     sudo nix store gc
     ${myRM.myDelete}
     nh os switch
-    sudo nixos-rebuild switch --flake ${nix-path}";
+    sudo nixos-rebuild switch --flake ${nix-path}
+    ${postBuild}";
 
     nhs = "${myRM.myDelete}
-    nh os switch --ask";
+    nh os switch --ask
+    ${postBuild}";
     nhu = "${myRM.myDelete}
-    nh os switch -u --ask";
+    nh os switch -u --ask
+    ${postBuild}";
     nht = "${myRM.myDelete}
-    nh os test --ask";
+    nh os test --ask
+    ${postBuild}";
     nhb = "${myRM.myDelete}
-    nh os boot --ask";
+    nh os boot --ask
+    ${postBuild}";
 
     nhs-b = "${myRM.myDelete}
     ${lib.getExe pkgs.borgmatic} create --repository nix
-    nh os switch --ask";
+    nh os switch --ask
+    ${postBuild}";
     nhu-b = "${myRM.myDelete}
     ${lib.getExe pkgs.borgmatic} create --repository nix
-    nh os switch -u --ask";
+    nh os switch -u --ask
+    ${postBuild}";
 
     trim-gen = "sudo trim-gen";
 
     theme = "${myRM.myDelete}
     nh clean user -a
     sudo nix store gc --refresh -v
-    nh os switch --ask";
+    nh os switch --ask
+    ${postBuild}";
 
     ns = "${lib.getExe pkgs.nix-search-tv} print | fzf --preview 'nix-search-tv preview {}' --scheme history";
 
