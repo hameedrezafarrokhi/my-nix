@@ -17,8 +17,8 @@
 let
   pythonEnv = python3.withPackages (ps: with ps; [
     pillow
-    pyqt5
-    pyqt5-sip
+   #pyqt5
+   #pyqt5-sip
     pyqt5-multimedia
     urllib3
     certifi

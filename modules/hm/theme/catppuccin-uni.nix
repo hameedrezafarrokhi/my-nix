@@ -5066,6 +5066,27 @@ rules: (
 		 duration = 0.2;
 	    }
 	    )
+      }, {
+        match = "class_g = 'VisualBell'";
+        fade-delta = 10;
+        fade-duration = 1000;
+        fade-in-step = 0.0050000;
+        fade-out-step = 0.0050000;
+        fade-time = 1000;
+        fading = true;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "disappear";
+		 duration = 0.2;
+	       scale = 1.0;
+	    }, {
+		 triggers = ["open", "show"];
+		 preset = "appear";
+		 duration = 0.2;
+		 scale = 1.0;
+	    }
+	    )
       }
 )
     '';

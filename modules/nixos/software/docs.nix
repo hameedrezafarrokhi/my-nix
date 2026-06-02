@@ -27,6 +27,9 @@
     kdePackages.kate              ##text editor GUI (KDE)
     kdePackages.ghostwriter       ##markdown editor GUI (KDE)
 
+   #pulsar
+    ledit
+
    #geany
     geany-with-vte
 

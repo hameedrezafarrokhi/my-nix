@@ -81,6 +81,7 @@
       allowBroken=true;
       permittedInsecurePackages=[
         "electron-36.9.5"
+       #"pulsar-1.130.1"
       ];
     };
     myPKGS =  system: {

@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-0Kw7JSo0LiRqvCHyV0ORdNVnR+LThBQluT3cd10m8Gc=";
   };
 
-  nuildInputs = [ gcc ];
+ #nativeBuildInputs = [ gcc ];
 
   buildInputs = [ libx11 ];
 

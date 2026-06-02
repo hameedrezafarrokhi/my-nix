@@ -763,7 +763,7 @@ in
       pkgs.numlockx
       pkgs.wayback-x11
       pkgs.xdo
-     #pkgs.xbacklight
+      pkgs.xbacklight
       pkgs.xkblayout-state
       pkgs.skippy-xd
       pkgs.xcolor

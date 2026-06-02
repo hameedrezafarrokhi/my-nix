@@ -142,10 +142,21 @@
     ++ [(pkgs.callPackage ../myPackages/xsession-manager.nix { })]
     ++ [(pkgs.callPackage ../myPackages/paperview-rs.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/xvisbell3.nix { })]
     ++ [(pkgs.callPackage ../myPackages/xvisbell2.nix { })]
     ++ [(pkgs.callPackage ../myPackages/xvisbell.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/glimmer.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/barrette.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/led.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/gulp.nix { })]  # WARNING BORKEN (procps package is not found during build)
+
+    ++ [(pkgs.callPackage ../myPackages/xmulberry.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/pod.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
@@ -569,7 +580,7 @@ struct animation animations[] = {
    ++ [(pkgs.callPackage ../myPackages/pets/petpepe.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/Konqi-Pet.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING Needs After Internet
+   ++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING BROKEN not working
 
    ++ [(pkgs.callPackage ../myPackages/xidle.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]

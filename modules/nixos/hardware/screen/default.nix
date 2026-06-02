@@ -43,14 +43,14 @@ in
     };
 
     programs = {
-     #light = {            # DEPRICATED
-     #  enable = true;
-     #  brightnessKeys = {
-     #    enable = true;
-     #    minBrightness = 0.1;
-     #    step = 2;
-     #  };
-     #};
+      light = {            # DEPRICATED (But Polybar Light Module depends on it, make an alternative module for polybar before removing this)
+        enable = true;
+        brightnessKeys = {
+          enable = true;   # illum handles this for me
+          minBrightness = 0.1;
+          step = 2;
+        };
+      };
     };
 
   };
