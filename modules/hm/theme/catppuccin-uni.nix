@@ -1448,6 +1448,8 @@ EOF
   })]
   ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xm.nix { })]
   ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix { })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmrh.nix { })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmrhj.nix { })]
   ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmrv.nix { })]
  #++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmd.nix { })]
 
