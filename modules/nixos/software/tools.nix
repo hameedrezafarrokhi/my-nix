@@ -158,6 +158,8 @@
 
     ++ [(pkgs.callPackage ../myPackages/pod.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/clearine.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]

@@ -137,6 +137,12 @@
       EOF
     '';
 
+    zed-icon-extension = "catppuccin-icons";
+    zed-icon-extension = "catppuccin";
+    zed-icon-theme = "Catppuccin ${flavorC} ${accentC}";
+    zed-theme-dark = "Catppuccin ${flavorC} ${accentC} - No Italics";
+    zed-theme-light = "Catppuccin ${flavorC} ${accentC} - No Italics";
+
     xfce4-terminal-theme = "Catppuccin-${flavorC}";
 
     wlogout-button-style = "wleave";
@@ -3601,6 +3607,18 @@ EOF
         ];
       };
     };
+
+    zed-editor = {
+      extensions = [ zed-icon-extension zed-theme-extension ];
+      userSettings = {
+        icon_theme = zed-icon-theme;
+        theme = {
+          light = zed-theme-light;
+          dark = zed-theme-dark;
+        };
+      };
+    };
+
     wlogout.style = ''
       * {
       	background-image: none;
@@ -7084,7 +7102,8 @@ rules: (
  #  wlogout.enable = false;
  #  xfce4-terminal.enable = false;
  #  yazi.enable = false;
- #
+ #  zed.icons.enable = true;
+ #  zed.enable = true;
  #};
 
  #stylix.targets = {

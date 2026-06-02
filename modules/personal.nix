@@ -467,6 +467,7 @@
             yt-dlp.enable = true;
             wezterm.enable = true;
             wlogout.enable = true;
+            zed.enable = true;
 
             webapps.enable = true;
           };

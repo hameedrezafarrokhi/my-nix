@@ -72,6 +72,7 @@ in
     yt-dlp.enable = lib.mkEnableOption "yt-dlp";
     wezterm.enable = lib.mkEnableOption "wezterm";
     wlogout.enable = lib.mkEnableOption "wlogout";
+    zed.enable = lib.mkEnableOption "zed";
 
     webapps.enable = lib.mkEnableOption "webapps collection";
 
@@ -141,6 +142,7 @@ in
       ./television.nix
       ./wezterm.nix
       ./wlogout.nix
+      ./zed.nix
 
       ./webapps-chromium.nix
       ./webapps-firefox.nix
