@@ -260,7 +260,7 @@ in
       pkgs.bc
       pkgs.conky
       pkgs.xdo
-      pkgs.xbacklight
+     #pkgs.xbacklight
       pkgs.xkblayout-state
       pkgs.skippy-xd
       pkgs.xprop

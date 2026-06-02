@@ -104,6 +104,7 @@
 
 
     wmctrl
+   #flashfocus   # WARNING BROKEN
 
    #showmethekey
 
@@ -121,6 +122,7 @@
 
   [
     mypkgs.stable.ulauncher
+    mypkgs.stable.flashfocus
    #mypkgs.stable.CuboCore.coretime
 
     (pkgs.writeShellScriptBin "color-image" ''
@@ -139,6 +141,11 @@
    #++ [(pkgs.callPackage ../myPackages/picom-ft.nix { })]
     ++ [(pkgs.callPackage ../myPackages/xsession-manager.nix { })]
     ++ [(pkgs.callPackage ../myPackages/paperview-rs.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/xvisbell2.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/xvisbell.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/glimmer.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]

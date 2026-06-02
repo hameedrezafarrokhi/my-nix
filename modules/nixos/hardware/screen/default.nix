@@ -17,18 +17,16 @@ in
       pkgs.gnome-color-manager
       pkgs.colord-gtk
      #pkgs.kdePackages.colord-kde
-
       pkgs.brightnessctl
       pkgs.ddcutil
 
     ];
 
+    hardware.acpilight.enable = true;
+
     services = {
-
       illum.enable = true;
-
       colord.enable = true;
-
      #redshift = {
      #  enable = true;
      #  package = pkgs.redshift;           #pkg override, lots of options
@@ -42,11 +40,9 @@ in
      #    day = "1";
      #    night = "0.5";
      #};
-
     };
 
     programs = {
-
      #light = {            # DEPRICATED
      #  enable = true;
      #  brightnessKeys = {
@@ -55,7 +51,6 @@ in
      #    step = 2;
      #  };
      #};
-
     };
 
   };
