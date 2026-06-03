@@ -138,10 +138,10 @@
     '';
 
     zed-icon-extension = "catppuccin-icons";
-    zed-icon-extension = "catppuccin";
-    zed-icon-theme = "Catppuccin ${flavorC} ${accentC}";
-    zed-theme-dark = "Catppuccin ${flavorC} ${accentC} - No Italics";
-    zed-theme-light = "Catppuccin ${flavorC} ${accentC} - No Italics";
+    zed-theme-extension = "catppuccin";
+    zed-icon-theme = "Catppuccin ${flavorC}";
+    zed-theme-dark = "Catppuccin ${flavorC} - No Italics";
+    zed-theme-light = "Catppuccin ${flavorC} - No Italics";
 
     xfce4-terminal-theme = "Catppuccin-${flavorC}";
 
@@ -419,11 +419,11 @@
 
     xobvolume = pkgs.writeShellScriptBin "xobvolume" ''
       sleep 5
-      xobvol | xob -t 3000 -c $HOME/.config/xob/config.cfg -s bottom-volume -m 100 -q
+      xobvol | xob -t 1000 -c $HOME/.config/xob/config.cfg -s bottom-volume -m 100 -q
     '';
 
     xobbrightness = pkgs.writeShellScriptBin "xobbrightness" ''
-      xobbright | xob -t 3000 -c $HOME/.config/xob/config.cfg -s bottom-brightness -m 100 -q
+      xobbright | xob -t 1000 -c $HOME/.config/xob/config.cfg -s bottom-brightness -m 100 -q
     '';
 
    #fehw = pkgs.writeShellScriptBin "fehw" ''
@@ -1426,7 +1426,7 @@ EOF
       static unsigned int pos_y = 175;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = BOTTOM_LEFT;
-      static unsigned int duration = 3; /* in seconds */
+      static unsigned int duration = 1; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -1447,7 +1447,7 @@ EOF
       static unsigned int pos_y = 115;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = BOTTOM_LEFT;
-      static unsigned int duration = 3; /* in seconds */
+      static unsigned int duration = 1; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -4711,38 +4711,55 @@ rules: (
 		shader = {
 		 path = "${config.xdg.configHome}/picom/tint.glsl";
 		};
-	}, {
+	},
+	#{
+	#      match = "!focused"
+	#	opacity = 0.85;
+	#	#opacity = 0.90;
+	#	shader = {
+	#	 path = "${config.xdg.configHome}/picom/tint-unfocused.glsl";
+	#	};
+	#	opacity-override = false;
+	#},
+	{
 	      match = "class_g != 'dunst' || class_g != 'Dunst'"
 		opacity = 0.85;
 		opacity-override = false;
-	}, {
+	},
+	{
 	      match = "focused || group_focused || class_g = 'dunst' || class_g = 'herbbsp' || class_g = 'Dunst' || class_g = 'firefox' || class_g = 'chromium' || class_g = 'brave-browser' || class_g = 'Polybar' || class_g *= 'Brave-browser' || class_g = 'brave' || class_g = 'Brave' || class_name *= 'Dunst' || class_name *= 'dunst' || class_g = 'mpv' || class_g = 'mpv' && !focused || class_g = 'mpvk' || name = 'mpv' || name = 'mpvk' || window_id = '0x5600002' || class_g = 'Xwinwrap' || class_g = 'xwinwrap' || name = 'Xwinwrap' || name = 'xwinwrap' || (class_g *= 'xwin' || name *= 'xwin')"
 		opacity = 1.0;
 		opacity-override = false;
-	}, {
+	},
+	{
 		match = "window_type = 'normal'";
 		fade = true;
 		shadow = true;
-	}, {
+	},
+	{
 		match = "window_type = 'desktop' || window_type = 'dock' || class_g = 'Conky' || class_g = 'conky' || class_g = 'dockx' || class_g = 'Dockx' || window_type = 'dock' || window_type = 'menu' || window_type = 'dropdown_menu' || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dunst' || class_g = 'herbbsp' || class_g = 'Dunst'";
 		blur-background = false;
 		clip-shadow-above = false;
 		shadow = false;
-	}, {
+	},
+	{
 		match = "window_type = 'dock' || window_type = 'desktop' || name = 'Notification' || class_g = 'i3-frame' || class_g = 'dunst' || class_g = 'Dunst' || class_g = 'dockx' || class_g = 'Dockx'";
             corner-radius = 0;
-	}, {
+	},
+	{
 		match = "_GTK_FRAME_EXTENTS@:c && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'ulauncher' || class_g = 'Ulauncher' || class_g = 'dockx' || class_g = 'Dockx' || class_g = 'iotas' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = '.warehouse-wrapped' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'org.gnome.Mines' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'resources' && (window_type = 'menu' || window_type = 'dropdown_menu') || class_g = 'baobab' && (window_type = 'menu' || window_type = 'dropdown_menu')";
 		shadow = false;
 		opacity = 1.0;
 		opacity-override = false;
-	}, {
+	},
+	{
 		match = "fullscreen";
             corner-radius = 0;
             opacity = 1.0;
             opacity-override = false;
             transparent-clipping = false;
-	}, {
+	},
+	{
 		match = "class_g = 'Conky' || class_g = 'conky'";
 		transparent-clipping = false;
 		unredir = true;
@@ -4798,12 +4815,14 @@ rules: (
                   start = 0;
                   end = 10;  # Max blur (you can adjust this value for stronger/weaker blur)
               };
-          }, {
+          },
+          {
               triggers = ["hide"];
               preset = "disappear";
               scale = 0.3;
               duration = 0.15;
-          }, {
+          },
+          {
               triggers = ["open"];
               opacity = {
                   curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
@@ -4824,12 +4843,14 @@ rules: (
               shadow-scale-y = "scale-y";
               shadow-offset-x = "offset-x";
               shadow-offset-y = "offset-y";
-          }, {
+          },
+          {
               triggers = ["show"];
               preset = "appear";
               scale = 0.7;
               duration = 0.15;
-          }, {
+          },
+          {
               triggers = ["geometry"];
               scale-x = {
                   curve = "cubic-bezier(0.25,0.8,0.25,1)";  # Smooth easing curve
@@ -4861,7 +4882,8 @@ rules: (
               shadow-offset-y = "offset-y";
           },
           )
-      }, {
+      },
+      {
         match = "class_g = 'Dunst' || class_g = 'Gsimplecal'";
 	  animations = (
 	    {
@@ -4869,14 +4891,16 @@ rules: (
 		 preset = "fly-out";	#-dunst-close-preset
 		 direction = "right";	#-dunst-close-direction
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";	#-dunst-open-preset
 		 direction = "right";	#-dunst-open-direction
 		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
         match = "class_g = 'Rofi' || class_g = 'AltTab'";
 	  animations = (
 	    {
@@ -4884,14 +4908,16 @@ rules: (
 		 preset = "fly-out";	#-dunst-close-preset
 		 direction = "up";	#-dunst-close-direction
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";	#-dunst-open-preset
 		 direction = "down";	#-dunst-open-direction
 		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
       	match = "class_g = 'jgmenu'";
       	animations = (
       	{
@@ -4899,14 +4925,16 @@ rules: (
       		preset = "disappear";
       		duration = 0.08;
       		scale = 0.5;
-      	}, {
+      	},
+      	{
       		triggers = ["open", "show"];
       		preset = "appear";
       		duration = 0.15;
       		scale = 0.5;
       	}
       	)
-      }, {
+      },
+      {
 		match = "class_g = 'scratchpad' || class_g = 'scratchpad-ext' || class_g = 'scratchpad-sticky' || class_g = 'Tilda' || class_g = 'Ulauncher' || class_g = 'XFilesFloat' || class_g = 'tetris'";
 		animations = (
 		{
@@ -4914,14 +4942,16 @@ rules: (
 			preset = "fly-out";
 			direction = "up";
 			duration = 0.2;
-		}, {
+		},
+		{
 			triggers = ["open", "show"];
 			preset = "fly-in";
 			direction = "up";
 			duration = 0.2;
 		}
 		)
-	}, {
+	},
+	{
 		match = "class_g = 'Polybar'";
 		animations = (
 		{
@@ -4929,14 +4959,16 @@ rules: (
 			preset = "fly-out";
 			direction = "up";
 			duration = 0.2;
-		}, {
+		},
+		{
 			triggers = ["open", "show"];
 			preset = "fly-in";
 			direction = "up";
 			duration = 0.2;
 		}
 		)
-	}, {
+	},
+	{
 		match = "class_g = 'Tint2' || fullscreen";
 		animations = (
 		{
@@ -4952,7 +4984,8 @@ rules: (
 			duration = 0.2;
 		}
 		)
-	}, {
+	},
+	{
 		match = "class_g = 'kitty-picker' || class_g = 'Xmessage' || class_g = 'Gxmessage'";
 		animations = (
 		{
@@ -4960,14 +4993,16 @@ rules: (
 			preset = "fly-out";
 			direction = "left";
 			duration = 0.2;
-		}, {
+		},
+		{
 			triggers = ["open", "show"];
 			preset = "fly-in";
 			direction = "left";
 			duration = 0.2;
 		}
 		)
-	}, {
+	},
+	{
 		match = "class_g = 'bluetuith' || class_g = 'pavucontrol' || class_g = 'Vboard.py' || class_g = 'baobab'";
 		animations = (
 		{
@@ -4975,14 +5010,16 @@ rules: (
 			preset = "fly-out";
 			direction = "right";
 			duration = 0.2;
-		}, {
+		},
+		{
 			triggers = ["open", "show"];
 			preset = "fly-in";
 			direction = "right";
 			duration = 0.2;
 		}
 		)
-	}, {
+	},
+	{
 		match = "class_g = 'XMenu' || class_g = 'Xmenu' || class_g = 'xmenu' || class_g = 'Onboard'";
 		animations = (
 		{
@@ -4990,14 +5027,16 @@ rules: (
 			preset = "disappear";
 			direction = "up";
 			duration = 0.1;
-		}, {
+		},
+		{
 			triggers = ["open", "show"];
 			preset = "appear";
 			direction = "up";
 			duration = 0.1;
 		}
 		)
-	}, {
+	},
+	{
         match = "class_g = 'herbx' || class_g = 'herbbsp'";
 	  corner-radius = 5;
 	  animations = (
@@ -5006,14 +5045,16 @@ rules: (
 		 preset = "fly-out";
 		 direction = "left";
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "left";
 		 duration = 0.2;
 	    }
 	  )
-      }, {
+      },
+      {
         match = "class_g = 'Clock'";
 	  animations = (
 	    {
@@ -5021,35 +5062,43 @@ rules: (
 		 preset = "fly-out";
 		 direction = "down";
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "down";
 		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
         match = "class_g = 'herbvolume' || class_g = 'herbbright'";
         corner-radius = 5;
         opacity = 1.0;
         opacity-override = false;
         transparent-clipping = false;
         fading = false;
-        shadow = false;
+        shadow = true;
+        shadow-offset-x = -15;
+        shadow-offset-y = -15;
+        shadow-opacity = 0.550000;
+        shadow-radius = 6;
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];
 		 preset = "disappear";
-		 direction = "down";
-		 duration = 0.0001;
-	    }, {
+		 scale = 1.0;
+		 duration = 0.0001
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "appear";
-		 direction = "down";
-		 duration = 0.0001;
+		 scale = 1.4;
+		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
         match = "class_g = 'xob'";
         corner-radius = 5;
         opacity = 1.0;
@@ -5061,14 +5110,16 @@ rules: (
 		 preset = "fly-out";
 		 direction = "down";
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "down";
 		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
         match = "class_g = 'Better_control.py'";
 	  fading = false;
 	  animations = (
@@ -5077,14 +5128,16 @@ rules: (
 		 preset = "fly-out";
 		 direction = "up";
 		 duration = 0.2;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "up";
 		 duration = 0.2;
 	    }
 	    )
-      }, {
+      },
+      {
         match = "class_g = 'VisualBell'";
         fade-delta = 10;
         fade-duration = 1000;
@@ -5098,7 +5151,8 @@ rules: (
 		 preset = "disappear";
 		 duration = 0.2;
 	       scale = 1.0;
-	    }, {
+	    },
+	    {
 		 triggers = ["open", "show"];
 		 preset = "appear";
 		 duration = 0.2;
@@ -5175,6 +5229,42 @@ rules: (
 
           // dark green tint
           c.rgb *= vec3(1.4, 1.2, 1.3);
+
+          return c;
+      }
+    '';
+
+    "picom/tint-unfocused.glsl".text = ''
+      #version 330
+
+      //float gamma = 0.95;
+      float gamma = 0.80;
+      //float brightness_level = 0.80;
+      float brightness_level = 0.9;
+
+      float inv_gamma = 1.0 / gamma;
+
+      in vec2 texcoord;
+      uniform sampler2D tex;
+
+      vec4 default_post_processing(vec4 c);
+
+      vec4 window_shader() {
+          // picom provides texcoord in pixel space
+          vec4 c = texelFetch(tex, ivec2(texcoord), 0);
+
+          c = default_post_processing(c);
+
+          // gamma
+          c.rgb = pow(c.rgb, vec3(inv_gamma));
+
+          // brightness
+          c.rgb *= brightness_level;
+
+          // dark green tint
+          //c.rgb *= vec3(1.4, 1.2, 1.3);
+          c.rgb *= vec3(1.0, 0.8, 0.9);
+          //c.rgb *= vec3(0.7, 0.5, 0.6);
 
           return c;
       }

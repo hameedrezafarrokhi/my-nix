@@ -112,6 +112,12 @@
 
    #ueberzug
 
+    sl
+   #asciiquarium
+    asciiquarium-transparent
+    unimatrix
+
+
   ] ) config.my.software.tools.exclude)
 
    ++
@@ -159,6 +165,8 @@
     ++ [(pkgs.callPackage ../myPackages/pod.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/clearine.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/nyancat.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
