@@ -460,7 +460,7 @@ super + h
 
 # Power Menu
 ctrl + alt + Delete
-      bsp-power
+      clearine; # bsp-power
 
 # Hide Bars
 super + g

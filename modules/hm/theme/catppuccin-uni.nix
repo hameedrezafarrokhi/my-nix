@@ -949,12 +949,26 @@ Now Playing
 EOF
     '';
 
+    xcursor-shake-toggle = pkgs.writeShellScriptBin "xcursor-shake-toggle" ''
+      if systemctl --user is-active --quiet xcursorshake.service; then
+        systemctl --user stop xcursorshake.service
+      else
+        systemctl --user restart xcursorshake.service
+      fi
+    '';
+
     xmenu-key = pkgs.writeShellScriptBin "xmenu-key" ''
 LAYOUT=$(xkb-switch -p)
 case "$LAYOUT" in
   us) flag="🇺🇸" ;;
   ir) flag="🇮🇷" ;;
 esac
+
+if systemctl --user is-active --quiet xcursorshake.service; then
+  CURSOR_SHAKE="󰳽"
+else
+  CURSOR_SHAKE="󰳾"
+fi
 
 xmenu <<EOF | sh &
   Clipboard				copyq toggle
@@ -969,6 +983,8 @@ $(echo "           󰇘󰇘󰇘󰇘 ")
 $(echo "           󰇘󰇘󰇘󰇘 ")
 󰞅  Emojis				rofi -show emoji -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
   Symbols				rofi -show nerdy -modi drun -line-padding 4 -hide-scrollbar -show-icons -theme ".config/rofi/themes/main.rasi"
+$(echo "           󰇘󰇘󰇘󰇘 ")
+$CURSOR_SHAKE  Cursor Shake				xcursor-shake-toggle
 EOF
     '';
 
@@ -1349,6 +1365,7 @@ EOF
 
     gtk-cursor-package
     x-cursor-package
+    xcursor-shake-toggle
     plasma-cursor-package
     hypr-cursor-package
 
@@ -5079,10 +5096,10 @@ rules: (
         transparent-clipping = false;
         fading = false;
         shadow = true;
-        shadow-offset-x = -15;
-        shadow-offset-y = -15;
-        shadow-opacity = 0.550000;
-        shadow-radius = 6;
+        shadow-offset-x = -7;
+        shadow-offset-y = -7;
+        shadow-opacity = 0.40;
+        shadow-radius = 4;
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];
@@ -5156,6 +5173,27 @@ rules: (
 		 triggers = ["open", "show"];
 		 preset = "appear";
 		 duration = 0.2;
+		 scale = 1.0;
+	    }
+	    )
+      },
+      {
+        match = "class_g = 'CursorScaler'";
+        fading = false;
+        opacity = 1.0;
+        shadow = false;
+        blur-background = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "disappear";
+		 duration = 0;
+	       scale = 1.0;
+	    },
+	    {
+		 triggers = ["open", "show"];
+		 preset = "appear";
+		 duration = 0;
 		 scale = 1.0;
 	    }
 	    )
@@ -6738,6 +6776,102 @@ rules: (
       mixer=pavucontrol
       volume_increment=3
       show_notifications=true
+    '';
+
+    "xwww/xwwwrc".text = ''
+      TRANSITION_CMD="feh --bg-fill --no-fehbg "
+      #FINAL_CMD="feh --bg-fill --no-fehbg "
+      FINAL_CMD="fehb "
+
+      #TRANSITION_CMD="hsetroot -cover "
+      #FINAL_CMD="hsetroot -cover "
+
+
+      ACCEL=(-hwaccel vaapi)
+
+
+      PIXELATE_SIZE=64
+      WAVE_AMP=80
+      WAVE_LENGHT=250
+
+
+      #R_X=1366
+      #R_Y=768
+      #R_X=1920
+      #R_Y=1080
+      #R_X=956
+      #R_Y=538
+
+      #FORMAT=bmp
+      #SPEED=0
+      #FRAMES=14
+
+      #ANIMATION="pixelate"
+      #ANIMATION="wave"
+      #ANIMATION="fade"
+      #ANIMATION="spin"
+      #ANIMATION="test"
+
+      #RND="slide-up,slide-down,slide-left,slide-right"
+      #RND="push-up,emerge-down,push-left,emerge-right"
+      #RND="circle-out,circle-in"
+      #RND="oblique-right,oblique-left"
+      #RND="open,close"
+      #RND="zoom-out"
+
+
+
+      # Presets
+
+       # Fast Pixels
+      #R_X=956
+      #R_Y=538
+      #FORMAT=bmp
+      #SPEED=0.04
+      #FRAMES=6
+      #ANIMATION="pixelate"
+
+       # Fast Slides
+      #R_X=1366
+      #R_Y=768
+      #SPEED=0
+      #FRAMES=14
+      #FORMAT=bmp
+      #RND="slide-up,slide-down,slide-left,slide-right"
+
+       # Fast Push/Emerge
+      #R_X=1366
+      #R_Y=768
+      #SPEED=0
+      #FRAMES=20
+      #FORMAT=webp
+      #RND="push-up,emerge-down,push-left,emerge-right"
+
+       # Fast Emerge
+      R_X=1366
+      R_Y=768
+      SPEED=0
+      FRAMES=14
+      FORMAT=webp
+      ANIMATION="emerge-down"
+
+
+       # Fast Circles
+      #R_X=956
+      #R_Y=538
+      #SPEED=0
+      #FRAMES=10
+      #FORMAT=bmp
+      #RND="circle-out,circle-in"
+
+       # Smooth Obliques
+      #R_X=956
+      #R_Y=538
+      #SPEED=0.025
+      #FRAMES=24
+      #FORMAT=bmp
+      #RND="oblique-right,oblique-left"
+
     '';
 
     test = {

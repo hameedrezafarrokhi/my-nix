@@ -15,6 +15,15 @@ let
     '';
   };
 
+  cursor-shake = pkgs.callPackage ../../../nixos/myPackages/x11_shake_to_magnify_cursor.nix { };
+
+  cursor = pkgs.writeShellScriptBin "cursor" ''
+    #echo "XCURSOR_SIZE=$1" > /tmp/cursor_size
+    export XCURSOR_SIZE=$1
+    xsetroot -cursor_name left_ptr
+    #xsetroot -xcf /usr/share/icons/default/cursors/left_ptr $1
+  '';
+
   xidlesuspend = pkgs.writeShellScriptBin "xidlesuspend" ''
     MANUAL_CONFIG="$HOME/.sleeptime"
     IDLE_LIMIT=${config.services.screen-locker.xss-lock.sleep}
@@ -785,7 +794,8 @@ in
         imlib2 = pkgs.imlib2Full;
       })
 
-
+      cursor-shake
+      cursor
       xidlesuspend
       x-cursor
       x-lock-sleep
@@ -1092,6 +1102,21 @@ in
       };
       Service = {
         ExecStart = "${xidlesuspend}/bin/xidlesuspend";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+    };
+
+    systemd.user.services.xcursorshake = {
+      Unit = {
+        Description = "cursor shake";
+        ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${cursor-shake}/bin/cursor-scaler";
         Restart = "on-failure";
         RestartSec = 3;
       };

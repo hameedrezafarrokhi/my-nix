@@ -136,13 +136,23 @@ let
   vol-up = pkgs.writeShellScriptBin "vol-up" ''
     pamixer -i 2 --allow-boost &
     pw-play $HOME/.local/share/desktop-sounds/focus &
-    herbvolume 'Vol' && pavucontrol
+    if [[ $(pgrep herbvolume | wc -l) -gt 4 ]]; then
+      pkill herbvolume
+      herbvolume 'Vol' && pavucontrol
+    else
+      herbvolume 'Vol' && pavucontrol
+    fi
   '';
 
   vol-down = pkgs.writeShellScriptBin "vol-down" ''
     pamixer -d 2 --allow-boost &
     pw-play $HOME/.local/share/desktop-sounds/focus &
-    herbvolume 'Vol' && pavucontrol
+    if [[ $(pgrep herbvolume | wc -l) -gt 4 ]]; then
+      pkill herbvolume
+      herbvolume 'Vol' && pavucontrol
+    else
+      herbvolume 'Vol' && pavucontrol
+    fi
   '';
 
   vol-mute = pkgs.writeShellScriptBin "vol-mute" ''
@@ -150,9 +160,19 @@ let
     pamixer -t &
     pw-play $HOME/.local/share/desktop-sounds/focus &
     if [[ $MUTE_GET == "true" ]]; then
-      herbvolume 'Vol' && pavucontrol
+      if [[ $(pgrep herbvolume | wc -l) -gt 4 ]]; then
+        pkill herbvolume
+        herbvolume 'Vol' && pavucontrol
+      else
+        herbvolume 'Vol' && pavucontrol
+      fi
     else
-      herbvolume 'Mut' && pavucontrol
+      if [[ $(pgrep herbvolume | wc -l) -gt 4 ]]; then
+        pkill herbvolume
+        herbvolume 'Vol' && pavucontrol
+      else
+        herbvolume 'Vol' && pavucontrol
+      fi
     fi
   '';
 

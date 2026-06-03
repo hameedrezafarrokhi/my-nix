@@ -168,6 +168,10 @@
 
     ++ [(pkgs.callPackage ../myPackages/nyancat.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/x11_shake_to_magnify_cursor.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/jiggle.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
