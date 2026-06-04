@@ -792,6 +792,8 @@ in
         format = "<label>%{O-8pt}";
         initial = "2";
         click-left = "xmenu-bsp";
+        click-right = "xdotool key super+apostrophe";
+        double-click-right = "xdotool key super+alt+apostrophe";
       };
 
       "module/networkspeedup" = {

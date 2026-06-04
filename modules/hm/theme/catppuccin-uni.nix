@@ -208,7 +208,10 @@
     xfilesFont = "${Sans}";
     jgmenuFont = "${MonoSpace}; ${toString JgmenuSize}";
     alttabFont = "xft:${MonoSpace}:size=${toString AlttabSize}";
-    herbbspFont = "${MonoSpace}:size=${toString HerbbspSize}:weight=${herbbspWeight}";
+    herbbspFont = "${Sans}:size=${toString HerbbspSize}:weight=${HerbbspWeight}";
+    herbosdFont = "${MonoAlt2}:size=${toString HerbosdSize}:weight=${HerbosdWeight}";
+    herbtestFont = "${MonoAlt2}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
+    #herbtestFont = "${Emoji}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
 
     MonoSize = 10;
     SansSize = 10;
@@ -234,8 +237,13 @@
     StSize = 12;
     DmenuSize = 16;
     AlttabSize = 12;
+
     HerbbspSize = 10;
-    herbbspWeight = "bold";
+    HerbbspWeight = "bold";
+    HerbtestSize = 10;
+    HerbtestWeight = "bold";
+    HerbosdSize = 10;
+    HerbosdWeight = "bold";
 
     sound = "ocean";
 
@@ -267,6 +275,7 @@
     alt-Maroon =     "ee99a0"; Maroon =    "#${alt-Maroon}";    Calt-Maroon =    lib.strings.toUpper alt-Maroon;    CMaroon =    lib.strings.toUpper Maroon;
     alt-Peach =      "f5a97f"; Peach =     "#${alt-Peach}";     Calt-Peach =     lib.strings.toUpper alt-Peach;     CPeach =     lib.strings.toUpper Peach;
     alt-Yellow =     "eed49f"; Yellow =    "#${alt-Yellow}";    Calt-Yellow =    lib.strings.toUpper alt-Yellow;    CYellow =    lib.strings.toUpper Yellow;
+    alt-Jade =       "355f56"; Jade =      "#${alt-Jade}";      Calt-Jade =      lib.strings.toUpper alt-Jade;      CJade =      lib.strings.toUpper Jade;
     alt-Green =      "a6da95"; Green =     "#${alt-Green}";     Calt-Green =     lib.strings.toUpper alt-Green;     CGreen =     lib.strings.toUpper Green;
     alt-Teal =       "8bd5ca"; Teal =      "#${alt-Teal}";      Calt-Teal =      lib.strings.toUpper alt-Teal;      CTeal =      lib.strings.toUpper Teal;
     alt-Sky =        "91d7e3"; Sky =       "#${alt-Sky}";       Calt-Sky =       lib.strings.toUpper alt-Sky;       CSky =       lib.strings.toUpper Sky;
@@ -300,13 +309,14 @@
     rgb-alt-Maroon =    hexToRgb alt-Maroon;    rgb-Maroon =    "rgb(${rgb-alt-Maroon})";    base06 = alt-Teal;     alt-base06 = "#${alt-Teal}";
     rgb-alt-Peach =     hexToRgb alt-Peach;     rgb-Peach =     "rgb(${rgb-alt-Peach})";     base07 = alt-Subtext1; alt-base07 = "#${alt-Subtext1}";
     rgb-alt-Yellow =    hexToRgb alt-Yellow;    rgb-Yellow =    "rgb(${rgb-alt-Yellow})";    base08 = alt-Surface2; alt-base08 = "#${alt-Surface2}";
-    rgb-alt-Green =     hexToRgb alt-Green;     rgb-Green =     "rgb(${rgb-alt-Green})";     base09 = alt-Red;      alt-base09 = "#${alt-Red}";
-    rgb-alt-Teal =      hexToRgb alt-Teal;      rgb-Teal =      "rgb(${rgb-alt-Teal})";      base0A = alt-Green;    alt-base0A = "#${alt-Green}";
-    rgb-alt-Sky =       hexToRgb alt-Sky;       rgb-Sky =       "rgb(${rgb-alt-Sky})";       base0B = alt-Yellow;   alt-base0B = "#${alt-Yellow}";
-    rgb-alt-Sapphire =  hexToRgb alt-Sapphire;  rgb-Sapphire =  "rgb(${rgb-alt-Sapphire})";  base0C = alt-Blue;     alt-base0C = "#${alt-Blue}";
-    rgb-alt-Blue =      hexToRgb alt-Blue;      rgb-Blue =      "rgb(${rgb-alt-Blue})";      base0D = alt-Pink;     alt-base0D = "#${alt-Pink}";
-    rgb-alt-Lavender =  hexToRgb alt-Lavender;  rgb-Lavender =  "rgb(${rgb-alt-Lavender})";  base0E = alt-Teal;     alt-base0E = "#${alt-Teal}";
-    rgb-alt-Brown =     hexToRgb alt-Brown;     rgb-Brown =     "rgb(${rgb-alt-Brown})";     base0F = alt-Subtext0; alt-base0F = "#${alt-Subtext0}";
+    rgb-alt-Jade =      hexToRgb alt-Jade;      rgb-Jade =      "rgb(${rgb-alt-Jade})";      base09 = alt-Red;      alt-base09 = "#${alt-Red}";
+    rgb-alt-Green =     hexToRgb alt-Green;     rgb-Green =     "rgb(${rgb-alt-Green})";     base0A = alt-Green;    alt-base0A = "#${alt-Green}";
+    rgb-alt-Teal =      hexToRgb alt-Teal;      rgb-Teal =      "rgb(${rgb-alt-Teal})";      base0B = alt-Yellow;   alt-base0B = "#${alt-Yellow}";
+    rgb-alt-Sky =       hexToRgb alt-Sky;       rgb-Sky =       "rgb(${rgb-alt-Sky})";       base0C = alt-Blue;     alt-base0C = "#${alt-Blue}";
+    rgb-alt-Sapphire =  hexToRgb alt-Sapphire;  rgb-Sapphire =  "rgb(${rgb-alt-Sapphire})";  base0D = alt-Pink;     alt-base0D = "#${alt-Pink}";
+    rgb-alt-Blue =      hexToRgb alt-Blue;      rgb-Blue =      "rgb(${rgb-alt-Blue})";      base0E = alt-Teal;     alt-base0E = "#${alt-Teal}";
+    rgb-alt-Lavender =  hexToRgb alt-Lavender;  rgb-Lavender =  "rgb(${rgb-alt-Lavender})";  base0F = alt-Subtext0; alt-base0F = "#${alt-Subtext0}";
+    rgb-alt-Brown =     hexToRgb alt-Brown;     rgb-Brown =     "rgb(${rgb-alt-Brown})";
     rgb-alt-Text =      hexToRgb alt-Text;      rgb-Text =      "rgb(${rgb-alt-Text})";
     rgb-alt-Subtext1 =  hexToRgb alt-Subtext1;  rgb-Subtext1 =  "rgb(${rgb-alt-Subtext1})";
     rgb-alt-Subtext0 =  hexToRgb alt-Subtext0;  rgb-Subtext0 =  "rgb(${rgb-alt-Subtext0})";
@@ -419,11 +429,11 @@
 
     xobvolume = pkgs.writeShellScriptBin "xobvolume" ''
       sleep 5
-      xobvol | xob -t 1000 -c $HOME/.config/xob/config.cfg -s bottom-volume -m 100 -q
+      xobvol | xob -t 2000 -c $HOME/.config/xob/config.cfg -s bottom-volume -m 100 -q
     '';
 
     xobbrightness = pkgs.writeShellScriptBin "xobbrightness" ''
-      xobbright | xob -t 1000 -c $HOME/.config/xob/config.cfg -s bottom-brightness -m 100 -q
+      xobbright | xob -t 2000 -c $HOME/.config/xob/config.cfg -s bottom-brightness -m 100 -q
     '';
 
    #fehw = pkgs.writeShellScriptBin "fehw" ''
@@ -473,6 +483,29 @@
       betterlockscreen -u "$wallpaper" --fx dimblur --dim 50 --blur 0.5
     '';
 
+    bsp-flashfocus = pkgs.writeShellScriptBin "bsp-flashfocus" ''
+      state=$(bspc query -T -n | jq '.client.state')
+      cmd="xvisbell3 -c ${alt-Red} -d 500 -w 10 -xs"
+      if [[ $state == '"fullscreen"' ]]; then
+        exit 0
+      elif [[ $state == '"floating"' ]]; then
+        $cmd $(( $(bspc query -T -n | jq '.client.floatingRectangle.x') - 5 )) -ys $(( $(bspc query -T -n | jq '.client.floatingRectangle.y') - 5 )) -x $(( $(bspc query -T -n | jq '.client.floatingRectangle.width') + 20 )) -y $(( $(bspc query -T -n | jq '.client.floatingRectangle.height') + 20 ))
+      else
+        $cmd $(( $(bspc query -T -n | jq '.rectangle.x') - 5 )) -ys $(( $(bspc query -T -n | jq '.rectangle.y') - 5 )) -x $(( $(bspc query -T -n | jq '.rectangle.width') + 5 )) -y $(( $(bspc query -T -n | jq '.rectangle.height') + 5 ))
+      fi
+    '';
+
+    notif-flash = pkgs.writeShellScriptBin "notif-flash" ''
+      xvis() {
+        xvisbell3 -c ${alt-Jade} -d 400 -w 10 -xs 10 -ys 45 -x 1346 -y 700
+        sleep 0.5
+        xstatus=$(xidle -l)
+      }
+      xvis
+      while [[ $xstatus -gt 400 ]]; do
+        xvis
+      done
+    '';
 
     bsp-border-color = pkgs.writeShellScriptBin "bsp-border-color" ''
       direction=$1
@@ -1372,6 +1405,8 @@ EOF
     betterlock-init
     fehw
 
+    bsp-flashfocus
+    notif-flash
     bsp-border-color
     bsp-app-border
     bsp-tabbed
@@ -1406,23 +1441,44 @@ EOF
 
   ]
 
+ #++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+ #  herbN = "herbbsp";
+ #  herbH = ''
+ #    static const int use_primary_monitor = 0;
+ #    static const char *background_color = "${Base}";
+ #    static const char *border_color = "${Accent}";
+ #    static const char *font_color = "${Text}";
+ #    static const char *font_pattern = "${herbbspFont}";
+ #    static unsigned line_spacing = 11;
+ #    static unsigned int padding = 13;
+ #    static unsigned int width = 180;
+ #    static unsigned int border_size = 3;
+ #    static unsigned int pos_x = 30;
+ #    static unsigned int pos_y = 60;
+ #    enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+ #    enum corners corner = TOP_LEFT;
+ #    static unsigned int duration = 2; /* in seconds */
+ #    #define DISMISS_BUTTON Button1
+ #    #define ACTION_BUTTON Button3
+ #  '';
+ #})]
   ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
     herbN = "herbbsp";
     herbH = ''
       static const int use_primary_monitor = 0;
-      static const char *background_color = "${Base}";
-      static const char *border_color = "${Accent}";
+      static const char *background_color = "${Mantle}";
+      static const char *border_color = "${Overlay0}";
       static const char *font_color = "${Text}";
       static const char *font_pattern = "${herbbspFont}";
-      static unsigned line_spacing = 11;
+      static unsigned line_spacing = 13;
       static unsigned int padding = 13;
-      static unsigned int width = 180;
+      static unsigned int width = 200;
       static unsigned int border_size = 3;
-      static unsigned int pos_x = 30;
-      static unsigned int pos_y = 60;
+      static unsigned int pos_x = 580;
+      static unsigned int pos_y = 660;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
-      enum corners corner = TOP_LEFT;
-      static unsigned int duration = 2; /* in seconds */
+      enum corners corner = BOTTOM_LEFT;
+      static unsigned int duration = 2.5; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -1434,7 +1490,7 @@ EOF
       static const char *background_color = "${Accent}";
       static const char *border_color = "${Accent}";
       static const char *font_color = "${Crust}";
-      static const char *font_pattern = "${herbbspFont}";
+      static const char *font_pattern = "${herbosdFont}";
       static unsigned line_spacing = 11;
       static unsigned int padding = 13;
       static unsigned int width = 50;
@@ -1443,7 +1499,7 @@ EOF
       static unsigned int pos_y = 175;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = BOTTOM_LEFT;
-      static unsigned int duration = 1; /* in seconds */
+      static unsigned int duration = 2; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -1455,7 +1511,7 @@ EOF
       static const char *background_color = "${Yellow}";
       static const char *border_color = "${Yellow}";
       static const char *font_color = "${Crust}";
-      static const char *font_pattern = "${herbbspFont}";
+      static const char *font_pattern = "${herbosdFont}";
       static unsigned line_spacing = 11;
       static unsigned int padding = 13;
       static unsigned int width = 50;
@@ -1464,7 +1520,28 @@ EOF
       static unsigned int pos_y = 115;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = BOTTOM_LEFT;
-      static unsigned int duration = 1; /* in seconds */
+      static unsigned int duration = 2; /* in seconds */
+      #define DISMISS_BUTTON Button1
+      #define ACTION_BUTTON Button3
+    '';
+  })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+    herbN = "herbtest";
+    herbH = ''
+      static const int use_primary_monitor = 0;
+      static const char *background_color = "${Rosewater}";
+      static const char *border_color = "${Crust}";
+      static const char *font_color = "${Crust}";
+      static const char *font_pattern = "${herbtestFont}";
+      static unsigned line_spacing = 11;
+      static unsigned int padding = 13;
+      static unsigned int width = 200;
+      static unsigned int border_size = 3;
+      static unsigned int pos_x = 540;
+      static unsigned int pos_y = 350;
+      enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+      enum corners corner = BOTTOM_LEFT;
+      static unsigned int duration = 2; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
     '';
@@ -5056,17 +5133,18 @@ rules: (
 	{
         match = "class_g = 'herbx' || class_g = 'herbbsp'";
 	  corner-radius = 5;
+	  fading = false;
 	  animations = (
 	    {
 		 triggers = ["close", "hide"];
 		 preset = "fly-out";
-		 direction = "left";
+		 direction = "up";
 		 duration = 0.2;
 	    },
 	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
-		 direction = "left";
+		 direction = "up";
 		 duration = 0.2;
 	    }
 	  )

@@ -172,6 +172,9 @@
 
     ++ [(pkgs.callPackage ../myPackages/jiggle.nix { })]
 
+   #++ [(pkgs.callPackage ../myPackages/woven.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/woven-bin.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]

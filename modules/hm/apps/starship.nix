@@ -10,6 +10,7 @@
     enableFishIntegration = true;
     enableTransience = true;
     settings = lib.mkDefault {
+      scan_timeout = 500; # Default 30
       format = lib.concatStrings [
        "[](#3B4252)"
        "$python"

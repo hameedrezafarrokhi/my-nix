@@ -1112,9 +1112,9 @@ in
         Description = "cursor shake";
         ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
       };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
+      #Install = {
+      #  WantedBy = [ "graphical-session.target" ];
+      #};
       Service = {
         ExecStart = "${cursor-shake}/bin/cursor-scaler";
         Restart = "on-failure";

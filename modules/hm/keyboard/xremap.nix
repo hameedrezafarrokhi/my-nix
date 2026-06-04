@@ -169,9 +169,9 @@ let
     else
       if [[ $(pgrep herbvolume | wc -l) -gt 4 ]]; then
         pkill herbvolume
-        herbvolume 'Vol' && pavucontrol
+        herbvolume 'Mut' && pavucontrol
       else
-        herbvolume 'Vol' && pavucontrol
+        herbvolume 'Mut' && pavucontrol
       fi
     fi
   '';

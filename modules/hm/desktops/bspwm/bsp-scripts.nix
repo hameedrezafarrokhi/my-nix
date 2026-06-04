@@ -32,6 +32,17 @@ let
     fi
   '';
 
+  bsp-shake = pkgs.writeShellScriptBin "bsp-shake" ''
+    while true; do
+      WCOUNT=$(wmctrl -l 2>/dev/null | wc -l)
+      if [ "$WCOUNT" -gt 0 ]; then
+        systemctl --user restart xcursorshake.service
+        exit 0
+      fi
+      sleep 1.5
+    done
+  '';
+
   volume= "$(pamixer --get-volume)";
   bsp-volume = pkgs.writeShellScriptBin "bsp-volume" ''
       #!/bin/bash
@@ -1846,6 +1857,7 @@ in
       bsp-help
       bsp-conf
       bsp-conf-color
+      bsp-shake
       bsp-volume
       bsp-once-layout
       bsp-set-layout

@@ -147,42 +147,73 @@ in
             bsp-power-man manual
         fi &
 
-        bspc rule -a Tilda state=floating # rectangle=0x0+0+0
-        bspc rule -a ulauncher border=off
-        bspc rule -a Ulauncher border=off
-        bspc rule -a "scratchpad" state=floating layer=normal
-        bspc rule -a "scratchpad-ext" state=floating layer=normal marked=on
+        bspc rule -a Tilda state=floating layer=above # rectangle=0x0+0+0
+        bspc rule -a ulauncher border=off layer=above
+        bspc rule -a Ulauncher border=off layer=above
+        bspc rule -a "scratchpad" state=floating layer=above
+        bspc rule -a "scratchpad-ext" state=floating layer=above marked=on
         bspc rule -a "scratchpad-sticky" state=floating sticky=on layer=above rectangle=720x360+320+60
-        bspc rule -a XCalc state=floating
-        bspc rule -a ".blueman-manager-wrapped" state=floating
-        bspc rule -a bluetuith state=floating
-        bspc rule -a pavucontrol state=floating
-        bspc rule -a copyq state=floating
-        bspc rule -a ".protonvpn-app-wrapped" state=floating
-        bspc rule -a protonvpn-app state=floating
-        bspc rule -a Protonvpn-app state=floating
+        bspc rule -a XCalc state=floating layer=above
+        bspc rule -a ".blueman-manager-wrapped" state=floating layer=above
+        bspc rule -a bluetuith state=floating layer=above
+        bspc rule -a pavucontrol state=floating layer=above
+        bspc rule -a copyq state=floating layer=above
+        bspc rule -a copyq:copyq layer=above state=floating
+        bspc rule -a ".protonvpn-app-wrapped" state=floating layer=above
+        bspc rule -a protonvpn-app state=floating layer=above
+        bspc rule -a Protonvpn-app state=floating layer=above
         bspc rule -a "Vboard.py" state=floating sticky=on layer=above
         bspc rule -a "vboard.py" state=floating sticky=on layer=above
-        bspc rule -a kruler state=floating
-        bspc rule -a kruler border=off
+        bspc rule -a kitty-picker layer=above state=floating
+        bspc rule -a kruler state=floating layer=above
+        bspc rule -a kruler border=off layer=above
         bspc rule -a Xephyr state=floating
         bspc rule -a Clock state=floating layer=below sticky=on
-        bspc rule -a kitty-picker state=floating
-        bspc rule -a tetris state=floating rectangle=370x450+500+150
-        bspc rule -a Gsimplecal state=floating rectangle=277x188+1045+55
-        bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300   # zoom apps float and size (xzoom and magnify)
+        bspc rule -a tetris layer=above state=floating rectangle=370x450+500+150
+        bspc rule -a Gsimplecal layer=above state=floating rectangle=277x188+1045+55
+        bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300 layer=above   # zoom apps float and size (xzoom and magnify)
         bspc rule -a "XFilesFloat" state=floating rectangle=520x380+10+40
-        bspc rule -a "Xmessage" state=floating
-        bspc rule -a "Gxmessage" state=floating
-        bspc rule -a "baobab" state=floating
-        bspc rule -a "fehprev" state=floating
-        bspc rule -a mpv:mpvprev state=floating
+        bspc rule -a "Xmessage" state=floating layer=above
+        bspc rule -a "Gxmessage" state=floating layer=above
+        bspc rule -a "baobab" state=floating layer=above
+        bspc rule -a "fehprev" state=floating layer=above
+        bspc rule -a mpv:mpvprev state=floating layer=above
         bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
+
+        bspc rule -a kate:kate:"Open File" layer=above state=floating
+        bspc rule -a "xdg-desktop-portal-kde":"xdg-desktop-portal-kde":"Open File" layer=above state=floating
+        bspc rule -a *:*:"Open" layer=above state=floating
+        bspc rule -a *:*:"Open File" layer=above state=floating
+        bspc rule -a *:*:"Open Folder" layer=above state=floating
+        bspc rule -a *:*:"Choose Application" layer=above state=floating
+        bspc rule -a *:*:"Choose Files" layer=above state=floating
+        bspc rule -a *:*:"Open File - Mozilla Firefox" layer=above state=floating
+        bspc rule -a *:*:"Save As - Mozilla Firefox" layer=above state=floating
+        bspc rule -a *:*:"Open File"* layer=above state=floating
+        bspc rule -a *:*:"Open Archive" layer=above state=floating
+        bspc rule -a *:*:"Open Document" layer=above state=floating
+        bspc rule -a *:*:"Select one or more files" layer=above state=floating
+        bspc rule -a *:*:"Select one or more files to open" layer=above state=floating
+        bspc rule -a *:*:"Open Image" layer=above state=floating
+        bspc rule -a *:*:"All Files" layer=above state=floating
+        bspc rule -a *:*:"Save File" layer=above state=floating
+        bspc rule -a *:*:"Save Image" layer=above state=floating
+        bspc rule -a *:*:"Save As" layer=above state=floating
+        bspc rule -a *:*:"Select file to open" layer=above state=floating
+        bspc rule -a *:*:"Select file to save to" layer=above state=floating
+        bspc rule -a *:*:"Error" layer=above state=floating
 
         xdotool keyup Super_L
         rm -f "$HOME/.cache/poly-super-state"
         polybar-msg action "#power.hook.1"
+        polybar-msg action "#idle.hook.1"
+        polybar-msg action "#bspwm.hook.1"
+        polybar-msg action "#keyboard-layout.hook.0"
+        polybar-msg action "#picom.hook.1"
+        polybar-msg action "#pp.hook.1"
+        notify-send -e -u low -t 1 'Hello:)'
 
+        bsp-shake &
       '';
 
       startupPrograms = [

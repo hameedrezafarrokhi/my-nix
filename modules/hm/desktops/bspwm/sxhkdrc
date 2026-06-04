@@ -38,8 +38,12 @@ super + ctrl + shift + Tab
 super + shift + ctrl + alt + Tab
       notify-send -e -u low -t 2000 "Skippy"; bsp-skippy
 
-# Reload sxhkd (Hotkey Daemon)
+# Flash Focused Window
 super + Escape
+	bsp-flashfocus
+
+# Reload sxhkd (Hotkey Daemon)
+super + shift + Escape
 	pkill -USR1 -x sxhkd; notify-send -e -u low -t 2000 'sxhkd' 'Reloaded config'
 
 # Reload bspwm (Window Manager)
@@ -972,3 +976,15 @@ super + ctrl + v
 # Bluetooth
 super + b
     bluetuith-gui
+
+# Cursor Shake Toggle
+super + F10
+    xcursor-shake-toggle
+
+# Cursor Shake Restart
+super + shift + F10
+    systemctl --user restart xcursorshake.service
+
+# Cursor Shake Stop
+super + ctrl + shift + F10
+    systemctl --user stop xcursorshake.service
