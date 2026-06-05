@@ -117,6 +117,10 @@
     asciiquarium-transparent
     unimatrix
 
+    bucklespring
+
+    go
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -174,6 +178,12 @@
 
    #++ [(pkgs.callPackage ../myPackages/woven.nix { })]
     ++ [(pkgs.callPackage ../myPackages/woven-bin.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/goto.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/choyce.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/gopowerd.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]

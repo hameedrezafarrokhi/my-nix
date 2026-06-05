@@ -11,14 +11,18 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "woven";
-  version = "v2.5.3";
+ #version = "v2.5.3";
+  version = "2026-06-01";
 
   src = fetchFromGitHub {
     owner = "viewerofall";
     repo = "woven";
-   #rev = "mian";
-    tag = version;
-    hash = "sha256-fnzrhipbnEkInfUdsFZ6rAUGMRBVQ9RGeIHgPOBuXko=";
+
+    rev = "main";
+    hash = "sha256-lPbTMjPD3SBKpNk7pDE7jmbjeVQpmos1b2zXStdRXUw=";
+
+   #tag = version;
+   #hash = "sha256-fnzrhipbnEkInfUdsFZ6rAUGMRBVQ9RGeIHgPOBuXko=";
   };
 
  #cargoHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
@@ -29,9 +33,9 @@ rustPlatform.buildRustPackage rec {
 
  #cargoPatches = [ ./Woven-Cargo.lock ];
 
- #prePatch = ''
- #  cp ${cargoLock.lockFile} src/Cargo.lock
- #'';
+  prePatch = ''
+    cp ${cargoLock.lockFile} Cargo.lock
+  '';
 
   nativeBuildInputs = [
     pkg-config

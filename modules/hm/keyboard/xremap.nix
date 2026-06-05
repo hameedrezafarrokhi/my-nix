@@ -45,6 +45,14 @@ let
     fi
   '';
 
+  key-sound = pkgs.writeShellScriptBin "key-sound" ''
+    if pgrep buckle > /dev/null; then
+      pkill buckle
+    else
+      buckle &
+    fi
+  '';
+
   xss-kill = pkgs.writeShellScriptBin "xss-kill" ''
     pkill .xscreensaver-w
     pkill xscreensaver-sy
@@ -295,6 +303,7 @@ in
     xss-kill
     lock-kill
     lock-restart
+    key-sound
     xremap-lock-button
     x-logout
     xremap-picom-toggle
@@ -652,6 +661,8 @@ in
                       launch: [ "xremap-picom-toggle" ]
             Super-Shift-Ctrl-KEY_BACKSPACE:
                       launch: [ "xremap-xsession-save" ]
+            Super-Shift-Ctrl-k:
+                      launch: [ "key-sound" ]
             Super-KEY_PROG1:
                       launch: [ "xremap-lock-button" ]
 

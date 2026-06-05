@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     install -Dm755 exec/woven $out/bin/woven-unwrapped
-    install -Dm755 exec/woven-ctrl $out/bin/woven-ctrl
+    install -Dm755 exec/woven-ctrl $out/bin/woven-ctrl-unwrapped
 
     install -Dm644 woven-ctrl.desktop $out/share/applications/woven-ctrl.desktop
 
@@ -51,6 +51,10 @@ stdenv.mkDerivation rec {
     cp -r plugins/. $out/share/woven/runtime/
 
     makeWrapper $out/bin/woven-unwrapped $out/bin/woven \
+      --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}"
+
+    makeWrapper $out/bin/woven-ctrl-unwrapped $out/bin/woven-ctrl \
       --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}"
 

@@ -26,9 +26,9 @@ super + Tab
 super + shift + Tab
       bspc node -s prev.local.window.!hidden.!floating
 
-# Skippy-xd Expo
-super + ctrl + Tab
-      skippy-xd --expose
+# Expose
+ctrl + alt + grave
+      xwinmosaic ; #skippy-xd --expose
 
 # Skippy-xd Pager
 super + ctrl + shift + Tab

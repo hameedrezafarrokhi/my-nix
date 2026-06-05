@@ -785,6 +785,7 @@ in
       pkgs.gxmessage
       pkgs.herbe
       pkgs.alttab
+      pkgs.xwinmosaic
       pkgs.libvibrant
       pkgs.gummy
       pkgs.xob

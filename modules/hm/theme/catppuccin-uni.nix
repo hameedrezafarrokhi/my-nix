@@ -212,6 +212,7 @@
     herbosdFont = "${MonoAlt2}:size=${toString HerbosdSize}:weight=${HerbosdWeight}";
     herbtestFont = "${MonoAlt2}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
     #herbtestFont = "${Emoji}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
+    xwinmosaicFont = "Sans 14";
 
     MonoSize = 10;
     SansSize = 10;
@@ -6854,6 +6855,37 @@ rules: (
       mixer=pavucontrol
       volume_increment=3
       show_notifications=true
+    '';
+
+    "xwinmosaic/colors".text = ''
+      [colors]
+      fallback = ${Sapphire}
+      kitty = ${Brown}
+      scratchpad = ${Green}
+      scratchpad-ext = ${Green}
+      brave-browser = ${Orange}
+      firefox = ${Orange}
+      #kate = ${Rosewater}
+      #dolphin = ${Peach}
+    '';
+
+    "xwinmosaic/config".text = ''
+      [default]
+      vim_mode = true
+      box_width = 400
+      box_height = 70
+      colorize = true
+      color_offset = 0
+      show_icons = true
+      show_desktop = true
+      show_titles = true
+      icon_size = 40
+      font = ${xwinmosaicFont}
+      screenshot = false
+      screenshot_offset_x = 0
+      screenshot_offset_y = 0
+      at_pointer = false
+      color_file = ${config.xdg.configHome}/xwinmosaic/colors
     '';
 
     "xwww/xwwwrc".text = ''
