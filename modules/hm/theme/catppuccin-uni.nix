@@ -612,6 +612,7 @@
               pavucontrol) color="${Yellow}" ;;
               tetris) color="${Peach}" ;;
               kitty-picker) color="${Red}" ;;
+              systemctltui) color="${Red}" ;;
               XFilesFloat) color="${Green}" ;;
               XFilesRoot) color="${Red}" ;;
               Xmessage) color="${Red}" ;;
@@ -5081,7 +5082,7 @@ rules: (
 		)
 	},
 	{
-		match = "class_g = 'kitty-picker' || class_g = 'Xmessage' || class_g = 'Gxmessage'";
+		match = "class_g = 'kitty-picker' || class_g = 'systemctltui' || class_g = 'Xmessage' || class_g = 'Gxmessage'";
 		animations = (
 		{
 			triggers = ["close", "hide"];

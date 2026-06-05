@@ -179,6 +179,8 @@ in
         bspc rule -a "fehprev" state=floating layer=above
         bspc rule -a mpv:mpvprev state=floating layer=above
         bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
+        bspc rule -a systemctltui layer=above state=floating rectangle=1150x650+100+55
+
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating
         bspc rule -a "xdg-desktop-portal-kde":"xdg-desktop-portal-kde":"Open File" layer=above state=floating

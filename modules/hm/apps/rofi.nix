@@ -2,6 +2,10 @@
 
 { config = lib.mkIf (config.my.apps.rofi.enable) {
 
+  home.packages = [
+    pkgs.rofi-systemd
+  ];
+
   programs.rofi = {
     enable = true;
     package = pkgs.rofi;

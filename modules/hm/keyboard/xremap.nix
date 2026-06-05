@@ -590,6 +590,8 @@ in
                               launch: [ "feh-rofi-manual" ]
                             p:
                               launch: [ "poly-modules-rofi" ]
+                            j:
+                              launch: [ "rofi-systemd" ]
 
                     p:
                       remap:
