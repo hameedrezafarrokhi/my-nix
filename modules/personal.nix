@@ -432,6 +432,7 @@
             git.enable = true;
             ghostty.enable = true;
             gpg.enable = true;
+            helix.enable = true;
             htop.enable = true;
             jgmenu.enable = true;
             joplin.enable = false;

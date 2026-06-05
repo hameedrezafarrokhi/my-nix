@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+ { config, pkgs, lib, ... }:
 
 let
 
@@ -37,6 +37,7 @@ in
     git.enable = lib.mkEnableOption "git";
     ghostty.enable = lib.mkEnableOption "ghostty";
     gpg.enable = lib.mkEnableOption "gpg";
+    helix.enable = lib.mkEnableOption "helix";
     htop.enable = lib.mkEnableOption "htop";
     jgmenu.enable = lib.mkEnableOption "jgmenu";
     joplin.enable = lib.mkEnableOption "joplin";
@@ -107,6 +108,7 @@ in
       ./git.nix
       ./ghostty.nix
       ./gpg.nix
+      ./helix.nix
       ./htop.nix
       ./jgmenu.nix
       ./joplin.nix

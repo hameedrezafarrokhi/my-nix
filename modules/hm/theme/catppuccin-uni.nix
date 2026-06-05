@@ -137,11 +137,16 @@
       EOF
     '';
 
+    lazyvim-theme = "catppuccin-nvim";
+    lazyvim-package = "catppuccin/nvim";
+
     zed-icon-extension = "catppuccin-icons";
     zed-theme-extension = "catppuccin";
     zed-icon-theme = "Catppuccin ${flavorC}";
     zed-theme-dark = "Catppuccin ${flavorC} - No Italics";
     zed-theme-light = "Catppuccin ${flavorC} - No Italics";
+
+    helix-theme = "hm-theme-italic";
 
     xfce4-terminal-theme = "Catppuccin-${flavorC}";
 
@@ -340,6 +345,12 @@
     starship4 =  "#86BBD8";  obs-vol-error = "#e3455d";   alt-Black-Transparent = "00000000";
     starship5 =  "#06969A";                               wlogout-base = "rgba(36, 39, 58, 0.90)";
     starship6 =  "#33658A";                               wlogout-button = "rgb(53, 57, 75)"; # 20% Overlay2, 80% mantle
+
+    helix-cursorline = "#303347";
+    helix-secondary_cursor = "#b6a6a7";
+    helix-secondary_cursor_select = "#8b91bf";
+    helix-secondary_cursor_normal = "#b6a6a7";
+    helix-secondary_cursor_insert = "#80a57a";
 
     name = "catppuccin";
     nameC = "Catppuccin";
@@ -3442,6 +3453,7 @@ EOF
         };
       };
     };
+
     neovim = lib.mkIf config.programs.neovim.enable {
       plugins = [
         {
@@ -3450,6 +3462,128 @@ EOF
         }
       ];
     };
+
+    lazyvim = {
+      config = {
+        options = lib.mkAfter ''
+          vim.opt.relativenumber = false
+          vim.opt.wrap = true
+          vim.opt.conceallevel = 0
+          vim.cmd.colorscheme "${lazyvim-theme}"
+        '';
+      };
+      plugins = {
+        colorscheme = ''
+          return {
+            "${lazyvim-package}",
+            opts = {
+              flavour = "${flavor}", -- auto, latte, frappe, macchiato, mocha
+              background = { -- :h background
+                  light = "${flavor}",
+                  dark = "${flavor}",
+              },
+              transparent_background = false, -- disables setting the background color.
+              float = {
+                  transparent = false, -- enable transparent floating windows
+                  solid = false, -- use solid styling for floating windows, see |winborder|
+              },
+              term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+              dim_inactive = {
+                  enabled = false, -- dims the background color of inactive window
+                  shade = "dark",
+                  percentage = 0.15, -- percentage of the shade to apply to the inactive window
+              },
+              no_italic = false, -- Force no italic
+              no_bold = false, -- Force no bold
+              no_underline = false, -- Force no underline
+              styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+                  comments = { "italic" }, -- Change the style of comments
+                  conditionals = { "italic" },
+                  loops = {},
+                  functions = {},
+                  keywords = {},
+                  strings = {},
+                  variables = {},
+                  numbers = {},
+                  booleans = {},
+                  properties = {},
+                  types = {},
+                  operators = {},
+                  -- miscs = {}, -- Uncomment to turn off hard-coded styles
+              },
+              lsp_styles = { -- Handles the style of specific lsp hl groups (see `:h lsp-highlight`).
+                  virtual_text = {
+                      errors = { "italic" },
+                      hints = { "italic" },
+                      warnings = { "italic" },
+                      information = { "italic" },
+                      ok = { "italic" },
+                  },
+                  underlines = {
+                      errors = { "underline" },
+                      hints = { "underline" },
+                      warnings = { "underline" },
+                      information = { "underline" },
+                      ok = { "underline" },
+                  },
+                  inlay_hints = {
+                      background = true,
+                  },
+              },
+              color_overrides = {
+                all = {
+                  rosewater =  "${Rosewater}",
+                  flamingo =   "${Flamingo}",
+                  pink =       "${Pink}",
+                  mauve =      "${Mauve}",
+                  red =        "${Red}",
+                  maroon =     "${Maroon}",
+                  peach =      "${Peach}",
+                  yellow =     "${Yellow}",
+                  green =      "${Green}",
+                  teal =       "${Teal}",
+                  sky =        "${Sky}",
+                  sapphire =   "${Sapphire}",
+                  blue =       "${Blue}",
+                  lavender =   "${Lavender}",
+                  text =       "${Text}",
+                  subtext1 =   "${Subtext1}",
+                  subtext0 =   "${Subtext0}",
+                  overlay2 =   "${Overlay2}",
+                  overlay1 =   "${Overlay1}",
+                  overlay0 =   "${Overlay0}",
+                  surface2 =   "${Surface2}",
+                  surface1 =   "${Surface1}",
+                  surface0 =   "${Surface0}",
+                  base =       "${Base}",
+                  mantle =     "${Mantle}",
+                  crust =      "${Crust}",
+                },
+                latte = {},
+                frappe = {},
+                macchiato = {},
+                mocha = {},
+              },
+              custom_highlights = {},
+              default_integrations = true,
+              auto_integrations = false,
+              integrations = {
+                  cmp = true,
+                  gitsigns = true,
+                  nvimtree = true,
+                  notify = false,
+                  mini = {
+                      enabled = true,
+                      indentscope_color = "",
+                  },
+                  -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+              },
+            },
+          }
+        '';
+      };
+    };
+
     sioyek.config = lib.mkIf config.programs.sioyek.enable {
       "background_color" = Base;
       "text_highlight_color" = Yellow;
@@ -3556,6 +3690,146 @@ EOF
         tooltip = { bg = Crust; fg = Rosewater; };
       };
     };
+
+    helix = {
+      settings = {
+        theme = helix-theme;
+      };
+      themes = {
+        hm-theme-italic = {
+          "attribute" = "yellow";
+          "type" = "yellow";
+          "type.builtin" = "mauve";
+          "type.enum.variant" = "teal";
+          "constructor" = "sapphire";
+          "constant" = "peach";
+          "constant.character" = "teal";
+          "constant.character.escape" = "pink";
+          "string" = "green";
+          "string.regexp" = "pink";
+          "string.special" = "blue";
+          "string.special.symbol" = "red";
+          "comment" = { fg = "overlay2"; modifiers = ["italic"]; };
+          "variable" = "text";
+          "variable.parameter" = { fg = "maroon"; modifiers = ["italic"]; };
+          "variable.builtin" = "red";
+          "variable.other.member" = "blue";
+          "label" = "sapphire"; # used for lifetimes
+          "punctuation" = "overlay2";
+          "punctuation.special" = "sky";
+          "keyword" = "mauve";
+          "keyword.control.conditional" = { fg = "mauve"; modifiers = ["italic"]; };
+          "operator" = "sky";
+          "function" = "blue";
+          "function.macro" = "rosewater";
+          "tag" = "blue";
+          "namespace" = { fg = "yellow"; modifiers = ["italic"]; };
+          "special" = "blue";
+          "markup.heading.1" = "red";
+          "markup.heading.2" = "peach";
+          "markup.heading.3" = "yellow";
+          "markup.heading.4" = "green";
+          "markup.heading.5" = "sapphire";
+          "markup.heading.6" = "lavender";
+          "markup.list" = "teal";
+          "markup.list.unchecked" = "overlay2";
+          "markup.list.checked" = "green";
+          "markup.bold" = { fg = "red"; modifiers = ["bold"]; };
+          "markup.italic" = { fg = "red"; modifiers = ["italic"]; };
+          "markup.strikethrough" = { modifiers = ["crossed_out"]; };
+          "markup.link.url" = { fg = "blue"; modifiers = [ "italic" "underlined" ]; };
+          "markup.link.text" = "lavender";
+          "markup.link.label" = "sapphire";
+          "markup.raw" = "green";
+          "markup.quote" = "pink";
+          "diff.plus" = "green";
+          "diff.minus" = "red";
+          "diff.delta" = "blue";
+          "ui.background" = { fg = "text"; bg = "base"; };
+          "ui.linenr" = { fg = "surface1"; };
+          "ui.linenr.selected" = { fg = "lavender"; };
+          "ui.statusline" = { fg = "subtext1"; bg = "mantle"; };
+          "ui.statusline.inactive" = { fg = "surface2"; bg = "mantle"; };
+          "ui.statusline.normal" = { fg = "base"; bg = "rosewater"; modifiers = ["bold"]; };
+          "ui.statusline.insert" = { fg = "base"; bg = "green"; modifiers = ["bold"];  };
+          "ui.statusline.select" = { fg = "base"; bg = "lavender"; modifiers = ["bold"];  };
+          "ui.popup" = { fg = "text"; bg = "surface0"; };
+          "ui.window" = { fg = "crust"; };
+          "ui.help" = { fg = "overlay2"; bg = "surface0"; };
+          "ui.bufferline" = { fg = "subtext0"; bg = "mantle"; };
+          "ui.bufferline.active" = { fg = "mauve"; bg = "base"; underline = { color = "mauve"; style = "line"; }; };
+          "ui.bufferline.background" = { bg = "crust"; };
+          "ui.text" = "text";
+          "ui.text.focus" = { fg = "text"; bg = "surface0"; modifiers = ["bold"]; };
+          "ui.text.inactive" = { fg = "overlay1"; };
+          "ui.text.directory" = { fg = "blue"; };
+          "ui.virtual" = "overlay0";
+          "ui.virtual.ruler" = { bg = "surface0"; };
+          "ui.virtual.indent-guide" = "surface0";
+          "ui.virtual.inlay-hint" = { fg = "surface1"; bg = "mantle"; };
+          "ui.virtual.jump-label" = { fg = "rosewater"; modifiers = ["bold"]; };
+          "ui.selection" = { bg = "surface1"; };
+          "ui.cursor" = { fg = "base"; bg = "secondary_cursor"; };
+          "ui.cursor.primary" = { fg = "base"; bg = "rosewater"; };
+          "ui.cursor.match" = { fg = "peach"; modifiers = ["bold"]; };
+          "ui.cursor.primary.normal" = { fg = "base"; bg = "rosewater"; };
+          "ui.cursor.primary.insert" = { fg = "base"; bg = "green"; };
+          "ui.cursor.primary.select" = { fg = "base"; bg = "lavender"; };
+          "ui.cursor.normal" = { fg = "base"; bg = "secondary_cursor_normal"; };
+          "ui.cursor.insert" = { fg = "base"; bg = "secondary_cursor_insert"; };
+          "ui.cursor.select" = { fg = "base"; bg = "secondary_cursor_select"; };
+          "ui.cursorline.primary" = { bg = "cursorline"; };
+          "ui.highlight" = { bg = "surface1"; modifiers = ["bold"]; };
+          "ui.menu" = { fg = "overlay2"; bg = "surface0"; };
+          "ui.menu.selected" = { fg = "text"; bg = "surface1"; modifiers = ["bold"]; };
+          "diagnostic.error" = { underline = { color = "red"; style = "curl"; }; };
+          "diagnostic.warning" = { underline = { color = "yellow"; style = "curl"; }; };
+          "diagnostic.info" = { underline = { color = "sky"; style = "curl"; }; };
+          "diagnostic.hint" = { underline = { color = "teal"; style = "curl"; }; };
+          "diagnostic.unnecessary" = { modifiers = ["dim"]; };
+          "diagnostic.deprecated" = { modifiers = ["crossed_out"]; };
+          error = "red";
+          warning = "yellow";
+          info = "sky";
+          hint = "teal";
+          rainbow = ["red" "peach" "yellow" "green" "sapphire" "lavender"];
+          palette = {
+            rosewater = Rosewater;
+            flamingo = Flamingo;
+            pink = Pink;
+            mauve = Mauve;
+            red = Red;
+            maroon = Maroon;
+            peach = Peach;
+            yellow = Yellow;
+            green = Green;
+            teal = Teal;
+            sky = Sky;
+            sapphire = Sapphire;
+            blue = Blue;
+            lavender = Lavender;
+            text = Text;
+            subtext1 = Subtext1;
+            subtext0 = Subtext0;
+            overlay2 = Overlay2;
+            overlay1 = Overlay1;
+            overlay0 = Overlay0;
+            surface2 = Surface2;
+            surface1 = Surface1;
+            surface0 = Surface0;
+            base = Base;
+            mantle = Mantle;
+            crust = Crust;
+            cursorline = helix-cursorline;
+            secondary_cursor = helix-secondary_cursor;
+            secondary_cursor_select = helix-secondary_cursor_select;
+            secondary_cursor_normal = helix-secondary_cursor_normal;
+            secondary_cursor_insert = helix-secondary_cursor_insert;
+          };
+        };
+      };
+    };
+
     yazi.theme = {
       mgr = {
         cwd = { fg = Teal; };

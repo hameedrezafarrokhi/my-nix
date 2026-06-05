@@ -121,6 +121,14 @@
 
     go
 
+    toml2nix
+    yaml2nix
+    dconf2nix
+    dos2unix
+    json2yaml
+    yaml2json
+    toml2json
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -140,10 +148,6 @@
     '')
 
   ]
-
-   #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe/package.nix" { })]
-   #++ [((pkgs.extend (final: prev: {openssl_3_3 = prev.openssl_3_5;})).callPackage "${inputs.windscribe}/windscribe.nix" { } )]
-   #++ [(pkgs.callPackage "${inputs.windscribe}/windscribe.nix" { })]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
     ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
@@ -185,16 +189,23 @@
 
     ++ [(pkgs.callPackage ../myPackages/gopowerd.nix { })]
 
-   #++ [(pkgs.callPackage ../myPackages/pdwmc.nix { inputs = inputs; })]
+
+   ++ [(pkgs.callPackage ../myPackages/pets/xpet-with-config.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/petpepe.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/Konqi-Pet.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING BROKEN not working
+
+   ++ [(pkgs.callPackage ../myPackages/xidle.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xobbright.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
    #++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    #++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
    #++ [(pkgs.callPackage ../myPackages/gray.nix { })]
    #++ [(pkgs.callPackage ../myPackages/run-widget.nix { })]
-
-
-   #++ [(pkgs.callPackage ../myPackages/wms/sowm.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/bars/bipolarbar.nix {
           conf = ''
@@ -602,16 +613,6 @@ struct animation animations[] = {
 
           '';
    })]
-
-   ++ [(pkgs.callPackage ../myPackages/pets/xpet-with-config.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/pets/petpepe.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/pets/Konqi-Pet.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING BROKEN not working
-
-   ++ [(pkgs.callPackage ../myPackages/xidle.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/xobbright.nix { })]
 
   ;
 

@@ -34,6 +34,8 @@
                                 inputs.nixpkgs.follows = "nixpkgs";
                                 inputs.home-manager.follows = "home-manager"; };
 
+             lazyvim = { url = "github:pfassina/lazyvim-nix"; };
+
           catppuccin = { url = "github:catppuccin/nix";};
               stylix = { url = "github:danth/stylix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -119,6 +121,7 @@
               inputs.cosmic-manager.homeManagerModules.cosmic-manager
               inputs.nix-index-database.homeModules.nix-index
               inputs.xremap-flake.homeManagerModules.default
+              inputs.lazyvim.homeManagerModules.default
               inputs.catppuccin.homeModules.catppuccin
               inputs.mango.hmModules.mango
               inputs.ignis.homeManagerModules.default
