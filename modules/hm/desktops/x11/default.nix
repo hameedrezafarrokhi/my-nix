@@ -24,6 +24,10 @@ let
     #xsetroot -xcf /usr/share/icons/default/cursors/left_ptr $1
   '';
 
+  xidledim = pkgs.writeShellScriptBin "xidledim" ''
+    xidlehook --detect-sleep --not-when-audio --not-when-fullscreen --timer 120 'brightnessctl s 300-' 'brightnessctl s 300+'
+  '';
+
   xidlesuspend = pkgs.writeShellScriptBin "xidlesuspend" ''
     MANUAL_CONFIG="$HOME/.sleeptime"
     IDLE_LIMIT=${config.services.screen-locker.xss-lock.sleep}
@@ -788,6 +792,7 @@ in
       pkgs.xwinmosaic
       pkgs.libvibrant
       pkgs.gummy
+      pkgs.xidlehook
       pkgs.xob
       pkgs.xprintidle-ng
      #pkgs.deadd-notification-center
@@ -798,6 +803,7 @@ in
       cursor-shake
       cursor
       xidlesuspend
+      xidledim
       x-cursor
       x-lock-sleep
       x-lock
@@ -1103,6 +1109,23 @@ in
       };
       Service = {
         ExecStart = "${xidlesuspend}/bin/xidlesuspend";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+    };
+
+    systemd.user.services.xidledim = {
+      Unit = {
+        Description = "idle dim";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+        ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${xidledim}/bin/xidledim";
         Restart = "on-failure";
         RestartSec = 3;
       };

@@ -131,6 +131,8 @@
     yaml2json
     toml2json
 
+    xsct
+
 
   ] ) config.my.software.tools.exclude)
 

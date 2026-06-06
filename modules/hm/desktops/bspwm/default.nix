@@ -168,6 +168,7 @@ in
         bspc rule -a "vboard.py" state=floating sticky=on layer=above
         bspc rule -a kitty-picker layer=above state=floating
         bspc rule -a kruler state=floating layer=above
+        bspc rule -a "xsct_gui.py" state=floating layer=above
         bspc rule -a kruler border=off layer=above
         bspc rule -a Xephyr state=floating
         bspc rule -a Clock state=floating layer=below sticky=on

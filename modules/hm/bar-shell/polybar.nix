@@ -57,6 +57,7 @@ let
         systemctl --user restart xautolock-session.service
         systemctl --user restart xss-lock.service
         systemctl --user restart xidlesuspend.service
+        systemctl --user restart xidledim.service
     else
         # Disable idle
         pkill .xscreensaver-w
@@ -65,6 +66,7 @@ let
         systemctl --user stop xautolock-session.service
         systemctl --user stop xss-lock.service
         systemctl --user stop xidlesuspend.service
+        systemctl --user stop xidledim.service
         xset s noblank
         xset s off
         xset s 0 0

@@ -266,6 +266,10 @@ XF86MonBrightnessUp
 XF86MonBrightnessDown
 	herbbright "Bri" ; #brightnessctl s 10- ; #brtctl down 1; #xbacklight -dec 10
 
+# Xsct Gui
+super + F3
+      xdotool search --class "xsct_gui.py" windowclose %@  || xsct_gui
+
 # Take a Screenshot (Region Select)
 super + Print
 	flameshot gui --path ~/Pictures/Screenshots/

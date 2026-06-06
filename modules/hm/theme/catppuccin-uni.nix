@@ -1015,6 +1015,38 @@ EOF
       fi
     '';
 
+    xidledim-toggle = pkgs.writeShellScriptBin "xidledim-toggle" ''
+      if systemctl --user is-active --quiet xidledim.service; then
+        systemctl --user stop xidledim.service
+        polybar-msg action "#idle.hook.1"
+      else
+        systemctl --user restart xidledim.service
+        polybar-msg action "#idle.hook.1"
+      fi
+    '';
+
+    xidlesuspend-toggle = pkgs.writeShellScriptBin "xidlesuspend-toggle" ''
+      if systemctl --user is-active --quiet xidlesuspend.service; then
+        systemctl --user stop xidlesuspend.service
+        polybar-msg action "#idle.hook.1"
+      else
+        systemctl --user restart xidlesuspend.service
+        polybar-msg action "#idle.hook.1"
+      fi
+    '';
+
+    xidlelock-toggle = pkgs.writeShellScriptBin "xidlelock-toggle" ''
+      if systemctl --user is-active --quiet xautolock-session.service; then
+        systemctl --user stop xautolock-session.service
+        systemctl --user stop xss-lock.service
+        polybar-msg action "#idle.hook.1"
+      else
+        systemctl --user restart xautolock-session.service
+        systemctl --user restart xss-lock.service
+        polybar-msg action "#idle.hook.1"
+      fi
+    '';
+
     xmenu-key = pkgs.writeShellScriptBin "xmenu-key" ''
 LAYOUT=$(xkb-switch -p)
 case "$LAYOUT" in
@@ -1065,6 +1097,12 @@ if [ "$xidles" = "active" ]; then
 else
   xidles_status="Inactive"
 fi
+xidledim=$(systemctl --user is-active xidledim.service)
+if [ "$xidledim" = "active" ]; then
+  xidledim_status="Active"
+else
+  xidledim_status="Inactive"
+fi
 
 xmenu <<EOF | sh &
   Uptime
@@ -1079,11 +1117,13 @@ xmenu <<EOF | sh &
 󰤆  Power Time
      $(xset q | grep -E "Standby")
 
-  Auto Lock
+  Auto Lock				xidlelock-toggle
        $(echo "$xss_status")
        $(echo "$xauto_status")
-  Auto Suspend
+  Auto Suspend			xidlesuspend-toggle
        $(echo "$xidles_status")
+  Auto Dim				xidledim-toggle
+       $(echo "$xidledim_status")
 
 󰍹  Display
      $(xset q | grep -E "Monitor is")
@@ -1424,6 +1464,9 @@ EOF
     gtk-cursor-package
     x-cursor-package
     xcursor-shake-toggle
+    xidledim-toggle
+    xidlelock-toggle
+    xidlesuspend-toggle
     plasma-cursor-package
     hypr-cursor-package
 
