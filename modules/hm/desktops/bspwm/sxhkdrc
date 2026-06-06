@@ -42,6 +42,10 @@ super + shift + ctrl + alt + Tab
 super + Escape
 	bsp-flashfocus
 
+# Dim Focused Window
+super + ctrl + Escape
+	pkill cdim || bsp-dim
+
 # Reload sxhkd (Hotkey Daemon)
 super + shift + Escape
 	pkill -USR1 -x sxhkd; notify-send -e -u low -t 2000 'sxhkd' 'Reloaded config'

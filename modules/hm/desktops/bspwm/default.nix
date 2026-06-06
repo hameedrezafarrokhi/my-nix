@@ -157,6 +157,7 @@ in
         bspc rule -a ".blueman-manager-wrapped" state=floating layer=above
         bspc rule -a bluetuith state=floating layer=above
         bspc rule -a pavucontrol state=floating layer=above
+        bspc rule -a cdim layer=above state=floating border=off focus=off
         bspc rule -a *:*:"Dimming Window" layer=above state=floating border=off
         bspc rule -a copyq state=floating layer=above
         bspc rule -a copyq:copyq layer=above state=floating

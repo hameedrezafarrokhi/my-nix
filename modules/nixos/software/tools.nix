@@ -26,6 +26,8 @@
     oclock
     gsimplecal
 
+    units
+
    #crow-translate                ##Translation
    #dialect                       ##Translation
 

@@ -507,6 +507,18 @@
       fi
     '';
 
+    bsp-dim = pkgs.writeShellScriptBin "bsp-dim" ''
+      state=$(bspc query -T -n | jq '.client.state')
+      cmd="cdim -c ${alt-TBlack} -d 50 -n"
+      if [[ $state == '"fullscreen"' ]]; then
+        $cmd "Dimming Window" -k q -xs 0 -ys 0 -x $(( $(bspc query -T -n | jq '.client.tiledRectangle.width') + 20 )) -y $(( $(bspc query -T -n | jq '.client.tiledRectangle.height') + 20 ))
+      elif [[ $state == '"floating"' ]]; then
+        $cmd "Dimming Window" -k q -xs $(( $(bspc query -T -n | jq '.client.floatingRectangle.x') - 5 )) -ys $(( $(bspc query -T -n | jq '.client.floatingRectangle.y') - 5 )) -x $(( $(bspc query -T -n | jq '.client.floatingRectangle.width') + 20 )) -y $(( $(bspc query -T -n | jq '.client.floatingRectangle.height') + 20 ))
+      else
+        $cmd "Dimming Window" -k q -xs $(( $(bspc query -T -n | jq '.rectangle.x') - 5 )) -ys $(( $(bspc query -T -n | jq '.rectangle.y') - 5 )) -x $(( $(bspc query -T -n | jq '.rectangle.width') + 5 )) -y $(( $(bspc query -T -n | jq '.rectangle.height') + 5 ))
+      fi
+    '';
+
     notif-flash = pkgs.writeShellScriptBin "notif-flash" ''
       xvis() {
         xvisbell3 -c ${alt-Jade} -d 400 -w 10 -xs 10 -ys 45 -x 1346 -y 700
@@ -1419,6 +1431,7 @@ EOF
     fehw
 
     bsp-flashfocus
+    bsp-dim
     notif-flash
     bsp-border-color
     bsp-app-border
@@ -5565,13 +5578,13 @@ rules: (
 		 triggers = ["close", "hide"];
 		 preset = "fly-out";
 		 direction = "down";
-		 duration = 1.0;
+		 duration = 0.1;
 	    },
 	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "down";
-		 duration = 1.0;
+		 duration = 0.5;
 	    }
 	    )
       }
