@@ -157,6 +157,7 @@ in
         bspc rule -a ".blueman-manager-wrapped" state=floating layer=above
         bspc rule -a bluetuith state=floating layer=above
         bspc rule -a pavucontrol state=floating layer=above
+        bspc rule -a *:*:"Dimming Window" layer=above state=floating border=off
         bspc rule -a copyq state=floating layer=above
         bspc rule -a copyq:copyq layer=above state=floating
         bspc rule -a ".protonvpn-app-wrapped" state=floating layer=above

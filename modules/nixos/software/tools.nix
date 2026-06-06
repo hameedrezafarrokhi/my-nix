@@ -200,6 +200,11 @@
    ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xobbright.nix { })]
 
+  #++ [(pkgs.callPackage ../myPackages/gloom.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/xdimmer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xsct_gui.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/cdim.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
    #++ [(pkgs.callPackage ../myPackages/fabric.nix { })]

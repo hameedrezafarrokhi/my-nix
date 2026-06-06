@@ -5551,6 +5551,29 @@ rules: (
 		 scale = 1.0;
 	    }
 	    )
+      },
+      {
+        match = "name = 'Dimming Window'";
+        corner-radius = 0;
+        opacity = 1.0;
+        opacity-override = false;
+        transparent-clipping = false;
+        shadow = false;
+        blur-background = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "down";
+		 duration = 1.0;
+	    },
+	    {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "down";
+		 duration = 1.0;
+	    }
+	    )
       }
 )
     '';
