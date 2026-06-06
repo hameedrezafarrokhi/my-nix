@@ -25,8 +25,25 @@ let
   '';
 
   xidledim = pkgs.writeShellScriptBin "xidledim" ''
-    xidlehook --detect-sleep --not-when-audio --not-when-fullscreen --timer 120 'brightnessctl s 300-' 'brightnessctl s 300+'
+    xidlehook --detect-sleep --not-when-audio --not-when-fullscreen --timer 300 'brightnessctl s 300-' 'brightnessctl s 300+'
   '';
+
+  mpv-screensaver = pkgs.writeShellScriptBin "mpv-screensaver" ''
+    if [ -f "$HOME/Videos/screensaver/screensaver.mp4" ]; then
+      vid="$HOME/Videos/screensaver/screensaver.mp4"
+    elif [ -f "$HOME/Videos/screensaver/screensaver.gif" ]; then
+      vid="$HOME/Videos/screensaver/screensaver.gif"
+    elif [ -f "$HOME/.fehbg" ]; then
+      vid="$(grep "feh" ./.fehbg  | cut -d "'" -f 2  )"
+    else
+      vid=" "
+    fi
+    mpv --hwdec=auto --hwdec-codecs=all --no-audio --no-border --no-config --load-scripts=no --scripts= --no-window-dragging --no-input-default-bindings --no-osd-bar --no-sub --loop --video-scale-x=1 --video-scale-y=1 --panscan=1.0 --osc=no --cursor-autohide=always --title=screensaver --really-quiet -fs $vid
+  '';
+
+  xidlescreensaver = pkgs.writeShellScriptBin "xidlescreensaver" ''
+    xidlehook --detect-sleep --not-when-audio --not-when-fullscreen --timer 300 'mpv-screensaver' 'echo hello'
+  ''; # pkill -n mpv
 
   xidlesuspend = pkgs.writeShellScriptBin "xidlesuspend" ''
     MANUAL_CONFIG="$HOME/.sleeptime"
@@ -803,6 +820,8 @@ in
       cursor-shake
       cursor
       xidlesuspend
+      mpv-screensaver
+      xidlescreensaver
       xidledim
       x-cursor
       x-lock-sleep
@@ -1126,6 +1145,23 @@ in
       };
       Service = {
         ExecStart = "${xidledim}/bin/xidledim";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+    };
+
+    systemd.user.services.xidlescreensaver = {
+      Unit = {
+        Description = "idle dim";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+        ConditionEnvironment = "!XDG_SESSION_TYPE=wayland";
+      };
+     #Install = {
+     #  WantedBy = [ "graphical-session.target" ];
+     #};
+      Service = {
+        ExecStart = "${xidlescreensaver}/bin/xidlescreensaver";
         Restart = "on-failure";
         RestartSec = 3;
       };

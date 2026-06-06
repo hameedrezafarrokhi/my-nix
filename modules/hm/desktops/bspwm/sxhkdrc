@@ -474,6 +474,10 @@ super + h
 ctrl + alt + Delete
       clearine; # bsp-power
 
+# Clock (Peaclock)
+super + e
+      bsp-clock ; # $HOME/test ; # bsp-peaclock # pgrep recognized "bsp-peaclock" dumbo!!!!!
+
 # Hide Bars
 super + g
       bsp-bar-hide

@@ -173,6 +173,7 @@ in
         bspc rule -a Xephyr state=floating
         bspc rule -a Clock state=floating layer=below sticky=on
         bspc rule -a tetris layer=above state=floating rectangle=370x450+500+150
+        bspc rule -a peaclock layer=above state=floating border=off sticky=on focus=on follow=on rectangle=414x138+460+48
         bspc rule -a Gsimplecal layer=above state=floating rectangle=277x188+1045+55
         bspc rule -a "" id=0x4e00001 state=floating rectangle=750x400+560+300 layer=above   # zoom apps float and size (xzoom and magnify)
         bspc rule -a "XFilesFloat" state=floating rectangle=520x380+10+40

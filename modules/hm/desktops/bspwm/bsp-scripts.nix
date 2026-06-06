@@ -9,6 +9,20 @@ let
     plank &
   '';
 
+  bsp-clock = pkgs.writeShellScriptBin "bsp-clock" ''
+    if pgrep "peaclock" > /dev/null; then
+      state="$(bspc query -T -n $(xdo id -N peaclock) | jq '.hidden')"
+      if [ $state == "false" ]; then
+        pgrep "peaclock" && bspc node $(xdo id -N peaclock) --flag hidden=on
+      else
+        pgrep "peaclock" && bspc node $(xdo id -N peaclock) --flag hidden=off
+        pgrep "peaclock" && bspc node $(xdo id -N peaclock)  -f
+      fi
+    else
+      peaclock-widget
+    fi
+  '';
+
   bsp-help = pkgs.writeShellScriptBin "bsp-help" ''
     # Extract keybindings and descriptions and format into fixed-width columns
     keybindings=$(awk '
@@ -1867,6 +1881,7 @@ in
       bsp-xkb-layout
       bsp-float
       bsp-power
+      bsp-clock
       bsp-bar-hide
       bsp-tint2-hide
       bsp-poly-hide
@@ -1968,6 +1983,26 @@ in
       };
 
     };
+
+   #home.file.".local/share/bsp-peaclock" = {
+   #  text = ''
+   #    #!/bin/bash
+   #
+   #        if pgrep peaclock > /dev/null; then
+   #          state="$(bspc query -T -n $(xdo id -N peaclock) | jq '.hidden')"
+   #          if [ $state == "false" ]; then
+   #            bspc node $(xdo id -N peaclock) --flag hidden=on
+   #          else
+   #            bspc node $(xdo id -N peaclock) --flag hidden=off
+   #            bspc node $(xdo id -N peaclock)  -f
+   #          fi
+   #        else
+   #          kitty  --name peaclock --class peaclock sh -c 'peaclock --config-dir ~/.config/peaclock'
+   #        fi
+   #
+   #  '';
+   #  executable = true;
+   #};
 
     systemd.user.services.bsptint = {
       Unit = {

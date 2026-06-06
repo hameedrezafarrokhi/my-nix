@@ -67,6 +67,7 @@ let
         systemctl --user stop xss-lock.service
         systemctl --user stop xidlesuspend.service
         systemctl --user stop xidledim.service
+        systemctl --user stop xidlescreensaver.service
         xset s noblank
         xset s off
         xset s 0 0

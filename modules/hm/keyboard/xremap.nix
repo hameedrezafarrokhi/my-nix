@@ -73,6 +73,7 @@ let
     systemctl --user stop xss-lock.service
     systemctl --user stop xidlesuspend.service
     systemctl --user stop xidledim.service
+    systemctl --user stop xidlescreensaver.service
     systemctl --user stop swayidle-mango.service
     systemctl --user stop swayidle-niri.service
     systemctl --user stop swayidle-sway.service

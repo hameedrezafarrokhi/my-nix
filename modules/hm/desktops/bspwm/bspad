@@ -13,7 +13,7 @@ usage() {
 }
 
 getid() {
-    bspc query -N -n "${1:-}.window" | grep -v -F -f <(xdo id -N Better_control.py; xdo id -N scratchpad; xdo id -N scratchpad-sticky)
+    bspc query -N -n "${1:-}.window" | grep -v -F -f <(xdo id -N Better_control.py; xdo id -N scratchpad; xdo id -N scratchpad-sticky; xdo id -N peaclock)
 }
 
 #if [[ -z $(xdo id -N scratchpad-ext) ]] || { [[ -z $(getid .marked) && -z $(getid .hidden) ]]; }; then

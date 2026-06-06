@@ -1025,6 +1025,16 @@ EOF
       fi
     '';
 
+    xidlescreensaver-toggle = pkgs.writeShellScriptBin "xidlescreensaver-toggle" ''
+      if systemctl --user is-active --quiet xidlescreensaver.service; then
+        systemctl --user stop xidlescreensaver.service
+        polybar-msg action "#idle.hook.1"
+      else
+        systemctl --user restart xidlescreensaver.service
+        polybar-msg action "#idle.hook.1"
+      fi
+    '';
+
     xidlesuspend-toggle = pkgs.writeShellScriptBin "xidlesuspend-toggle" ''
       if systemctl --user is-active --quiet xidlesuspend.service; then
         systemctl --user stop xidlesuspend.service
@@ -1043,6 +1053,28 @@ EOF
       else
         systemctl --user restart xautolock-session.service
         systemctl --user restart xss-lock.service
+        polybar-msg action "#idle.hook.1"
+      fi
+    '';
+
+    xidlemode-toggle = pkgs.writeShellScriptBin "xidlemode-toggle" ''
+      if systemctl --user is-active --quiet xidledim.service; then
+        if systemctl --user is-active --quiet xidlescreensaver.service; then
+          systemctl --user stop xidlescreensaver.service
+          systemctl --user stop xidledim.service
+          polybar-msg action "#idle.hook.1"
+        else
+          systemctl --user stop xidledim.service
+          systemctl --user restart xidlescreensaver.service
+          polybar-msg action "#idle.hook.1"
+        fi
+      elif systemctl --user is-active --quiet xidlescreensaver.service; then
+        systemctl --user restart xidlescreensaver.service
+        systemctl --user restart xidledim.service
+        polybar-msg action "#idle.hook.1"
+      else
+        systemctl --user stop xidlescreensaver.service
+        systemctl --user restart xidledim.service
         polybar-msg action "#idle.hook.1"
       fi
     '';
@@ -1097,11 +1129,29 @@ if [ "$xidles" = "active" ]; then
 else
   xidles_status="Inactive"
 fi
+
 xidledim=$(systemctl --user is-active xidledim.service)
+xidlescreensaver=$(systemctl --user is-active xidlescreensaver.service)
 if [ "$xidledim" = "active" ]; then
+  if [ "$xidlescreensaver" = "active" ]; then
+    xidlemode="󰔎/󰐯 ScreenSaver/Dim"
+  else
+    xidlemode="󰔎 Dim"
+  fi
   xidledim_status="Active"
 else
   xidledim_status="Inactive"
+  if [ "$xidlescreensaver" = "active" ]; then
+    xidlemode="󰐯 ScreenSaver"
+  else
+    xidlemode="Inactive"
+  fi
+fi
+
+if [ "$xidlescreensaver" = "active" ]; then
+  xidlescreensaver_status="Active"
+else
+  xidlescreensaver_status="Inactive"
 fi
 
 xmenu <<EOF | sh &
@@ -1118,12 +1168,16 @@ xmenu <<EOF | sh &
      $(xset q | grep -E "Standby")
 
   Auto Lock				xidlelock-toggle
-       $(echo "$xss_status")
-       $(echo "$xauto_status")
+       $(echo "$xss_status")  (XSS)
+       $(echo "$xauto_status")  (XAUTO)
   Auto Suspend			xidlesuspend-toggle
        $(echo "$xidles_status")
   Auto Dim				xidledim-toggle
        $(echo "$xidledim_status")
+  ScreenSaver				xidlescreensaver-toggle
+       $(echo "$xidlescreensaver_status")
+󰁫  Idle Mode				xidlemode-toggle
+       $(echo "$xidlemode")
 
 󰍹  Display
      $(xset q | grep -E "Monitor is")
@@ -1465,6 +1519,8 @@ EOF
     x-cursor-package
     xcursor-shake-toggle
     xidledim-toggle
+    xidlemode-toggle
+    xidlescreensaver-toggle
     xidlelock-toggle
     xidlesuspend-toggle
     plasma-cursor-package
@@ -5630,6 +5686,25 @@ rules: (
 		 duration = 0.5;
 	    }
 	    )
+      },
+      {
+        match = "class_g = 'peaclock'";
+        fading = false;
+        opacity = 0.8;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "up";
+		 duration = 0.35;
+	    },
+	    {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "up";
+		 duration = 0.35;
+	    }
+	    )
       }
 )
     '';
@@ -7241,6 +7316,192 @@ rules: (
       at_pointer = false
       color_file = ${config.xdg.configHome}/xwinmosaic/colors
     '';
+
+    "peaclock/config".text = "
+      # peaclock
+      # default config
+      #
+      # The config file in the config directory must be named 'config'.
+      # It is a plain text file that can contain any of the commands listed
+      # in the 'Commands' section of the '--help' output.
+      # Each command must be on its own line.
+      # Lines that begin with the '#' character are treated as comments.
+      #
+      # For more information, refer to the 'Configuration' and 'Commands'
+      # sections of the programs help output with '--help' or '-h'.
+
+      # -----------------------------------------------------------------------------
+      # general
+      # -----------------------------------------------------------------------------
+
+      # set the x y block size, the width and height of an individual block composing
+      # the clock
+      block 2 1
+      # block-x 2
+      # block-y 1
+
+      # set the x y padding size, the width and height of the space between each
+      # individual block composing the clock
+      padding 0 0
+      # padding-x 0
+      # padding-y 0
+
+      # set the x y margin size, the space around the outside of the clock from the
+      # edge of the terminal
+      margin 0 0
+      # margin-x 0
+      # margin-y 0
+
+      # set the x y ratio size, auto adjust the clock to conform to a specific
+      # aspect ratio, keep in mind that a square ratio would be '2 1' due to a
+      # terminal character cell having a height around twice the size of its width
+      ratio 2 1
+      # ratio-x 2
+      # ratio-y 1
+
+      # set the padding size between the date and the clock
+      date-padding 1
+
+      # set the string value used to fill the active, inactive, and colon blocks of
+      # the clock, an empty string clears the value
+      fill ''
+      # fill-active ''
+      # fill-inactive ''
+      # fill-colon ''
+
+      # set the locale, for example 'en_CA.utf8', an empty string clears the value
+      locale ''
+
+      # set the timezone, for example 'America/Vancouver', an empty string clears the
+      # value
+      timezone ''
+
+      # set the date format string, an empty string clears the value
+      date '%a %b %d %p'
+
+      # set the mode type
+      # select one of:
+      # clock, timer, or stopwatch
+      mode clock
+
+      # set the view type
+      # select one of:
+      # date, ascii, digital, binary, or icon
+      view digital
+
+      # set the value to adjust with the hjkl;' keys
+      # select one of:
+      # block, padding, margin, ratio, active-fg, inactive-fg, colon-fg,
+      # active-bg, inactive-bg, colon-bg, background, or date
+      toggle active-bg
+
+      # set the stopwatch to start
+      # clear, stop, start, 00h:00m:00s
+      # stopwatch start
+
+      # set the timers initial value
+      # clear, stop, start, 00h:00m:00s
+      timer 20m:0s
+      #timer 0m:02s
+
+      # set the string value to be executed by a shell upon timer completion,
+      # an empty string clears the value
+      timer-exec 'notif-flash'
+      #timer-exec 'notify-send -a peaclock timer complete'
+
+      # set the duration in milliseconds between reading user input
+      rate-input 50
+
+      # set the duration in milliseconds between redrawing the output
+      rate-refresh 1000
+
+      # set the duration in milliseconds to display status messages
+      rate-status 5000
+
+      # -----------------------------------------------------------------------------
+      # toggles
+      #
+      # set <value> <on|off>
+      # -----------------------------------------------------------------------------
+
+      # use 24 hour time
+      set hour-24 on
+
+      # display seconds
+      set seconds on
+
+      # display the date
+      set date on
+
+      # auto size the clock to fill the screen, overrides the current x y block size
+      set auto-size on
+
+      # auto size the clock to use the aspect ratio set by the command 'ratio',
+      # overrides the current x y block size and auto-size
+      set auto-ratio on
+
+      # -----------------------------------------------------------------------------
+      # styles
+      #
+      # style <value> <#000-#fff|#000000-#ffffff|0-255|Colour|reverse|clear>
+      #
+      # 24-bit colour
+      # #000000-#ffffff
+      #
+      # 8-bit colour:
+      # 0-255
+      #
+      # 4-bit colour:
+      # black [bright]
+      # red [bright]
+      # green [bright]
+      # yellow [bright]
+      # blue [bright]
+      # magenta [bright]
+      # cyan [bright]
+      # white [bright]
+      # -----------------------------------------------------------------------------
+
+      # set the style of the text set by the command 'fill' used to draw active
+      # blocks in the clock
+      style active-fg clear
+
+      # set the style of the text set by the command 'fill' used to draw inactive
+      # blocks in the clock
+      style inactive-fg clear
+
+      # set the style of the text set by the command 'fill-colon' used to draw colon
+      # blocks in the clock
+      style colon-fg clear
+
+      # set the style of the background used to draw active blocks in the clock
+      style active-bg reverse
+
+      # set the style of the background used to draw inactive blocks in the clock
+      style inactive-bg clear
+
+      # set the style of the background used to draw colon blocks in the clock
+      style colon-bg clear
+
+      # set the style of the date
+      style date clear
+
+      # set the style of the background
+      style background clear
+
+      # set the style of the text
+      style text clear
+
+      # set the style of the command prompt symbol shown at the start of the line
+      style prompt clear
+
+      # set the style of the prompt status on success
+      style success green
+
+      # set the style of the prompt status on error
+      style error red
+
+    ";
 
     "xwww/xwwwrc".text = ''
       TRANSITION_CMD="feh --bg-fill --no-fehbg "

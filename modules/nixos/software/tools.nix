@@ -151,6 +151,10 @@
       ffmpeg -f lavfi -i color=c=#$1:s=1920x1080:d=1 -frames:v 1 $1.png
     '')
 
+    (pkgs.writeShellScriptBin "peaclock-widget" ''
+      ${config.my.default.terminal} --name peaclock --class peaclock sh -c 'peaclock --config-dir ~/.config/peaclock'
+    '')
+
   ]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
@@ -208,6 +212,8 @@
   #++ [(pkgs.callPackage ../myPackages/xdimmer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xsct_gui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/cdim.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/timebomb.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]
