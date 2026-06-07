@@ -479,12 +479,20 @@ super + e
       bsp-clock ; # $HOME/test ; # bsp-peaclock # pgrep recognized "bsp-peaclock" dumbo!!!!!
 
 # Sticky Notes (Sticky)
-super + r
+super + r ; {s}
       sticky -t
 
 # Sticky Notes (Xpad)
-super + shift + r
+super + r ; {r}
       xpad -t
+
+# Sticky Notes MarkDown (TrayMD)
+super + r ; {m}
+      pkill traymd || traymd
+
+# Sticky Notes (Sticky)
+super + r ; {g}
+      pkill .com.vixalien.s || com.vixalien.sticky
 
 # Hide Bars
 super + g

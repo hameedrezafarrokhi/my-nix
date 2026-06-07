@@ -150,6 +150,8 @@
 
     xfce4-terminal-theme = "Catppuccin-${flavorC}";
 
+    traymd-theme = "system";
+
     wlogout-button-style = "wleave";
     wlogout-icon-shutdown = pkgs.fetchurl {
       url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/shutdown.svg";
@@ -219,6 +221,7 @@
     #herbtestFont = "${Emoji}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
     xwinmosaicFont = "Sans ${toString XwinmosaicSize}";
     stickyNotesFont = "'${Sans} ${toString StickyNotesSize}'";
+    traymdFont = "Monospace";
 
     MonoSize = 10;
     SansSize = 10;
@@ -246,6 +249,7 @@
     AlttabSize = 12;
     StickyNotesSize = 14;
     XwinmosaicSize = 14;
+    TraymdSize = 14;
 
     HerbbspSize = 10;
     HerbbspWeight = "bold";
@@ -5714,7 +5718,7 @@ rules: (
 	    )
       },
       {
-        match = "name = 'sticky.py' || class_g = 'xpad'";
+        match = "name = 'sticky.py' || class_g = 'xpad' || class_g = 'traymd' || class_g = 'Traymd' || class_g = 'com.vixalien.sticky'";
         fading = false;
 	  animations = (
 	    {
@@ -5730,7 +5734,20 @@ rules: (
 		 duration = 0.35;
 	    }
 	    )
+      },
+      {
+        match = "name = 'sticky.py'";
+        shadow = false;
+        blur-background = false;
+        opacity = 1.0;
+        opacity-override = false;
+        transparent-clipping = false;
+        shadow-opacity = 0;
+        shadow-radius = 0;
+        clip-shadow-above = false;
+        unredir = true;
       }
+
 )
     '';
 
@@ -7527,6 +7544,29 @@ rules: (
       style error red
 
     ";
+
+    "traymd/config.ini".text = ''
+      [Window]
+      x=692
+      y=82
+      width=527
+      height=444
+      maximized=false
+
+      [Appearance]
+      font_family=${traymdFont}
+      font_size=${toString TraymdSize}
+      theme=${traymd-theme}
+
+      [Markdown]
+      h1_color=${CAccent}
+      h2_color=${Mauve}
+      h3_color=${Yellow}
+      list_bullet_color=${CAccent}
+
+      [Editor]
+      word_wrap=true
+    '';
 
     "xwww/xwwwrc".text = ''
       TRANSITION_CMD="feh --bg-fill --no-fehbg "

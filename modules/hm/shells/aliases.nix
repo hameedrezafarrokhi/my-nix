@@ -4,7 +4,7 @@ let
 
  #nix-path = ../../../../.;
 
-  myRM.myDelete = "sudo rm -f $HOME/.config/fontconfig/conf.d/10-hm-fonts.conf.backup $HOME/.config/mimeapps.list.backup $HOME/.config/better-control/settings.json.backup $HOME/.config/better-control/power_settings.json.backup";
+  myRM.myDelete = "sudo rm -f $HOME/.config/fontconfig/conf.d/10-hm-fonts.conf.backup $HOME/.config/mimeapps.list.backup $HOME/.config/better-control/settings.json.backup $HOME/.config/better-control/power_settings.json.backup $HOME/.config/traymd/config.ini.backup";
   postBuild = '' polybar-msg action "#idle.hook.1" '';
 
 in

@@ -182,6 +182,8 @@ in
         bspc rule -a "baobab" state=floating layer=above
         bspc rule -a "fehprev" state=floating layer=above
         bspc rule -a "xpad" state=floating layer=above sticky=on focus=on follow=on
+        bspc rule -a "Traymd" state=floating layer=above sticky=on focus=on follow=on
+        bspc rule -a "com.vixalien.sticky" state=floating layer=above sticky=on focus=on follow=on
         bspc rule -a *:*:"sticky.py" state=floating layer=above sticky=on focus=on follow=on
         bspc rule -a mpv:mpvprev state=floating layer=above
         bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
