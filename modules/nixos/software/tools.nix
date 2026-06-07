@@ -133,6 +133,10 @@
 
     xsct
 
+    sticky-notes
+    sticky
+    xpad
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -214,6 +218,8 @@
    ++ [(pkgs.callPackage ../myPackages/cdim.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/timebomb.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/traymd.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/ax-shell.nix { inherit inputs; })]
    #++ [(pkgs.callPackage ../myPackages/ax-shell-2.nix { })]

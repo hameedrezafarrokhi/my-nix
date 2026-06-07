@@ -478,6 +478,14 @@ ctrl + alt + Delete
 super + e
       bsp-clock ; # $HOME/test ; # bsp-peaclock # pgrep recognized "bsp-peaclock" dumbo!!!!!
 
+# Sticky Notes (Sticky)
+super + r
+      sticky -t
+
+# Sticky Notes (Xpad)
+super + shift + r
+      xpad -t
+
 # Hide Bars
 super + g
       bsp-bar-hide

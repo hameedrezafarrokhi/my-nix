@@ -446,6 +446,7 @@
             mpv.enable = true;
             neovim.enable = true;
             nautilus.enable = false;
+            notes.enable = true;
             obs.enable = true;
             obsidian.enable = false;
             onboard.enable = true;

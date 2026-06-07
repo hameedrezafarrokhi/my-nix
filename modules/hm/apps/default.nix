@@ -51,6 +51,7 @@ in
     mpv.enable = lib.mkEnableOption "mpv";
     neovim.enable = lib.mkEnableOption "neovim";
     nautilus.enable = lib.mkEnableOption "nautilus";
+    notes.enable = lib.mkEnableOption "notes";
     obs.enable = lib.mkEnableOption "obs";
     obsidian.enable = lib.mkEnableOption "obsidian";
     onboard.enable = lib.mkEnableOption "onboard";
@@ -122,6 +123,7 @@ in
       ./mpv.nix
       ./neovim.nix
       ./nautilus.nix
+      ./notes.nix
       ./obs.nix
       ./obsidian.nix
       ./onboard.nix

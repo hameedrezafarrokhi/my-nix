@@ -217,7 +217,8 @@
     herbosdFont = "${MonoAlt2}:size=${toString HerbosdSize}:weight=${HerbosdWeight}";
     herbtestFont = "${MonoAlt2}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
     #herbtestFont = "${Emoji}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
-    xwinmosaicFont = "Sans 14";
+    xwinmosaicFont = "Sans ${toString XwinmosaicSize}";
+    stickyNotesFont = "'${Sans} ${toString StickyNotesSize}'";
 
     MonoSize = 10;
     SansSize = 10;
@@ -243,6 +244,8 @@
     StSize = 12;
     DmenuSize = 16;
     AlttabSize = 12;
+    StickyNotesSize = 14;
+    XwinmosaicSize = 14;
 
     HerbbspSize = 10;
     HerbbspWeight = "bold";
@@ -2385,6 +2388,10 @@ EOF
       show-percentage = true;
       timeout = 4000;
       vu-enabled = true;
+    };
+
+    "org/x/sticky" = {
+      font = stickyNotesFont;
     };
 
   };
@@ -5702,6 +5709,24 @@ rules: (
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "up";
+		 duration = 0.35;
+	    }
+	    )
+      },
+      {
+        match = "name = 'sticky.py' || class_g = 'xpad'";
+        fading = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "right";
+		 duration = 0.35;
+	    },
+	    {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "right";
 		 duration = 0.35;
 	    }
 	    )
