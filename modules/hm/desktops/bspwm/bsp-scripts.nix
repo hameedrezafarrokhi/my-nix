@@ -1871,6 +1871,8 @@ in
 
     home.packages = [
 
+      pfff
+
       bsp-plank-reset
       bsp-help
       bsp-conf
