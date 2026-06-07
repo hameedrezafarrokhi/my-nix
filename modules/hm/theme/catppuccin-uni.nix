@@ -217,6 +217,7 @@
     alttabFont = "xft:${MonoSpace}:size=${toString AlttabSize}";
     herbbspFont = "${Sans}:size=${toString HerbbspSize}:weight=${HerbbspWeight}";
     herbosdFont = "${MonoAlt2}:size=${toString HerbosdSize}:weight=${HerbosdWeight}";
+    herbtimeFont = "${MonoAlt2}:size=${toString HerbtimeSize}:weight=${HerbtimeWeight}";
     herbtestFont = "${MonoAlt2}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
     #herbtestFont = "${Emoji}:size=${toString HerbtestSize}:weight=${HerbtestWeight}";
     xwinmosaicFont = "Sans ${toString XwinmosaicSize}";
@@ -257,6 +258,8 @@
     HerbtestWeight = "bold";
     HerbosdSize = 10;
     HerbosdWeight = "bold";
+    HerbtimeSize = 10;
+    HerbtimeWeight = "bold";
 
     sound = "ocean";
 
@@ -1673,6 +1676,27 @@ EOF
       static unsigned int pos_y = 350;
       enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
       enum corners corner = BOTTOM_LEFT;
+      static unsigned int duration = 2; /* in seconds */
+      #define DISMISS_BUTTON Button1
+      #define ACTION_BUTTON Button3
+    '';
+  })]
+  ++ [(pkgs.callPackage ../../nixos/myPackages/herbe/herbe-template-xmr.nix {
+    herbN = "herbtime";
+    herbH = ''
+      static const int use_primary_monitor = 0;
+      static const char *background_color = "${Rosewater}";
+      static const char *border_color = "${Green}";
+      static const char *font_color = "${Crust}";
+      static const char *font_pattern = "${herbtimeFont}";
+      static unsigned line_spacing = 11;
+      static unsigned int padding = 13;
+      static unsigned int width = 180;
+      static unsigned int border_size = 3;
+      static unsigned int pos_x = 30;
+      static unsigned int pos_y = 60;
+      enum corners { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+      enum corners corner = TOP_LEFT;
       static unsigned int duration = 2; /* in seconds */
       #define DISMISS_BUTTON Button1
       #define ACTION_BUTTON Button3
@@ -5544,6 +5568,25 @@ rules: (
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "up";
+		 duration = 0.2;
+	    }
+	  )
+      },
+      {
+        match = "class_g = 'herbtime'";
+	  corner-radius = 5;
+	  fading = false;
+	  animations = (
+	    {
+		 triggers = ["close", "hide"];
+		 preset = "fly-out";
+		 direction = "left";
+		 duration = 0.2;
+	    },
+	    {
+		 triggers = ["open", "show"];
+		 preset = "fly-in";
+		 direction = "left";
 		 duration = 0.2;
 	    }
 	  )

@@ -4,6 +4,10 @@ let
 
   cfg = config.my.bspwm;
 
+  pfff = pkgs.writeShellScriptBin "pfff" ''
+    echo "goodbye internet"
+  '';
+
   bsp-plank-reset = pkgs.writeShellScriptBin "bsp-plank-reset" ''
     pkill plank
     plank &

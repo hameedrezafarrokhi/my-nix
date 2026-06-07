@@ -102,16 +102,19 @@
       # X11
 
         # Manual
-     #"i3" "herbstluftwm" "notion" "ratpoison" "hypr"
+      "herbstluftwm" "notion"
+     #"i3" "ratpoison" "hypr"
       "bspwm"
 
         # Dynamic
-     #"awesome" "xmonad" "oxwm" "dk" "leftwm" "wmderland" "ragnarwm"
+      "awesome" "leftwm"
+     #"xmonad" "oxwm" "dk" "wmderland" "ragnarwm"
      #"sawfish" "jwm" "spectrwm"  "pekwm" "exwm"
       "titus-wm" #"drew-wm" #"dwm" #"chadwm"
 
         # Floating
-     #"icewm" "fluxbox" "windowlab" "windowmaker"
+      "icewm" "fluxbox"
+     #"windowlab" "windowmaker"
      #"fvwm2" "fvwm3" "mlvwm" "berry" "e16" "twm"
       "openbox"
 
