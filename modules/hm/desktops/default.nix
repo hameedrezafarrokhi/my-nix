@@ -39,6 +39,7 @@
     ./labwc
     ./mango
     ./i3
+    ./ragnar
     ./spectrwm
     ./herbstluftwm
     ./fluxbox

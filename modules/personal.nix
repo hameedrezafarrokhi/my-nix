@@ -121,7 +121,7 @@
       # Git-Wms
 
         # Dynamic
-      "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
+      "ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
       "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
       "meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
      #"hana"
@@ -390,6 +390,7 @@
          #herbstluftwm.enable = true;
          #fluxbox.enable = true;
           mango.enable = false;
+          ragnar.enable = true;
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"

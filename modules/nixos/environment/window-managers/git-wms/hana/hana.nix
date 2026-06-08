@@ -25,13 +25,15 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "hana";
-  version = "2026-5-10";
+ #version = "2026-05-10";
+  version = "2026-06-06";
 
   src = fetchFromGitHub {
     owner = "hana-wm";
     repo = "hana";
     rev = "dev";
-    hash = "sha256-ctJSwFzwbL77DGBK9/pJUCO7/cYBia5+QQc8NEtDTTU=";
+   #hash = "sha256-ctJSwFzwbL77DGBK9/pJUCO7/cYBia5+QQc8NEtDTTU=";
+    hash = "sha256-Qy3loGsqLq/Y9p+FOx6DHwohadKF+cxQlf2Z/NE4VAM=";
   };
 
   nativeBuildInputs = [

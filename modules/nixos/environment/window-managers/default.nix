@@ -28,7 +28,7 @@ in
 
        "oxwm"
 
-       "hana" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb"
+       "ragnar" "hana" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb"
        "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
        "moody" "meowwm" "meow" "sexywm" "mmwm" "coma" "fluorite" "moonwm"
        "pwm" "philoswm" "devoidwm"
@@ -129,6 +129,7 @@ in
     ./rices-shells/niri-noctalia.nix
     ./rices-shells/niri-dms.nix
 
+    ./git-wms/ragnar
     ./git-wms/hana
     ./git-wms/swm-sus
     ./git-wms/chibiwm

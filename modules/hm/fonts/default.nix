@@ -31,6 +31,8 @@ in
         corefonts   # ms unfree fonts
         comic-mono
 
+        inter
+
         fira-sans
         fantasque-sans-mono
         icomoon-feather

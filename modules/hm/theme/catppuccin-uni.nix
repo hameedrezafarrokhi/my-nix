@@ -5503,6 +5503,23 @@ rules: (
 		)
 	},
 	{
+		match = "fullscreen";
+		animations = (
+		{
+			triggers = ["hide"];
+			preset = "fly-out";
+			direction = "down";
+			duration = 0.05;
+		},
+		{
+			triggers = ["show"];
+			preset = "fly-in";
+			direction = "down";
+			duration = 0.05;
+		}
+		)
+	},
+	{
 		match = "class_g = 'kitty-picker' || class_g = 'systemctltui' || class_g = 'Xmessage' || class_g = 'Gxmessage'";
 		animations = (
 		{
@@ -7704,6 +7721,141 @@ rules: (
       #FRAMES=24
       #FORMAT=bmp
       #RND="oblique-right,oblique-left"
+
+    '';
+
+    "ragnarwm/ragnar.cfg".text = lib.mkBefore ''
+
+# Specifies the width of the border around client
+# windows
+win_border_width = 0;
+# Specifies the color of the border around client
+# windows
+win_border_color = 0xE6DFDC;
+# Specifies the color of the border around
+# selected/focused client windows
+win_border_color_selected = 0xE6DFDC;
+
+# Specifies the main modifier key that is
+# used to execute window manager shortcuts
+mod_key = "Super";
+# Specifies the modifier key that is used
+# to interact with clients windows
+win_mod = "Super";
+
+# Specfies the mouse button that needs to be
+# held in order to move client windows
+move_button = "LeftMouse";
+# Specfies the mouse button that needs to be
+# held in order to resize client windows
+resize_button = "RightMouse";
+
+# Specifies the desktop index that is initially
+# selected on every monitor
+initial_desktop = 0;
+# Specfies the number of allocated virtual
+# desktops
+num_desktops = 9;
+# Specifies the name of every virtual desktop
+# in order.
+desktop_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+# Specifies whether or not server-side window
+# decorations should be enabled.
+use_decoration = false;
+# Specifies whether or not server-side titlebars
+# should be shown on startup. (Ignored when
+# use_decoration is set to false.)
+show_titlebars_init = false;
+
+# Specifies the height (in pixels) of the
+# titlebar of client windows.
+titlebar_height = 30
+# Specifies the color of titlebars of
+# client windows
+titlebar_color = 0xffffff;
+
+# Specifies the color of the font that is used
+# across the window manager's UI
+font_color = 0xff0000ff;
+# Specifies the path to the font file to use as
+# the window manager's font
+font_path = "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Bold.ttf";
+
+# Specifies the area that the master window takes
+# up in master-slave layouts initially.
+# (in 0.0-1.0 %)
+layout_master_area = 0.5;
+# Specifies the minimum area that master windows
+# need to take up in master-slave layouts
+# (in 0.0-1.0 %)
+layout_master_area_min = 0.1;
+# Specifies the maximum a2rea that master windows
+# can take up in master-slave layouts
+# (in 0.0-1.0 %)
+layout_master_area_max = 0.9;
+# Specifies the amount that the master area changes/steps
+# when it is decreased/increased.
+# (in 0.0-1.0 %)
+layout_master_area_step = 0.1;
+
+# Specifies the amount that areas of windows
+# within layouts change when they are increased/decreased
+# (in px)
+layout_size_step = 100.0;
+# Specifies the minimum area that windows within
+# layouts need to take up
+# (in px)
+layout_size_min = 150.0;
+
+# Specifies the amount that windows are moved
+# by when using 'move' shortcuts for floating windows
+# (in px)
+key_win_move_step = 100.0;
+
+# Specifies the initial gap between windows
+# within layouts (in px)
+win_layout_gap = 5;
+# Specifies the maximum gap that windows within
+# layouts can have around each other (in px)
+win_layout_gap_max = 150;
+# Specifies the amount that the gap between
+# non-floating windows changes when it's
+# decreased/increased (in px)
+# (in px)
+win_layout_gap_step = 5;
+
+# Specifies the layout that is initially used
+# for every virtual desktop
+initial_layout = "LayoutTiledMaster";
+
+# Advanced Configuration
+# --------------------------------
+
+# Specifies the framerate at which motion notify
+# events are captured. This is used to streamline
+# performance. Especially on high polling rate mouses,
+# lag can be very noticable when not throtteling motion
+# notify events.
+motion_notify_debounce_fps = 60;
+
+# Specifies the maximum number of 'strut'-window that
+# the window manager can capture. Struts are information
+# about window positions and sizes that are used to correctly
+# establish window layouts with bars or other status windows.
+max_struts = 8;
+
+# Specifies if decoration that is rendered with OpenGL should
+# use Vsync
+gl_vsync = false;
+
+# Specifies the file where to log messages to.
+# (Ignored if 'log_messages' or 'should_log_to_file'
+# are disabled.)
+log_file = "/home/cococry/ragnarwm.log";
+
+# Specifies the cursor image to use for the root window
+cursor_image = "arrow";
 
     '';
 
