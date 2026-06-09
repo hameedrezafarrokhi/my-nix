@@ -30,7 +30,7 @@
    #coolercontrol.coolercontrold    ##Fan control
    #fanctl                          ##Fan control (another)  # WARNING BASED ON FANCONTROL WHICH IS BAAAAAAD
 
-    displaycal                    ##Display Calibration Tool
+   #displaycal                    ##Display Calibration Tool
 
   ] ) config.my.software.peripherals.exclude)
 

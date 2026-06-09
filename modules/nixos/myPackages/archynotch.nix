@@ -4,12 +4,32 @@
   fetchFromGitHub,
   rustPlatform,
   pkg-config,
+
   libX11,
+  libxcursor,
+  libXext,
+  libXrandr,
+  libXrender,
+  libxcomposite,
+  libxcb,
+  libxcb-image,
+  libxcb-cursor,
+  libxcb-keysyms,
+  libxcb-render-util,
+  libxcb-util,
+  libxcb-wm,
+  libXinerama,
+  libXi,
+  libXft,
+  libxres,
+  libxpm,
+
   libxkbcommon,
   alsa-lib-with-plugins,
   openssl,
   freetype,
   expat,
+  dbus,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -35,15 +55,36 @@ rustPlatform.buildRustPackage rec {
     pkg-config
     rustPlatform.bindgenHook
     expat
+    dbus
   ];
 
   buildInputs = [
+
     libX11
+    libxcursor
+    libXext
+    libXrandr
+    libXrender
+    libxcomposite
+    libxcb
+    libxcb-image
+    libxcb-cursor
+    libxcb-keysyms
+    libxcb-render-util
+    libxcb-util
+    libxcb-wm
+    libXinerama
+    libXi
+    libXft
+    libxres
+    libxpm
+
     libxkbcommon
     expat
     freetype
     openssl
     alsa-lib-with-plugins
+    dbus
   ];
 
   meta = {

@@ -5681,13 +5681,13 @@ rules: (
 		 triggers = ["close", "hide"];
 		 preset = "fly-out";
 		 direction = "up";
-		 duration = 0.2;
+		 duration = 0.35;
 	    },
 	    {
 		 triggers = ["open", "show"];
 		 preset = "fly-in";
 		 direction = "up";
-		 duration = 0.2;
+		 duration = 0.5;
 	    }
 	    )
       },

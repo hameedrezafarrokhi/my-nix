@@ -138,6 +138,8 @@
     sticky
     xpad
 
+    libxkbcommon
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -222,7 +224,7 @@
 
    ++ [(pkgs.callPackage ../myPackages/traymd.nix { })]
 
-  #++ [(pkgs.callPackage ../myPackages/archynotch.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/archynotch.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]

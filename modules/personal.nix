@@ -293,7 +293,7 @@
         include = with pkgs; [ ];
       };
       peripherals = {
-        enable = false;
+        enable = true;
         exclude = with pkgs; [ ];
         include = with pkgs; [ ];
       };
