@@ -51,7 +51,7 @@ in
    #swaybg               ##Hyprland Wallpaper manager (Another)
    #wpaperd              ##Hyprland Wallpaper manager (Another)
    #mpvpaper             ##Hyprland Wallpaper manager (Another)
-   #swww                 ##Hyprland Wallpaper manager (Another)
+   #awww                 ##Hyprland Wallpaper manager (Another)
    #rofi                 ##Hyprland launcher menu
    #wofi                 ##Hyprland launcher menu in gtk
    #hyprgui              #Hyprland GUI App

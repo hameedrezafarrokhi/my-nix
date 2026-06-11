@@ -230,6 +230,7 @@
 
   catppuccin = {
     enable = true;
+    autoEnable = true;
     flavor = myStuff.myCat.myGlobal-Flav;
     accent = myStuff.myCat.myGlobal-Color;
    #cache.enable = true;

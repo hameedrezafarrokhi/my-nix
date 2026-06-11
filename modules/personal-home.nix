@@ -131,7 +131,7 @@
       sioyek.enable = true;
       starship.enable = true;
       superfile.enable = true;
-      swww.enable = true;
+      awww.enable = true;
       television.enable = true;
       tldr.enable = true;
       udiskie.enable = true;

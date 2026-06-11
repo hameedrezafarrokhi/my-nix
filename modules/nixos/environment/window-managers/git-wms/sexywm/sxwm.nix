@@ -24,7 +24,9 @@ stdenv.mkDerivation rec {
    #rev = "v${version}";
     rev = "master";
    #hash = "sha256-Gytop4lYkQdVaYXWyXmlHotEFnaA0O8CZUmqfIe8X2w=";
-    hash = "sha256-jeOwahG5oNtAKAZTNlddCwzE3ZY9+apU8Lw2JQErB7k=";
+
+   #hash = "sha256-jeOwahG5oNtAKAZTNlddCwzE3ZY9+apU8Lw2JQErB7k=";
+    hash = "sha256-ovt8gjvSVA5i0T7SyRhgoFa8xsE50MHgxLP+ZdvRdME=";
   };
 
   nativeBuildInputs = [ pkg-config gnumake ];

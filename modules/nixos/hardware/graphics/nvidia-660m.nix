@@ -20,7 +20,7 @@ in
   boot = {
    #kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
     kernelPackages = lib.mkForce pkgs.linuxPackages_6_18;
-   #extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_470 ];  # DOES NOTHING
+   #extraModulePackages = [ config.hardware.nvidia.package.bin ];  # DOES NOTHING
     kernelModules = [   # HANDLED BY NIXOS AND NVIDIA OPTIONS
    #  "nvidia"
    #  "nvidia_modeset"
@@ -120,7 +120,7 @@ in
 
       ] ++
       [
-        mypkgs.old-stable.intel-media-sdk
+        mypkgs."_25-05".intel-media-sdk
       ];
 
       enable32Bit = true;

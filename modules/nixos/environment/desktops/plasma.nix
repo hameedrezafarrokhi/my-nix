@@ -21,8 +21,8 @@
       kdePackages.kguiaddons
       kdePackages.kirigami
       kdePackages.kirigami-gallery
-      libsForQt5.kirigami2
-      libsForQt5.kirigami-addons
+     #libsForQt5.kirigami2
+     #libsForQt5.kirigami-addons
       kdePackages.kirigami-addons
       kdePackages.kwidgetsaddons
       kdePackages.ktextaddons

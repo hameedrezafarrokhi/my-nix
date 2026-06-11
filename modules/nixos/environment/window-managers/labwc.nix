@@ -9,7 +9,7 @@
 
   environment.systemPackages = [
 
-    pkgs.swww
+    pkgs.awww
 
   ];
 

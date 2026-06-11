@@ -20,17 +20,17 @@
     libsForQt5.qt5ct
     kdePackages.qt6ct
 
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.qt5.qtquickcontrols2
-    libsForQt5.qt5.qtbase
+    libsForQt5.qtgraphicaleffects
+    libsForQt5.qtquickcontrols2
+    libsForQt5.qtbase
    #libsForQt5.qt5.qtdeclarative
-    libsForQt5.kdeclarative
-    libsForQt5.qt5.qtwayland
-    libsForQt5.plasma-wayland-protocols
-    libsForQt5.kwayland
+   #libsForQt5.kdeclarative
+    libsForQt5.qtwayland
+   #libsForQt5.plasma-wayland-protocols
+   #libsForQt5.kwayland
    #libsForQt5.kwayland-integration
-    libsForQt5.qt5.qtmultimedia
-    libsForQt5.qt5.qtsvg
+    libsForQt5.qtmultimedia
+    libsForQt5.qtsvg
 
     kdePackages.qtbase.dev
 

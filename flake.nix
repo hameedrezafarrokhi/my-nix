@@ -6,9 +6,10 @@
          nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 #         master.url = "github:NixOS/nixpkgs/master";
         unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-          stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-      old-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
-        fallback.url = "github:NixOS/nixpkgs/88d3861acdd3d2f0e361767018218e51810df8a1";
+          stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+      old-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+          _25-05.url = "github:NixOS/nixpkgs/nixos-25.05";
+        fallback.url = "github:NixOS/nixpkgs/a82ccc39b39b621151d6732718e3e250109076fa";
 
   # NIX_COMMUNITY
                disko = { url = "github:nix-community/disko/latest";
@@ -34,7 +35,8 @@
                                 inputs.nixpkgs.follows = "nixpkgs";
                                 inputs.home-manager.follows = "home-manager"; };
 
-             lazyvim = { url = "github:pfassina/lazyvim-nix"; };
+             lazyvim = { url = "github:pfassina/lazyvim-nix";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
 
           catppuccin = { url = "github:catppuccin/nix";};
               stylix = { url = "github:danth/stylix";
@@ -91,6 +93,7 @@
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};
+        _25-05 = import inputs."_25-05"   {system=system;config=pkgsConf;};
       fallback = import inputs.fallback   {system=system;config=pkgsConf;};
     };
     myOverlays = [

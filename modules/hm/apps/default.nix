@@ -64,7 +64,7 @@ in
     sioyek.enable = lib.mkEnableOption "sioyek";
     starship.enable = lib.mkEnableOption "starship";
     superfile.enable = lib.mkEnableOption "superfile";
-    swww.enable = lib.mkEnableOption "swww";
+    awww.enable = lib.mkEnableOption "awww";
     television.enable = lib.mkEnableOption "television";
     tldr.enable = lib.mkEnableOption "tldr";
     tmux.enable = lib.mkEnableOption "tmux";

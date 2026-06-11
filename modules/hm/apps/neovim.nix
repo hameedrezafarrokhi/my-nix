@@ -21,9 +21,13 @@
 
       #package = pkgs.neovim-unwrapped;  # Conflicts with Lazyvim or Other Distro modules. this is the default package
       #extraPackages = [ ];
-      #plugins = with pkgs.vimPlugins [
-      #  catppuccin-nvim
-      #];
+       extraLuaPackages = luaPkgs: with luaPkgs; [
+         tree-sitter-cli
+       ];
+       plugins = with pkgs.vimPlugins; [
+        #catppuccin-nvim
+         nvim-treesitter
+       ];
 
       #withNodeJs = false;  # Conflicts with Lazyvim or Other Distro modules
       #withPython3 = true;  # Conflicts with Lazyvim or Other Distro modules

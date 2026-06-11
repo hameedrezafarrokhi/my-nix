@@ -9,13 +9,17 @@
       nix = {
         location = {
           sourceDirectories = [
+
            #"/etc/nixos"
            #"~/nixos"
            #"/data/data/com.termux.nix/files/home/nixos"
-            "${nix-path}"
-            "${nix-path-alt}"
-            "~/.local/share/fish"
-            "~/Documents/bookmarks"
+
+           #"${nix-path}"
+           #"${nix-path-alt}"
+            "${config.home.homeDirectory}/nixos"
+            "${config.home.homeDirectory}/.local/share/fish"
+            "${config.home.homeDirectory}/Documents/bookmarks"
+
           ];
           repositories = [
              {

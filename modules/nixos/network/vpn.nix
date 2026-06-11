@@ -1,5 +1,13 @@
 { config, lib, pkgs, mypkgs, ... }:
 
+let
+
+  proton-vpn-old = pkgs.writeShellScriptBin "proton-vpn-old" ''
+    ${mypkgs.old-stable.protonvpn-gui}/bin/protonvpn-app
+  '';
+
+in
+
 { config = lib.mkIf (config.my.network.vpn.enable) {
 
   environment.systemPackages = [
@@ -27,7 +35,9 @@
    #pkgs.gpclient
    #pkgs.gpauth
 
-    mypkgs.stable.protonvpn-gui                 ##Unofficial proton gui
+
+    proton-vpn-old
+    mypkgs.stable.proton-vpn                 ##Unofficial proton gui
    #pkgs.protonvpn-cli                 ##Unofficial pronton cli
    #pkgs.protonvpn-cli_2               ##Unofficial pronton cli (Another)
 
@@ -53,7 +63,9 @@
    #pkgs.xray
 
 
-    pkgs.warp-plus
+   #pkgs.warp-plus
+   #mypkgs.fallback.warp-plus
+
    #pkgs.ivpn
    #pkgs.ivpn-ui
    #pkgs.ivpn-service

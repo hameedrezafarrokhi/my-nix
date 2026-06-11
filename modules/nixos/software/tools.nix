@@ -90,7 +90,7 @@
    #quickshell
 
     wallust
-    swww
+    awww
 
     tokei
 

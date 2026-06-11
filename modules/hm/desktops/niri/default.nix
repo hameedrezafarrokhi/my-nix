@@ -22,22 +22,22 @@ in
     programs.niriswitcher = {
 
       enable = true;
-      package = pkgs.niriswitcher;
+     #package = pkgs.niriswitcher;
      #style = ; # Path or '' extra css ''
-      settings = {
-        keys = {
-          modifier = "Alt";
-          switch = {
-            next = "Tab";
-            prev = "Shift+Tab";
-          };
-        };
-        center_on_focus = true;
-        appearance = {
-          system_theme = "dark";
-          icon_size = 64;
-        };
-      };
+     #settings = {
+     #  keys = {
+     #    modifier = "Alt";
+     #    switch = {
+     #      next = "Tab";
+     #      prev = "Shift+Tab";
+     #    };
+     #  };
+     #  center_on_focus = true;
+     #  appearance = {
+     #    system_theme = "dark";
+     #    icon_size = 64;
+     #  };
+     #};
 
     };
 

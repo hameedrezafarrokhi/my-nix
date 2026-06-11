@@ -173,7 +173,7 @@ in
 
       #waybar &
       autostart_sh = ''
-        swww-daemon &
+        awww-daemon &
         xremap --watch --mouse ~/.config/xremap/xremap.yaml &
       '';
 

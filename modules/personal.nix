@@ -110,7 +110,7 @@
       "awesome" "leftwm"
      #"xmonad" "oxwm" "dk" "wmderland" "ragnarwm"
      #"sawfish" "jwm" "spectrwm"  "pekwm" "exwm"
-      "titus-wm" #"drew-wm" #"dwm" #"chadwm"
+     #"titus-wm" "drew-wm" "dwm" "chadwm"
 
         # Floating
       "icewm" "fluxbox"
@@ -325,6 +325,8 @@
 
   };
 
+ #systemd.services."home-manager-hrf".serviceConfig.TimeoutStartSec = lib.mkForce "5m";
+
   home-manager = {
     users = {
 
@@ -463,7 +465,7 @@
             sioyek.enable = true;
             starship.enable = true;
             superfile.enable = true;
-            swww.enable = true;
+            awww.enable = true;
             television.enable = true;
             tldr.enable = true;
             tmux.enable = true;
@@ -529,6 +531,8 @@
           username = "test";
           homeDirectory = "/home/test";
         };
+
+        catppuccin.autoEnable = false;
 
         imports = [ ./hm/keyboard ];
 

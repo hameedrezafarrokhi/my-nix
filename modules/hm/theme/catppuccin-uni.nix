@@ -1750,6 +1750,10 @@ EOF
       "file:///mnt/windows"
       "file:///mnt/media"
     ];
+
+    gtk4 = {
+      theme = config.gtk.theme;
+    };
   };
 
   qt = {
@@ -5143,11 +5147,11 @@ EOF
       target = "Pictures/themed-wallpapers";
       recursive = true;
     };
-    live-wallpapers = {
-      source = "${inputs.assets}/live-wallpapers/";
-      target = "Pictures/live-wallpapers";
-      recursive = true;
-    };
+   #live-wallpapers = {
+   #  source = "${inputs.assets}/live-wallpapers/";
+   #  target = "Pictures/live-wallpapers";
+   #  recursive = true;
+   #};
 
     face-icons = {
       source = "${inputs.assets}/icons/";
@@ -5166,16 +5170,16 @@ EOF
    #  source = "${pkgs.papirus-icon-theme}/share/icons/${gtk-icon}/";
    #  recursive = true;
    #};
-    cursor-icon = {
-      source = "${gtk-icon-package}/share/icons";
-      target = ".icons/";
-      recursive = true;
-    };
-    cursor-icon2 = {
-      source = "${gtk-icon-package}/share/icons";
-      target = ".local/share/icons/";
-      recursive = true;
-    };
+   #cursor-icon = {
+   #  source = "${gtk-icon-package}/share/icons";
+   #  target = ".icons/";
+   #  recursive = true;
+   #};
+   #cursor-icon2 = {
+   #  source = "${gtk-icon-package}/share/icons";
+   #  target = ".local/share/icons/";
+   #  recursive = true;
+   #};
     openbox = {  # Needs To Be Writable
       source = "${openbox-package}/themes/${openbox-theme}/openbox-3/";
       target = ".themes/${openbox-theme}/openbox-3/";
@@ -8269,8 +8273,9 @@ cursor_image = "arrow";
     };
   };
 
- #catppuccin = {
- #  enable = false;
+  catppuccin = {
+    enable = false;
+    autoEnable = false;
  # #cache.enable = true;
  #  flavor = flavor;
  #  accent = accent;
@@ -8313,7 +8318,7 @@ cursor_image = "arrow";
  #  yazi.enable = false;
  #  zed.icons.enable = true;
  #  zed.enable = true;
- #};
+  };
 
  #stylix.targets = {
  #  alacritty.enable = false;

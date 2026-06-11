@@ -135,6 +135,7 @@ in
       userDirs = {
         enable = true;
         createDirectories = true;
+        setSessionVariables = true;
         desktop = "${config.home.homeDirectory}/Desktop";
         documents = "${config.home.homeDirectory}/Documents";
         download = "${config.home.homeDirectory}/Downloads";

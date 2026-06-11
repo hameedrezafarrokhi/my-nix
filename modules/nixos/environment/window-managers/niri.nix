@@ -11,7 +11,7 @@
 
     pkgs.nirius
     pkgs.xwayland-satellite
-    pkgs.swww
+    pkgs.awww
 
   ];
 

@@ -27,7 +27,7 @@ let
       config = {
         reload_apps = true;
         wallpaper = {
-          command = "swww";
+          command = "awww";
           arguments = [ "img" "-t" "fade" "--transition-duration" "0.5" "--transition-step" "255" "--transition-fps" "60" "-f" "Nearest" ];
           set = true;
         };

@@ -19,7 +19,8 @@ stdenv.mkDerivation rec {
     owner = "jorisvink";
     repo = "coma";
     rev = "master";
-    hash = "sha256-ebLdNtY8Haeyt5C2Bg4H2Ls06ukae/kmKBPyxyJ3SGc=";
+   #hash = "sha256-ebLdNtY8Haeyt5C2Bg4H2Ls06ukae/kmKBPyxyJ3SGc=";
+    hash = "sha256-nJhqU5H7Pub2b3UEgwFuhWnE/eHYe8fCcuZ5eB52R40=";
   };
 
   nativeBuildInputs = [ installShellFiles pkg-config ];

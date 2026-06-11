@@ -24,6 +24,7 @@ in
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
      #finalPackage = [object Object];
      #finalPortalPackage = [object Object];
+      configType = "hyprlang"; # "hyprlang" "lua"
       plugins = with pkgs.hyprlandPlugins; [
       # hy3
       # hyprexpo

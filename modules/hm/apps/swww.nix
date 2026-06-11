@@ -1,16 +1,16 @@
 { config, pkgs, lib, ... }:
 
-{ config = lib.mkIf (config.my.apps.swww.enable) {
+{ config = lib.mkIf (config.my.apps.awww.enable) {
 
-  services.swww = {
+  services.awww = {
     enable = true;
-    package = pkgs.swww;
+    package = pkgs.awww;
     extraArgs = [ ];
   };
 
- #systemd.user.services.swww = {
+ #systemd.user.services.awww = {
  #  Service = {
- #    ExecStart = lib.mkForce "${lib.getExe (config.services.swww.package)} ${lib.escapeShellArgs config.services.swww.extraArgs} img /home/hrf/Pictures/Wallpapers/background.png";
+ #    ExecStart = lib.mkForce "${lib.getExe (config.services.awww.package)} ${lib.escapeShellArgs config.services.awww.extraArgs} img /home/hrf/Pictures/Wallpapers/background.png";
  #  };
  #};
 

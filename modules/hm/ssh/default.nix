@@ -12,6 +12,18 @@ in
 
   config = lib.mkIf cfg.enable {
 
+    sshAuthSock = {
+      enable = true;
+      systemd.socketProviderUnit = "ssh-agent.service";
+     #initialization = {
+     #  bash = "export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock";
+     #  fish = "set -x SSH_AUTH_SOCK $HOME/.ssh/agent.sock";
+     #  zsh = config.sshAuthSock.initialization.bash;
+     #  nushell = "$env.SSH_AUTH_SOCK = $HOME/.ssh/agent.sock";
+     #};
+    };
+
+
     programs.ssh = {
       enable = true;
       package = null;
@@ -21,7 +33,8 @@ in
      #extraOptionOverrides = { };
      #includes = [ ];
 
-      matchBlocks = {       # very comlex :))
+     #matchBlocks = {       # very comlex :))
+      settings = {
 
         "*" = {
           compression = false;

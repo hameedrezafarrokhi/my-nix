@@ -10,7 +10,7 @@
    #browseDomains = [ ];
 
     openFirewall = true;
-    wideArea = true;
+    wideArea = false;
     reflector = false;
     allowPointToPoint = false;
 
