@@ -14,7 +14,7 @@
     piper                         ##Gaming mouse config
    #libratbag                     ##Library for piper
    #qjoypad                       ##Controller as Mouse
-    joystickwake                  ##Joystick screen waker
+   #joystickwake                  ##Joystick screen waker
    #jstest-gtk                    ##Joystick tester
 
    #xsane                         ##Scanner app

@@ -1822,7 +1822,7 @@ EOF
   xsession.initExtra = lib.mkIf config.xsession.enable ''
     #xclickroot -r xmenu-app &
     xsetroot -solid ${Base} &
-    hsetroot -cover ${wallpaper} &
+    #hsetroot -cover ${wallpaper} &
     xrdb -load ${config.xresources.path} &
     xrdb -merge ${config.xresources.path} &
     xsetroot -cursor_name left_ptr &

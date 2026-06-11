@@ -20,7 +20,9 @@
       enable = true;
 
       #package = pkgs.neovim-unwrapped;  # Conflicts with Lazyvim or Other Distro modules. this is the default package
-      #extraPackages = [ ];
+       extraPackages = [
+         pkgs.luajitPackages.tree-sitter-cli
+       ];
        extraLuaPackages = luaPkgs: with luaPkgs; [
          tree-sitter-cli
        ];
@@ -99,7 +101,7 @@
         ripgrep
         fd
         gcc
-        #luajitPackages.tree-sitter-cli # WARNING ADD AFTER UPDATE
+        luajitPackages.tree-sitter-cli
         zig
       ];
 
