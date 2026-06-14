@@ -26,9 +26,9 @@ in
 #             "nur-readme".source = "${inputs.nur}/README.md";
         "nix-index-readme".source = "${inputs.nix-index-database}/README.md";
            "stylix-readme".source = "${inputs.stylix}/README.md";
-  "caelestia-shell-readme".source = "${inputs.caelestia-shell}/README.md";
-    "caelestia-cli-readme".source = "${inputs.caelestia-cli}/README.md";
-          "noctalia-shell".source = "${inputs.noctalia-shell}/README.md";
+# "caelestia-shell-readme".source = "${inputs.caelestia-shell}/README.md";
+#   "caelestia-cli-readme".source = "${inputs.caelestia-cli}/README.md";
+#         "noctalia-shell".source = "${inputs.noctalia-shell}/README.md";
        "catppuccin-readme".source = "${inputs.catppuccin}/README.md";
       "nix-flatpak-readme".source = "${inputs.nix-flatpak}/README.md";
      "xremap-flake-readme".source = "${inputs.xremap-flake}/README.md";

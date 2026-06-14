@@ -33,13 +33,13 @@ in
   imports = [
 
     ./ags.nix
-    ./quickshell.nix
+   #./quickshell.nix
     ./waybar.nix
     ./polybar.nix
     ./tint2.nix
     ./trayer.nix
     ./ashell.nix
-    ./ignis.nix
+   #./ignis.nix
 
   ];
 

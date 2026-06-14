@@ -167,8 +167,8 @@ in
 
   imports = [
 
-    ./niri-dms.nix
-    ./niri-noctalia.nix
+   #./niri-dms.nix
+   #./niri-noctalia.nix
 
   ];
 

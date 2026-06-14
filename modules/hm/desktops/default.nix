@@ -26,18 +26,18 @@
   imports = [
 
     ./kde
-    ./cosmic
+   #./cosmic
     ./cinnamon
     ./mate
     ./gnome
     ./xfce
-    ./hypr
+   #./hypr
     ./niri
     ./sway
     ./river
     ./wayfire
     ./labwc
-    ./mango
+   #./mango
     ./i3
     ./ragnar
     ./spectrwm

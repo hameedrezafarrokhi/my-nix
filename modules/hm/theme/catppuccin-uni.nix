@@ -2257,7 +2257,7 @@ in
       dotIcons.enable = true;
       gtk.enable = true;
       sway.enable = lib.mkIf (config.wayland.windowManager.sway.enable) true;
-      hyprcursor = lib.mkIf config.my.hypr.hyprland.enable {
+      hyprcursor = /* lib.mkIf config.my.hypr.hyprland.enable */ {
         enable = true;
         size = cursor-size;
       };

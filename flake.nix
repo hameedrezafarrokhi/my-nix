@@ -8,8 +8,8 @@
         unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
           stable.url = "github:NixOS/nixpkgs/nixos-26.05";
       old-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-          _25-05.url = "github:NixOS/nixpkgs/nixos-25.05";
-        fallback.url = "github:NixOS/nixpkgs/a82ccc39b39b621151d6732718e3e250109076fa";
+#         _25-05.url = "github:NixOS/nixpkgs/nixos-25.05";
+#       fallback.url = "github:NixOS/nixpkgs/a82ccc39b39b621151d6732718e3e250109076fa";
 
   # NIX_COMMUNITY
                disko = { url = "github:nix-community/disko/latest";
@@ -31,9 +31,9 @@
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
         xremap-flake = { url = "github:xremap/nix-flake";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
-      cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.home-manager.follows = "home-manager"; };
+#     cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
+#                               inputs.nixpkgs.follows = "nixpkgs";
+#                               inputs.home-manager.follows = "home-manager"; };
 
              lazyvim = { url = "github:pfassina/lazyvim-nix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -42,32 +42,32 @@
               stylix = { url = "github:danth/stylix";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
 
-     caelestia-shell = { url = "github:caelestia-dots/shell";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.caelestia-cli.follows = "caelestia-cli"; };
-       caelestia-cli = { url = "github:caelestia-dots/cli";
-                                inputs.nixpkgs.follows = "nixpkgs";
-                                inputs.caelestia-shell.follows = "caelestia-shell"; };
-      noctalia-shell = { url = "github:noctalia-dev/noctalia-shell";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
-   dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
-              ambxst = { url = "github:Axenide/Ambxst";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
-               ignis = { url = "github:ignis-sh/ignis";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
+#    caelestia-shell = { url = "github:caelestia-dots/shell";
+#                               inputs.nixpkgs.follows = "nixpkgs";
+#                               inputs.caelestia-cli.follows = "caelestia-cli"; };
+#      caelestia-cli = { url = "github:caelestia-dots/cli";
+#                               inputs.nixpkgs.follows = "nixpkgs";
+#                               inputs.caelestia-shell.follows = "caelestia-shell"; };
+#     noctalia-shell = { url = "github:noctalia-dev/noctalia-shell";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
+#  dankMaterialShell = { url = "github:AvengeMedia/DankMaterialShell";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
+#             ambxst = { url = "github:Axenide/Ambxst";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
+#              ignis = { url = "github:ignis-sh/ignis";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
 
-               mango = { url = "github:DreamMaoMao/mango";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
-                oxwm = { url = "github:tonybanters/oxwm";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
+#              mango = { url = "github:DreamMaoMao/mango";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
+#               oxwm = { url = "github:tonybanters/oxwm";
+#                               inputs.nixpkgs.follows = "nixpkgs"; };
 
-           dwm-titus = { url = "github:ChrisTitusTech/dwm-titus";
-                                flake = false; };
-              chadwm = { url = "github:siduck/chadwm";
-                                flake = false; };
-             drew-wm = { url = "github:drewgrif/dwm-setup";
-                                flake = false; };
+#          dwm-titus = { url = "github:ChrisTitusTech/dwm-titus";
+#                               flake = false; };
+#             chadwm = { url = "github:siduck/chadwm";
+#                               flake = false; };
+#            drew-wm = { url = "github:drewgrif/dwm-setup";
+#                               flake = false; };
 
   # My_Stuff
               assets = { url = "github:hameedrezafarrokhi/assets";
@@ -93,8 +93,8 @@
       unstable = import inputs.unstable   {system=system;config=pkgsConf;};
         stable = import inputs.stable     {system=system;config=pkgsConf;};
     old-stable = import inputs.old-stable {system=system;config=pkgsConf;};
-        _25-05 = import inputs."_25-05"   {system=system;config=pkgsConf;};
-      fallback = import inputs.fallback   {system=system;config=pkgsConf;};
+#       _25-05 = import inputs."_25-05"   {system=system;config=pkgsConf;};
+#     fallback = import inputs.fallback   {system=system;config=pkgsConf;};
     };
     myOverlays = [
      #inputs.nur.overlays.default
@@ -121,16 +121,16 @@
               { home.enableNixpkgsReleaseCheck = true; }
               inputs.nix-flatpak.homeManagerModules.nix-flatpak
               inputs.plasma-manager.homeModules.plasma-manager
-              inputs.cosmic-manager.homeManagerModules.cosmic-manager
+             #inputs.cosmic-manager.homeManagerModules.cosmic-manager
               inputs.nix-index-database.homeModules.nix-index
               inputs.xremap-flake.homeManagerModules.default
               inputs.lazyvim.homeManagerModules.default
               inputs.catppuccin.homeModules.catppuccin
-              inputs.mango.hmModules.mango
-              inputs.ignis.homeManagerModules.default
-              inputs.dankMaterialShell.homeModules.dank-material-shell
+             #inputs.mango.hmModules.mango
+             #inputs.ignis.homeManagerModules.default
+             #inputs.dankMaterialShell.homeModules.dank-material-shell
              #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-              (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
+             #(import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
             ];
           };
         }
@@ -149,8 +149,8 @@
             inputs.nix-flatpak.nixosModules.nix-flatpak
             inputs.stylix.nixosModules.stylix
             inputs.catppuccin.nixosModules.catppuccin
-            inputs.mango.nixosModules.mango
-            inputs.ambxst.nixosModules.default
+           #inputs.mango.nixosModules.mango
+           #inputs.ambxst.nixosModules.default
            #inputs.xremap-flake.nixosModules.default
            #inputs.nur.modules.nixos.default
            #inputs.nur.legacyPackages."${system}".repos.iopq.modules.xraya  # example
@@ -172,15 +172,15 @@
             ./modules/${type}.nix
             inputs.nix-flatpak.homeManagerModules.nix-flatpak
             inputs.plasma-manager.homeModules.plasma-manager
-            inputs.cosmic-manager.homeManagerModules.cosmic-manager
+           #inputs.cosmic-manager.homeManagerModules.cosmic-manager
             inputs.nix-index-database.homeModules.nix-index
             inputs.xremap-flake.homeManagerModules.default
             inputs.catppuccin.homeModules.catppuccin
-            inputs.mango.hmModules.mango
-            inputs.ignis.homeManagerModules.default
-            inputs.dankMaterialShell.homeModules.dank-material-shell
+           #inputs.mango.hmModules.mango
+           #inputs.ignis.homeManagerModules.default
+           #inputs.dankMaterialShell.homeModules.dank-material-shell
            #inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-            (import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
+           #(import "${inputs.caelestia-shell}/nix/hm-module.nix" { })
       ];
     };
 

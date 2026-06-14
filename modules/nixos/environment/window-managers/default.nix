@@ -68,13 +68,13 @@ in
 
   imports = [
 
-    ./hyprland.nix
+   #./hyprland.nix
     ./niri.nix
 
     ./dwm.nix
-    ./dwm/chadwm
-    ./dwm/drewwm
-    ./dwm/tituswm
+   #./dwm/chadwm
+   #./dwm/drewwm
+   #./dwm/tituswm
     ./dwl.nix
 
     ./xmonad.nix
@@ -113,21 +113,21 @@ in
     ./ratpoison.nix
     ./leftwm.nix
     ./e16.nix
-    ./mango.nix
+   #./mango.nix
 
-    ./oxwm.nix
+   #./oxwm.nix
 
-    ./rices-shells/hyprland-noctalia.nix
-    ./rices-shells/hyprland-caelestia.nix
-    ./rices-shells/hyprland-uwsm.nix
-    ./rices-shells/hyprland-dms.nix
-    ./rices-shells/hyprland-ambxst.nix
+   #./rices-shells/hyprland-noctalia.nix
+   #./rices-shells/hyprland-caelestia.nix
+   #./rices-shells/hyprland-uwsm.nix
+   #./rices-shells/hyprland-dms.nix
+   #./rices-shells/hyprland-ambxst.nix
    #./rices-shells/hyprland-ax.nix
-    ./rices-shells/hyprland-ashell.nix
-    ./rices-shells/hyprland-exo.nix
+   #./rices-shells/hyprland-ashell.nix
+   #./rices-shells/hyprland-exo.nix
 
-    ./rices-shells/niri-noctalia.nix
-    ./rices-shells/niri-dms.nix
+   #./rices-shells/niri-noctalia.nix
+   #./rices-shells/niri-dms.nix
 
     ./git-wms/ragnar
     ./git-wms/hana

@@ -90,7 +90,7 @@
       # Wayland
 
         # Tiling
-      "hyprland"
+     #"hyprland"
      #"niri"
      #"qtile" "dwl" "mango"
      #"sway" "river"
@@ -121,16 +121,18 @@
       # Git-Wms
 
         # Dynamic
-      "ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
-      "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
-      "meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
+     #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
+     #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
+     #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
+
      #"hana"
      #"fluorite" "moonwm"
 
         # Floating
-      "sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
-      "fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
-      "xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
+     #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
+     #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
+     #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
+
      #"fxwm" "sewm" "simplewm" "superiorxwm"
      #"qvwm" "cygnus" "vswm"
 
@@ -373,9 +375,9 @@
          #cinnamon.enable = true;
          #mate.enable = true;
           xfce.enable = true;
-          hypr = {
-            hyprland.enable = true;
-          };
+         #hypr = {
+         #  hyprland.enable = true;
+         #};
          #niri.enable = true;
          #sway.enable = true;
          #river.enable = true;
@@ -391,12 +393,12 @@
          #spectrwm.enable = true;
          #herbstluftwm.enable = true;
          #fluxbox.enable = true;
-          mango.enable = false;
+         #mango.enable = false;
           ragnar.enable = true;
           rices-shells = [
 
            #"niri-dms" "niri-noctalia"
-            /*"hyprland-uwsm"*/ "hyprland-noctalia" /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/ "hyprland-ambxst"
+            /*"hyprland-uwsm"*/ /*"hyprland-noctalia"*/ /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/ /*"hyprland-ambxst" */
 
           ];
 
@@ -404,7 +406,7 @@
 
           bar-shell.shells = [
             # wayland
-            /*"ags"*/ "quickshell" /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
+            /*"ags"*/ /*"quickshell"*/ /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
             # x11
             "polybar"
             "tint2"
