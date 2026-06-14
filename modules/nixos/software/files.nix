@@ -11,12 +11,14 @@
 
     pkgs.hifile
 
+    pkgs.worker
+
    #pkgs.nemo                          ##Cinnamon filemanager
    #pkgs.nemo-with-extensions          ##Cinnamon filemanager
 
    #pkgs.nautilus                      ##Gnome filemanager
 
-   #pkgs.xfce.thunar
+   #pkgs.thunar
    #(xfce.thunar.override {
    #  thunarPlugins = [
    #    pkgs.thunar-media-tags-plugin
@@ -78,6 +80,15 @@
         thunar-vcs-plugin
         thunar-volman
       ];
+    };
+
+    dsearch = {
+      enable = true;
+      package = pkgs.dsearch;
+      systemd = {
+        enable = true;
+        target = "default.target";
+      };
     };
 
     nautilus-open-any-terminal = {

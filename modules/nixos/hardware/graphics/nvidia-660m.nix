@@ -137,6 +137,18 @@ in
     nvidia = {
      #enabled = lib.mkForce true;
       package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+
+      # Setting The Nvidia Package Manually Overrides This Completely
+      # Available Names:
+      # Newest Thing Available: bleeding_edge
+      # Newer Than Production and New_Features: latest
+      # Official Nvidia Names: beta, new_feature, production
+      # Default: stable
+      # Legacy: legacy_580
+      # Vulkan: vulkan_beta
+     #branch = if config.hardware.nvidia.datacenter.enable then "dc" else "stable";
+
+     #moduleParams = { };                   # Kernel Params like Nvreg goes here. Dont use Kernel Params in above. use here
       modesetting.enable = true;
       nvidiaPersistenced = true;            # ensures all GPUs stay awake even during headless mode
       open = false;                         # Turing and later, and driver 515.43.04+

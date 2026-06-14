@@ -23,6 +23,7 @@
       ram-tmp = {
         zram.enable = true;
         tmpfs.enable = true;
+        nohang.enable = true;
       };
      #fan = "cooler-control";
       mounts = [ ];
@@ -478,6 +479,7 @@
             wezterm.enable = true;
             wlogout.enable = true;
             zed.enable = true;
+            zoxide.enable = true;
 
             webapps.enable = true;
           };

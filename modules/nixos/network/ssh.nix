@@ -12,6 +12,7 @@
   services.openssh = {
     enable = true;
     package = config.programs.ssh.package;
+    enableRecommendedAlgorithms = true; # Nix Auto Config
     openFirewall = true;
     startWhenNeeded = false;
     allowSFTP = true;
@@ -36,6 +37,7 @@
      #DenyGroups = [ ];
      #Ciphers = [ ];
      #AuthorizedPrincipalsFile = "none";
+     #Banner = null;
     };
    #ports = [ 22 ];
    #moduliFile = "";
@@ -60,7 +62,6 @@
     };
    #hostKeys = [ ];
    #extraConfig = '' '';
-   #banner = null;
     authorizedKeysInHomedir = true;
    #authorizedKeysFiles = [ ];
    #authorizedKeysCommandUser = "nobody";

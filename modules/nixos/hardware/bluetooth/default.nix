@@ -10,6 +10,8 @@
 
   config = lib.mkIf (config.my.hardware.bluetooth.enable) {
 
+   #hardware.alsa.enableBluetooth = true; # Only if using alsa as main audio
+
     hardware.bluetooth = {
 
       enable = true;

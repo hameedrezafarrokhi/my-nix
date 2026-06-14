@@ -96,6 +96,7 @@ let
   dolphin-theme = "Catppuccin ${flavorC} ${accentC}";
   kdenlive-theme = "Catppuccin${flavorC}${accentC}.colors";
   easyeffects-theme = "Catppuccin${flavorC}${accentC}";
+  drawy-theme = "Catppuccin${flavorC}${accentC}";
 
   alacritty-theme = "catppuccin_${flavor}";
   ghostty-theme = "light:catppuccin-${flavor},dark:catppuccin-${flavor}";
@@ -2574,6 +2575,31 @@ in
         #    "Theme" = qt-icon; # "*"
         #  };
         #};
+        "/.config/drawyrc" = {
+          "UiSettings" = {
+            "ColorScheme" = drawy-theme;
+          };
+          "Canvas" = {
+            "BackgroundColorDark" = rgb-alt-Base;
+            "BackgroundColorLight" = rgb-alt-Text;
+          };
+          "Palette" = {
+            "FirstColorDark" = rgb-alt-Red;
+            "FirstColorLight" = rgb-alt-Red;
+            "FourthColorDark" = rgb-alt-Green;
+            "FourthColorLight" = rgb-alt-Green;
+            "SecondColorDark" = rgb-alt-Yellow;
+            "SecondColorLight" = rgb-alt-Yellow;
+            "ThirdColorDark" = rgb-alt-Blue;
+            "ThirdColorLight" = rgb-alt-Blue;
+          };
+          "PowerManager" = {
+            "EnabledInFullScreen" = true;
+          };
+          "AutoSave" = {
+            "Delay" = 1;
+          };
+        };
         "/.config/easyeffectsrc" = {
           "UiSettings" = {
             "ColorScheme" = easyeffects-theme;

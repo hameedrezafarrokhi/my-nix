@@ -12,6 +12,7 @@ in
 
     zram.enable = lib.mkEnableOption "enable zram";
     tmpfs.enable =  lib.mkEnableOption "enable tmpfs";
+    nohang.enable =  lib.mkEnableOption "enable nohang";
 
   };
 
@@ -19,6 +20,7 @@ in
 
     ./zram.nix
     ./tmpfs.nix
+    ./nohang.nix
 
   ];
 

@@ -87,6 +87,8 @@ in
 
     cdo = "builtin cd";
 
+    dss = "dsearch search";
+
     cp = "cp -i";
     mv = "mv -i";
     rm = "rm -i";

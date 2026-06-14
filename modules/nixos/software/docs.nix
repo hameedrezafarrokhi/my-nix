@@ -42,6 +42,7 @@
    #folio                         ##Markdown
 
     rnote                         ##Handwriting notes
+    drawy
 
     kdePackages.kompare           ##Compare Documents and Texts
 

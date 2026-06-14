@@ -75,6 +75,7 @@ in
     wezterm.enable = lib.mkEnableOption "wezterm";
     wlogout.enable = lib.mkEnableOption "wlogout";
     zed.enable = lib.mkEnableOption "zed";
+    zoxide.enable = lib.mkEnableOption "zoxide";
 
     webapps.enable = lib.mkEnableOption "webapps collection";
 
@@ -147,6 +148,7 @@ in
       ./wezterm.nix
       ./wlogout.nix
       ./zed.nix
+      ./zoxide.nix
 
       ./webapps-chromium.nix
       ./webapps-firefox.nix
