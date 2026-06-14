@@ -230,6 +230,11 @@
 
   #++ [(mypkgs."_25-05".callPackage ../myPackages/loom.nix { })]
 
+  #++ [(pkgs.callPackage ../myPackages/boomer.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/zoomer.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/boomer-rs.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/mul.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
    ++ [(pkgs.callPackage ../myPackages/boron.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
