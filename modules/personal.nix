@@ -491,23 +491,37 @@
           default = {
 
             terminal = "kitty";
+
             tui-editor = "nvim";
             gui-editor = "org.kde.kate";
             gui-editor-alt-name = "kate";
-            file-manager = "org.kde.dolphin";
-            file-alt = "dolphin";
+
+           #file-manager = "org.kde.dolphin";
+           #file-alt = "dolphin";
+            file-manager = "HiFile";
+            file-alt = "hifile";
+
             browser = "brave-browser";
             browser-alt-name = "brave";
             browser-package = pkgs.brave;
-            image-viewer = "org.kde.gwenview";
-            image-alt = "gwenview";
+
+           #image-viewer = "org.kde.gwenview";
+           #image-alt = "gwenview";
+            image-viewer = "pix";
+            image-alt = "pix";
+
             video-player = "mpv"; #"org.gnome.Showtime";
+
             audio-player = "io.bassi.Amberol";
             audio-alt = "amberol";
+
             pdf-viewer = "org.kde.okular";
             pdf-alt = "okular";
-            archive-manager = "org.kde.ark";
-            archive-alt = "ark";
+
+           #archive-manager = "org.kde.ark";
+           #archive-alt = "ark";
+            archive-manager = "org.gnome.FileRoller";
+            archive-alt = "file-roller";
           };
 
           firefox.enable = true;
@@ -534,9 +548,52 @@
 
         catppuccin.autoEnable = false;
 
-        imports = [ ./hm/keyboard ];
+        imports = [
+          ./hm/keyboard
+          ./hm/xdg
+        ];
 
         my.keyboard.xremap.enable = true;
+
+        xdg.enable = true;
+
+        my = {
+          default = {
+
+            terminal = "kitty";
+
+            tui-editor = "nvim";
+            gui-editor = "org.kde.kate";
+            gui-editor-alt-name = "kate";
+
+           #file-manager = "org.kde.dolphin";
+           #file-alt = "dolphin";
+            file-manager = "HiFile";
+            file-alt = "hifile";
+
+            browser = "brave-browser";
+            browser-alt-name = "brave";
+            browser-package = pkgs.brave;
+
+           #image-viewer = "org.kde.gwenview";
+           #image-alt = "gwenview";
+            image-viewer = "pix";
+            image-alt = "pix";
+
+            video-player = "mpv"; #"org.gnome.Showtime";
+
+            audio-player = "io.bassi.Amberol";
+            audio-alt = "amberol";
+
+            pdf-viewer = "org.kde.okular";
+            pdf-alt = "okular";
+
+           #archive-manager = "org.kde.ark";
+           #archive-alt = "ark";
+            archive-manager = "org.gnome.FileRoller";
+            archive-alt = "file-roller";
+          };
+        };
 
       };
 

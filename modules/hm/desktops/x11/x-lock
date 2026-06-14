@@ -145,3 +145,5 @@ if [ "$DO_SUSPEND" = true ]; then
     systemctl suspend
   fi
 fi
+
+xset r rate 250 35

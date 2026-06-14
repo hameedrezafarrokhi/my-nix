@@ -117,6 +117,17 @@ in
 
   };
 
+  programs.lazygit = {
+    enable = true;
+    package = pkgs.lazygit;
+    shellWrapperName = "lgit";
+    enableZshIntegration = true;
+    enableNushellIntegration = true;
+    enableFishIntegration = true;
+    enableBashIntegration = true;
+    settings = { };
+  };
+
   programs.gh = {
     enable = true;
     package = pkgs.gh;

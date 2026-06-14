@@ -18,6 +18,7 @@
     multitail                     ##ls stuff
     tldr                          ##Too long, didnt read!
     jq
+    crudini
     killall
    #toybox
 

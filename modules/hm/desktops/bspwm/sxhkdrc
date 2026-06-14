@@ -1016,3 +1016,7 @@ super + shift + F10
 # Cursor Shake Stop
 super + ctrl + shift + F10
     systemctl --user stop xcursorshake.service
+
+# Reload XSet Rate
+super + alt + BackSpace
+    xsetr ; kern-bug

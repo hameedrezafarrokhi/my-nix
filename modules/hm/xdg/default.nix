@@ -152,7 +152,8 @@ in
 
       portal = {
         enable = true;
-        xdgOpenUsePortal = true;
+        # This Option Completely Overrides XDG Mimes And Forces All Apps to Use Portals; Use Per App Env Var Instead For Crashing Apps That Want to Open Links, Like Flatpaks or Electron Apps. NIXOS_XDG_OPEN_USE_PORTAL=1
+        xdgOpenUsePortal = false;
         extraPortals = [
           pkgs.xdg-desktop-portal                  # General
           pkgs.xdg-desktop-portal-gtk              # For WMs/Gnome
@@ -174,6 +175,8 @@ in
           common = {
            #default = ["gtk" "kde" "gnome" "gnome-keyring" "hyprland" "cosmic" "wlr" "xapp" "lxqt" "luminous" "shana" "termfilechooser" "kwallet"];
            #default = [ "*" ];
+
+            default = [ "gtk" ];
             "org.freedesktop.impl.portal.FileChooser" = ["shana"];
           };
           hyprland = {
@@ -197,13 +200,22 @@ in
         };
       };
 
-      configFile."./xdg-desktop-portal-shana/config.toml".text = ''
+      configFile = {
+
+        "./xdg-desktop-portal-shana/config.toml".text = ''
           open_file = "Kde"
           save_file = "Kde"
 
           [tips]
           open_file_when_folder = "Kde"
         '';  # Gnome Kde Gtk Lxqt  "org.freedesktop.desktop.impl.lxqt"
+
+        "./systemd/user/plasma-xdg-desktop-portal-kde.service.d/override.conf".text = ''
+          [Service]
+          Environment="XDG_CURRENT_DESKTOP=KDE"
+        '';
+      };
+
     };
 
     # GTK SPECS:
@@ -222,7 +234,7 @@ in
 
     home.sessionVariables = {
 
-       XDG_MENU_PREFIX = "plasma-";
+      #XDG_MENU_PREFIX = "plasma-";
 
     };
 

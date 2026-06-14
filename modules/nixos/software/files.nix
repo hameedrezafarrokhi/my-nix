@@ -9,6 +9,8 @@
     pkgs.kdePackages.dolphin
     pkgs.kdePackages.dolphin-plugins
 
+    pkgs.hifile
+
    #pkgs.nemo                          ##Cinnamon filemanager
    #pkgs.nemo-with-extensions          ##Cinnamon filemanager
 

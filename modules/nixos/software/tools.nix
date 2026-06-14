@@ -10,6 +10,8 @@
 
     libnotify
 
+    zenity
+
     onboard                       ##Onscreen keyboard
 
    #(flameshot.override {
@@ -225,6 +227,8 @@
    ++ [(pkgs.callPackage ../myPackages/traymd.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/archynotch.nix { })]
+
+  #++ [(mypkgs."_25-05".callPackage ../myPackages/loom.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]

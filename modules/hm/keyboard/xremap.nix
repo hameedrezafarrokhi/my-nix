@@ -370,6 +370,8 @@ in
 
        # launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
 
+    # "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop"
+
     yamlConfig = ''
 
       modmap:
@@ -423,25 +425,25 @@ in
             Super-z:
               remap:
                     Enter:
-                      launch: [ "kitty" ]
+                      launch: [ "${config.my.default.terminal}" ]
                     q:
                       launch: [ "ccenter" ]
                     b:
-                      launch: [ "brave" ]
+                      launch: [ "${config.my.default.browser-alt-name}" ]
                     e:
-                      launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
+                      launch: [ "${config.my.default.file-alt}" ]
                     t:
-                      launch: [ "kate" ]
+                      launch: [ "${config.my.default.gui-editor-alt-name}" ]
                     Space:
                       launch: [ "rofi", "-show", "drun", "-modi", "drun", "-line-padding", "4", "-hide-scrollbar", "-show-icons", "-theme", ".config/rofi/themes/main.rasi" ]
                     o:
                       launch: [ "onlyoffice-desktopeditors" ]
                     m:
-                      launch: [ "vlc" ]
+                      launch: [ "gtk-launch", "${config.my.default.video-player}.desktop" ]
                     c:
                       launch: [ "xcalc" ]
                     a:
-                      launch: [ "amberol" ]
+                      launch: [ "${config.my.default.audio-alt}" ]
                     v:
                       launch: [ "protonvpn-app" ]
                     l:
@@ -515,16 +517,20 @@ in
                               launch: [ "brave" ]
                             f:
                               launch: [ "firefox" ]
+                            q:
+                              launch: [ "qutebrowser" ]
                     e:
                       remap:
                             d:
-                              launch: [ "dolphin" ]
+                              launch: [ "bash", "${config.home.homeDirectory}/.local/state/home-manager/gcroots/current-home/home-path/share/applications/org.kde.dolphin.desktop" ]
                             g:
                               launch: [ "nautilus" ]
                             n:
                               launch: [ "nemo" ]
                             t:
                               launch: [ "thunar" ]
+                            h:
+                              launch: [ "hifile" ]
                     t:
                       remap:
                             k:
@@ -533,12 +539,20 @@ in
                               launch: [ "kitty", "nvim" ]
                             v:
                               launch: [ "kitty", "vim" ]
+                            z:
+                              launch: [ "zeditor" ]
+                            s:
+                              launch: [ "vscodium" ]
+                            g:
+                              launch: [ "geany" ]
                     o:
                       remap:
                             o:
                               launch: [ "onlyoffice-desktopeditors" ]
                             l:
                               launch: [ "libreoffice" ]
+                            g:
+                              launch: [ "ghostwriter" ]
                     m:
                       remap:
                             v:
@@ -689,6 +703,14 @@ in
                                   launch: [ "bash", "warp-cli", "connect" ]
                                 d:
                                   launch: [ "bash", "warp-cli", "disconnect" ]
+                    a:
+                      remap:
+                        c:
+                          launch: [ "bash", "android-mount" ]
+                        d:
+                          launch: [ "bash", "android-umount" ]
+                        f:
+                          launch: [ "android-file-transfer" ]
 
 
 

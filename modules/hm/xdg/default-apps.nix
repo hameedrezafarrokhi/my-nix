@@ -152,7 +152,7 @@ in
                                 "image/*" = "${config.my.default.image-viewer}.desktop";
                               "image/png" = "${config.my.default.image-viewer}.desktop";
                              "image/jpeg" = "${config.my.default.image-viewer}.desktop";
-                              "image/gif" = "${config.my.default.image-viewer}.desktop";
+                              "image/gif" = "${config.my.default.video-player}.desktop";
                              "image/webp" = "${config.my.default.image-viewer}.desktop";
                               "image/bmp" = "${config.my.default.image-viewer}.desktop";
                              "image/tiff" = "${config.my.default.image-viewer}.desktop";

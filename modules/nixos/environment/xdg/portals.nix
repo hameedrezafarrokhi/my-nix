@@ -16,7 +16,8 @@
   # Portals for DEs to interact, i.e. Notifs, FilePicker, etc:
   xdg.portal = {
     enable = true;
-    xdgOpenUsePortal = true;
+    # This Option Completely Overrides XDG Mimes And Forces All Apps to Use Portals; Use Per App Env Var Instead For Crashing Apps That Want to Open Links, Like Flatpaks or Electron Apps. NIXOS_XDG_OPEN_USE_PORTAL=1
+    xdgOpenUsePortal = false;
     extraPortals = config.home-manager.users.${admin}.xdg.portal.extraPortals;
     wlr = {
       enable = true;

@@ -211,7 +211,14 @@ in
         bspc rule -a *:*:"Save As" layer=above state=floating
         bspc rule -a *:*:"Select file to open" layer=above state=floating
         bspc rule -a *:*:"Select file to save to" layer=above state=floating
+        
         bspc rule -a *:*:"Error" layer=above state=floating
+        bspc rule -a *:*:"Find" layer=above state=floating
+        bspc rule -a *:*:"Question" layer=above state=floating
+        bspc rule -a *:*:"Replace" layer=above state=floating
+        bspc rule -a *:*:"Preferences" layer=above state=floating
+
+        bspc rule -a zenity layer=above state=floating
 
         xdotool keyup Super_L
         rm -f "$HOME/.cache/poly-super-state"

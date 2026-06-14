@@ -4,6 +4,16 @@ let
 
   cfg = config.my.x11;
 
+  # WARNING KERNEL BUG REMOVE AFTER UPDATE
+  # Used in xlockcmd
+  kern-bug = pkgs.writeShellScriptBin "kern-bug" ''
+    # WARNING , THIS IS A KERNEL BUG , REMOVE AFTER UPDATE (Qt Apps Lock Scroll After Sleep)
+    sudo modprobe -r usbhid
+    sudo modprobe usbhid
+    sleep 2
+    xset r rate ${config.my.x11.xrate}
+  '';
+
   x-cursor = pkgs.writeShellScriptBin "x-cursor" ''sleep 3 && xsetroot -cursor_name left_ptr'';
   x-cursor-start = pkgs.writeTextFile {
     name = "x-cursor.desktop";
@@ -14,6 +24,10 @@ let
       Exec=${x-cursor}/bin/x-cursor
     '';
   };
+
+  xsetr = pkgs.writeShellScriptBin "xsetr" ''
+    xset r rate ${config.my.x11.xrate} && notify-send -e -u low -t 2000 "Key Rate" "${config.my.x11.xrate}"
+  '';
 
   cursor-shake = pkgs.callPackage ../../../nixos/myPackages/x11_shake_to_magnify_cursor.nix { };
 
@@ -249,6 +263,7 @@ let
         systemctl suspend
      #fi
     fi
+
   '';
 
 
@@ -719,7 +734,13 @@ in
 
   options = {
 
-    my.x11.enable =  lib.mkEnableOption "x11 configs";
+    my.x11 = {
+      enable =  lib.mkEnableOption "x11 configs";
+      xrate = lib.mkOption {
+        type = lib.types.nullOr (lib.types.str);
+        default = "250 35";
+      };
+    };
 
     services.screen-locker = {
       inactiveIntervalString = lib.mkOption {
@@ -778,7 +799,24 @@ in
       };
     };
 
+   #systemd.user.services.fix-kern-qt-sleep-bug = {
+   #  Unit = {
+   #    Description = "fix-kern-qt-sleep-bug";
+   #    After = [ "sleep.target" ];
+   #  };
+   #  Service = {
+   #    Type = "oneshot";
+   #    ExecStart = "${kern-bug}/bin/kern-bug";
+   #   #RemainsAfterExit = "no";
+   #  };
+   #  Install = {
+   #    WantedBy = ["sleep.target"];
+   #  };
+   #};
+
     home.packages = [
+      kern-bug
+
       pkgs.picom
       pkgs.feh
       pkgs.xsetroot
@@ -823,6 +861,7 @@ in
       mpv-screensaver
       xidlescreensaver
       xidledim
+      xsetr
       x-cursor
       x-lock-sleep
       x-lock
@@ -866,7 +905,7 @@ in
       initExtra = ''
 
         # first number Rate (faster start spawning repeating key when held) second number Delay (faster key press when held)
-        xset r rate 250 35 &
+        xset r rate ${config.my.x11.xrate} &
         xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle} &
         xset +dpms &
         # Standby: 30 Suspend: 40 Off: 90

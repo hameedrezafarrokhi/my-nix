@@ -18,7 +18,8 @@ in
      #enable = true;                         # doesnt exist anymore
       dbusPackage = pkgs.dbus;
       brokerPackage = pkgs.dbus-broker;
-      implementation = "broker";             # one of "dbus" or "broker"
+     #implementation = "broker";             # one of "dbus" or "broker"
+      implementation = lib.mkForce "dbus";
       apparmor = "disabled";
      #packages = [  ];                       # packages that include dbus stuff that needs to be passed on
     };

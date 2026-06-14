@@ -32,7 +32,7 @@ TRASH="${TRASH:-"${XDG_DATA_HOME:-"$HOME/.local/share"}/Trash"}"
 # default commands
 #xdg-open
 #gio open
-#kioclient exec
+#XDG_MENU_PREFIX=plasma- XDG_CURRENT_DESKTOP=KDE kioclient exec
 OPENER="${OPENER:-"xdg-open"}"
 #OPENER="xdg-open"
 #OPENER="gio open"
@@ -125,7 +125,7 @@ open-file-gio() {
 }
 
 open-file-kexec() {
-	kioclient exec $@ &
+	XDG_MENU_PREFIX=plasma- XDG_CURRENT_DESKTOP=KDE kioclient exec $@ &
 }
 
 open-file-xdg() {

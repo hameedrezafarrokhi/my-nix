@@ -1,5 +1,23 @@
 { config, pkgs, lib, admin, ... }:
 
+let
+
+  android-mount = pkgs.writeShellScriptBin "android-mount" ''
+    notify-send "Andriod Device" "Mounting at ~/Andriod"
+    mkdir -p ~/Android
+    go-mtpfs -android ~/Android/ &
+    sleep 2
+    [ -e ~/Android/"Internal shared storage" ] && notify-send "Andriod Device" "Mounted"
+  '';
+
+  android-umount = pkgs.writeShellScriptBin "android-umount" ''
+    notify-send "Andriod Device" "Unmounting from ~/Andriod"
+    fusermount -u ~/Android
+    [ ! -e ~/Android/"Internal shared storage" ] && notify-send "Andriod Device" "Unmounted"
+  '';
+
+in
+
 {
 
   options.my.hardware.android = {
@@ -29,11 +47,17 @@
 
     };
 
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = [
 
-      scrcpy                        ##Andriod screen mirror
-      qtscrcpy
-      android-tools
+      pkgs.scrcpy                        ##Andriod screen mirror
+      pkgs.qtscrcpy
+      pkgs.android-tools
+      pkgs.android-file-transfer
+      pkgs.go-mtpfs
+      pkgs.mtpfs
+
+      android-mount
+      android-umount
 
     ];
 

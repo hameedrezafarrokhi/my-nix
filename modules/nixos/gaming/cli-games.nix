@@ -4,7 +4,8 @@
 
   environment.systemPackages = [
 
-    pkgs.vitetris
+   #pkgs.vitetris
+    mypkgs.old-stable.vitetris
 
     pkgs.gorched
     pkgs.curseofwar
@@ -26,6 +27,8 @@
     pkgs.n2048
     pkgs._2048-in-terminal
     pkgs.tcl2048
+
+   #mypkgs.stable.xsnow
 
     (pkgs.writeShellScriptBin "ttetris" ''${config.my.default.terminal} --name tetris --class tetris sh -c 'tetris' '')
     (pkgs.writeShellScriptBin "tcbonsai" ''${config.my.default.terminal} --name cbonsai --class cbonsai sh -c 'cbonsai -li' '')
