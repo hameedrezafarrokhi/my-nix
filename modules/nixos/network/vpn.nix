@@ -37,7 +37,8 @@ in
 
 
     proton-vpn-old
-    mypkgs.stable.proton-vpn                 ##Unofficial proton gui
+   #mypkgs.stable.proton-vpn                 ##Unofficial proton gui
+    pkgs.proton-vpn
    #pkgs.protonvpn-cli                 ##Unofficial pronton cli
    #pkgs.protonvpn-cli_2               ##Unofficial pronton cli (Another)
 
