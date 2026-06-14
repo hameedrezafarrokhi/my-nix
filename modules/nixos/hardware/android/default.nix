@@ -3,6 +3,10 @@
 let
 
   android-mount = pkgs.writeShellScriptBin "android-mount" ''
+    if [ -e ~/Android/"Internal shared storage" ]; then
+      notify-send "Andriod Device" "Already Mounted at ~/Andriod"
+      exit 0
+    fi
     notify-send "Andriod Device" "Mounting at ~/Andriod"
     mkdir -p ~/Android
     go-mtpfs -android ~/Android/ &
@@ -11,6 +15,10 @@ let
   '';
 
   android-umount = pkgs.writeShellScriptBin "android-umount" ''
+    if [ ! -e ~/Android/"Internal shared storage" ]; then
+      notify-send "Andriod Device" "No Device Mounted"
+      exit 0
+    fi
     notify-send "Andriod Device" "Unmounting from ~/Andriod"
     fusermount -u ~/Android
     [ ! -e ~/Android/"Internal shared storage" ] && notify-send "Andriod Device" "Unmounted"

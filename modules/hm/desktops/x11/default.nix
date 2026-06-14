@@ -4,16 +4,6 @@ let
 
   cfg = config.my.x11;
 
-  # WARNING KERNEL BUG REMOVE AFTER UPDATE
-  # Used in xlockcmd
-  kern-bug = pkgs.writeShellScriptBin "kern-bug" ''
-    # WARNING , THIS IS A KERNEL BUG , REMOVE AFTER UPDATE (Qt Apps Lock Scroll After Sleep)
-    sudo modprobe -r usbhid
-    sudo modprobe usbhid
-    sleep 2
-    xset r rate ${config.my.x11.xrate}
-  '';
-
   x-cursor = pkgs.writeShellScriptBin "x-cursor" ''sleep 3 && xsetroot -cursor_name left_ptr'';
   x-cursor-start = pkgs.writeTextFile {
     name = "x-cursor.desktop";
@@ -799,24 +789,7 @@ in
       };
     };
 
-   #systemd.user.services.fix-kern-qt-sleep-bug = {
-   #  Unit = {
-   #    Description = "fix-kern-qt-sleep-bug";
-   #    After = [ "sleep.target" ];
-   #  };
-   #  Service = {
-   #    Type = "oneshot";
-   #    ExecStart = "${kern-bug}/bin/kern-bug";
-   #   #RemainsAfterExit = "no";
-   #  };
-   #  Install = {
-   #    WantedBy = ["sleep.target"];
-   #  };
-   #};
-
     home.packages = [
-      kern-bug
-
       pkgs.picom
       pkgs.feh
       pkgs.xsetroot

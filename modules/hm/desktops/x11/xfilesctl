@@ -791,7 +791,7 @@ case "$operation" in
 	;;
 (^[Ii])
 	# Image Preview
-	feh --class fehprev "$@" &
+	feh --class fehprev -x -g 800x500 --scale-down "$@" &
 	;;
 (^[Oo])
 	# Video Preview
