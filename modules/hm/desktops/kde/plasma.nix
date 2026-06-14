@@ -48,8 +48,8 @@
         ];
         numlockOnStartup = "on";
        #options = [ "" ];
-        repeatDelay = 600;  # between 100 and 5000
-        repeatRate = 25.0;  # between 0.2 and 100.0
+        repeatDelay = config.my.x11.xdelay;  # between 100 and 5000
+        repeatRate = config.my.x11.xrate;  # between 0.2 and 100.0
       };
      #mice = [
      # #{ # THIS IS AN EXAMPLE

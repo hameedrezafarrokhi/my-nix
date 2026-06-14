@@ -147,7 +147,8 @@ in
      #datacenter.enable = true;
       powerManagement = {
         enable = true;                     # Experimental,can cause sleep/suspend fail.Enable if graphical issues or crashes after sleep
-        finegrained = false;                # Experimental,Turns off GPU when not in use. ONLY works on Turing or newer
+        finegrained = false;               # Experimental,Turns off GPU when not in use. ONLY works on Turing or newer
+       #kernelSuspendNotifier = true;      # Requires 595 and above, replaces the systemd way of managing sleep/resume cases
       };
 
       prime = {                             # "sudo lshw -c display" to find PCI ID

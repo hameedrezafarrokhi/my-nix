@@ -16,7 +16,7 @@ let
   };
 
   xsetr = pkgs.writeShellScriptBin "xsetr" ''
-    xset r rate ${config.my.x11.xrate} && notify-send -e -u low -t 2000 "Key Rate" "${config.my.x11.xrate}"
+    xset r rate ${toString config.my.x11.xdelay} ${toString config.my.x11.xrate} && notify-send -e -u low -t 2000 "Key Rate" "${toString config.my.x11.xdelay} ${toString config.my.x11.xrate}"
   '';
 
   cursor-shake = pkgs.callPackage ../../../nixos/myPackages/x11_shake_to_magnify_cursor.nix { };
@@ -727,8 +727,12 @@ in
     my.x11 = {
       enable =  lib.mkEnableOption "x11 configs";
       xrate = lib.mkOption {
-        type = lib.types.nullOr (lib.types.str);
-        default = "250 35";
+        type = lib.types.nullOr (lib.types.int);
+        default = 35;
+      };
+       xdelay = lib.mkOption {
+        type = lib.types.nullOr (lib.types.int);
+        default = 250;
       };
     };
 
@@ -878,7 +882,7 @@ in
       initExtra = ''
 
         # first number Rate (faster start spawning repeating key when held) second number Delay (faster key press when held)
-        xset r rate ${config.my.x11.xrate} &
+        xset r rate ${toString config.my.x11.xdelay} ${toString config.my.x11.xrate} &
         xset s $(( ${toString config.services.screen-locker.inactiveInterval} * 60 )) ${toString config.services.screen-locker.xss-lock.screensaverCycle} &
         xset +dpms &
         # Standby: 30 Suspend: 40 Off: 90

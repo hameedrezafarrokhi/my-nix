@@ -218,6 +218,20 @@ in
 
     };
 
+    systemd.user.services.xrate-kde-fix = {
+      Unit = {
+        Description = "xrate kde fix";
+        After = [ "plasma-xdg-desktop-portal-kde.service" ];
+      };
+      Install = {
+        WantedBy = [ "plasma-xdg-desktop-portal-kde.service" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.xset}/bin/xset r rate ${toString config.my.x11.xdelay} ${toString config.my.x11.xrate}";
+        Type="oneshot";
+      };
+    };
+
     # GTK SPECS:
     # $ grep Interfaces /usr/share/xdg-desktop-portal/portals/gtk.portal  | cut -d= -f2  | tr ';' '\n'
     # org.freedesktop.impl.portal.FileChooser

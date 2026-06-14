@@ -12,7 +12,7 @@ let
     sudo modprobe -r usbhid
     sudo modprobe usbhid
     sleep 2
-    xset r rate ${config.home-manager.users.${admin}.my.x11.xrate}
+    xset r rate ${toString config.home-manager.users.${admin}.my.x11.xdelay} ${toString config.home-manager.users.${admin}.my.x11.xrate}
   '';
 
 in
@@ -45,6 +45,22 @@ in
       kern-bug
 
     ];
+
+    powerManagement = {
+
+      resumeCommands = ''
+        ${pkgs.kmod}/bin/modprobe -r usbhid
+        sleep 2
+        ${pkgs.kmod}/bin/modprobe usbhid
+      '';
+
+      #DISPLAY=:0 ${pkgs.xset}/bin/xset r rate ${toString config.services.xserver.autoRepeatDelay} ${toString config.services.xserver.autoRepeatInterval}
+
+     #powerUpCommands = '' '';
+     #powerDownCommands = '' '';
+     #bootCommands = '' '';
+
+    };
 
 
     # WARNING KERNEL BUG REMOVE AFTER UPDATE

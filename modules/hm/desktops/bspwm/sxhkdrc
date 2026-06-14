@@ -1019,4 +1019,8 @@ super + ctrl + shift + F10
 
 # Reload XSet Rate
 super + alt + BackSpace
-    xsetr ; kern-bug
+    xsetr
+
+# Reload XSet Rate
+super + ctrl + alt + BackSpace
+    kern-bug

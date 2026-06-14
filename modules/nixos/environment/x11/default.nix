@@ -14,10 +14,76 @@ in
 
     services.xserver.enable = true;
 
-    services.xserver.displayManager.startx = {
-      enable = true;
-      generateScript = true;
-     #extraCommands = '' '';
+    services.xserver = {
+
+      displayManager = {
+
+        startx = {
+          enable = true;
+          generateScript = true;
+         #extraCommands = '' '';
+        };
+
+      };
+
+      updateDbusEnvironment = true;
+
+      autoRepeatInterval = config.home-manager.users.${admin}.my.x11.xrate;
+      autoRepeatDelay = config.home-manager.users.${admin}.my.x11.xdelay;
+
+     #defaultDepth = 0; # Default colour depth. example 8
+
+     #display = 0; # Display number for the X server.
+
+      exportConfiguration = true;
+
+     #excludePackages = [ pkgs.xterm ];
+
+     #enableTearFree = false;
+
+     #enableTCP = false;
+
+     #enableCtrlAltBackspace = false; # to forcefully kill X.
+
+     #dpi = ; # Int
+
+     #config = lib.mkAfter '' '';
+
+     #extraConfig = '' '';
+
+     #extraDisplaySettings = " ";
+
+     #filesSection = '' '';
+
+     #fontPath = " ";
+
+     #imwheel = {
+     #  enable
+     #  extraOptions
+     #  rules
+     #};
+
+      inputClassSections = [
+
+       # Example:
+       #''
+       #  Identifier      "Trackpoint Wheel Emulation"
+       #  MatchProduct    "ThinkPad USB Keyboard with TrackPoint"
+       #  Option          "EmulateWheel"          "true"
+       #  Option          "EmulateWheelButton"    "2"
+       #  Option          "Emulate3Buttons"       "false"
+       #''
+
+        ''
+          Identifier      "system-keyboard"
+          MatchIsKeyboard "on"
+          Option          "AutoRepeat" "${toString config.services.xserver.autoRepeatDelay} ${toString config.services.xserver.autoRepeatInterval}"
+        ''
+
+      ];
+
+     #logFile = "/dev/null";
+
     };
 
     environment.systemPackages = [
