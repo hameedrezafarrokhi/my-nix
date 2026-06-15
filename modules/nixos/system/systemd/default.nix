@@ -49,9 +49,15 @@ in
     powerManagement = {
 
       resumeCommands = ''
+        sleep 1
         ${pkgs.kmod}/bin/modprobe -r usbhid
-        sleep 2
+        sleep 0.5
         ${pkgs.kmod}/bin/modprobe usbhid
+
+        sleep 0.5
+        ${pkgs.kmod}/bin/modprobe -r psmouse
+        sleep 0.5
+        ${pkgs.kmod}/bin/modprobe psmouse
       '';
 
       #DISPLAY=:0 ${pkgs.xset}/bin/xset r rate ${toString config.services.xserver.autoRepeatDelay} ${toString config.services.xserver.autoRepeatInterval}

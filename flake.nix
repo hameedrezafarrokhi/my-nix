@@ -28,6 +28,8 @@
 #                               inputs.nixpkgs.follows = "nixpkgs"; };
 
   # 3rd_PARTY
+#     xlibre-overlay = { url = "git+https://codeberg.org/takagemacoed/xlibre-overlay?ref=dev-for-26.05"; };
+
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
         xremap-flake = { url = "github:xremap/nix-flake";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -154,6 +156,34 @@
            #inputs.xremap-flake.nixosModules.default
            #inputs.nur.modules.nixos.default
            #inputs.nur.legacyPackages."${system}".repos.iopq.modules.xraya  # example
+
+            #It breaks some packages that were deeply integrated with Xorg. For example tigervnc, the way it was packaged included some hardcoded xorg paths. It assumed the source of xorg.xorgserver is a tarball, so fetchFromGitHub cannot be used. It failed to build against xlibre-xserver without modification.
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xserver
+#
+#           #Drivers
+#          #inputs.xlibre-overlay.nixosModules.overlay-all-xlibre-drivers
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-libinput
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-evdev
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-joystick
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-keyboard
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-mouse
+#           inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-synaptics
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-vmmouse = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-void = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-input-wacom = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-amdgpu = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-ati = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-dummy = true; Anything pull xpra as dependences (e.g. x11docker) will also be failed to build when xlibre-xf86-video-dummy is used.
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-fbdev = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-geode = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-intel = true; # old tag failed to build against xlibre-xserver.
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-mga = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-nouveau = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-nv = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-r128 = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-vesa = true;
+#          #inputs.xlibre-overlay.nixosModules.overlay-xlibre-xf86-video-vmware = true;
+
       ];
     };
 

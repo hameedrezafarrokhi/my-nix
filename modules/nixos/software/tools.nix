@@ -12,6 +12,8 @@
 
     zenity
 
+    tuxedo
+
     onboard                       ##Onscreen keyboard
 
    #(flameshot.override {
@@ -232,6 +234,7 @@
 
   #++ [(pkgs.callPackage ../myPackages/boomer.nix { })]
   #++ [(pkgs.callPackage ../myPackages/zoomer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zoomer2.nix { })]
   #++ [(pkgs.callPackage ../myPackages/boomer-rs.nix { })]
   #++ [(pkgs.callPackage ../myPackages/mul.nix { })]
 

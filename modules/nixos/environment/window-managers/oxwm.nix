@@ -4,7 +4,8 @@
 
   services.xserver.windowManager.oxwm = {
    #enable = false;
-    package = inputs.oxwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+   #package = inputs.oxwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = pkgs.oxwm;
   };
 
   services.xserver.windowManager.session = lib.singleton {
@@ -17,7 +18,8 @@
   };
 
   environment.systemPackages = [
-    (inputs.oxwm.packages.${pkgs.stdenv.hostPlatform.system}.default)
+   #(inputs.oxwm.packages.${pkgs.stdenv.hostPlatform.system}.default)
+    config.services.xserver.windowManager.oxwm.package
   ];
 
   environment.pathsToLink = [

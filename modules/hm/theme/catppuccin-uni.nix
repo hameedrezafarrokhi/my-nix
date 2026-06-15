@@ -9738,6 +9738,36 @@ in
 
       '';
 
+      "tuxedo/themes/hm-theme.toml".text = ''
+        # Copy into $HOME/tuxedo/themes/ and press T to select it.
+        name = hm-theme
+        bg = ${Mantle}
+        panel = ${Base}
+        border = ${Surface1}
+        fg = ${Text}
+        dim = ${Subtext1}
+        accent = ${Accent}
+        cursor = ${Surface0}
+        selection = ${Surface0}
+        statusbar = ${Mantle}
+        status_fg = ${Rosewater}
+        mode_fg = ${Base}
+        mode_bg = ${Accent}
+        pri_a = ${Red}
+        pri_b = ${Yellow}
+        pri_c = ${Green}
+        pri_d = ${Blue}
+        pri_other = ${Mauve}
+        project = ${Accent}
+        context = ${Mauve}
+        due = ${Yellow}
+        overdue = ${Red}
+        today = ${Red}
+        done = ${Overlay0}
+        selected = ${Surface0}
+        matched = ${Rosewater}
+      '';
+
       test = {
         target = "colors.txt";
         text = ''
@@ -10088,20 +10118,20 @@ in
       #'';
       heroic-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -f "$HOME/.config/heroic/store/config.json" ]; then
-          jq '.theme = "${heroic-theme}" | .contentFontFamily = "${Sans}" | .actionsFontFamily = "${Sans}"' $HOME/.config/heroic/store/config.json > heroic-tmp.json && mv -f heroic-tmp.json $HOME/.config/heroic/store/config.json
+          ${pkgs.jq}/bin/jq '.theme = "${heroic-theme}" | .contentFontFamily = "${Sans}" | .actionsFontFamily = "${Sans}"' $HOME/.config/heroic/store/config.json > heroic-tmp.json && mv -f heroic-tmp.json $HOME/.config/heroic/store/config.json
         fi
       '';
       onlyoffice-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -f "$HOME/.config/onlyoffice/DesktopEditors.conf" ]; then
-          sed -i 's/^UITheme=.*/UITheme=${onlyoffice-theme}/' $HOME/.config/onlyoffice/DesktopEditors.conf
+          ${pkgs.gnused}/bin/sed -i 's/^UITheme=.*/UITheme=${onlyoffice-theme}/' $HOME/.config/onlyoffice/DesktopEditors.conf
         fi
       '';
       audacity-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -f "$HOME/.config/audacity/audacity.cfg" ]; then
-          sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.config/audacity/audacity.cfg
+          ${pkgs.gnused}/bin/sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.config/audacity/audacity.cfg
         fi
         if [ -f "$HOME/.audacity-data/audacity.cfg" ]; then
-          sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.audacity-data/audacity.cfg
+          ${pkgs.gnused}/bin/sed -i 's/^Theme=.*/Theme=${audacity-theme}/' $HOME/.audacity-data/audacity.cfg
         fi
       '';
       ghostwriter-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -10116,6 +10146,10 @@ in
         ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences Terminal ${config.my.default.terminal}
         ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences TextEditor ${config.my.default.gui-editor-alt-name}
         ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf PreferencesDialog TextEditorHistory ${config.my.default.gui-editor-alt-name}
+      '';
+      tuxedo-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        touch ${config.xdg.configHome}/tuxedo/config.toml
+        ${pkgs.gnused}/bin/sed -i '/^theme =.*/d; $a theme = hm-theme' ${config.xdg.configHome}/tuxedo/config.toml
       '';
     };
 

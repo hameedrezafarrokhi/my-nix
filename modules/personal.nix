@@ -93,7 +93,8 @@
         # Tiling
      #"hyprland"
      #"niri"
-     #"qtile" "dwl" "mango"
+      "qtile"
+     #"dwl" "mango"
      #"sway" "river"
 
        # Floating
@@ -103,21 +104,22 @@
       # X11
 
         # Manual
-      "herbstluftwm" "notion"
-     #"i3" "ratpoison" "hypr"
+      "notion" "i3" "ratpoison" "hypr" "herbstluftwm"
       "bspwm"
 
         # Dynamic
-      "awesome" "leftwm"
-     #"xmonad" "oxwm" "dk" "wmderland" "ragnarwm"
-     #"sawfish" "jwm" "spectrwm"  "pekwm" "exwm"
+      "awesome" "leftwm" "dk" "wmderland"
+      "sawfish" "jwm" "spectrwm" "pekwm" "oxwm"
+     #"xmonad" "ragnarwm" "exwm"
      #"titus-wm" "drew-wm" "dwm" "chadwm"
 
         # Floating
-      "icewm" "fluxbox"
-     #"windowlab" "windowmaker"
-     #"fvwm2" "fvwm3" "mlvwm" "berry" "e16" "twm"
-      "openbox"
+      "openbox" "icewm" "fluxbox" "twm"
+      "windowlab" "windowmaker" "berry"
+      "fvwm3" "mlvwm"
+     #"fvwm2"
+     #"e16"
+
 
       # Git-Wms
 

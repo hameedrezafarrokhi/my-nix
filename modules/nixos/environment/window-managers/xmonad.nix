@@ -21,7 +21,7 @@
   environment.systemPackages = [
 
     pkgs.xmonadctl
-    pkgs.xmonad-log
+   #pkgs.xmonad-log
    #pkgs.xmonad_log_applet
 
   ];

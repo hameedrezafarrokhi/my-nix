@@ -19,15 +19,15 @@ in
       haskellPackages = pkgs.haskellPackages;
 
       extraPackages = haskellPackages: [
-        haskellPackages.xmonad-contrib
-        haskellPackages.monad-logger
-        haskellPackages.DescriptiveKeys
-        haskellPackages.xmonad-dbus
-        haskellPackages.xmonad-utils
-        haskellPackages.xmonad-volume
-        haskellPackages.xmonad-extras
-        haskellPackages.xmonad-spotify
-        haskellPackages.xmonad-contrib
+       #haskellPackages.xmonad-contrib
+       #haskellPackages.monad-logger
+       #haskellPackages.DescriptiveKeys
+       #haskellPackages.xmonad-dbus
+       #haskellPackages.xmonad-utils
+       #haskellPackages.xmonad-volume
+       #haskellPackages.xmonad-extras
+       #haskellPackages.xmonad-spotify
+       #haskellPackages.xmonad-contrib
 
        #haskellPackages.xmonad-eval                     # WARNING UNMAINTANED
        #haskellPackages.xmonad-vanessa
