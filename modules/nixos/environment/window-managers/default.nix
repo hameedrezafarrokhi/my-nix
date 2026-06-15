@@ -25,6 +25,9 @@ in
        "exwm" "wmderland" "ragnarwm" "notion" "pekwm" "mlvwm"
        "fvwm2" "fvwm3" "leftwm" "berry" "hypr" "sawfish"
        "twm" "jwm" "ratpoison" "e16"
+       "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
+       "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
+       "hackedbox" "mwm" "cwm" "stumpwm"
 
        "oxwm"
 
@@ -32,6 +35,7 @@ in
        "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
        "moody" "meowwm" "meow" "sexywm" "mmwm" "coma" "fluorite" "moonwm"
        "pwm" "philoswm" "devoidwm"
+       "frankenwm"
 
        "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
@@ -115,7 +119,24 @@ in
     ./e16.nix
    #./mango.nix
 
-   #./oxwm.nix
+    ./tinywm.nix
+    ./2bwm.nix
+    ./windowchef.nix
+    ./evilwm.nix
+    ./lwm.nix
+    ./wmfs.nix
+    ./afterstep.nix
+    ./nimdow.nix
+    ./shod.nix
+    ./smallwm.nix
+    ./katriawm.nix
+    ./wmii.nix
+    ./hackedbox.nix
+    ./mwm.nix
+    ./cwm.nix
+    ./stumpwm.nix
+
+    ./oxwm.nix
 
    #./rices-shells/hyprland-noctalia.nix
    #./rices-shells/hyprland-caelestia.nix
@@ -153,6 +174,7 @@ in
     ./git-wms/devoidwm
     ./git-wms/pwm
     ./git-wms/philoswm
+    ./git-wms/frankenwm
 
     ./git-wms/sowm
     ./git-wms/aphelia

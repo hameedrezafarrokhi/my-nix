@@ -120,6 +120,11 @@
      #"fvwm2"
      #"e16"
 
+      # NEW
+       "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
+       "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
+       "hackedbox" "mwm" "cwm" "stumpwm"
+
 
       # Git-Wms
 
@@ -127,6 +132,7 @@
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
+      "frankenwm"
 
      #"hana"
      #"fluorite" "moonwm"

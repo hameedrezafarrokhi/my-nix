@@ -180,6 +180,8 @@ in
       nil nixd
      #comma
 
+      nix-prefetch-git
+
     ] ++
     [
       flake-update

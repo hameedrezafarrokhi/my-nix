@@ -170,6 +170,9 @@ in
      #nix-query-tree-viewer
       nil nixd
      #comma
+
+      nix-prefetch-git
+
     ] ++
     [
       flake-update
