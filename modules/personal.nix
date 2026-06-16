@@ -82,7 +82,7 @@
 
       # Misc
      #"retroarch"
-     #"cde"               # WARNING BROKEN stable and unstable
+      "cde"
 
     ];
     default-gnome-based-de = "gnome";
@@ -142,9 +142,10 @@
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
        "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
+       "wmx" "flwm"
 
      #"fxwm" "sewm" "simplewm" "superiorxwm"
-     #"qvwm" "cygnus" "vswm" "vtwm" "windwm" "larswm"
+     #"qvwm" "cygnus" "vswm" "vtwm" "windwm" "larswm" "adwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

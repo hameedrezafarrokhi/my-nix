@@ -30,6 +30,8 @@
    #pulsar
     ledit
 
+    nedit
+
    #geany
     geany-with-vte
 

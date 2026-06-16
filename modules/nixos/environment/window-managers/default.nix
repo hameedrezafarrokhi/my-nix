@@ -43,7 +43,7 @@ in
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
        "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
-       "goomwwm"
+       "goomwwm" "wmx" "flwm" "adwm"
 
 
       ]);
@@ -224,6 +224,9 @@ in
     ./git-wms/ctwm
     ./git-wms/blackbox
     ./git-wms/goomwwm
+    ./git-wms/wmx
+    ./git-wms/flwm
+    ./git-wms/adwm
 
 
   ];
