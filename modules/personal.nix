@@ -132,7 +132,7 @@
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig"
+      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo"
 
      #"hana"
      #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp"
@@ -141,10 +141,10 @@
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
-       "echinus"
+       "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
 
      #"fxwm" "sewm" "simplewm" "superiorxwm"
-     #"qvwm" "cygnus" "vswm"
+     #"qvwm" "cygnus" "vswm" "vtwm" "windwm" "larswm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

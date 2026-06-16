@@ -28,6 +28,7 @@ in
        "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
        "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
        "hackedbox" "mwm" "cwm" "stumpwm" "clfswm" "matchbox"
+       "wingo"
 
        "oxwm"
 
@@ -41,6 +42,8 @@ in
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
+       "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
+       "goomwwm"
 
 
       ]);
@@ -184,6 +187,7 @@ in
     ./git-wms/zwm-zig
     ./git-wms/zwm-zig2
     ./git-wms/zwm-cpp
+    ./git-wms/wingo
 
     ./git-wms/sowm
     ./git-wms/aphelia
@@ -211,7 +215,15 @@ in
     ./git-wms/biscuitwm
     ./git-wms/xpywm
     ./git-wms/xswm
-
+    ./git-wms/vtwm
+    ./git-wms/progman
+    ./git-wms/karmen
+    ./git-wms/windwm
+    ./git-wms/9wm
+    ./git-wms/larswm
+    ./git-wms/ctwm
+    ./git-wms/blackbox
+    ./git-wms/goomwwm
 
 
   ];
