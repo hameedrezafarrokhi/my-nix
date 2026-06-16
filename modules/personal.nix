@@ -123,7 +123,7 @@
       # NEW
        "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
        "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
-       "hackedbox" "mwm" "cwm" "stumpwm"
+       "hackedbox" "mwm" "cwm" "stumpwm" "clfswm"
 
 
       # Git-Wms
@@ -132,15 +132,16 @@
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-      "frankenwm"
+      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig"
 
      #"hana"
-     #"fluorite" "moonwm"
+     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
+       "echinus"
 
      #"fxwm" "sewm" "simplewm" "superiorxwm"
      #"qvwm" "cygnus" "vswm"

@@ -5,7 +5,11 @@ with lib;
 let
 
   cfg = config.services.xserver.windowManager.echinus;
-  echinus = pkgs.callPackage ./echinus.nix { };
+  echinus = pkgs.callPackage ./echinus.nix {
+    patches = [
+      ./fix-incompatible-pointer-types.patch
+    ];
+  };
 
 in
 
@@ -40,7 +44,11 @@ in
       '';
     };
 
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [
+      cfg.package
+     #(pkgs.callPackage ./iriq.nix { })
+     #(pkgs.callPackage ./ourico.nix { })
+    ];
 
     services.xserver.windowManager.echinus = {
       enable = true;

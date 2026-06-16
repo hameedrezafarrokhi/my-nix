@@ -27,7 +27,7 @@ in
        "twm" "jwm" "ratpoison" "e16"
        "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
        "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
-       "hackedbox" "mwm" "cwm" "stumpwm"
+       "hackedbox" "mwm" "cwm" "stumpwm" "clfswm" "matchbox"
 
        "oxwm"
 
@@ -35,7 +35,7 @@ in
        "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
        "moody" "meowwm" "meow" "sexywm" "mmwm" "coma" "fluorite" "moonwm"
        "pwm" "philoswm" "devoidwm"
-       "frankenwm"
+       "frankenwm" "echinus" "howm" "zwm-c" "zwm" "zwm-zig" "zwm-zig2" "zwm-cpp"
 
        "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
@@ -135,6 +135,8 @@ in
     ./mwm.nix
     ./cwm.nix
     ./stumpwm.nix
+    ./clfswm.nix
+    ./matchbox.nix
 
     ./oxwm.nix
 
@@ -175,6 +177,13 @@ in
     ./git-wms/pwm
     ./git-wms/philoswm
     ./git-wms/frankenwm
+    ./git-wms/echinus
+    ./git-wms/howm
+    ./git-wms/zwm-c
+    ./git-wms/zwm
+    ./git-wms/zwm-zig
+    ./git-wms/zwm-zig2
+    ./git-wms/zwm-cpp
 
     ./git-wms/sowm
     ./git-wms/aphelia
