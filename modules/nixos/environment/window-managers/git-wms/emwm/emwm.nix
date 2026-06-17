@@ -23,7 +23,30 @@
   libtiff,
   motif,
   gcc,
+  fetchzip,
 }:
+
+let
+
+  extra-icons = fetchzip {
+    url = "https://fastestcode.org/dl/app-icons.tar.xz";
+    hash = "sha256-hu9YB/bE0LWkdOfuNQAwxBjuvp5mZMWM4jy8FgablTs=";
+    stripRoot = true;
+  };
+
+  cursors = fetchzip {
+    url = "https://fastestcode.org/dl/xc-core-hr.tar.xz";
+    hash = "sha256-2Z9fdT7JWu2emL/vYXRvAOmtKOeI6Guw52xXNdF+cYc=";
+    stripRoot = true;
+  };
+
+  bitmaps = fetchzip {
+    url = "https://fastestcode.org/dl/xc-core-hr.tar.xz";
+    hash = "sha256-2Z9fdT7JWu2emL/vYXRvAOmtKOeI6Guw52xXNdF+cYc=";
+    stripRoot = true;
+  };
+
+in
 
 stdenv.mkDerivation rec {
   pname = "emwm";
@@ -66,11 +89,20 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
+
     mkdir -p $out/bin
     mkdir -p $out/share/man/man1
     cp src/emwm $out/bin/
     cp src/emwm.1 $out/share/man/man1/
     chmod 755 $out/bin/emwm
+
+    mkdir -p $out/share/emwm/icons
+    mkdir -p $out/share/emwm/cursors
+    mkdir -p $out/share/emwm/bitmaps
+    cp -r ${extra-icons}/* $out/share/emwm/icons/
+    cp -r ${cursors}/* $out/share/emwm/cursors/
+    cp -r ${bitmaps}/* $out/share/emwm/bitmaps/
+
     runHook postInstall
   '';
 

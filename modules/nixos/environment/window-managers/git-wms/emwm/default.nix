@@ -6,6 +6,7 @@ let
 
   cfg = config.services.xserver.windowManager.emwm;
   emwm = pkgs.callPackage ./emwm.nix { };
+  tellmwm = pkgs.callPackage ./tellmwm.nix { };
 
 in
 
@@ -40,7 +41,7 @@ in
       '';
     };
 
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [ cfg.package tellmwm ];
 
     services.xserver.windowManager.emwm = {
       enable = true;

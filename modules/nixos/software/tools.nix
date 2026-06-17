@@ -242,6 +242,9 @@
 
    ++ [(pkgs.callPackage ../myPackages/ximaging.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xfile.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xfind.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xmdialog.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xpickrgb.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
