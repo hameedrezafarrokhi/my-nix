@@ -38,12 +38,12 @@ in
        "pwm" "philoswm" "devoidwm"
        "frankenwm" "echinus" "howm" "zwm-c" "zwm" "zwm-zig" "zwm-zig2" "zwm-cpp"
 
-       "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
+       "compiz" "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
        "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
-       "goomwwm" "wmx" "flwm" "adwm"
+       "goomwwm" "wmx" "flwm" "adwm" "emwm"
 
 
       ]);
@@ -189,6 +189,7 @@ in
     ./git-wms/zwm-cpp
     ./git-wms/wingo
 
+    ./git-wms/compiz
     ./git-wms/sowm
     ./git-wms/aphelia
     ./git-wms/mcwm
@@ -227,6 +228,7 @@ in
     ./git-wms/wmx
     ./git-wms/flwm
     ./git-wms/adwm
+    ./git-wms/emwm
 
 
   ];

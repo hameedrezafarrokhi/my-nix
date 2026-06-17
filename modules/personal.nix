@@ -141,11 +141,11 @@
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
-       "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
-       "wmx" "flwm"
+       "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
+       "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm"
 
      #"fxwm" "sewm" "simplewm" "superiorxwm"
-     #"qvwm" "cygnus" "vswm" "vtwm" "windwm" "larswm" "adwm"
+     #"qvwm" "cygnus" "vswm" "windwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

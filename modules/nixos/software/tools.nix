@@ -240,6 +240,9 @@
 
   #++ [(pkgs.callPackage ../myPackages/zstatus.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/ximaging.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xfile.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
    ++ [(pkgs.callPackage ../myPackages/boron.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]

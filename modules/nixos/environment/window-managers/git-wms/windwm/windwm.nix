@@ -5,8 +5,12 @@
   libX11,
   libXft,
   autoconf,
+  autoreconfHook,
   automake,
+  libtool,
   pkg-config,
+  flex,
+  gcc13,
 }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +22,15 @@ stdenv.mkDerivation rec {
     hash = "sha256-dmAd8TbdyT9YQXEfVAY3L+FXp/OG7pK1SAjqo0uwXFw=";
   };
 
-  nativeBuildInputs = [ pkg-config autoconf automake ];
+  nativeBuildInputs = [
+    pkg-config
+    autoconf
+    automake
+    autoreconfHook
+    libtool
+    flex
+    gcc13
+  ];
 
   buildInputs = [ libX11 libXft ];
 
@@ -27,19 +39,24 @@ stdenv.mkDerivation rec {
     "PREFIX=$(out)"
   ];
 
+  preConfigure = ''
+    #autoupdate
+    aclocal
+    automake --foreign --add-missing
+    autoconf --force
+    #./configure --prefix=$out --mandir=$out/share/man
+  '';
+
   buildPhase = ''
-    mv wind.h wind.h.temp
-    autoreconf -fiv
-    ./configure --prefix=$(out)/ --mandir=$(out)/share/man
-    #mv wind.h.temp wind.h
-    touch wind.h
-    ls
-    pwd
+    #mv wind.h wind.h.temp
+    #autoreconf -fiv
+    #./configure --prefix=$(out)/ --mandir=$(out)/share/man
     make V=0
   '';
 
   installPhase = ''
-    make DESTDIR="$out" install
+    #make DESTDIR="$out" install
+    make install
   '';
 
   meta = with lib; {

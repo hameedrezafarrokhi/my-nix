@@ -12,7 +12,7 @@
   freetype,
   fontconfig,
   pkg-config,
-
+  libsm,
   libjpeg_turbo,
   librsvg,
   libxcomposite,
@@ -23,10 +23,6 @@
   libxpm,
   libxrandr,
   libstartup_notification,
-
- #fetchpatch,
- #patch,
- #patches ? ./gcc15.patch,
 }:
 
 stdenv.mkDerivation rec {
@@ -39,12 +35,6 @@ stdenv.mkDerivation rec {
     rev = "93d2370b873c8489d129383a5e5f807a055b2693";
     sha256 = "028wd23f2isccbaghb5pxxx5ybfyz124ilkhs32n9bj8zrw0h09f";
   };
-
- #inherit patches;
-
- #prePatch = ''
- #  patch -Np2 <${patches}
- #'';
 
   nativeBuildInputs = [
     gcc13
@@ -74,22 +64,22 @@ stdenv.mkDerivation rec {
     libxpm
     libxrandr
     libstartup_notification
+    libsm
   ];
 
-  makeFlags = [ "CC=${stdenv.cc.targetPrefix}cc" "PREFIX=$(out)" ];
+  makeFlags = [ "CC=${stdenv.cc.targetPrefix}cc" "PREFIX=$(out)" "DESTDIR=$out" ];
 
   buildPhase = ''
     runHook preBuild
-    ./configure
-    # Fight unused direct deps
-    sed -i -e "s| -shared | $LDFLAGS\0 |g" -e "s|    if test \"\$export_dynamic\" = yes && test -n \"\$export_dynamic_flag_spec\"; then|      func_append compile_command \" $LDFLAGS\"\n      func_append finalize_command \" $LDFLAGS\"\n\0|" libtool
+    autoupdate
+    autoconf --force
+    #./configure
     make
     runHook postBuild
   '';
 
   installPhase = ''
-    mkdir -p $out/bin
-    cp adwm $out/bin/
+    make install
   '';
 
   meta = with lib; {
