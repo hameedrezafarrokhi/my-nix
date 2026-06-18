@@ -133,10 +133,8 @@
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
       "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
-      "moonwm"
-
+      "moonwm" "worm-quad"
       "fluorite"
-     #"zwm-zig2" "zwm-cpp" "hana"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
@@ -144,8 +142,11 @@
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
       "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
       "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
-      "simplewm" "superiorxwm"
+      "simplewm" "superiorxwm" "marswm"
 
+
+        # Broken Builds
+     #"zwm-zig2" "zwm-cpp" "hana"
      #"windwm" "qvwm" "fxwm"
 
     ];

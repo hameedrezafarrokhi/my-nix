@@ -28,14 +28,14 @@ in
        "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
        "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
        "hackedbox" "mwm" "cwm" "stumpwm" "clfswm" "matchbox"
-       "wingo" "worm"
+       "wingo" "worm" "worm-quad"
 
        "oxwm"
 
        "ragnar" "hana" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb"
        "catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
        "moody" "meowwm" "meow" "sexywm" "mmwm" "coma" "fluorite" "moonwm"
-       "pwm" "philoswm" "devoidwm"
+       "marswm" "pwm" "philoswm" "devoidwm"
        "frankenwm" "echinus" "howm" "zwm-c" "zwm" "zwm-zig" "zwm-zig2" "zwm-cpp"
 
        "compiz" "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
@@ -232,6 +232,8 @@ in
     ./git-wms/emwm
     ./git-wms/eggwm
     ./git-wms/uwm
+    ./git-wms/marswm
+    ./git-wms/worm-quad
 
 
   ];

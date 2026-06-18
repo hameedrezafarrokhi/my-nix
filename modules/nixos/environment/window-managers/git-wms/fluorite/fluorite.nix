@@ -1,6 +1,6 @@
 {
   lib,
-  clangStdenv,
+  stdenv,
   fetchFromGitHub,
   libX11,
   libXext,
@@ -26,19 +26,12 @@
   coreutils,
   gnugrep,
   gnused,
-  gcc,
+ #gcc14,
   pkg-config,
   makeWrapper,
-  #enableHardening ? false,
 }:
 
-let
-
-
-
-in
-
-clangStdenv.mkDerivation (finalAttrs: rec {
+stdenv.mkDerivation rec {
   pname = "fluorite";
   version = "2026-03-01";
 
@@ -51,19 +44,19 @@ clangStdenv.mkDerivation (finalAttrs: rec {
     sha256 = "0aikp9mp5z1kg21xm8i6pf9m9wazz03f5w2n7n95lna4fbga5f46";
   };
 
-  nativeBuildInputs = [ pkg-config makeWrapper ];
+  nativeBuildInputs = [
+    pkg-config
+    makeWrapper
+   #gcc14
+  ];
 
   buildInputs = [
     libX11
-    libXcursor
-    libXrandr
-    libXft
     libXext
-    xdotool
-    libconfuse
-    gcc
-    freetype
+    libXft
+    libXcursor
     libxres
+    libXrandr
     libxcb
     libxcb-util
     libxcb-keysyms
@@ -74,33 +67,58 @@ clangStdenv.mkDerivation (finalAttrs: rec {
     libxcb-errors
     xorgproto
     libxkbcommon
+    xdotool
+    xdo
+    libconfuse
+    freetype
+    bash
+    coreutils
+    gnugrep
+    gnused
+    pkg-config
+    makeWrapper
   ];
 
- #propagatedBuildInputs = [ xdotool ];
-
-  #hardeningDesable = lib.optional (!enableHardening) [
-  #  "fortify"
-  #  "stackprotector"
-  #  "pie"
-  #];
-
-
   makeFlags = [
-    "CC=${clangStdenv.cc.targetPrefix}cc"
+   #"CC=${clangStdenv.cc.targetPrefix}cc"
+   #"CC=${gcc14}/bin/gcc"
     "PREFIX=$(out)"
     #"CFLAGS=-02 -pipe -D_FORTIFY_SOURCE=0"
   ];
 
-  buildPhase = ''
-    make CFLAGS="$CFLAGS -Ddsw=1"
+  preBuild = ''
+    mkdir -p $out/bin
+    mkdir -p $out/share/fluorite
   '';
 
-  installPhase = ''
-     mkdir -p $out/bin
-     mkdir -p $out/share/fluorite
-     cp -f Fluorite $out/bin/Fluorite
-     cp config/standard.conf $out/share/fluorite/fluorite.conf
+  postPatch = ''
+    substituteInPlace Makefile \
+       --replace "/usr/bin" "$out/bin" \
+       --replace "sudo cp" "cp"
   '';
+
+  postInstall = ''
+    wrapProgram $out/bin/Fluorite \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
+  '';
+
+
+
+
+
+ #buildPhase = ''
+ #  #make CFLAGS="$CFLAGS -Ddsw=1"
+ #  mkdir -p $out/bin
+ #  mkdir -p $out/share/fluorite
+ #  make install
+ #'';
+
+ #installPhase = ''
+ #   mkdir -p $out/bin
+ #   mkdir -p $out/share/fluorite
+ #   cp -f Fluorite $out/bin/Fluorite
+ #   cp config/standard.conf $out/share/fluorite/fluorite.conf
+ #'';
 
  #env.NIX_CFLAGS_COMPILE = "-Wno-error -Wno-unused-but-set-variable -Wno-unused-variable";
 
@@ -122,22 +140,6 @@ clangStdenv.mkDerivation (finalAttrs: rec {
  #'';
 
 
-
-     #  --replace "-Werror" "" \
-     #--replace "-Werror=maybe-unintialized" "" \
-     #--replace "-march=native" "-march=X86-64" \
-     #--replace "-mtune=native" "-mtune=generic"
-
-
-      #
-      #
-
-  postPatch = ''
-    substituteInPlace Makefile \
-       --replace "/usr/bin" "$out/bin" \
-       --replace "sudo cp" "cp"
-  '';
-
   meta = with lib; {
     homepage = "https://github.com/l0wigh/Fluorite";
     description = " ";
@@ -146,6 +148,5 @@ clangStdenv.mkDerivation (finalAttrs: rec {
     maintainers = with maintainers; [ meee ];
     platforms = platforms.linux;
     mainProgram = "fluorite";
-    broken = false;
   };
-})
+}
