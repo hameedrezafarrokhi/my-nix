@@ -135,14 +135,14 @@
       "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo"
 
      #"hana"
-     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp"
+     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp" "worm"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
        "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
-       "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm"
+       "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm"
 
      #"fxwm" "sewm" "simplewm" "superiorxwm"
      #"qvwm" "cygnus" "vswm" "windwm"
