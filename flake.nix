@@ -30,6 +30,8 @@
   # 3rd_PARTY
 #     xlibre-overlay = { url = "git+https://codeberg.org/takagemacoed/xlibre-overlay?ref=dev-for-26.05"; };
 
+           nix-alien = { url = "github:thiagokokada/nix-alien"; };
+
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
         xremap-flake = { url = "github:xremap/nix-flake";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
@@ -74,6 +76,8 @@
   # My_Stuff
               assets = { url = "github:hameedrezafarrokhi/assets";
                                 flake = false; };
+#     unpatched-bins = { url = "github:hameedrezafarrokhi/unpatched-bins";
+#                               flake = false; };
   };
 
   outputs = { self, ... } @ inputs :

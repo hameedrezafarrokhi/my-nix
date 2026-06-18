@@ -233,6 +233,7 @@
   #++ [(mypkgs."_25-05".callPackage ../myPackages/loom.nix { })]
 
   #++ [(pkgs.callPackage ../myPackages/boomer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/boomer-bin.nix { })]
   #++ [(pkgs.callPackage ../myPackages/zoomer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zoomer2.nix { })]
   #++ [(pkgs.callPackage ../myPackages/boomer-rs.nix { })]

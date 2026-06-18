@@ -132,10 +132,10 @@
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo"
+      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
 
      #"hana"
-     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp" "worm"
+     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"

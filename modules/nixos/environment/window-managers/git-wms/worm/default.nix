@@ -6,6 +6,7 @@ let
 
   cfg = config.services.xserver.windowManager.worm;
   worm = pkgs.callPackage ./worm.nix { };
+  worm-bin = pkgs.callPackage ./worm-bin.nix { };
 
 in
 
@@ -35,7 +36,7 @@ in
         export _JAVA_AWT_WM_NONREPARENTING=1
         xsetroot -cursor_name left_ptr &
         ${cfg.extraSessionCommands}
-        ${worm}/bin/worm &
+        ${cfg.package}/bin/worm &
         waitPID=$!
       '';
     };
@@ -45,7 +46,7 @@ in
     services.xserver.windowManager.worm = {
       enable = true;
       extraSessionCommands = '' '';
-      package = worm;
+      package = worm-bin;
     };
 
   };

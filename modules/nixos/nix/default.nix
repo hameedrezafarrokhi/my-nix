@@ -169,6 +169,7 @@ in
      #nix-forecast
      #nix-query-tree-viewer
       nil nixd
+      nix-ld
      #comma
 
       nix-prefetch-git
@@ -177,6 +178,9 @@ in
     [
       flake-update
       trim-gen
+    ] ++
+    [
+      inputs.nix-alien.packages.${system}.nix-alien
     ]
     ;
 

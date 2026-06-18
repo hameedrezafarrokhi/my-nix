@@ -13,6 +13,8 @@
 
     pkgs.worker
 
+   #pkgs.spacedrive
+
    #pkgs.nemo                          ##Cinnamon filemanager
    #pkgs.nemo-with-extensions          ##Cinnamon filemanager
 
@@ -32,8 +34,9 @@
 
    #pkgs.pcmanfm                       ##LXQT filemanager
 
-   #pkgs.lf                            ##CLI filemanager
-   #pkgs.fff                           ##CLI filemanager
+    pkgs.lf                            ##CLI filemanager
+    pkgs.fff                           ##CLI filemanager
+    pkgs.ranger
 
    #pkgs.filezilla                     ##FTP file transfer
     pkgs.warp                          ##File secure transfer app
