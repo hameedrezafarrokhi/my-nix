@@ -34,24 +34,27 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libX11 libXft ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
-
-  preConfigure = ''
-    #autoupdate
-    aclocal
-    automake --foreign --add-missing
-    autoconf --force
-    #./configure --prefix=$out --mandir=$out/share/man
-  '';
+ #makeFlags = [
+ #  "CC=${stdenv.cc.targetPrefix}cc"
+ #  "PREFIX=$(out)"
+ #];
 
   buildPhase = ''
+    runHook preBuild
+
+    autoupdate --force
+    #aclocal
+    #automake --foreign --add-missing
+    autoconf --force
+    #./configure --prefix=$out --mandir=$out/share/man
+
     #mv wind.h wind.h.temp
     #autoreconf -fiv
-    #./configure --prefix=$(out)/ --mandir=$(out)/share/man
+    #./configure --prefix=$out --mandir=$(out)/share/man
+
     make V=0
+
+    runHook postBuild
   '';
 
   installPhase = ''

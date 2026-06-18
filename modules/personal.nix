@@ -133,19 +133,20 @@
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
       "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
+      "moonwm"
 
-     #"hana"
-     #"fluorite" "moonwm" "zwm-zig2" "zwm-cpp"
+      "fluorite"
+     #"zwm-zig2" "zwm-cpp" "hana"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
-     #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
+     #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm" "cygnus"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
-       "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
-       "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm"
+      "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
+      "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
+      "simplewm" "superiorxwm"
 
-     #"fxwm" "sewm" "simplewm" "superiorxwm"
-     #"qvwm" "cygnus" "vswm" "windwm"
+     #"windwm" "qvwm" "fxwm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

@@ -3,6 +3,7 @@
   stdenv,
   fetchFromGitHub,
   libX11,
+  gcc13,
   writeText,
   conf ? null,
 }:
@@ -20,7 +21,7 @@ stdenv.mkDerivation rec {
 
  #CFLAGS = "-O3 -I${libX11.dev}/include -D_POSIX_C_SOURCE=200809L";
 
-  buildInputs = [ libX11 ];
+  buildInputs = [ libX11 gcc13 ];
 
   postPatch =
     let
@@ -33,6 +34,10 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
    #"CC=${stdenv.cc.targetPrefix}cc"
   ];
+
+  buildPhase = ''
+    ${gcc13}/bin/gcc -pedantic -Wall -O3 -I/usr/X11R6/include vswm.c -L/usr/X11R6/lib -lX11 -o vswm
+  '';
 
   installPhase = ''
     mkdir -p $out/bin

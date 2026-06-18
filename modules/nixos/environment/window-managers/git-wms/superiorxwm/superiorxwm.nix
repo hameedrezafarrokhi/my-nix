@@ -1,9 +1,6 @@
 {
   stdenv,
   lib,
-  gcc,
-  gnumake,
-  glibc,
   libX11,
   libXext,
   libXinerama,
@@ -11,9 +8,8 @@
   libXrandr,
   xorgproto,
   fetchFromGitHub,
-  pkg-config
- #makeWrapper,
- #patchelf,
+  pkg-config,
+  libsxwm,
 }:
 
 stdenv.mkDerivation rec {
@@ -28,11 +24,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [
-    gnumake
-    gcc
     pkg-config
-   #makeWrapper
-   #patchelf
   ];
 
   buildInputs = [
@@ -42,18 +34,18 @@ stdenv.mkDerivation rec {
     libXext
     libXinerama
     libXft
-    glibc
+    libsxwm
   ];
 
-  postPatch = ''
-    substituteInPlace Makefile \
-      --replace '-Llibsxwm -lX11 -lXrandr -lsxwm' 'libsxwm/libsxwm.so -lX11 -lXrandr'
-  '';
+ #postPatch = ''
+ #  substituteInPlace Makefile \
+ #    --replace '-Llibsxwm -lX11 -lXrandr -lsxwm' 'libsxwm/libsxwm.so -lX11 -lXrandr'
+ #'';
 
   buildPhase = ''
     runHook preBuild
 
-    make libsxwm/libsxwm.so
+    #make libsxwm/libsxwm.so
     make sxwm
     make sxwmbar
 
@@ -64,9 +56,9 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    mkdir -p $out/lib
+    #mkdir -p $out/lib
 
-    install -Dm755 libsxwm/libsxwm.so $out/lib/libsxwm.so
+    #install -Dm755 libsxwm/libsxwm.so $out/lib/libsxwm.so
     install -Dm755 sxwm $out/bin/sxwm
     install -Dm755 sxwmbar $out/bin/sxwmbar
 

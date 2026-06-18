@@ -3,7 +3,7 @@
   stdenv,
   fetchFromGitHub,
   cmake,
- #ninja,
+  ninja,
   pkg-config,
   libX11,
   libxft,
@@ -30,13 +30,13 @@ stdenv.mkDerivation rec {
     owner = "cmanv";
     repo = "zwm";
    #rev = "main";
-    rev = "37da72f65b1f2de9981620f1c61891c15aeacff9";
-    sha256 = "1017rh3k174w730qanv32hnk8vlmy32dkn52f6rzaljrfv6sq8hi";
+    rev = "b204b3ddb0ac98f6538a2d286434528ec0d3a467";
+    sha256 = "1wkbysg3cm7id2f99zk053iw1148ymq9by1yq6mdcs7i08i6i7lc";
   };
 
   nativeBuildInputs = [
     cmake
-   #ninja
+    ninja
     pkg-config
   ];
 

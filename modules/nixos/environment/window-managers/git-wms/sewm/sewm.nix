@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libX11 ];
 
-  makeFlags = [ "PREFIX=$(out)" ];
+ #makeFlags = [ "PREFIX=$(out)" ];
 
  #buildPhase = ''
  #  runHook preBuild

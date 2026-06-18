@@ -4,6 +4,7 @@
   fetchFromGitHub,
   libX11,
   libXext,
+  libXft,
   libXrandr,
   libxtst,
   libXinerama,
@@ -49,6 +50,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libX11
     libXext
+    libXft
     libXrandr
     libxtst
     libXinerama
@@ -84,13 +86,13 @@ stdenv.mkDerivation rec {
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
       rulesFile =
-        if lib.isDerivation rules || builtins.isPath rules then rules else writeText "rules.def.h" conf;
+        if lib.isDerivation rules || builtins.isPath rules then rules else writeText "rules.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} src/config.def.h"
+    lib.optionalString (conf != null) "cp ${configFile} src/config.h"
     + " \n " +
-    lib.optionalString (rules != null) "cp ${rulesFile} src/rules.def.h"
+    lib.optionalString (rules != null) "cp ${rulesFile} src/rules.h"
     ;
 
   makeFlags = [

@@ -5,7 +5,9 @@ with lib;
 let
 
   cfg = config.services.xserver.windowManager.superiorxwm;
-  superiorxwm = pkgs.callPackage ./superiorxwm.nix { };
+  superiorxwm = pkgs.callPackage ./superiorxwm.nix {
+    libsxwm = pkgs.callPackage ./libsxwm.nix { };
+  };
 
 in
 

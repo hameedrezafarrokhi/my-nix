@@ -216,7 +216,31 @@ in
       nix-ld = {
         enable = true;
         package= pkgs.nix-ld;
-       #libraries = [ ];      # baseLibraries derived from systemd and nix dependencies;
+        # baseLibraries derived from systemd and nix dependencies;
+        libraries = [
+
+          pkgs.mesa
+          pkgs.libGL
+          pkgs.egl-x11
+          pkgs.libx11
+          pkgs.libxft
+          pkgs.libxext
+          pkgs.libxrandr
+          pkgs.libxinerama
+          pkgs.libxcb-util
+          pkgs.libxcb-keysyms
+          pkgs.libxcb-cursor
+          pkgs.libxcb-wm
+          pkgs.libxcb
+          pkgs.libxcb-image
+          pkgs.libxcb-render-util
+          pkgs.libxcb-errors
+          pkgs.fontconfig
+          pkgs.freetype
+          pkgs.gtk3
+
+        ] ++ config.home-manager.users.${admin}.home.packages;
+
       };
 
     };
