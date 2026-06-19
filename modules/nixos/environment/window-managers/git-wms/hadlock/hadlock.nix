@@ -34,38 +34,26 @@
   fontconfig,
   freetype,
 
+  rustPlatform,
   pkg-config,
-
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  dbus,
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "hadlock";
+  version = "2020-10-04";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "AdaShoelace";
+    repo = "hadlock";
+   #rev = "master";
+    rev = "154fd77e747aaf9a799c7d366b36235af22757d6";
+    sha256 = "0n7qp5gm0nv85fz8mmsrbw78cqkk28hahyn7yjakgl3ndvrz5z2n";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+    rustPlatform.bindgenHook
   ];
 
   buildInputs = [
@@ -99,36 +87,20 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+    dbus
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
-
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-
-
-    runHook postInstall
-  '';
+  cargoLock = {
+    lockFile = "${src}/Cargo.lock";
+  };
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/AdaShoelace/hadlock";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "hadlock";
   };
 }

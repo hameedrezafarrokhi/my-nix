@@ -34,41 +34,32 @@
   fontconfig,
   freetype,
 
+  rustPlatform,
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  wtftw,
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "wtftw-contrib";
+  version = "2021-01-21";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "kintaro";
+    repo = "wtftw-contrib";
+   #rev = "master";
+    rev = "e55f47df061d0c601a6e217b8bc3244e98b50e49";
+    sha256 = "0vmlqfk2bi87gaxn32cv1szjvdqspv5nxdsfi5xjw4mp6clll7vh";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+    rustPlatform.bindgenHook
   ];
 
   buildInputs = [
+    wtftw
+
     libx11
     libxft
     libxrandr
@@ -101,34 +92,17 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
-
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-
-
-    runHook postInstall
-  '';
+  cargoLock = {
+    lockFile = "${src}/Cargo.lock";
+  };
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/kintaro/wtftw-contrib";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "wtftw-contrib";
   };
 }

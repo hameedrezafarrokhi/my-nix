@@ -34,38 +34,31 @@
   fontconfig,
   freetype,
 
+  rustPlatform,
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  rustup,
+  wayland,
+  udev,
+  libinput,
+  libgbm,
+  seatd,
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "sswm";
+  version = "2023-08-23";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "Walker-00";
+    repo = "sswm";
+   #rev = "rust";
+    rev = "15565d70903e32273b782de106366fc45fc270dd";
+    sha256 = "0q2a38c7dr4fpd1agd085gxysjc3b0rbv5g230apj3zqf6ivyp5y";
   };
 
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
-
   nativeBuildInputs = [
-    pkg-config
+    rustup
   ];
 
   buildInputs = [
@@ -99,36 +92,30 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    wayland
+    libinput
+    udev
+    libgbm
+    seatd
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
+  cargoLock = {
+    lockFile = "${src}/Cargo.lock";
+  };
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-
-
-    runHook postInstall
+  postFixup = ''
+    cp $out/bin/sswm $out/bin/sswm
+    rm $out/bin/sswm
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/Walker-00/sswm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "sswm";
   };
 }

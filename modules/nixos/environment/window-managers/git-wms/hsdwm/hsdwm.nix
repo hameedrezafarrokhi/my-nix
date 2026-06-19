@@ -21,6 +21,7 @@
   libxcomp,
   libxcomposite,
   libxkbcommon,
+  libxkbfile,
 
   libxcb,
   libxcb-wm,
@@ -37,32 +38,27 @@
   pkg-config,
 
   writeText,
-  fetchpatch,
-  patches ? [ ],
   conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "hsdwm";
+  version = "2026-06-16";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "hsdcc";
+    repo = "hsdwm";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "043d5d67aa0e778592adee4ad7b720ef742291bc";
+    sha256 = "0mkr46bdxf6bsd5m6hr57nb7rm1w3wf5ycq2wxf0hrl4nd6jarlh";
   };
 
-
-  inherit patches;
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "wm.c" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
+    lib.optionalString (conf != null) "cp ${configFile} wm.c";
 
   nativeBuildInputs = [
     pkg-config
@@ -87,6 +83,7 @@ stdenv.mkDerivation rec {
     libxcomp
     libxcomposite
     libxkbcommon
+    libxkbfile
 
     libxcb
     libxcb-wm
@@ -101,34 +98,18 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
-
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
   installPhase = ''
-    runHook preInstall
-
-
-
-    runHook postInstall
+    mkdir -p $out/bin
+    cp thing $out/bin/hsdwm
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/hsdcc/hsdwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "hsdwm";
   };
 }

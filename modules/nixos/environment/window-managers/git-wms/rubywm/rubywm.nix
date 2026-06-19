@@ -36,36 +36,36 @@
 
   pkg-config,
 
+  ruby,
+
   writeText,
-  fetchpatch,
-  patches ? [ ],
   conf ? null,
+
+  makeWrapper
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "rubywm";
+  version = "2024-07-02";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "vidarh";
+    repo = "rubywm";
+   #rev = "master";
+    rev = "6b80d24bdf07d3343d8b36870dbeae8906a6b2e2";
+    sha256 = "1xkzjl0src869khzfb4063539x2d28rmzrr6kglaiplv6qy3ngc9";
   };
 
-
-  inherit patches;
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.yaml" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
+    lib.optionalString (conf != null) "cp ${configFile} config.yaml";
 
   nativeBuildInputs = [
     pkg-config
+    ruby
   ];
 
   buildInputs = [
@@ -101,34 +101,38 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
-
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
   installPhase = ''
     runHook preInstall
 
-
+    mkdir -p $out/share/rubywm $out/bin
+    cp -r ./* $out/share/rubywm/
 
     runHook postInstall
   '';
 
+  postInstall = ''
+    cat > $out/bin/rubywm << 'EOF'
+    #!/usr/bin/env bash
+
+    (${ruby}/bin/ruby $out/share/rubywm/rubywm.rb 2>&1 | logger -t rubywm) &
+
+    while true; do
+      wait
+      sleep 5
+    done
+
+    EOF
+
+    chmod +x $out/bin/rubywm
+  '';
+
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/vidarh/rubywm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "rubywm";
   };
 }

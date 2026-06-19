@@ -28,7 +28,9 @@ in
        "tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
        "afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
        "hackedbox" "mwm" "cwm" "stumpwm" "clfswm" "matchbox"
-       "wingo" "worm" "worm-quad"
+       "wingo" "worm" "worm-quad" "dowm" "plwm" "rubywm"
+       "hadlock" "wtftw" "minyaty" "hsdwm" "calavera" "oxwm-r"
+       "sswm"
 
        "oxwm"
 
@@ -189,6 +191,16 @@ in
     ./git-wms/zwm-cpp
     ./git-wms/wingo
     ./git-wms/worm
+    ./git-wms/dowm
+    ./git-wms/plwm
+    ./git-wms/rubywm
+    ./git-wms/hadlock
+    ./git-wms/wtftw
+    ./git-wms/minyaty
+    ./git-wms/hsdwm
+    ./git-wms/calavera
+    ./git-wms/oxwm-r
+    ./git-wms/sswm
 
     ./git-wms/compiz
     ./git-wms/sowm

@@ -34,39 +34,25 @@
   fontconfig,
   freetype,
 
+  rustPlatform,
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  python313Packages,
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "oxwm-r";
+  version = "2021-06-09";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "oxwm";
+    repo = "oxwm";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "d754b5e171003e2b214a36b2aedbbf90dcb33271";
+    sha256 = "1z1z5cbnmlsg9w2cbga2b1jqc4b04kc24g1680b5dfd34yvzmpam";
   };
 
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
-
-  nativeBuildInputs = [
-    pkg-config
-  ];
+  nativeBuildInputs = [ python313Packages.python ];
 
   buildInputs = [
     libx11
@@ -99,36 +85,26 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    python313Packages.python
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=$(out)"
-  ];
+  cargoLock = {
+    lockFile = "${src}/Cargo.lock";
+  };
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-
-
-    runHook postInstall
+  postFixup = ''
+    cp $out/bin/oxwm $out/bin/oxwm-r
+    rm $out/bin/oxwm
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/oxwm/oxwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "oxwm-r";
   };
 }
