@@ -132,19 +132,19 @@
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-      "frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
-      "moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "hsdwm"
-      "calavera" "oxwm-r"
+     #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
+     #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "hsdwm"
+     #"calavera" "oxwm-r"
 
-      "fluorite"
+     #"fluorite"
 
         # Floating
      #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm"
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm" "cygnus"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm"
-      "compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
-      "wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
-      "simplewm" "superiorxwm" "marswm"
+     #"compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
+     #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
+     #"simplewm" "superiorxwm" "marswm"
 
 
         # Bad Builds (needs fix)
