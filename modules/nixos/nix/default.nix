@@ -221,23 +221,47 @@ in
 
           pkgs.mesa
           pkgs.libGL
+          pkgs.libGLU
+          pkgs.libGLX
           pkgs.egl-x11
           pkgs.libx11
           pkgs.libxft
-          pkgs.libxext
           pkgs.libxrandr
+          pkgs.libxrender
+          pkgs.libxres
+          pkgs.libxcursor
+          pkgs.libxext
+          pkgs.libxi
           pkgs.libxinerama
-          pkgs.libxcb-util
-          pkgs.libxcb-keysyms
-          pkgs.libxcb-cursor
-          pkgs.libxcb-wm
+          pkgs.libxmu
+          pkgs.libxpm
+          pkgs.libxmp
+          pkgs.libxt
+          pkgs.libxdamage
+          pkgs.libxdmcp
+          pkgs.libxcomp
+          pkgs.libxcomposite
+          pkgs.libxkbcommon
           pkgs.libxcb
-          pkgs.libxcb-image
+          pkgs.libxcb-wm
+          pkgs.libxcb-util
           pkgs.libxcb-render-util
+          pkgs.libxcb-keysyms
+          pkgs.libxcb-image
           pkgs.libxcb-errors
+          pkgs.libxcb-cursor
           pkgs.fontconfig
+          pkgs.pkg-config
           pkgs.freetype
           pkgs.gtk3
+          pkgs.libxshmfence
+          pkgs.libappindicator
+          pkgs.libpkgconf
+          pkgs.libnotify
+          pkgs.libxscrnsaver
+          pkgs.libxtst
+          pkgs.libindicator
+          pkgs.ffmpeg-full
 
         ] ++ config.home-manager.users.${admin}.home.packages;
 

@@ -249,6 +249,8 @@
 
    ++ [(pkgs.callPackage ../myPackages/xclimsg.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
    ++ [(pkgs.callPackage ../myPackages/boron.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
