@@ -33,7 +33,8 @@ in
        "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
        "karuiwm" "cupidwm" "devwm"
 
-       "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm" "bouncywm-ruby"
+       "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
+       "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
 
        "oxwm"
 
@@ -219,6 +220,9 @@ in
     ./git-wms/bounce-wm
     ./git-wms/bouncywm
     ./git-wms/bouncywm-ruby
+    ./git-wms/bouncewm-kacper
+    ./git-wms/bouncewm
+    ./git-wms/stressfulwm
 
 
     ./git-wms/compiz

@@ -147,7 +147,8 @@
      #"simplewm" "superiorxwm" "marswm"
 
        # Bouncy :)
-     "bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/
+     "bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
+     "bouncewm" /*C,not-working*/  "bouncewm-kacper" /*C,not-working*/
      "bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
 
         # Bad Builds (needs fix)
