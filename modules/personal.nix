@@ -131,10 +131,10 @@
         # Dynamic
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
-     #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "pwm" "devoidwm"
-     #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm"
-     #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "hsdwm"
-     #"calavera" "oxwm-r"
+     #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
+     #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm" "pwm"
+     #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "oxwm-r"
+      "hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
 
      #"fluorite"
 
@@ -146,14 +146,17 @@
      #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
      #"simplewm" "superiorxwm" "marswm"
 
+       # Bouncy :)
+     "bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/
+     "bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
 
         # Bad Builds (needs fix)
      #"plwm"
      #"sswm" needs cargo lock
 
         # Broken Builds
-     #"zwm-zig2" "zwm-cpp" "hana"
-     #"windwm" "qvwm" "fxwm"
+     #"zwm-zig2" "zwm-cpp" "hana" "unknowwm"
+     #"windwm" "qvwm" "fxwm" "bouncywm"/*nim*/
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

@@ -6,6 +6,7 @@ let
 
   cfg = config.services.xserver.windowManager.hsdwm;
   hsdwm = pkgs.callPackage ./hsdwm.nix { };
+  hsdbar = pkgs.callPackage ./hsdbar.nix { };
 
 in
 
@@ -35,12 +36,13 @@ in
         export _JAVA_AWT_WM_NONREPARENTING=1
         xsetroot -cursor_name left_ptr &
         ${cfg.extraSessionCommands}
+        ${hsdbar}/bin/hsdbar
         ${hsdwm}/bin/hsdwm &
         waitPID=$!
       '';
     };
 
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [ cfg.package hsdbar ];
 
     services.xserver.windowManager.hsdwm = {
       enable = true;

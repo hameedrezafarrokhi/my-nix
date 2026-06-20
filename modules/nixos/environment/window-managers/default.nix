@@ -30,7 +30,10 @@ in
        "hackedbox" "mwm" "cwm" "stumpwm" "clfswm" "matchbox"
        "wingo" "worm" "worm-quad" "dowm" "plwm" "rubywm"
        "hadlock" "wtftw" "minyaty" "hsdwm" "calavera" "oxwm-r"
-       "sswm"
+       "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
+       "karuiwm" "cupidwm" "devwm"
+
+       "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm" "bouncywm-ruby"
 
        "oxwm"
 
@@ -201,6 +204,22 @@ in
     ./git-wms/calavera
     ./git-wms/oxwm-r
     ./git-wms/sswm
+    ./git-wms/gar
+    ./git-wms/unknowwm
+    ./git-wms/kopiwm
+    ./git-wms/critwm
+    ./git-wms/ferriswm
+    ./git-wms/karuiwm
+    ./git-wms/cupidwm
+    ./git-wms/devwm
+
+
+    ./git-wms/bouncy-window-manager
+    ./git-wms/bouncy-wm
+    ./git-wms/bounce-wm
+    ./git-wms/bouncywm
+    ./git-wms/bouncywm-ruby
+
 
     ./git-wms/compiz
     ./git-wms/sowm
