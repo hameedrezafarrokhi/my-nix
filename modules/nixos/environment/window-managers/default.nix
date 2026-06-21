@@ -31,7 +31,8 @@ in
        "wingo" "worm" "worm-quad" "dowm" "plwm" "rubywm"
        "hadlock" "wtftw" "minyaty" "hsdwm" "calavera" "oxwm-r"
        "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
-       "karuiwm" "cupidwm" "devwm"
+       "karuiwm" "cupidwm" "devwm" "glitch" "heawm" "octopus"
+       "gowm" "pointblank"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -49,7 +50,7 @@ in
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
        "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
-       "goomwwm" "wmx" "flwm" "adwm" "emwm" "eggwm" "uwm"
+       "goomwwm" "wmx" "flwm" "adwm" "emwm" "eggwm" "uwm" "notewm"
 
 
       ]);
@@ -213,6 +214,11 @@ in
     ./git-wms/karuiwm
     ./git-wms/cupidwm
     ./git-wms/devwm
+    ./git-wms/glitch
+    ./git-wms/heawm
+    ./git-wms/octopus
+    ./git-wms/gowm
+    ./git-wms/pointblank
 
 
     ./git-wms/bouncy-window-manager
@@ -269,6 +275,7 @@ in
     ./git-wms/uwm
     ./git-wms/marswm
     ./git-wms/worm-quad
+    ./git-wms/notewm
 
 
   ];

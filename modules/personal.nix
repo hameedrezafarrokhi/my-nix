@@ -135,6 +135,7 @@
      #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm" "pwm"
      #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "oxwm-r"
       "hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
+      "glitch" "heawm" "gowm" "pointblank"
 
      #"fluorite"
 
@@ -145,6 +146,7 @@
      #"compiz" "echinus" "progman" "karmen" "9wm" "ctwm" "blackbox" "goomwwm"
      #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
      #"simplewm" "superiorxwm" "marswm"
+      "notewm"
 
        # Bouncy :)
      "bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -152,7 +154,7 @@
      "bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
 
         # Bad Builds (needs fix)
-     #"plwm"
+     #"plwm" "octopus"
      #"sswm" needs cargo lock
 
         # Broken Builds
