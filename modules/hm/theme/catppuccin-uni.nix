@@ -7644,6 +7644,32 @@ in
                 shadow-radius = 0;
                 clip-shadow-above = false;
                 unredir = true;
+              },
+              {
+                match = "class_g = 'open-pets-desktop' || class_g = 'Bongo Cat' || class_g = 'Desktop-pets.py'";
+                opacity = 1.0;
+                blur-background = false;
+                opacity-override = false;
+                transparent-clipping = false;
+                fading = false;
+                shadow = false;
+                shadow-opacity = 0;
+                shadow-radius = 0;
+                clip-shadow-above = false;
+        	  animations = (
+        	    {
+        		 triggers = ["close", "hide"];
+        		 preset = "fly-out";
+        		 direction = "down";
+        		 duration = 0.2;
+        	    },
+        	    {
+        		 triggers = ["open", "show"];
+        		 preset = "fly-in";
+        		 direction = "down";
+        		 duration = 0.2;
+        	    }
+        	    )
               }
 
         )

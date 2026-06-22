@@ -188,6 +188,7 @@ in
         bspc rule -a mpv:mpvprev state=floating layer=above
         bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
         bspc rule -a systemctltui layer=above state=floating rectangle=1150x650+100+55
+        bspc rule -a "Bongo Cat" layer=above state=floating sticky=on focus=off follow=off border=off
 
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating

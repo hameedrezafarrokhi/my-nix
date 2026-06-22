@@ -214,6 +214,15 @@
    ++ [(pkgs.callPackage ../myPackages/pets/Konqi-Pet.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/catai.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pets/tux-assistant.nix { })] # WARNING BROKEN not working
+  #++ [(pkgs.callPackage ../myPackages/pets/bongocat-rs.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/openpets.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/pets/windowpet.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/pets/bongocat.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/bongocat-py.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/desktop-pets.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/desktop-pet-manager.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/gif-desktop-manager.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pets/nekopet.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/xidle.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xobvol.nix { })]
@@ -249,7 +258,11 @@
 
    ++ [(pkgs.callPackage ../myPackages/xclimsg.nix { })]
 
+  #++ [(pkgs.callPackage ../myPackages/anima-linux.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
