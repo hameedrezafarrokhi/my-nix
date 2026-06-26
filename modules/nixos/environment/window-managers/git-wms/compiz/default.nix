@@ -5,7 +5,9 @@ with lib;
 let
 
   cfg = config.services.xserver.windowManager.compiz;
-  compiz = pkgs.callPackage ./compiz.nix { };
+  compiz = pkgs.callPackage ./compiz.nix {
+    python3 = pkgs.python311; python3Packages = pkgs.python311Packages;
+  };
 
 in
 

@@ -26,14 +26,17 @@
 stdenv.mkDerivation (finalAttrs: {
   pname = "hana";
  #version = "2026-05-10";
-  version = "2026-06-06";
+ #version = "2026-06-06";
+  version = "2026-06-24";
 
   src = fetchFromGitHub {
     owner = "hana-wm";
     repo = "hana";
-    rev = "dev";
+   #rev = "dev";
    #hash = "sha256-ctJSwFzwbL77DGBK9/pJUCO7/cYBia5+QQc8NEtDTTU=";
-    hash = "sha256-Qy3loGsqLq/Y9p+FOx6DHwohadKF+cxQlf2Z/NE4VAM=";
+   #hash = "sha256-Qy3loGsqLq/Y9p+FOx6DHwohadKF+cxQlf2Z/NE4VAM=";
+    rev = "ef1d11c89207b5338b5dd47066bae1ca269219f9";
+    sha256 = "1y9adgnq05716h75n3s43ywvc3fjx7wy3gvd1clwllhdafhqgfnc";
   };
 
   nativeBuildInputs = [

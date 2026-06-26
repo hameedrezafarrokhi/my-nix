@@ -21,18 +21,15 @@
   pcre2,
   pkg-config,
   protobuf,
-  python3,
-  python3Packages,
-  stdenv,
-  wrapGAppsHook4,
+  python313,
+  python313Packages,
+  gcc14Stdenv,
+  wrapGAppsHook3,
   xorg,
   xorgserver,
-  ninja,
-  libice,
-  libsm,
   ...
 }:
-stdenv.mkDerivation (f: {
+gcc14Stdenv.mkDerivation (f: rec {
   pname = "compiz";
   version = "0.9.14.2";
   shortVersion = "${lib.versions.majorMinor f.version}.${lib.versions.patch f.version}";
@@ -47,14 +44,13 @@ stdenv.mkDerivation (f: {
     makeWrapper
     pcre2
     pkg-config
-    (python3Packages.python.withPackages (p: [ p.setuptools ]))
-    python3Packages.distlib
-    python3Packages.distutils-extra
-    python3Packages.cython
-    python3Packages.setuptools
-    python3Packages.wrapPython
-    wrapGAppsHook4
-    ninja
+    (python313Packages.python.withPackages (p: [ p.setuptools ]))
+    python313Packages.distlib
+    python313Packages.distutils-extra
+    python313Packages.cython
+    python313Packages.setuptools
+    python313Packages.wrapPython
+    wrapGAppsHook3
   ];
   buildInputs = [
     boost
@@ -76,8 +72,6 @@ stdenv.mkDerivation (f: {
     xorg.libXcursor
     xorg.libXdmcp
     xorgserver
-    libice
-    libsm
   ];
 
   postInstall = ''
@@ -87,7 +81,7 @@ stdenv.mkDerivation (f: {
 
   dontWrapGApps = true;
 
-  pythonPath = with python3Packages; [
+  pythonPath = with python313Packages; [
     pycairo
     pygobject3
   ];
@@ -108,7 +102,7 @@ stdenv.mkDerivation (f: {
     do
       wrapProgram $i \
         --prefix PATH : ${lib.makeBinPath [
-          (python3.withPackages(pp: [pp.pygobject3 pp.distutils-extra pp.distlib]))
+          (python313.withPackages(pp: [pp.pygobject3 pp.distutils-extra pp.distlib]))
         ]}
     done
   '';
@@ -120,19 +114,11 @@ stdenv.mkDerivation (f: {
     ./patches/screenshot-launch-fix.patch
     ./patches/no-compile-gschemas.patch
     ./patches/compiz-suse-defaults.patch
-
-    ./patches/Drop-toggle-shaded-since-it-s-no-longer-included-in-.patch
-    ./patches/64-bit-time-t-compat.patch
-    ./patches/fix-crash-in-vertexbuffer.patch
-    ./patches/fix-wrapmode.patch
   ];
 
   cmakeFlags = [
-   #"-B build"
-   #"-G Ninja"
     "-DCMAKE_CXX_STANDARD=17"
-   #"-DCMAKE_BUILD_TYPE='Release'"
-    "-DCMAKE_BUILD_TYPE=None"
+    "-DCMAKE_BUILD_TYPE='Release'"
     "-DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON"
     "-DCOMPIZ_BUILD_WITH_RPATH=OFF"
     "-DCOMPIZ_PACKAGING_ENABLED=ON"
@@ -144,4 +130,7 @@ stdenv.mkDerivation (f: {
     "-DCOMPIZ_WERROR=OFF"
     "-Wno-dev"
   ];
+
+  # https://github.com/LuNeder/compiz-reloaded-nix/blob/compiz09/default.nix
+
 })

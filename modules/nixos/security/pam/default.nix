@@ -44,6 +44,7 @@ in
       i3lock.enable = true;
       i3lock-color.enable = true;
       x-lock.enable = true;
+      fancylock.enable = true;
       xscreensaver.enable = true;
       betterlockscreen.enable = true;
       xremap-x-lock-sleep.enable = true;

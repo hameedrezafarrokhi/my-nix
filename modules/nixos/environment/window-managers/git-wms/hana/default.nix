@@ -10,19 +10,22 @@ let
       pname = "zig-git";
 
      #version = "0.17.0-dev.389+f5a1968f6";
-      version = "0.17.0-dev.813+2153f8143";
+     #version = "0.17.0-dev.813+2153f8143";
+      version = "0.17.0-dev.956+2dca73595";
 
       src = pkgs.fetchurl {
 
        #url = "https://ziglang.org/builds/zig-x86_64-linux-0.17.0-dev.389+f5a1968f6.tar.xz";
        #sha256 = "9cvkpe6BmlERdvbqNSyeo1XXurtNx0yxcXI4ZHMCVoM=";
-        url = "https://ziglang.org/builds/zig-x86_64-linux-0.17.0-dev.813+2153f8143.tar.xz";
-        sha256 = "sNRv/EWHuejdC1JO5bxNoeZ/KLulXnxTTOxkry8tenQ=";
-
+       #url = "https://ziglang.org/builds/zig-x86_64-linux-0.17.0-dev.813+2153f8143.tar.xz";
+       #sha256 = "sNRv/EWHuejdC1JO5bxNoeZ/KLulXnxTTOxkry8tenQ=";
+        url = "https://ziglang.org/builds/zig-x86_64-linux-0.17.0-dev.956+2dca73595.tar.xz";
+        hash = "sha256-EdmV9H+EfDOUu4VV19iEHmhqxqyMUhyM5ipmFubrC0g=";
       };
 
      #sourceRoot = "zig-x86_64-linux-0.17.0-dev.389+f5a1968f6";
-      sourceRoot = "zig-x86_64-linux-0.17.0-dev.813+2153f8143";
+     #sourceRoot = "zig-x86_64-linux-0.17.0-dev.813+2153f8143";
+      sourceRoot = "zig-x86_64-linux-0.17.0-dev.956+2dca73595";
 
       dontBuild = true;
       dontConfigure = true;

@@ -45,7 +45,7 @@ in
        "marswm" "pwm" "philoswm" "devoidwm"
        "frankenwm" "echinus" "howm" "zwm-c" "zwm" "zwm-zig" "zwm-zig2" "zwm-cpp"
 
-       "compiz" "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
+       "compiz" "compiz-reloaded" "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
        "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
@@ -233,6 +233,7 @@ in
 
 
     ./git-wms/compiz
+    ./git-wms/compiz-reloaded
     ./git-wms/sowm
     ./git-wms/aphelia
     ./git-wms/mcwm
