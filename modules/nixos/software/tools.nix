@@ -123,6 +123,8 @@
     asciiquarium-transparent
     unimatrix
 
+    hollywood
+
     bucklespring
 
     go
@@ -143,6 +145,9 @@
     xpad
 
     libxkbcommon
+
+   #xosd
+    xosd-xft
 
 
   ] ) config.my.software.tools.exclude)
@@ -256,13 +261,23 @@
    ++ [(pkgs.callPackage ../myPackages/xmdialog.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xpickrgb.nix { })]
 
+  #++ [(pkgs.callPackage ../myPackages/polo.nix { })]  # Needs Gee 0.8 package
+  #++ [(pkgs.callPackage ../myPackages/file-commander.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/file-commander-appimage.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/xclimsg.nix { })]
 
   #++ [(pkgs.callPackage ../myPackages/anima-linux.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/x11-idle-sync.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/xosdbar.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xplorer.nix { })]
+
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]

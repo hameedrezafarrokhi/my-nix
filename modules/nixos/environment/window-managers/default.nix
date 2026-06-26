@@ -32,7 +32,7 @@ in
        "hadlock" "wtftw" "minyaty" "hsdwm" "calavera" "oxwm-r"
        "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
        "karuiwm" "cupidwm" "devwm" "glitch" "heawm" "octopus"
-       "gowm" "pointblank"
+       "gowm" "pointblank" "vxwm"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -219,6 +219,7 @@ in
     ./git-wms/octopus
     ./git-wms/gowm
     ./git-wms/pointblank
+    ./git-wms/vxwm
 
 
     ./git-wms/bouncy-window-manager

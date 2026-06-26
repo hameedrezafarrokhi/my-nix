@@ -54,6 +54,12 @@
     pkgs.unzip                         ##ZIP protocol
     pkgs.file                          ##file utility like mime type finder
 
+    pkgs.smartsynchronize
+    pkgs.mucommander
+    pkgs.gnome-commander
+    pkgs.doublecmd
+    pkgs.xfe
+
   ] ) config.my.software.files.exclude)
 
    ++

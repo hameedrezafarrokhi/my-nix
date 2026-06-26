@@ -135,7 +135,7 @@
      #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm" "pwm"
      #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "oxwm-r"
       "hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
-      "glitch" "heawm" "gowm" "pointblank"
+      "glitch" "heawm" "gowm" "pointblank" "vxwm"
 
      #"fluorite"
 

@@ -37,6 +37,7 @@
   # bunnyfetch
   # bfetch
   # afetch
+    nitch
 
   ] ) config.my.software.fetch.exclude)
 
