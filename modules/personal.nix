@@ -137,6 +137,7 @@
      #"hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
      #"glitch" "heawm" "gowm" "pointblank"
       "vxwm"
+      "torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm"
 
      #"fluorite"
 
@@ -154,7 +155,7 @@
      #"bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
 
         # Bad Builds (needs fix)
-     #"plwm" "octopus"
+     #"plwm" "octopus" "page"
      #"sswm" needs cargo lock
 
         # Broken Builds

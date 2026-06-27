@@ -83,7 +83,7 @@ stdenv.mkDerivation rec {
   ];
 
  #dontBuild = true;
- #dontCheck = true;
+ #doCheck = false;
 
   makeFlags = [ "CC=${stdenv.cc.targetPrefix}cc" "PREFIX=$(out)" ];
 

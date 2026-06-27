@@ -275,6 +275,10 @@
 
    ++ [(pkgs.callPackage ../myPackages/fancylock.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/vtsh.nix { })]
+
+  #++ [(pkgs.callPackage ../myPackages/xmms.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]

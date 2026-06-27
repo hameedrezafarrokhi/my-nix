@@ -32,7 +32,8 @@ in
        "hadlock" "wtftw" "minyaty" "hsdwm" "calavera" "oxwm-r"
        "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
        "karuiwm" "cupidwm" "devwm" "glitch" "heawm" "octopus"
-       "gowm" "pointblank" "vxwm"
+       "gowm" "pointblank" "vxwm" "torba" "scrotwm" "cocowm"
+       "mxswm" "crubwm" "voxwm" "sweetwm" "page"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -220,7 +221,14 @@ in
     ./git-wms/gowm
     ./git-wms/pointblank
     ./git-wms/vxwm
-
+    ./git-wms/torba
+    ./git-wms/scrotwm
+    ./git-wms/cocowm
+    ./git-wms/mxswm
+    ./git-wms/crubwm
+    ./git-wms/voxwm
+    ./git-wms/sweetwm
+    ./git-wms/page
 
     ./git-wms/bouncy-window-manager
     ./git-wms/bouncy-wm

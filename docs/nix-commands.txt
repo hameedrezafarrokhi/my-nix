@@ -29,6 +29,7 @@
     nix why-depends --all nixpkgs#thunderbird nixpkgs#xorg.libX11
     nix-store -r $(which heroic)                                         ## prints the store for the "which" command
     nix-locate heroic                                                    ## searches everything in store
+    nix-locate X11/extensions/XKBrules.h                                 ## Find a package for a file
     nix-locate bin/hello                                                 ## search for a binary
     nix store ?? has lots of commands??
 
