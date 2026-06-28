@@ -37,31 +37,27 @@
   pkg-config,
 
   writeText,
-  fetchpatch,
-  patches ? [ ],
   conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "dael";
+  version = "2025-03-05";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "masonarmand";
+    repo = "dael";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "bce6b622ab66811f6d354a8ba59d543671e94155";
+    sha256 = "01gsf33dn9qv0bda9qwkmic907hzyc9lc5w7jdaz458xg4f3bns2";
   };
 
-
-  inherit patches;
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} config.h";
 
 
   nativeBuildInputs = [
@@ -106,30 +102,22 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    cp dael $out/bin/dael
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/masonarmand/dael";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "dael";
   };
 }

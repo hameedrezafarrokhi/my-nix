@@ -36,36 +36,40 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+ #gprbuild,
+ #gnat,
+  gnatPackages,
+  gnat,
+
+  libGLX,
+  libGL,
+
+  egl-x11,
+
+  xorgproto,
+
+  yasm,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "troodon";
+  version = "2021-04-14";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "docandrew";
+    repo = "troodon";
+   #rev = "master";
+    rev = "9240611708f92ffb5491fa677bffb6ecac58a51e";
+    sha256 = "12zr54wpavzyjbj2yn0liby4xfqv39wab71811i2rxbk7700c8cf";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+   #gprbuild
+    gnatPackages.gprbuild
+    gnatPackages.gnat
+    gnat
+    yasm
   ];
 
   buildInputs = [
@@ -99,6 +103,13 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    libGLX
+    libGL
+
+    egl-x11
+
+    xorgproto
   ];
 
   makeFlags = [
@@ -106,30 +117,30 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
+ #buildPhase = ''
+ #  runHook preBuild
+ #
+ #
+ #
+ #  runHook postBuild
+ #'';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    cp obj/troodon $out/bin/troodon
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/docandrew/troodon";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "troodon";
   };
 }

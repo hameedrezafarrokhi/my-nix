@@ -36,36 +36,38 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  cmake,
+
+  wayland,
+
+  libGL,
+  libGLX,
+  egl-x11,
+  egl-wayland,
+  glew,
+  wlroots_0_19,
+  wlr-protocols,
+  pixman,
+  xdg-desktop-portal-wlr,
+  ...
+
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "customwm";
+  version = "2023-12-10";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "andrenho";
+    repo = "customwm";
+   #rev = "master";
+    rev = "ce9ac3a6b92e1c2de5a7a9ec537c2b5d57938fcf";
+    sha256 = "0xvn5bg8f3xm0cgd91hrjpp43ain1q0iarasbs2cigi3pn34dbmw";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+    cmake
   ];
 
   buildInputs = [
@@ -99,6 +101,18 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    wayland
+
+    libGL
+    libGLX
+    egl-x11
+    egl-wayland
+    glew
+    wlroots_0_19
+    pixman
+    wlr-protocols
+    xdg-desktop-portal-wlr
   ];
 
   makeFlags = [
@@ -109,7 +123,22 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
+    mkdir build
+    cd build
 
+    #To build for X11 only (no OpenGL):
+    #cmake -DWITH_OPENGL=OFF -DWITH_WAYLAND=OFF ..
+
+    #To build for X11 only (with OpenGL):
+    #cmake -DWITH_WAYLAND=OFF ..
+
+    #To build for Wayland only:
+    #cmake -DWITH_X11=OFF ..
+
+    #To build all
+    cmake ..
+
+    make
 
     runHook postBuild
   '';
@@ -117,19 +146,21 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    make install
+
+    #mkdir -p $out/bin
+    #cp customwm $out/bin/customwm
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/andrenho/customwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "customwm";
   };
 }

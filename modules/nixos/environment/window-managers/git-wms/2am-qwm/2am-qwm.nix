@@ -37,31 +37,36 @@
   pkg-config,
 
   writeText,
-  fetchpatch,
-  patches ? [ ],
   conf ? null,
 }:
 
+let
+
+  hfile = ./2am-builder.h;
+
+in
+
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "2am-qwm";
+  version = "2026-01-20";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "kunyukzz";
+    repo = "2am-qwm";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "923175e2d2907f1e982f733a81d4a247ee020d99";
+    sha256 = "1ffa4jfc44m6lk65v7046ga06iqmrhz3khwbr89lav9xhkr690bi";
   };
 
-
-  inherit patches;
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} src/config.h"
+    + " \n " +
+    "rm -f 2am-builder.h && cp -f ${hfile} 2am-builder.h"
+    ;
 
 
   nativeBuildInputs = [
@@ -109,7 +114,7 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
-
+    cc build.c -o build
 
     runHook postBuild
   '';
@@ -118,18 +123,23 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+
+    cp -r ${src}/src $out/
+    cp -f build $out/2am-qwm
+
+    #cp -f build $out/bin/2am-qwm
+    ln -sf $out/2am-qwm $out/bin/2am-qwm
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/kunyukzz/2am-qwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "2am-qwm";
   };
 }

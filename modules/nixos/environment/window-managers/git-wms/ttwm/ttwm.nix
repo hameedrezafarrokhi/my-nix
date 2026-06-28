@@ -36,33 +36,23 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  rustPlatform,
+
+  cairo,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "ttwm";
+  version = "2026-01-08";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "adereth";
+    repo = "ttwm";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "610b158d9f04a65ad0ba6f7a6ed8b2b5afacd34e";
+    sha256 = "08a2f2rds5cjyakv038y4l7mcqfxnkqqb8mmfb29mvjwcwkyh6xm";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -99,37 +89,25 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    cairo
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+ #cargoLock = {
+ #  lockFile = "${src}/Cargo.lock";
+ #};
 
-  buildPhase = ''
-    runHook preBuild
+  cargoHash = "sha256-5LxTWWd9fp/rniwMuQnmBDWvcZXd4qm+umDt00B9SEY=";
 
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
-  '';
+  doCheck = false;
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/adereth/ttwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "ttwm";
   };
 }

@@ -33,7 +33,10 @@ in
        "sswm" "gar" "unknowwm" "kopiwm" "critwm" "ferriswm"
        "karuiwm" "cupidwm" "devwm" "glitch" "heawm" "octopus"
        "gowm" "pointblank" "vxwm" "torba" "scrotwm" "cocowm"
-       "mxswm" "crubwm" "voxwm" "sweetwm" "page"
+       "mxswm" "crubwm" "voxwm" "sweetwm" "page" "cluless"
+       "rustile" "poorwm" "neowm" "ltwm" "dael" "derpy-wm"
+       "troodon" "miawm" "irwm" "customwm" "ttwm" "2am-qwm"
+       "oxidewm" "subtle-rs" "tatami" "gridwm" "fensterchef"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -229,6 +232,24 @@ in
     ./git-wms/voxwm
     ./git-wms/sweetwm
     ./git-wms/page
+    ./git-wms/cluless
+    ./git-wms/rustile
+    ./git-wms/poorwm
+    ./git-wms/neowm
+    ./git-wms/ltwm
+    ./git-wms/dael
+    ./git-wms/derpy-wm
+    ./git-wms/troodon
+    ./git-wms/miawm
+    ./git-wms/irwm
+    ./git-wms/customwm
+    ./git-wms/ttwm
+    ./git-wms/2am-qwm
+    ./git-wms/oxidewm
+    ./git-wms/subtle-rs
+    ./git-wms/tatami
+    ./git-wms/gridwm
+    ./git-wms/fensterchef
 
     ./git-wms/bouncy-window-manager
     ./git-wms/bouncy-wm

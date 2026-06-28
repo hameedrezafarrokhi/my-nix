@@ -36,33 +36,23 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  rustPlatform,
+
+  cairo,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "subtle-rs";
+  version = "2026-06-23";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "unexist";
+    repo = "subtle-rs";
+   #rev = "master";
+    rev = "860a3b7b74290fbd5cee6df0b66b98365441bdd1";
+    sha256 = "0krcn2491hcysj9xaph332x7ahpr5cp0xlvkzg62wgfqr4918j7f";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -99,37 +89,25 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    cairo
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+ #cargoLock = {
+ #  lockFile = "${src}/Cargo.lock";
+ #};
 
-  buildPhase = ''
-    runHook preBuild
+  cargoHash = "sha256-8sssfjXy0Sv5fvcOQL1bUqQM28UabnpGjx8w+GXNPwA=";
 
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
-  '';
+  doCheck = false;
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/unexist/subtle-rs";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "subtle-rs";
   };
 }

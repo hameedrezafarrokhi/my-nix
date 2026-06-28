@@ -36,33 +36,19 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "poorwm";
+  version = "2014-12-08";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "kthxbyte";
+    repo = "poorwm";
+   #rev = "master";
+    rev = "c914c16ff7a5879b3661814b0b7d7d95e55cd0d3";
+    sha256 = "0jxlx7ag2yjamlljdwl9r59mrv0ripdmhbyviqcvplz889n0hnrc";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -106,30 +92,30 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
+ #buildPhase = ''
+ #  runHook preBuild
+ #
+ #
+ #
+ #  runHook postBuild
+ #'';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    cp poorwm $out/bin/poorwm
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/kthxbyte/poorwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "poorwm";
   };
 }

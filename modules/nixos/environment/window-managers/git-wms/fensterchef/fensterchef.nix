@@ -36,33 +36,19 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "fensterchef";
+  version = "2026-06-21";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "DevByProxy";
+    repo = "fensterchef";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "4ca8d161c6a9962411ec70af06e29660b8339333";
+    sha256 = "1d33arp66lq4fd0ragbs7z25kc5fhrfvs70p36klxy37l9n138nd";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -101,35 +87,38 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+  prePatch = ''
+    substituteInPlace make \
+      --replace '/usr/' '$out/'
+  '';
+
+ #makeFlags = [
+ #  "CC=${stdenv.cc.targetPrefix}cc"
+ #  "PREFIX=${placeholder "out"}"
+ #];
 
   buildPhase = ''
     runHook preBuild
-
-
-
+    ./make fensterchef install
     runHook postBuild
   '';
 
   installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
+   #runHook preInstall
+   #
+   #mkdir -p $out/bin
+   #cp fensterchef $out/bin/fensterchef
+   #
+   #runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/DevByProxy/fensterchef";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "fensterchef";
   };
 }

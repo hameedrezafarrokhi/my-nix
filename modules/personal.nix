@@ -129,15 +129,18 @@
       # Git-Wms
 
         # Dynamic
+      "vxwm"
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
      #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm" "pwm"
      #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "oxwm-r"
      #"hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
-     #"glitch" "heawm" "gowm" "pointblank"
-      "vxwm"
-      "torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm"
+     #"glitch" "heawm" "gowm" "pointblank" "troodon" "tatami" "gridwm" "cluless"
+     #"torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm" "subtle-rs"
+     #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
+     #"fensterchef"
+
 
      #"fluorite"
 
@@ -156,10 +159,12 @@
 
         # Bad Builds (needs fix)
      #"plwm" "octopus" "page"
+     #"customwm" cant find wlroots
      #"sswm" needs cargo lock
+     #"oxidewm" need multiple cargo locks
 
         # Broken Builds
-     #"zwm-zig2" "zwm-cpp" "hana" "unknowwm"
+     #"zwm-zig2" "zwm-cpp" "hana" "unknowwm" "derpy-wm"
      #"compiz" "windwm" "qvwm" "fxwm" "bouncywm"/*nim*/
 
     ];

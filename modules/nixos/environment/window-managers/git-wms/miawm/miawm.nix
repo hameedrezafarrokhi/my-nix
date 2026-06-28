@@ -43,15 +43,15 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "miawm";
+  version = "2021-01-11";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "etale-cohomology";
+    repo = "miawm";
+   #rev = "master";
+    rev = "667fb733b315086da177fbbf52bac97dbfebd43b";
+    sha256 = "14s9kf6sapfs22wgl2s0p6bjsgjqhk5r3gxk4fbq422560jqifzs";
   };
 
 
@@ -59,9 +59,9 @@ stdenv.mkDerivation rec {
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "miawm_config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} miawm_config.h";
 
 
   nativeBuildInputs = [
@@ -103,33 +103,29 @@ stdenv.mkDerivation rec {
 
   makeFlags = [
     "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
+    "BIN=${placeholder "out"}"
   ];
 
-  buildPhase = ''
-    runHook preBuild
+ #buildPhase = ''
+ #  runHook preBuild
+ #
+ #
+ #
+ #  runHook postBuild
+ #'';
 
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
+  postInstall = ''
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
+    cp $out/miawm $out/bin/miawm
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/etale-cohomology/miawm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "miawm";
   };
 }

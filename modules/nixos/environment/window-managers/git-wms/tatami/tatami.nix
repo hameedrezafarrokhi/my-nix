@@ -36,36 +36,26 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  buildGoModule,
+  go,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+buildGoModule rec {
+  pname = "tatami";
+  version = "2026-03-25";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "0xMukesh";
+    repo = "tatami";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "942330708de05eafb104ba737dffd89fadfad75b";
+    sha256 = "1scrd5dy7xcrn0vchvccf9bz18sp4qp9qqrrngy57y1rsgjbkxjs";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+    go
   ];
 
   buildInputs = [
@@ -101,35 +91,28 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+  vendorHash = "sha256-KCSU5bHS4qprqNbrNxRCGJJSJdHs5OF/yZkTX+XlYo0=";
 
   buildPhase = ''
     runHook preBuild
-
-
-
+    go build -o ./dist/tatami .
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
+    cp dist/tatami $out/bin/tatami
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/0xMukesh/tatami";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "tatami";
   };
 }

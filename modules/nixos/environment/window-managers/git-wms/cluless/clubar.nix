@@ -40,18 +40,20 @@
   fetchpatch,
   patches ? [ ],
   conf ? null,
+
+  lua5_1,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "clubar";
+  version = "2024-09-10";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "lycuid";
+    repo = "clubar";
+   #rev = "master";
+    rev = "0481e60a50c6ab4c01d42ab8493aa9418279df21";
+    sha256 = "050fbjwajqdszarb3549ln11fx0pfzh6y6fqb4rx4ls8kn8b48cs";
   };
 
 
@@ -59,13 +61,14 @@ stdenv.mkDerivation rec {
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} src/config.h";
 
 
   nativeBuildInputs = [
     pkg-config
+    lua5_1
   ];
 
   buildInputs = [
@@ -99,37 +102,47 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+    lua5_1
   ];
 
   makeFlags = [
     "CC=${stdenv.cc.targetPrefix}cc"
     "PREFIX=${placeholder "out"}"
+   #"DESTDIR=${placeholder "out"}"
+   #"BINPREFIX=/bin"
+   #"MANPREFIX=/share/man/man1"
   ];
 
   buildPhase = ''
     runHook preBuild
 
-
+    make PLUGINS="luaconfig xrmconfig"
 
     runHook postBuild
+  '';
+
+  preInstall = ''
+    mkdir -p $out/bin $out/bin $out/share/man/man1
   '';
 
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    strip .build/bin/clubar
+
+    cp -f .build/bin/clubar $out/bin/clubar
+    cp clubar.1.tmpl $out/share/man/man1/clubar.1
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/lycuid/clubar";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "clubar";
   };
 }

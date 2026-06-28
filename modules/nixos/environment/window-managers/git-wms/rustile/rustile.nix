@@ -36,33 +36,23 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  rustPlatform,
+
+  cairo,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "rustile";
+  version = "2026-03-10";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "d-matsui";
+    repo = "rustile";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "e6959f138967cff65f53dd1b542d7bb4b0b5728f";
+    sha256 = "1fvj4czp8k6pgccvzsgsyr1xi6gzy9xzjdjpwcikqfyisxbl35xr";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -99,37 +89,25 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    cairo
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+ #cargoLock = {
+ #  lockFile = "${src}/Cargo.lock";
+ #};
 
-  buildPhase = ''
-    runHook preBuild
+  cargoHash = "sha256-7CB+IzqW4TFJr+PCV8FIaWXAzbw12EnXz3rMJBAOASU=";
 
-
-
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
-  '';
+  doCheck = false;
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/d-matsui/rustile";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "rustile";
   };
 }

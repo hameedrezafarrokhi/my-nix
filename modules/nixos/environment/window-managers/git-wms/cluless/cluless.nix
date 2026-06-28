@@ -43,15 +43,15 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "cluless";
+  version = "2024-09-07";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
-   #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "lycuid";
+    repo = "cluless";
+   #rev = "master";
+    rev = "42d7aa37b599b194c58bb5e92f431fa96c5b22c2";
+    sha256 = "0b0ylr1sfgqfs9xnq8sgwy0mxg4rklhl1djalfs3rwg9q2sgp43z";
   };
 
 
@@ -59,9 +59,9 @@ stdenv.mkDerivation rec {
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} src/config.h";
 
 
   nativeBuildInputs = [
@@ -103,33 +103,32 @@ stdenv.mkDerivation rec {
 
   makeFlags = [
     "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
+    "DESTDIR=${placeholder "out"}"
+    "BINPREFIX=/bin"
+    "MANPREFIX=/share/man/man1"
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
+  preInstall = ''
+    mkdir -p $out/bin $out/bin $out/share/man/man1
   '';
 
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
-  '';
+ #installPhase = ''
+ #  runHook preInstall
+ #
+ #  mkdir -p $out/bin $out/bin $out/share/man/man1
+ #  cp src/cluless/cluless $out/bin/cluless
+ #  cp cluless.1.tmpl $out/share/man/man1/cluless.1
+ #
+ #  runHook postInstall
+ #'';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/lycuid/cluless";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "cluless";
   };
 }

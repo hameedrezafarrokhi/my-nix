@@ -36,33 +36,26 @@
 
   pkg-config,
 
-  writeText,
-  fetchpatch,
-  patches ? [ ],
-  conf ? null,
+  rustPlatform,
+
+  cairo,
+  graphviz,
+  pandoc,
+  dmenu,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+rustPlatform.buildRustPackage rec {
+  pname = "oxidewm";
+  version = "2023-09-13";
 
   src = fetchFromGitHub {
-    owner = "dylanaraps";
-    repo = "sowm";
+    owner = "FelixSchladt";
+    repo = "OxideWM";
    #rev = "main";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    rev = "afa6285434f35e81c129708785dca074c9e7b094";
+    sha256 = "19brnhvm2dqd79w5y6vncr9al69cpb9qlmkr5w26j4r3s6vdl8vk";
   };
-
-
-  inherit patches;
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
@@ -99,37 +92,56 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    cairo
+    graphviz
+    pandoc
+    dmenu
   ];
 
-  makeFlags = [
-    "CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
+ #cargoLock = {
+ #  lockFile = "${src}/Cargo.lock";
+ #};
+
+  cargoHash = lib.fakeHash;
+
+  doCheck = false;
 
   buildPhase = ''
     runHook preBuild
-
-
-
+    cargo build --release
+    cargo build -p oxide-bar --release
+    cargo build -p oxide-msg --release
     runHook postBuild
   '';
 
   installPhase = ''
-    runHook preInstall
+    runHook preBuild
+    mkdir -p $out/bin $out/etc/oxide $out/share/man/man1 $out/share/oxide
+    install -Dm755 \
+		target/release/oxide \
+		target/release/oxide-bar \
+		target/release/oxide-msg \
+		-t $out/bin/
+	cp -t $out/etc/oxide/oxide/ \
+		resources/config.yml \
+		bar_config.yml
 
-    mkdir -p $out/bin
-    cp sowm $out/bin/sowm
-
-    runHook postInstall
+	cp man/oxide.1 \
+		man/oxide-bar.1 \
+		man/oxide-config.1 \
+		man/oxide-msg.1 \
+		$out/share/man/man1/
+    runHook postBuild
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/dylanaraps/sowm";
+    homepage = "https://github.com/FelixSchladt/OxideWM";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "oxidewm";
   };
 }
