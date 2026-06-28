@@ -139,9 +139,9 @@
      #"glitch" "heawm" "gowm" "pointblank" "troodon" "tatami" "gridwm" "cluless"
      #"torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm" "subtle-rs"
      #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
-     #"fensterchef"
-      "rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
-      "seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm"
+     #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
+     #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
+     #"rdwm" "rustwm" "fensterchef"
 
 
      #"fluorite"
@@ -153,7 +153,7 @@
      #"compiz-reloaded" "echinus" "progman" "karmen" "9wm" "ctwm"
      #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
      #"simplewm" "superiorxwm" "marswm" "notewm"
-      "ywm"
+     #"ywm"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -164,7 +164,7 @@
      #"plwm" "octopus" "page"
      #"customwm" cant find wlroots
      #"sswm" needs cargo lock
-     #"yggdrasilwm"
+     #"yggdrasilwm" "bond-wm" "fyrwm"
 
         # Broken Builds
      #"zwm-zig2" "zwm-cpp" "hana" "unknowwm" "derpy-wm"
