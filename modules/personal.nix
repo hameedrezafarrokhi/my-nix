@@ -140,6 +140,8 @@
      #"torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm" "subtle-rs"
      #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
      #"fensterchef"
+      "rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
+      "seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm"
 
 
      #"fluorite"
@@ -151,6 +153,7 @@
      #"compiz-reloaded" "echinus" "progman" "karmen" "9wm" "ctwm"
      #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
      #"simplewm" "superiorxwm" "marswm" "notewm"
+      "ywm"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -161,10 +164,11 @@
      #"plwm" "octopus" "page"
      #"customwm" cant find wlroots
      #"sswm" needs cargo lock
-     #"oxidewm" need multiple cargo locks
+     #"yggdrasilwm"
 
         # Broken Builds
      #"zwm-zig2" "zwm-cpp" "hana" "unknowwm" "derpy-wm"
+     #"lwm-c"
      #"compiz" "windwm" "qvwm" "fxwm" "bouncywm"/*nim*/
 
     ];

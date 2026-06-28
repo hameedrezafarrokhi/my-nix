@@ -39,24 +39,20 @@
   rustPlatform,
 
   cairo,
-  graphviz,
-  pandoc,
-  dmenu,
-  pango,
-  xmodmap,
+  dbus,
 
 }:
 
 rustPlatform.buildRustPackage rec {
-  pname = "oxidewm";
-  version = "2023-09-13";
+  pname = "boringwm";
+  version = "2026-02-17";
 
   src = fetchFromGitHub {
-    owner = "FelixSchladt";
-    repo = "OxideWM";
+    owner = "dennishilk";
+    repo = "boringwm";
    #rev = "main";
-    rev = "afa6285434f35e81c129708785dca074c9e7b094";
-    sha256 = "19brnhvm2dqd79w5y6vncr9al69cpb9qlmkr5w26j4r3s6vdl8vk";
+    rev = "5fbe580abd078fc280c40e70673fdde5b77db22a";
+    sha256 = "10v3b7i7p5j57jclwcs9g4qy159c10g1w2y36p9bss97w5sczsss";
   };
 
   nativeBuildInputs = [
@@ -96,11 +92,7 @@ rustPlatform.buildRustPackage rec {
     freetype
 
     cairo
-    graphviz
-    pandoc
-    dmenu
-    pango
-    xmodmap
+    dbus
   ];
 
   postPatch = ''
@@ -111,52 +103,19 @@ rustPlatform.buildRustPackage rec {
 
   cargoLock = {
     lockFile = ./Cargo.lock;
-    outputHashes = {
-      "dot_graph-0.2.3" = "sha256-S8jUQThbrm/xtAwRbOurV7t/rvqD6u3vOvYhP9juAkg=";
-      "rudg-0.2.0-dev" = "sha256-9UKvEey7W+qsgtjFsLwTeBN/c4D4B169VW4mw9eQG/I=";
-     #"pangocairo-0.22.0" = "sha256-AAAAAAy7W+qsgtjFsLwTeBN/c4D4B169VW4mw9eQG/I=";
-    };
   };
 
  #cargoHash = lib.fakeHash;
 
   doCheck = false;
 
-  buildPhase = ''
-    runHook preBuild
-    cargo build --release
-    cargo build -p oxide-bar --release
-    cargo build -p oxide-msg --release
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preBuild
-    mkdir -p $out/bin $out/etc/oxide $out/share/man/man1 $out/share/oxide
-    install -Dm755 \
-		target/release/oxide \
-		target/release/oxide-bar \
-		target/release/oxide-msg \
-		-t $out/bin/
-	cp -t $out/etc/oxide/ \
-		resources/config.yml \
-		bar_config.yml
-
-	cp man/oxide.1 \
-		man/oxide-bar.1 \
-		man/oxide-config.1 \
-		man/oxide-msg.1 \
-		$out/share/man/man1/
-    runHook postBuild
-  '';
-
   meta = with lib; {
-    homepage = "https://github.com/FelixSchladt/OxideWM";
+    homepage = "https://github.com/dennishilk/boringwm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "oxidewm";
+    mainProgram = "boringwm";
   };
 }

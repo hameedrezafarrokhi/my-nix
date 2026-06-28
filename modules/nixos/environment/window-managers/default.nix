@@ -37,6 +37,9 @@ in
        "rustile" "poorwm" "neowm" "ltwm" "dael" "derpy-wm"
        "troodon" "miawm" "irwm" "customwm" "ttwm" "2am-qwm"
        "oxidewm" "subtle-rs" "tatami" "gridwm" "fensterchef"
+       "rondo" "pywm" "qtwm" "dash" "ferawm" "boringwm" "dxwm"
+       "sirenwm" "seiwm" "yggdrasilwm" "fleon" "absent"
+       "chamferwm" "legacywm" "lwm-c" "ywm" "minimalwm" "pgwm"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -250,6 +253,25 @@ in
     ./git-wms/tatami
     ./git-wms/gridwm
     ./git-wms/fensterchef
+    ./git-wms/rondo
+    ./git-wms/pywm
+    ./git-wms/qtwm
+    ./git-wms/dash
+    ./git-wms/ferawm
+    ./git-wms/boringwm
+    ./git-wms/dxwm
+    ./git-wms/sirenwm
+    ./git-wms/seiwm
+    ./git-wms/yggdrasilwm
+    ./git-wms/fleon
+    ./git-wms/absent
+    ./git-wms/chamferwm
+    ./git-wms/legacywm
+    ./git-wms/lwm-c
+    ./git-wms/ywm
+    ./git-wms/minimalwm
+    ./git-wms/pgwm
+
 
     ./git-wms/bouncy-window-manager
     ./git-wms/bouncy-wm

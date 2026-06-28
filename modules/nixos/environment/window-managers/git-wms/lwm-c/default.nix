@@ -1,0 +1,117 @@
+{ config, pkgs, lib, ... }:
+
+with lib;
+
+let
+
+  cfg = config.services.xserver.windowManager.lwm-c;
+  lwm-c = pkgs.callPackage ./lwm-c.nix {
+    conf = ''
+#ifndef __CONFIG_H
+#define __CONFIG_H
+#include <X11/Xlib.h>
+
+#define BOTTOMBAR 0
+#define TOPGAP 20
+#define GAPSIZE 5
+#define MASTERW 0.5
+#define NMASTER 1
+#define NEW_WINDOW_FIRST 0
+#define DEFAULT_MODE MODE_NSTACK
+#define FOCUS_ON_HOVER 1
+#define BORDER_SIZE 2
+#define BORDER_NORMAL "#000000"
+#define BORDER_SELECT "#ffffff"
+#define MOD Mod4Mask
+
+#define INIT_SCRIPT "$HOME/.lwmrc &"
+
+const char *term[] = { "lterm", 0 };
+const char *menu[] = { "dmenu_run", 0 };
+
+#define DESKTOPCHANGE(key, ws) \
+    {MOD, key, ws_go, {.i = ws}}, \
+    {MOD|ShiftMask, key, win_to_ws, {.i = ws}}
+
+static struct key keys[] = {
+    {MOD,           XK_Return, exec,       {.com = term}},
+    {MOD,           XK_d,      exec,       {.com = menu}},
+
+    {MOD,           XK_Tab,    win_next,   {0}},
+    {MOD|ShiftMask, XK_Tab,    win_prev,   {0}},
+
+    {MOD,           XK_j,      win_next,   {0}},
+    {MOD,           XK_k,      win_prev,   {0}},
+
+    {MOD|ShiftMask, XK_j,      win_rotate, {.i =  1}},
+    {MOD|ShiftMask, XK_k,      win_rotate, {.i = -1}},
+
+    {MOD,           XK_l,      incmaster,  {.i =  20}},
+    {MOD,           XK_h,      incmaster,  {.i = -20}},
+
+    {MOD|ShiftMask, XK_l,      nmaster,    {.i =  1}},
+    {MOD|ShiftMask, XK_h,      nmaster,    {.i = -1}},
+
+    {MOD,           XK_f,      win_full,   {0}},
+    {MOD,           XK_q,      win_kill,   {0}},
+    {MOD,           XK_c,      win_center, {0}},
+    {MOD,           XK_space,  win_float,  {0}},
+
+    {MOD|ShiftMask, XK_f,      tile_mode,  {.i = MODE_FLOAT}},
+    {MOD|ShiftMask, XK_t,      tile_mode,  {.i = MODE_NSTACK}},
+    {MOD|ShiftMask, XK_m,      tile_mode,  {.i = MODE_MONOCLE}},
+
+    DESKTOPCHANGE(XK_1, 0), DESKTOPCHANGE(XK_2, 1), DESKTOPCHANGE(XK_3, 2),
+    DESKTOPCHANGE(XK_4, 3), DESKTOPCHANGE(XK_5, 4), DESKTOPCHANGE(XK_6, 5),
+    DESKTOPCHANGE(XK_7, 6), DESKTOPCHANGE(XK_8, 7), DESKTOPCHANGE(XK_9, 8),
+    DESKTOPCHANGE(XK_0, 9),
+};
+
+#endif
+    '';
+  };
+
+in
+
+{
+
+  options = {
+    services.xserver.windowManager.lwm-c = {
+      enable = mkEnableOption "lwm-c";
+      extraSessionCommands = mkOption {
+        default = "";
+        type = types.lines;
+        description = ''
+          Shell commands executed just before lwm-c is started.
+        '';
+      };
+      package = mkPackageOption pkgs "lwm-c" {
+        example = '' '';
+      };
+    };
+  };
+
+  config = lib.mkIf (builtins.elem "lwm-c" config.my.window-managers) {
+
+    services.xserver.windowManager.session = singleton {
+      name = "lwm-c";
+      start = ''
+        export _JAVA_AWT_WM_NONREPARENTING=1
+        xsetroot -cursor_name left_ptr &
+        ${cfg.extraSessionCommands}
+        ${lwm-c}/bin/lwm-c &
+        waitPID=$!
+      '';
+    };
+
+    environment.systemPackages = [ cfg.package ];
+
+    services.xserver.windowManager.lwm-c = {
+      enable = true;
+      extraSessionCommands = '' '';
+      package = lwm-c;
+    };
+
+  };
+
+}
