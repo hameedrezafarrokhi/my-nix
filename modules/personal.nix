@@ -142,7 +142,7 @@
      #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
      #"rdwm" "rustwm" "fensterchef"
-
+     #"nyxwm" "fluid-wm"
 
      #"fluorite"
 
@@ -152,8 +152,9 @@
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm" "blackbox" "goomwwm"
      #"compiz-reloaded" "echinus" "progman" "karmen" "9wm" "ctwm"
      #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
-     #"simplewm" "superiorxwm" "marswm" "notewm"
-     #"ywm"
+     #"simplewm" "superiorxwm" "marswm" "notewm" "ywm"
+     #"dfpwm" "stevewm" "nyxwm-float" "mitewm-go" "mitewm" "qpwm" "wm0"
+     #"makron" "fwwm" "NsCDE" "srwm"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -161,15 +162,21 @@
      #"bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
 
         # Bad Builds (needs fix)
-     #"plwm" "octopus" "page"
+     #"plwm" "octopus" "page" "nimwin"
      #"customwm" cant find wlroots
      #"sswm" needs cargo lock
      #"yggdrasilwm" "bond-wm" "fyrwm"
+     #"waimea" "moksha"
+     #"amiwb" i have to fix all the makefiles in subdirs in src for /usr stuff
+     #"slacker" same as amiwb
+     #"foxwm" no cmakelist
 
         # Broken Builds
-     #"zwm-zig2" "zwm-cpp" "hana" "unknowwm" "derpy-wm"
-     #"lwm-c"
-     #"compiz" "windwm" "qvwm" "fxwm" "bouncywm"/*nim*/
+     #"zwm-zig2" "zwm-cpp" "derpy-wm"
+     #"lwm-c" "xmt""hana" "unknowwm"
+     #"compiz" "windwm" "qvwm" "fxwm"
+     #"bouncywm"/*nim*/ "window_manager"
+     #"mswm"
 
     ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;

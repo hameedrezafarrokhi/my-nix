@@ -138,6 +138,7 @@
     yaml2json
     toml2json
 
+
     xsct
 
     sticky-notes
@@ -159,6 +160,8 @@
    ++
 
   [
+
+   #mypkgs.old-stable.stack2nix
     mypkgs.stable.ulauncher
     mypkgs.stable.flashfocus
    #mypkgs.stable.CuboCore.coretime

@@ -40,7 +40,7 @@ in
        "rondo" "pywm" "qtwm" "dash" "ferawm" "boringwm" "dxwm"
        "sirenwm" "seiwm" "yggdrasilwm" "fleon" "absent" "nwm"
        "chamferwm" "legacywm" "lwm-c" "ywm" "minimalwm" "pgwm"
-       "rdwm" "rustwm" "bond-wm" "fyrwm"
+       "rdwm" "rustwm" "bond-wm" "fyrwm" "nyxwm" "foxwm"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -58,7 +58,10 @@ in
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
        "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
-       "goomwwm" "wmx" "flwm" "adwm" "emwm" "eggwm" "uwm" "notewm"
+       "goomwwm" "wmx" "flwm" "adwm" "emwm" "eggwm" "uwm" "notewm" "dfpwm"
+       "nimwin" "stevewm" "nyxwm-float" "waimea" "mitewm-go" "mitewm" "qpwm"
+       "wm0" "xmt" "makron" "window_manager" "amiwb" "slacker" "mswm" "fwwm"
+       "NsCDE" "fluid-wm" "srwm" "moksha"
 
 
       ]);
@@ -277,6 +280,8 @@ in
     ./git-wms/rustwm
     ./git-wms/bond-wm
     ./git-wms/fyrwm
+    ./git-wms/nyxwm
+    ./git-wms/fluid-wm
 
 
     ./git-wms/bouncy-window-manager
@@ -335,6 +340,26 @@ in
     ./git-wms/marswm
     ./git-wms/worm-quad
     ./git-wms/notewm
+    ./git-wms/dfpwm
+    ./git-wms/nimwin
+    ./git-wms/stevewm
+    ./git-wms/nyxwm-float
+    ./git-wms/waimea
+    ./git-wms/mitewm-go
+    ./git-wms/mitewm
+    ./git-wms/qpwm
+    ./git-wms/wm0
+    ./git-wms/xmt
+    ./git-wms/makron
+    ./git-wms/window_manager
+    ./git-wms/amiwb
+    ./git-wms/slacker
+    ./git-wms/mswm
+    ./git-wms/foxwm
+    ./git-wms/fwwm
+    ./git-wms/NsCDE
+    ./git-wms/srwm
+    ./git-wms/moksha
 
 
   ];
