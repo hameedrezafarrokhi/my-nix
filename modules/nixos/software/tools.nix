@@ -301,6 +301,38 @@
    ++ [(pkgs.callPackage ../myPackages/chasm/spot.nix { })]
   #++ [(pkgs.callPackage ../myPackages/chasm/tile.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/stripconf.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/tileconf.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/bareconf.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/glassconf.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/crust.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/glow.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/orbit.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/plot.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/highlight.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/viewer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/grid.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/library.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/melody.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/tune.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/amar.nix { })] # cant find the bin after build
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/drain.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/fonts.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/prism.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/crush.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/torii.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/watchit.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/astro.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/tock.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/gazette.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/scroll.nix { })]  # build error for cargo dep
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/scribe.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/kastrup.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/pointer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fe2o3/rush.nix { })]
+
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]
