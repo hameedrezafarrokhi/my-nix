@@ -40,7 +40,8 @@ in
        "rondo" "pywm" "qtwm" "dash" "ferawm" "boringwm" "dxwm"
        "sirenwm" "seiwm" "yggdrasilwm" "fleon" "absent" "nwm"
        "chamferwm" "legacywm" "lwm-c" "ywm" "minimalwm" "pgwm"
-       "rdwm" "rustwm" "bond-wm" "fyrwm" "nyxwm" "foxwm"
+       "rdwm" "rustwm" "bond-wm" "fyrwm" "nyxwm" "foxwm" "tile"
+       "wmwm" "mdtwm" "go-afwm" "xwm" "wmsquared"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -54,14 +55,14 @@ in
        "frankenwm" "echinus" "howm" "zwm-c" "zwm" "zwm-zig" "zwm-zig2" "zwm-cpp"
 
        "compiz" "compiz-reloaded" "sowm" "aphelia" "mcwm" "jbwm" "qvwm" "ewm" "safwm"
-       "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm"
+       "aewmpp" "clarawm" "simplewm" "sophy" "fowm" "xswm" "solbourne"
        "sewm" "fxwm" "cygnus" "rwm" "hogewm" "biscuitwm" "xpywm"
        "superiorxwm" "barigui" "iguassu" "vswm" "verysmallwm" "verystupidwm"
        "vtwm" "progman" "karmen" "windwm" "larswm" "9wm" "ctwm" "blackbox"
        "goomwwm" "wmx" "flwm" "adwm" "emwm" "eggwm" "uwm" "notewm" "dfpwm"
        "nimwin" "stevewm" "nyxwm-float" "waimea" "mitewm-go" "mitewm" "qpwm"
        "wm0" "xmt" "makron" "window_manager" "amiwb" "slacker" "mswm" "fwwm"
-       "NsCDE" "fluid-wm" "srwm" "moksha"
+       "NsCDE" "fluid-wm" "srwm" "moksha" "nsfwm" "basketcase" "gooeyde" "dubwm"
 
 
       ]);
@@ -282,6 +283,12 @@ in
     ./git-wms/fyrwm
     ./git-wms/nyxwm
     ./git-wms/fluid-wm
+    ./git-wms/tile
+    ./git-wms/wmwm
+    ./git-wms/mdtwm
+    ./git-wms/go-afwm
+    ./git-wms/xwm
+    ./git-wms/wmsquared
 
 
     ./git-wms/bouncy-window-manager
@@ -360,6 +367,11 @@ in
     ./git-wms/NsCDE
     ./git-wms/srwm
     ./git-wms/moksha
+    ./git-wms/nsfwm
+    ./git-wms/basketcase
+    ./git-wms/gooeyde
+    ./git-wms/solbourne
+    ./git-wms/dubwm
 
 
   ];

@@ -129,7 +129,7 @@
       # Git-Wms
 
         # Dynamic
-      "vxwm"
+      "vxwm" "tile"
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
@@ -141,8 +141,7 @@
      #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
      #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
-     #"rdwm" "rustwm" "fensterchef"
-     #"nyxwm" "fluid-wm"
+     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm"
 
      #"fluorite"
 
@@ -151,10 +150,10 @@
      #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
      #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm" "blackbox" "goomwwm"
      #"compiz-reloaded" "echinus" "progman" "karmen" "9wm" "ctwm"
-     #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm" "sewm"
-     #"simplewm" "superiorxwm" "marswm" "notewm" "ywm"
+     #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm"
+     #"simplewm" "superiorxwm" "marswm" "notewm" "ywm" "NsCDE" "srwm"
      #"dfpwm" "stevewm" "nyxwm-float" "mitewm-go" "mitewm" "qpwm" "wm0"
-     #"makron" "fwwm" "NsCDE" "srwm"
+     #"makron" "fwwm" "sewm" "go-afwm" "dubwm" "wmsquared"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -163,17 +162,21 @@
 
         # Bad Builds (needs fix)
      #"plwm" "octopus" "page" "nimwin"
-     #"customwm" cant find wlroots
-     #"sswm" needs cargo lock
      #"yggdrasilwm" "bond-wm" "fyrwm"
-     #"waimea" "moksha"
+     #"waimea" "moksha" "nsfwm" "mdtwm"
+     #"customwm" cant find wlroots
+     #"xwm" needs 'mk' compiler
+     #"sswm" needs cargo lock
      #"amiwb" i have to fix all the makefiles in subdirs in src for /usr stuff
      #"slacker" same as amiwb
      #"foxwm" no cmakelist
+     #"basketcase" cant find fltk
+     #"gooeyde" cmake problems
+     #"solbourne" Imake shit
 
         # Broken Builds
      #"zwm-zig2" "zwm-cpp" "derpy-wm"
-     #"lwm-c" "xmt""hana" "unknowwm"
+     #"lwm-c" "xmt" "hana" "unknowwm"
      #"compiz" "windwm" "qvwm" "fxwm"
      #"bouncywm"/*nim*/ "window_manager"
      #"mswm"

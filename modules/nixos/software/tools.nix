@@ -282,10 +282,22 @@
 
   #++ [(pkgs.callPackage ../myPackages/xmms.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/zentile.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/pytyle3.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xplorer.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/chasm/bare.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/bolt.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/chasm-bits.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/glass.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/glyph.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/show.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/chasm/spot.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/tile.nix { })]
 
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
