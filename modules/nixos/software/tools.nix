@@ -285,6 +285,8 @@
    ++ [(pkgs.callPackage ../myPackages/zentile.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pytyle3.nix { })]
 
+  #++ [(pkgs.callPackage ../myPackages/qtwmfm.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]
