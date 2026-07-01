@@ -41,7 +41,7 @@ in
     ./trayer.nix
     ./ashell.nix
    #./ignis.nix
-    ./yambar
+    ./yambar.nix
 
   ];
 
