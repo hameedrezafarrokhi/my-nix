@@ -9,7 +9,7 @@ in
 {
 
   options.my.shells = lib.mkOption {
-     type = lib.types.listOf (lib.types.enum [ "bash" "fish" "zsh" ]);
+     type = lib.types.listOf (lib.types.enum [ "bash" "fish" "zsh" "nu" ]);
      default = [ "bash" ];
   };
   options.my.defaultShell = lib.mkOption {
@@ -24,6 +24,7 @@ in
     ./bash.nix
     ./fish.nix
     ./aliases.nix
+    ./nu.nix
 
   ];
 

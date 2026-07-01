@@ -390,7 +390,7 @@
 
           nix.enable = true;
 
-          shells = [ "bash" "fish" ];
+          shells = [ "bash" "fish" "nu" ];
           defaultShell = "fish";
           shellAliases = true;
           xdg.enable = true;
@@ -455,6 +455,7 @@
             # x11
             "polybar"
             "tint2"
+            "yambar"
            #"trayer"
           ];
           apps = {

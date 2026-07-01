@@ -9,7 +9,8 @@ let
       $HOME/.config/fontconfig/conf.d/10-hm-fonts.conf.backup \
       $HOME/.config/mimeapps.list.backup $HOME/.config/better-control/settings.json.backup \
       $HOME/.config/better-control/power_settings.json.backup \
-      $HOME/.config/traymd/config.ini.backup
+      $HOME/.config/traymd/config.ini.backup \
+      $HOME/.config/gtk-3.0/settings.ini.backup
   '';
   postBuild = ''
     polybar-msg action "#idle.hook.1"

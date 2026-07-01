@@ -22,6 +22,7 @@ in
        "tint2"
        "trayer"
        "ignis"
+       "yambar"
 
      ]);
      default = [ ];
@@ -40,6 +41,7 @@ in
     ./trayer.nix
     ./ashell.nix
    #./ignis.nix
+    ./yambar
 
   ];
 

@@ -150,7 +150,7 @@
    #xosd
     xosd-xft
 
-    lemonbar-xft
+   #lemonbar-xft
    #taffybar
    #xmobar
    #eww
@@ -163,9 +163,9 @@
    #i3pystatus
    #i3blocks-gaps
    #i3blocks
-    somebar
-    luastatus
-    lesbar
+   #somebar
+   #luastatus
+   #lesbar
 
 
 
@@ -193,6 +193,8 @@
     '')
 
   ]
+
+    ++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
     ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
@@ -310,119 +312,139 @@
    ++ [(pkgs.callPackage ../myPackages/zen-browser.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xplorer.nix { })]
 
-   ++ [(pkgs.callPackage ../myPackages/chasm/bare.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/bolt.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/chasm-bits.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/glass.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/glyph.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/show.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/chasm/spot.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/bare.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/bolt.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/chasm-bits.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/glass.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/glyph.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/show.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/chasm/spot.nix { })]
   #++ [(pkgs.callPackage ../myPackages/chasm/tile.nix { })]
-
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/stripconf.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/tileconf.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/bareconf.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/glassconf.nix { })]
-
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/crust.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/glow.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/orbit.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/plot.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/highlight.nix { })]
-
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/viewer.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/grid.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/library.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/melody.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/tune.nix { })]
+  #
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/stripconf.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/tileconf.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/bareconf.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/glassconf.nix { })]
+  #
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/crust.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/glow.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/orbit.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/plot.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/highlight.nix { })]
+  #
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/viewer.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/grid.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/library.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/melody.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/tune.nix { })]
   #++ [(pkgs.callPackage ../myPackages/fe2o3/amar.nix { })] # cant find the bin after build
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/drain.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/fonts.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/prism.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/crush.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/torii.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/watchit.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/astro.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/tock.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/gazette.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/drain.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/fonts.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/prism.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/crush.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/torii.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/watchit.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/astro.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/tock.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/gazette.nix { })]
   #++ [(pkgs.callPackage ../myPackages/fe2o3/scroll.nix { })]  # build error for cargo dep
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/scribe.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/kastrup.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/pointer.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/fe2o3/rush.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/scribe.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/kastrup.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/pointer.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/fe2o3/rush.nix { })]
 
 
 
   #++ [(pkgs.callPackage ../myPackages/bars/shox.nix { })] # too old to build
   #++ [(pkgs.callPackage ../myPackages/bars/bar3x.nix { })] # build fail
-   ++ [(pkgs.callPackage ../myPackages/bars/bspwmbar.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/yabar.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/dwmStatus.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/lazybar.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/gobar.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/novabar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/bspwmbar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/yabar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/dwmStatus.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/lazybar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/gobar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/novabar.nix {
+  #      appmenu-gtk-module = pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { };
+  #})]
   #++ [(pkgs.callPackage ../myPackages/bars/blockbar.nix { })] # build faild due to ujson dep (CVE)
   #++ [(pkgs.callPackage ../myPackages/bars/xstatus-crystal.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/feather.nix {
-          conf = ''
-            static char *backgroundColor = "#FFFFFF";
-            static char *borderColor = "#000000";
-            static char *fontColor = "#000000";
-            static char *fontString = "Source Code Pro:pixelsize=20";
-            const static unsigned int width = 325;
-            const static unsigned int height = 25;
-            const static unsigned int gap = 10;
-            const static unsigned int borderSize = 1;
-          '';
-   })]
-   ++ [(pkgs.callPackage ../myPackages/bars/zimple.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/xbar.nix {
-          conf = ''
-            /* config.h - xbar global configuration */
-            #include "mod_say.h"
-            #include "mod_time.h"
-            #include "mod_cpu.h"
-            #include "mod_bat.h"
-            #include "mod_cmd.h"
-            #include "mod_read.h"
-            /* Bar font. */
-            static const char font[] = "fixed";
-            /* Bar height. */
-            static const int bar_height = 15;
-            /* Active modules and their position in the bar. */
-            static struct Module modules[] = {
-                { .mod = MOD_SAY("^fg(green)xbar^fg() 2011"), .pack = PACK_RIGHT },
-                { .mod = MOD_CMD("uname -sr", -1), .pack = PACK_RIGHT },
-                { .mod = MOD_TIME(), .pack = PACK_RIGHT },
-                { .mod = MOD_CPU("cpu: %u%%"), .pack = PACK_LEFT },
-                { .mod = MOD_BAT("BAT0", "bat: %u%%"), .pack = PACK_LEFT },
-            };
-            /* Separator used between outputs of different modules. */
-            static const char sep[] = " | ";
-            /* Default display colors. */
-            static const char fgcolor[] = "gray90";
-            static const char bgcolor[] = "gray20";
-            /* The refresh delay in nano seconds. */
-            static const unsigned refresh_delay = 1500000;
-          '';
-   })]
+  #++ [(pkgs.callPackage ../myPackages/bars/feather.nix {
+  #       conf = ''
+  #         static char *backgroundColor = "#FFFFFF";
+  #         static char *borderColor = "#000000";
+  #         static char *fontColor = "#000000";
+  #         static char *fontString = "Source Code Pro:pixelsize=20";
+  #         const static unsigned int width = 325;
+  #         const static unsigned int height = 25;
+  #         const static unsigned int gap = 10;
+  #         const static unsigned int borderSize = 1;
+  #       '';
+  #})]
+  #++ [(pkgs.callPackage ../myPackages/bars/zimple.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/xbar.nix {
+  #       conf = ''
+  #         /* config.h - xbar global configuration */
+  #         #include "mod_say.h"
+  #         #include "mod_time.h"
+  #         #include "mod_cpu.h"
+  #         #include "mod_bat.h"
+  #         #include "mod_cmd.h"
+  #         #include "mod_read.h"
+  #         /* Bar font. */
+  #         static const char font[] = "fixed";
+  #         /* Bar height. */
+  #         static const int bar_height = 15;
+  #         /* Active modules and their position in the bar. */
+  #         static struct Module modules[] = {
+  #             { .mod = MOD_SAY("^fg(green)xbar^fg() 2011"), .pack = PACK_RIGHT },
+  #             { .mod = MOD_CMD("uname -sr", -1), .pack = PACK_RIGHT },
+  #             { .mod = MOD_TIME(), .pack = PACK_RIGHT },
+  #             { .mod = MOD_CPU("cpu: %u%%"), .pack = PACK_LEFT },
+  #             { .mod = MOD_BAT("BAT0", "bat: %u%%"), .pack = PACK_LEFT },
+  #         };
+  #         /* Separator used between outputs of different modules. */
+  #         static const char sep[] = " | ";
+  #         /* Default display colors. */
+  #         static const char fgcolor[] = "gray90";
+  #         static const char bgcolor[] = "gray20";
+  #         /* The refresh delay in nano seconds. */
+  #         static const unsigned refresh_delay = 1500000;
+  #       '';
+  #})]
   #++ [(pkgs.callPackage ../myPackages/bars/status-bar.nix { })]
   #++ [(pkgs.callPackage ../myPackages/bars/pypanel.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/pmdock.nix { })]
-   ++ [(pkgs.callPackage ../myPackages/bars/lbar.nix {
-          conf = ''
-            #ifndef __CONFIG_H
-            #define __CONFIG_H
-            #define BOTTOM_BAR 0
-            #define BAR_HEIGHT 30
-            #define LINE_HEIGHT 3
-            #define BACKGROUND "#000000"
-            #define FOREGROUND "#ffffff"
-            #define UNDERLINE  "#ffffff"
-            #define FONT "Terminus:pixelsize=20"
-            #endif
-          '';
-   })]
+  #++ [(pkgs.callPackage ../myPackages/bars/pmdock.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/lbar.nix {
+  #       conf = ''
+  #         #ifndef __CONFIG_H
+  #         #define __CONFIG_H
+  #         #define BOTTOM_BAR 0
+  #         #define BAR_HEIGHT 30
+  #         #define LINE_HEIGHT 3
+  #         #define BACKGROUND "#000000"
+  #         #define FOREGROUND "#ffffff"
+  #         #define UNDERLINE  "#ffffff"
+  #         #define FONT "Terminus:pixelsize=20"
+  #         #endif
+  #       '';
+  #})]
+   ++ [(pkgs.callPackage ../myPackages/bars/zline.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/tsarbar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/paperbar.nix { })] # broken build
+   ++ [(pkgs.callPackage ../myPackages/bars/sxbar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/output_status.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/pyoutput_status.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/kessoku.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/evstatus.nix { })] # missing go modules during build
+  #++ [(pkgs.callPackage ../myPackages/bars/xcffibaer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/unknowdock.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/yetanotherbar.nix {
+  #       appmenu-gtk-module = pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { };
+  #})]
+  #++ [(pkgs.callPackage ../myPackages/bars/barbara.nix { })]  # too old to build
+  #++ [(pkgs.callPackage ../myPackages/bars/zebar.nix {
+  #       appmenu-gtk-module = pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { };
+  #})]
+  #++ [(pkgs.callPackage ../myPackages/bars/oxbar.nix { })]  # its a bsd app dummy :)
 
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
