@@ -150,6 +150,24 @@
    #xosd
     xosd-xft
 
+    lemonbar-xft
+   #taffybar
+   #xmobar
+   #eww
+   #polybar
+   #slstatus
+   #dwmbar
+   #dwmblocks
+   #i3status
+   #i3status-rust
+   #i3pystatus
+   #i3blocks-gaps
+   #i3blocks
+    somebar
+    luastatus
+    lesbar
+
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -332,6 +350,79 @@
    ++ [(pkgs.callPackage ../myPackages/fe2o3/kastrup.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fe2o3/pointer.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fe2o3/rush.nix { })]
+
+
+
+  #++ [(pkgs.callPackage ../myPackages/bars/shox.nix { })] # too old to build
+  #++ [(pkgs.callPackage ../myPackages/bars/bar3x.nix { })] # build fail
+   ++ [(pkgs.callPackage ../myPackages/bars/bspwmbar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/yabar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/dwmStatus.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/lazybar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/gobar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/novabar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/blockbar.nix { })] # build faild due to ujson dep (CVE)
+  #++ [(pkgs.callPackage ../myPackages/bars/xstatus-crystal.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/feather.nix {
+          conf = ''
+            static char *backgroundColor = "#FFFFFF";
+            static char *borderColor = "#000000";
+            static char *fontColor = "#000000";
+            static char *fontString = "Source Code Pro:pixelsize=20";
+            const static unsigned int width = 325;
+            const static unsigned int height = 25;
+            const static unsigned int gap = 10;
+            const static unsigned int borderSize = 1;
+          '';
+   })]
+   ++ [(pkgs.callPackage ../myPackages/bars/zimple.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/xbar.nix {
+          conf = ''
+            /* config.h - xbar global configuration */
+            #include "mod_say.h"
+            #include "mod_time.h"
+            #include "mod_cpu.h"
+            #include "mod_bat.h"
+            #include "mod_cmd.h"
+            #include "mod_read.h"
+            /* Bar font. */
+            static const char font[] = "fixed";
+            /* Bar height. */
+            static const int bar_height = 15;
+            /* Active modules and their position in the bar. */
+            static struct Module modules[] = {
+                { .mod = MOD_SAY("^fg(green)xbar^fg() 2011"), .pack = PACK_RIGHT },
+                { .mod = MOD_CMD("uname -sr", -1), .pack = PACK_RIGHT },
+                { .mod = MOD_TIME(), .pack = PACK_RIGHT },
+                { .mod = MOD_CPU("cpu: %u%%"), .pack = PACK_LEFT },
+                { .mod = MOD_BAT("BAT0", "bat: %u%%"), .pack = PACK_LEFT },
+            };
+            /* Separator used between outputs of different modules. */
+            static const char sep[] = " | ";
+            /* Default display colors. */
+            static const char fgcolor[] = "gray90";
+            static const char bgcolor[] = "gray20";
+            /* The refresh delay in nano seconds. */
+            static const unsigned refresh_delay = 1500000;
+          '';
+   })]
+  #++ [(pkgs.callPackage ../myPackages/bars/status-bar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/pypanel.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/pmdock.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/lbar.nix {
+          conf = ''
+            #ifndef __CONFIG_H
+            #define __CONFIG_H
+            #define BOTTOM_BAR 0
+            #define BAR_HEIGHT 30
+            #define LINE_HEIGHT 3
+            #define BACKGROUND "#000000"
+            #define FOREGROUND "#ffffff"
+            #define UNDERLINE  "#ffffff"
+            #define FONT "Terminus:pixelsize=20"
+            #endif
+          '';
+   })]
 
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]

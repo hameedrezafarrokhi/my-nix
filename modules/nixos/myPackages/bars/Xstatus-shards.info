@@ -1,0 +1,11 @@
+---
+version: 0.0.1
+shards:
+  x11:
+    git: https://github.com/tamasszekeres/x11-cr.git
+    version: 1.0.1
+  logger:
+    github: restartfu/logger.cr
+  toml:
+    github: crystal-community/toml.cr
+    branch: master
