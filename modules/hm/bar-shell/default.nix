@@ -34,7 +34,7 @@ in
   imports = [
 
     ./ags.nix
-   #./quickshell.nix
+    ./quickshell.nix
     ./waybar.nix
     ./polybar.nix
     ./tint2.nix

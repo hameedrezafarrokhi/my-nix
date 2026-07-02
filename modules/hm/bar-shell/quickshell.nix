@@ -1,5 +1,12 @@
 { config, pkgs, lib, inputs, system, ... }:
 
+let
+
+  aetheris-shell = pkgs.callPackage ./qs-rices/aetheris-shell.nix { };
+  aevum-shell = pkgs.callPackage ./qs-rices/aevum-shell.nix { };
+
+in
+
 { config = lib.mkIf (builtins.elem "quickshell" config.my.bar-shell.shells) {
 
   programs.quickshell = {
@@ -13,5 +20,10 @@
     };
     activeConfig = lib.mkForce "noctalia-shell";
   };
+
+  home.packages = [
+    aetheris-shell
+    aevum-shell
+  ];
 
 };}

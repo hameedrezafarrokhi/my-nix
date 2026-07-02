@@ -450,8 +450,9 @@
           distrobox.enable = true;
 
           bar-shell.shells = [
+            "quickshell"
             # wayland
-            /*"ags"*/ /*"quickshell"*/ /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
+            /*"ags"*/ /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
             # x11
             "polybar"
             "tint2"

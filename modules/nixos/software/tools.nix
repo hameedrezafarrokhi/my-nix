@@ -167,7 +167,11 @@
    #luastatus
    #lesbar
 
+    wpgtk
 
+    (neowall.overrideAttrs (old: {
+      buildInputs = old.buildInputs ++ [ libglvnd libxkbcommon ];
+    }))
 
   ] ) config.my.software.tools.exclude)
 
@@ -194,7 +198,7 @@
 
   ]
 
-    ++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
     ++ [(pkgs.callPackage ../myPackages/vboard.nix { })]
@@ -305,7 +309,34 @@
    ++ [(pkgs.callPackage ../myPackages/zentile.nix { })]
    ++ [(pkgs.callPackage ../myPackages/pytyle3.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/wpg.nix { })]
+
   #++ [(pkgs.callPackage ../myPackages/qtwmfm.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/picom-shader-collection.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/glwall.nix {
+     conf = ''
+#define FRAME_LIMIT 24
+#define WIDTH 1366
+#define HEIGHT 768
+#define REFRESH_TEXTURE 1 // Check for changes on the texture file and refresh accordingly
+     '';
+   })]
+   ++ [(pkgs.callPackage ../myPackages/gtkshadertoy.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/lupa.nix { })] # build problem
+   ++ [(pkgs.callPackage ../myPackages/gleditor.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/yawns.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/gray.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/run-fabric.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/glace.nix { })]
+
+  #++ [(pkgs.callPackage ../myPackages/expressive-shapes.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/zenith-shell.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/uv-build-git.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
