@@ -338,8 +338,16 @@
   #++ [(pkgs.callPackage ../myPackages/shader-playground.nix { })] # build problems with cmake for rust subpackages
    ++ [(pkgs.callPackage ../myPackages/shader-playground-bin.nix { })]
    ++ [(pkgs.callPackage ../myPackages/glsl-sandbox-bin.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/depthflow.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/glsl-editor.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/yawns.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/xmagnify-github.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/tsoomin.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/spotlight.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/monocle-zoom.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zrs.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
