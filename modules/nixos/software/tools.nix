@@ -169,6 +169,8 @@
 
     wpgtk
 
+    esshader
+
     (neowall.overrideAttrs (old: {
       buildInputs = old.buildInputs ++ [ libglvnd libxkbcommon ];
     }))
@@ -323,9 +325,20 @@
 #define REFRESH_TEXTURE 1 // Check for changes on the texture file and refresh accordingly
      '';
    })]
+
    ++ [(pkgs.callPackage ../myPackages/gtkshadertoy.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lupa.nix { })] # build problem
    ++ [(pkgs.callPackage ../myPackages/gleditor.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/shadertoy-render.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/desktop-shadertoy.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/shadertoy-rs.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/shaderer.nix { })] # TODO build problem, have to fix inclues manually
+
+  #++ [(pkgs.callPackage ../myPackages/naga.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/shader-playground.nix { })] # build problems with cmake for rust subpackages
+   ++ [(pkgs.callPackage ../myPackages/shader-playground-bin.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/glsl-sandbox-bin.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/yawns.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
@@ -334,9 +347,11 @@
    ++ [(pkgs.callPackage ../myPackages/run-fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/glace.nix { })]
 
-  #++ [(pkgs.callPackage ../myPackages/expressive-shapes.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/zenith-shell.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/uv-build-git.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/uv-build-git.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/expressive-shapes.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zenith-shell.nix { })]
+
+  #++ [(pkgs.callPackage ../myPackages/bspwm-settings.nix { })] # doesnt work, try distrobox
 
    ++ [(pkgs.callPackage ../myPackages/edex-ui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
@@ -476,6 +491,7 @@
   #       appmenu-gtk-module = pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { };
   #})]
   #++ [(pkgs.callPackage ../myPackages/bars/oxbar.nix { })]  # its a bsd app dummy :)
+  #++ [(pkgs.callPackage ../myPackages/bars/taskbar.nix { })] # needs git and fails during build
 
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]

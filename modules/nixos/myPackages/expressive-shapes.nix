@@ -29,13 +29,9 @@ python3Packages.buildPythonPackage rec {
   ;
 
   dependencies = with python3Packages; [
-   #uv-build
     cairocffi
     numpy
-  ]
-  ++
-  [ uv-build ]
-  ;
+  ];
 
   nativeCheckInputs = with python3Packages; [
     pytest

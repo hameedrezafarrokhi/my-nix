@@ -52,6 +52,17 @@
 
 , extraPythonPackages ? [ ]
 , extraBuildInputs ? [ ]
+
+, libnma
+, networkmanager
+, matugen
+, playerctl
+, feh
+, brightnessctl
+, roboto-flex
+, material-symbols
+, googlesans-code
+, libnotify
 }:
 
 let
@@ -76,12 +87,12 @@ let
       loguru
       psutil
       pygobject-stubs
-      fabric
+     #fabric
 
       certifi
       cffi
       charset-normalizer
-      expressive-shapes
+     #expressive-shapes
       i3ipc
       idna
       loguru
@@ -98,6 +109,7 @@ let
       urllib3
     ]
     ++ extraPythonPackages
+    ++ [ fabric expressive-shapes ]
   );
 
   scriptRepo = fetchFromGitHub {
@@ -166,6 +178,17 @@ stdenv.mkDerivation rec {
 
     libgray
     fabric-cli
+
+    libnma
+    networkmanager
+    matugen
+    playerctl
+    feh
+    brightnessctl
+    libnotify
+    roboto-flex
+    material-symbols
+    googlesans-code
   ];
 
   dontConfigure = true;

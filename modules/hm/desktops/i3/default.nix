@@ -54,7 +54,7 @@ in
       pkgs.swaytools
       pkgs.sway-overfocus
 
-      pkgs.xkb-switch-i3
+     #pkgs.xkb-switch-i3
       pkgs.kitti3
 
       i3-master

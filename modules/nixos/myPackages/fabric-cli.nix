@@ -19,6 +19,11 @@ buildGoModule {
 
   passthru.updateArgs = [ "--version=branch" ];
 
+  postInstall = ''
+    cp $out/bin/src $out/bin/fabric-cli
+    rm -f $out/bin/src
+  '';
+
   meta = {
     description = "An alternative super-charged CLI for Fabric ";
     longDescription = ''

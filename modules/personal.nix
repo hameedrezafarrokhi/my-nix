@@ -429,7 +429,7 @@
          #wayfire.enable = true;
           labwc.enable = false;
           dwm.enable = true;
-          i3.enable = false;
+          i3.enable = true;
           openbox.enable = true;
          #xmonad.enable = true;
          #awesome.enable = true;
