@@ -98,6 +98,27 @@ in
 
     xdg = {
 
+      configFile."./autostart/picom.desktop".text = ''
+
+        [Desktop Entry]
+        Hidden=true
+        Version=1.0
+        Type=Application
+        NoDisplay=true
+        Name=picom
+        GenericName=X compositor
+        Comment=An X compositor
+        Categories=Utility;
+        Keywords=compositor;composite manager;window effects;transparency;opacity;
+        TryExec=picom
+        Exec=picom
+        StartupNotify=false
+        Terminal=false
+        # Thanks to quequotion for providing this file!
+        Icon=picom
+
+      '';
+
       configFile."./autostart/org.kde.xwaylandvideobridge.desktop".text = ''
 
         [Desktop Entry]
@@ -145,6 +166,21 @@ in
         Comment=KAlarm autostart at login
         X-KDE-autostart-phase=2
         X-KDE-autostart-condition=kalarmrc:General:AutoStart:false
+
+      '';
+
+      configFile."./autostart/alarm-clock-applet.desktop".text = ''
+
+        [Desktop Entry]
+        Hidden=true
+        Name=Alarm Clock
+        Comment=Wake up in the morning
+        Icon=alarm-clock
+        Exec=alarm-clock-applet --hidden
+        Terminal=false
+        Type=Application
+        Categories=GNOME;GTK;Utility;
+        X-Ubuntu-Gettext-Domain=alarm-clock
 
       '';
 

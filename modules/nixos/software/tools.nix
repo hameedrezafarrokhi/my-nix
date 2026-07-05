@@ -170,6 +170,31 @@
     wpgtk
 
     esshader
+    gpupad
+    kodelife
+    amber
+    bonzomatic
+    shadershark
+    xlockmore
+    xdaliclock
+    clock-rs
+
+    (catclock.overrideAttrs (old: {
+       postFixup= ''
+         cp $out/bin/xclock $out/bin/xcatclock
+         rm -f $out/bin/xclock
+         cp -f $out/share/man/man1/* $out/share/man/man1/xcatclock.1.gz
+         rm -f $out/share/man/man1/xclock.1.gz
+       '';
+    }))
+
+    blockattack
+    alock
+    alarm-clock-applet
+    corrupter
+   #i3lock-fancy
+   #i3lock-fancy-rapid
+
 
     (neowall.overrideAttrs (old: {
       buildInputs = old.buildInputs ++ [ libglvnd libxkbcommon ];
@@ -349,6 +374,8 @@
   #++ [(pkgs.callPackage ../myPackages/monocle-zoom.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zrs.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/kdocker.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
    ++ [(pkgs.callPackage ../myPackages/gray.nix { })]
@@ -358,6 +385,8 @@
    ++ [(pkgs.callPackage ../myPackages/uv-build-git.nix { })]
    ++ [(pkgs.callPackage ../myPackages/expressive-shapes.nix { })]
    ++ [(pkgs.callPackage ../myPackages/zenith-shell.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/themes/qylock.nix { })]
 
   #++ [(pkgs.callPackage ../myPackages/bspwm-settings.nix { })] # doesnt work, try distrobox
 
@@ -500,6 +529,13 @@
   #})]
   #++ [(pkgs.callPackage ../myPackages/bars/oxbar.nix { })]  # its a bsd app dummy :)
   #++ [(pkgs.callPackage ../myPackages/bars/taskbar.nix { })] # needs git and fails during build
+  #++ [(pkgs.callPackage ../myPackages/bars/winbar.nix { })] # doesnt run, glew fails
+   ++ [(pkgs.callPackage ../myPackages/bars/plank-reloaded.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/pdock.nix { })] # doesnt run
+   ++ [(pkgs.callPackage ../myPackages/bars/cairo-dock.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/bars/cairo-dock-plugins.nix {
+  #       cairo-dock = pkgs.callPackage ../myPackages/bars/cairo-dock.nix { };
+  #   })]
 
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]

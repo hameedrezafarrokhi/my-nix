@@ -671,7 +671,7 @@ in
 
 
             Super-Shift-Ctrl-l:
-                      launch: [ "xlock" ]
+                      launch: [ "x-lock-nosleep" ]
             Super-Shift-Ctrl-KEY_SEMICOLON:
                       launch: [ "x-lock-sleep" ]
             Super-Shift-Ctrl-x:

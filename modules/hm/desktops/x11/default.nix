@@ -103,7 +103,7 @@ let
     notify-send -e -u low -t 1 'Hello:)'
   '';
 
-  xlock = pkgs.writeShellScriptBin "xlock" ''
+  x-lock-nosleep = pkgs.writeShellScriptBin "x-lock-nosleep" ''
     x-lock -t ${config.services.screen-locker.xss-lock.dpms-standby}
   '';
 
@@ -842,7 +842,7 @@ in
       x-cursor
       x-lock-sleep
       x-lock
-      xlock
+      x-lock-nosleep
       xlockcmd
       xsession-load
       xsession-save

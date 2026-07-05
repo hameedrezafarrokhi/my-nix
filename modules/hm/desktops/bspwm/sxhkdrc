@@ -1024,3 +1024,7 @@ super + alt + BackSpace
 # Reload XSet Rate
 super + ctrl + alt + BackSpace
     kern-bug
+
+# App to Tray
+super + t
+    kdocker -f
