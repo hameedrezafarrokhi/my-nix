@@ -391,6 +391,7 @@
    ++ [(pkgs.callPackage ../myPackages/xbmpwall.nix { })]
    ++ [(pkgs.callPackage ../myPackages/sxot.nix { })]
    ++ [(pkgs.callPackage ../myPackages/selx.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xkeyjoy.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
