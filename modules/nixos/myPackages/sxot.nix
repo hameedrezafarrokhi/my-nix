@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
+  fetchFromGitea,
 
   libx11,
   libxft,
@@ -31,44 +31,28 @@
   libxcb-errors,
   libxcb-cursor,
 
+  libxfixes,
+
   fontconfig,
   freetype,
 
   pkg-config,
-
-  buildNimPackage,
-
-  nim1,
-
 }:
 
-let
-
-  x11-nim = fetchFromGitHub {
-    owner = "nim-lang";
-    repo = "x11";
-    rev = "3dd8f523fb2b502f4e5a958d8acf09a0b8ac0452";
-    sha256 = "0zaarwii6h3njl96kwrv8ag3hfy60lyw2x5dg37fdplhkywdic66";
-  };
-
-in
-
-#buildNimPackage (finalAttrs: {
 stdenv.mkDerivation rec {
-  pname = "BouncyWM";
-  version = "2020-01-20";
+  pname = "sxot";
+  version = "2026-05-01";
 
-  src = fetchFromGitHub {
-    owner = "weskerfoot";
-    repo = "BouncyWM";
-   #rev = "main";
-    rev = "fac173438bcb38bf469d38ba14438f6962c32325";
-    sha256 = "1521hwxbq5bipgp21daps85vaz8m28z01fwc4a17zfzwwkis6fq1";
+  src = fetchFromGitea {
+    domain = "codeberg.org";
+    owner = "NRK";
+    repo = "sxot";
+    rev = "ce59b990a350fa5126487937602a6a4eb3f96a49";
+    sha256 = "15fwm4wizcf259hw99xkpc518aan90pd2glld7n8hpsgzwnsc4pn";
   };
 
   nativeBuildInputs = [
     pkg-config
-    nim1
   ];
 
   buildInputs = [
@@ -100,35 +84,37 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
+    libxfixes
+
     fontconfig
     freetype
   ];
 
- #nimFlags = [
- #  "-d:release"
- #  "-p:${x11-nim}/"
- #  "src/nimwm.nim"
- #];
-
- #requiredNimVersion = 1;
-
   buildPhase = ''
-    HOME=$TMPDIR
-    nim --run -p:${x11-nim}/ c -d:release src/nimwin.nim
+    runHook preBuild
+
+    cc -o sxot sxot.c -O3 -s -l X11 -l Xfixes
+
+    runHook postBuild
   '';
 
   installPhase = ''
-    mkdir -p $out/bin
-    cp nimwin $out/bin/BouncyWM
+    runHook preInstall
+
+    mkdir -p $out/bin $out/share/man/man1
+    install -Dm755 sxot $out/bin/sxot
+    install -Dm644 sxot.1 $out/share/man/man1/sxot.1
+
+    runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/weskerfoot/BouncyWM";
+    homepage = "https://codeberg.org/NRK/sxot";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "BouncyWM";
+    mainProgram = "sxot";
   };
 }

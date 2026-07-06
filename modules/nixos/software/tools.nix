@@ -200,6 +200,11 @@
       buildInputs = old.buildInputs ++ [ libglvnd libxkbcommon ];
     }))
 
+
+   #sox
+    sox_ng
+
+
   ] ) config.my.software.tools.exclude)
 
    ++
@@ -376,6 +381,17 @@
 
    ++ [(pkgs.callPackage ../myPackages/kdocker.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/hcorner.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/cortile.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/cortile-addons.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/vertex.nix { })]  # build problem
+   ++ [(pkgs.callPackage ../myPackages/vertex-bin.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/clonk.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/nom.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xbmpwall.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/sxot.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/selx.nix { })]
+
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
    ++ [(pkgs.callPackage ../myPackages/gray.nix { })]
@@ -387,6 +403,36 @@
    ++ [(pkgs.callPackage ../myPackages/zenith-shell.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/themes/qylock.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/themes/qylock-gitlab.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/themes/cwc.nix {
+          themeConfig = ''
+{ "opacity": 0.5,
+"colors": { "background": "#1B191B", "foreground": "#F8E2D2", "primary": "#D37D58" },
+"rounding": { "small": 8, "medium": 12, "large": 16 },
+"spacing": { "small": 8, "medium": 16, "large": 24 },
+"padding": { "small": 6, "medium": 12, "large": 24 },
+"font": { "family": { "regular": "Kode Mono", "heading": "Comfortaa" }, "size": { "xm": 8, "s": 12, "m": 14, "l": 16, "xl": 18, "xxl": 28 } },
+"animation": { "duration": { "quick": 100, "normal": 200, "slow": 400, "sequential": 25 } } }
+          '';
+          dock1Config = ''
+{ "position": "bottom", "orientation": "horizontal", "iconSize": 48, "alwaysVisible": false, "showIconsBackground": true, "showTooltips": true, "falloff": 3,
+  "items": [
+    "kitty",
+    "qutebrowser"
+  ], "scaleFactor": 0.3, "damp": 1 }
+          '';
+          dock2Config = ''
+{ "position": "right", "orientation": "vertical", "margins": { "bottom": 100 },
+  "items": [
+    "logout",
+    "sleep",
+    "power-off",
+    "kitty"
+  ], "iconSize": 56, "alwaysVisible": false, "showIconsBackground": true, "showTooltips": false, "falloff": 2, "scaleFactor": 0.4, "damp": 1.5 }
+          '';
+      })]
+   ++ [(pkgs.callPackage ../myPackages/themes/quickshell-bar-MM-2103.nix { })]
+
 
   #++ [(pkgs.callPackage ../myPackages/bspwm-settings.nix { })] # doesnt work, try distrobox
 
@@ -532,11 +578,26 @@
   #++ [(pkgs.callPackage ../myPackages/bars/winbar.nix { })] # doesnt run, glew fails
    ++ [(pkgs.callPackage ../myPackages/bars/plank-reloaded.nix { })]
   #++ [(pkgs.callPackage ../myPackages/bars/pdock.nix { })] # doesnt run
-   ++ [(pkgs.callPackage ../myPackages/bars/cairo-dock.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/bars/cairo-dock-plugins.nix {
-  #       cairo-dock = pkgs.callPackage ../myPackages/bars/cairo-dock.nix { };
-  #   })]
+  #++ [(pkgs.callPackage ../myPackages/bars/cairo-dock.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/cairo-dock-plugins.nix {
+          cairo-dock = pkgs.callPackage ../myPackages/bars/cairo-dock.nix { };
+      })]
 
+
+   ++ [(pkgs.callPackage ../myPackages/clackit.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/govibes.nix {
+          conf = ''
+            {
+            	"input_device": "xremap",
+            	"keyboard_sound": "cherrymx-black-pbt"
+            }
+          '';
+   })]
+  #++ [(pkgs.callPackage ../myPackages/modelm.nix { })] # too old too build
+   ++ [(pkgs.callPackage ../myPackages/mechsim.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/rustyvibes.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/keyboardsounds.nix { })] # TODO nix python not uptodate check back later
+  #++ [(pkgs.callPackage ../myPackages/keyboardsounds-pro.nix { })] # obscure "wails" compiler
 
    ++ [(pkgs.callPackage ../myPackages/leif.nix { })]
   #++ [(pkgs.callPackage ../myPackages/lyssa.nix { leif = pkgs.callPackage ../myPackages/leif.nix { }; })]

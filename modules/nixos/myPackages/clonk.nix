@@ -1,8 +1,10 @@
 {
   lib,
   stdenv,
+  fetchFromGitea,
   fetchFromGitHub,
-
+  buildNimPackage,
+  nim1,
   libx11,
   libxft,
   libxrandr,
@@ -21,7 +23,6 @@
   libxcomp,
   libxcomposite,
   libxkbcommon,
-
   libxcb,
   libxcb-wm,
   libxcb-util,
@@ -30,40 +31,32 @@
   libxcb-image,
   libxcb-errors,
   libxcb-cursor,
-
   fontconfig,
   freetype,
-
   pkg-config,
-
-  buildNimPackage,
-
-  nim1,
-
 }:
 
 let
 
-  x11-nim = fetchFromGitHub {
-    owner = "nim-lang";
-    repo = "x11";
-    rev = "3dd8f523fb2b502f4e5a958d8acf09a0b8ac0452";
-    sha256 = "0zaarwii6h3njl96kwrv8ag3hfy60lyw2x5dg37fdplhkywdic66";
+  drawim = fetchFromGitHub {
+    owner = "GabrielLasso";
+    repo = "drawim";
+    tag = "0.1.3";
+    hash = "sha256-NUXOBld0znlvOhuqCKy0+tiXOuSgYZ5tsH84Q+pny/E=";
   };
 
 in
 
-#buildNimPackage (finalAttrs: {
-stdenv.mkDerivation rec {
-  pname = "BouncyWM";
-  version = "2020-01-20";
+stdenv.mkDerivation (finalAttrs: {
+  pname = "clonk";
+  version = "2023-03-17";
 
-  src = fetchFromGitHub {
-    owner = "weskerfoot";
-    repo = "BouncyWM";
-   #rev = "main";
-    rev = "fac173438bcb38bf469d38ba14438f6962c32325";
-    sha256 = "1521hwxbq5bipgp21daps85vaz8m28z01fwc4a17zfzwwkis6fq1";
+  src = fetchFromGitea {
+    domain = "codeberg.org";
+    owner = "pswilde";
+    repo = "Clonk";
+    rev = "4ae73f0a85d4f626787236aea9909ea860304605";
+    sha256 = "1a34rch4knmhxpw7mn5mdfkbss9md3rpg0dh6v4z7jhvdmlvvzd4";
   };
 
   nativeBuildInputs = [
@@ -90,7 +83,6 @@ stdenv.mkDerivation rec {
     libxcomp
     libxcomposite
     libxkbcommon
-
     libxcb
     libxcb-wm
     libxcb-util
@@ -99,36 +91,26 @@ stdenv.mkDerivation rec {
     libxcb-image
     libxcb-errors
     libxcb-cursor
-
     fontconfig
     freetype
   ];
 
- #nimFlags = [
- #  "-d:release"
- #  "-p:${x11-nim}/"
- #  "src/nimwm.nim"
- #];
-
- #requiredNimVersion = 1;
-
   buildPhase = ''
     HOME=$TMPDIR
-    nim --run -p:${x11-nim}/ c -d:release src/nimwin.nim
+    nim --run -p:${drawim}/src/:${drawim}/ c -d:release src/clonk.nim
   '';
 
   installPhase = ''
     mkdir -p $out/bin
-    cp nimwin $out/bin/BouncyWM
+    cp clonk $out/bin/clonk
   '';
 
-  meta = with lib; {
-    homepage = "https://github.com/weskerfoot/BouncyWM";
+  meta = {
     description = " ";
-    longDescription = '' '';
-    license = licenses.mit;
-    maintainers = with maintainers; [ meee ];
-    platforms = platforms.all;
-    mainProgram = "BouncyWM";
+    homepage = "https://codeberg.org/pswilde/Clonk";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ dtomvan ];
+    mainProgram = "clonk";
+    platforms = lib.platforms.linux;
   };
-}
+})

@@ -38,6 +38,7 @@
   # bfetch
   # afetch
     nitch
+    rustfetch
 
   ] ) config.my.software.fetch.exclude)
 

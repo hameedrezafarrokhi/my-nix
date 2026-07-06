@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+mkdir -p $HOME/Videos/Screenrecord
+
+IFS=, read x y w h << EOF
+$(selx)
+EOF
+[ -z "$h" ] && exit 1  # nothing selected
+# pad to an even resolution since some output format do no accept odd res
+even_w="$(( w + (w % 2) ))"; even_h="$(( h + (h % 2) ))";
+
+ffmpeg -f x11grab -s "${w}x${h}" -i ":0.0+$x,$y" -c:v libx264 -an \
+	-framerate 30 -r 30 -threads "$(nproc)" -preset slow -tune zerolatency \
+	-vf "format=yuv422p, pad=w=${even_w}:h=${even_h}" -crf 18 \
+	"$HOME/Videos/Screenrecord/screenrecord-$(date '+%F_%T').mp4"

@@ -4,6 +4,34 @@ let
 
   cfg = config.my.x11;
 
+  weswrap = pkgs.writeShellScriptBin "weswrap" ''
+
+    # Credits: https://codeberg.org/Sivecano/weswrap
+
+    echo $$
+    coproc WESTON { ${pkgs.weston}/bin/weston --shell=kiosk-shell.so --socket=$$ 2>&1; }
+    grep -q "kiosk-shell.so'"  <&"$WESTON"
+    WAYLAND_DISPLAY=$$ "$@"
+  '';
+
+  sxoti-a = pkgs.writeShellScriptBin "sxoti-a" ''
+    mkdir -p $HOME/Pictures/Screenshots
+    sxot -g "$(selx)" $1 | ffmpeg -i - $HOME/Pictures/Screenshots/screenshot-$(date +%F_%H-%M-%S).png
+  '';
+
+  sxoti-f = pkgs.writeShellScriptBin "sxoti-f" ''
+    mkdir -p $HOME/Pictures/Screenshots
+    sxot $1 | ffmpeg -i - $HOME/Pictures/Screenshots/screenshot-$(date +%F_%H-%M-%S).png
+  '';
+
+  sxotv-a = pkgs.writeShellScriptBin "sxotv-a" ''
+    ${builtins.readFile ./sxotv-a}
+  '';
+
+ #sxotv-f = pkgs.writeShellScriptBin "sxotv-f" ''
+ #  ${builtins.readFile ./sxotv-a}
+ #'';
+
   x-cursor = pkgs.writeShellScriptBin "x-cursor" ''sleep 3 && xsetroot -cursor_name left_ptr'';
   x-cursor-start = pkgs.writeTextFile {
     name = "x-cursor.desktop";
@@ -869,6 +897,12 @@ in
 
       xfilesctl
       xfilesthumb
+
+      weswrap
+
+      sxotv-a
+      sxoti-a
+      sxoti-f
     ];
 
     xsession = {

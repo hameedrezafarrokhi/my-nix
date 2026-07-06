@@ -35,40 +35,24 @@
   freetype,
 
   pkg-config,
-
-  buildNimPackage,
-
-  nim1,
+  wails,
 
 }:
 
-let
-
-  x11-nim = fetchFromGitHub {
-    owner = "nim-lang";
-    repo = "x11";
-    rev = "3dd8f523fb2b502f4e5a958d8acf09a0b8ac0452";
-    sha256 = "0zaarwii6h3njl96kwrv8ag3hfy60lyw2x5dg37fdplhkywdic66";
-  };
-
-in
-
-#buildNimPackage (finalAttrs: {
 stdenv.mkDerivation rec {
-  pname = "BouncyWM";
-  version = "2020-01-20";
+  pname = "keyboardsounds-pro";
+  version = "desktop/v0.3.2";
 
   src = fetchFromGitHub {
-    owner = "weskerfoot";
-    repo = "BouncyWM";
-   #rev = "main";
-    rev = "fac173438bcb38bf469d38ba14438f6962c32325";
-    sha256 = "1521hwxbq5bipgp21daps85vaz8m28z01fwc4a17zfzwwkis6fq1";
+    owner = "keyboard-sounds";
+    repo = "keyboardsounds-pro";
+    tag = version;
+    hash = "sha256-by6xrG96rHpr52MBlqDIC8KpBYHEyZXWQ7fGSn7u5Uk=";
   };
 
   nativeBuildInputs = [
     pkg-config
-    nim1
+    wails
   ];
 
   buildInputs = [
@@ -104,31 +88,40 @@ stdenv.mkDerivation rec {
     freetype
   ];
 
- #nimFlags = [
- #  "-d:release"
- #  "-p:${x11-nim}/"
- #  "src/nimwm.nim"
- #];
+  sourceRoot = "source/desktop";
 
- #requiredNimVersion = 1;
+  postPatch = ''
+    substituteInPlace wails.json \
+      --replace '"dev"' '"${version}"'
+  '';
 
   buildPhase = ''
-    HOME=$TMPDIR
-    nim --run -p:${x11-nim}/ c -d:release src/nimwin.nim
+    runHook preBuild
+
+    wails build -tags webkit2_41
+
+    runHook postBuild
   '';
 
   installPhase = ''
+    runHook preInstall
+
+    pwd
+    ls
+
     mkdir -p $out/bin
-    cp nimwin $out/bin/BouncyWM
+    cp keyboardsounds-pro $out/bin/keyboardsounds-pro
+
+    runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/weskerfoot/BouncyWM";
+    homepage = "https://github.com/keyboard-sounds/keyboardsounds-pro";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "BouncyWM";
+    mainProgram = "keyboardsounds-pro";
   };
 }

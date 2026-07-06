@@ -235,10 +235,6 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
   ];
 
-  postPatch = ''
-    mkdir -p $out/share/cairo-dock/plug-ins/shared-files/images
-  '';
-
   cmakeFlags = [
    #"-DCMAKE_PREFIX_PATH=$out"
     "-DCMAKE_INSTALL_PREFIX=${placeholder "out"}"
@@ -254,6 +250,8 @@ stdenv.mkDerivation rec {
  #propagatedBuildInputs = [ cairo-dock ];
 
   preInstall = ''
+
+    mkdir -p $out
     cp -rf ${cairo-dock}/* $out/
 
     chmod -R u+rw $out/
@@ -266,15 +264,8 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     make
-
-    mkdir -p $out/share/cairo-dock/plug-ins $out/test
-    cp -rf ./* $out/test/
-    cp -rf ./* $out/share/cairo-dock/plug-ins/
-    cp -rf ./* $out/
-
+    make DESTDIR="$out" install
     #cp -rf ${cairo-dock}/* $out/
-
-    #make install
 
     runHook postInstall
   '';
