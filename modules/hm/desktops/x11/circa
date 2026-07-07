@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+#    .----.     circa v2.0
+#   / .--. \    ~hellfire103
+#  | |    | |   <edanosborne@duck.com>
+#  _\ \  / /_   2026-04-27
+# |____||____|  Beerware
+#
+# Script for taking circular screenshots
+
+# Dependency check
+command >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+   echo circa: error: command: command not found
+   exit 1
+fi
+
+if [[ -z $(command -v getopts) ]]; then
+   echo "circa: error: getopts: command not found" >&2
+   exit 1
+fi
+
+if [[ -z $(command -v mktemp) ]]; then
+   echo "circa: error: mktemp: command not found" >&2
+   exit 1
+fi
+
+if [[ -z $(command -v kdialog) ]]; then
+   echo "circa: error: kdialog: command not found" >&2
+   exit 1
+fi
+
+if [[ -z $(command -v bc) ]]; then
+   echo "circa: error: bc: command not found" >&2
+   exit 1
+fi
+
+# Choose appropriate ImageMagick command to process screenshot
+if [[ -n $(command -v magick) ]]; then
+   MAGICK="magick"
+elif [[ -n $(command -v convert) ]]; then
+   MAGICK="convert"
+else
+   echo "circa: error: ImageMagick not found" >&2
+   exit 1
+fi
+
+# Handle arguments
+if [[ $# -ne 0 ]]; then
+   while getopts o:hv flag; do
+      case "${flag}" in
+         o)
+            CIRCA_DIR=${OPTARG}
+            ;;
+         h)
+            echo "usage: circa [-hv] [-o output.png]"
+            exit 0
+            ;;
+         v)
+            echo -e "circa v2.0 2026-04-27\nLicenced under Beerware"
+            exit 0
+            ;;
+         *)
+            echo "usage: circa [-hv] [-o output.png]"
+            exit 127
+            ;;
+      esac
+   done
+fi
+
+# Set output directory
+if [[ -n $CIRCA_DIR ]]; then
+   TARGET=$CIRCA_DIR
+elif [[ -d $HOME/Pictures ]]; then
+   TARGET=$HOME/Pictures
+elif [[ -d $HOME ]]; then
+   TARGET=$HOME
+else
+   echo "circa: error: $HOME unwritable" >&2
+   exit 1
+fi
+
+# Create tempfile
+CIRCA_TEMP=$(mktemp --suffix=.png)
+
+# Begin main algorithm
+if [[ -z $XDG_SESSION_TYPE ]]; then
+   echo "circa: error: could not detect session type" >&2
+   exit 1
+fi
+
+if [[ $XDG_SESSION_TYPE = "wayland" ]]; then
+   # Further dependency checks
+   if [[ -z $(command -v grim) ]]; then
+      echo "circa: error: grim: command not found" >&2
+      exit 1
+   fi
+   if [[ -z $(command -v slurp) ]]; then
+      echo "circa: error: slurp: command not found" >&2
+      exit 1
+   fi
+   # Take the shot
+   kdialog --msgbox "Click 'OK', then click the centre of your shot"
+   grim -t png $CIRCA_TEMP
+   if [[ $? -ne 0 ]]; then
+      exit $?
+   fi
+   # Get mouse coordinates using slurp
+   COORDINATES=$(slurp -b 00000000 -p | awk '{print $1}')
+   X_CENTRE=$(echo $COORDINATES | cut -d ',' -f 1)
+   Y_CENTRE=$(echo $COORDINATES | sed -e 's/^.*,//g')
+   kdialog --msgbox "Click 'OK', then click the edge of your shot"
+   COORDINATES=$(slurp -b 00000000 -p | awk '{print $1}')
+   X=$(echo $COORDINATES | cut -d ',' -f 1)
+   Y=$(echo $COORDINATES | sed -e 's/^.*,//g')
+elif [[ $XDG_SESSION_TYPE = "x11" ]]; then
+   # More further dependency checks
+   if [[ -z $(command -v scrot) ]]; then
+      echo "circa: error: scrot: command not found" >&2
+      exit 1
+   fi
+   if [[ -z $(command -v xdotool) ]]; then
+      echo "circa: error: xdotool: command not found" >&2
+      exit 1
+   fi
+   # Take the shot: X11 edition
+   scrot -F $CIRCA_TEMP --format png
+   kdialog --msgbox "Move your cursor to the centre of your shot and press enter"
+   if [[ $? -ne 0 ]]; then
+      exit $?
+   fi
+   # Get mouse coordinates using xdotool
+   eval $(xdotool getmouselocation --shell)
+   X_CENTRE=$X
+   Y_CENTRE=$Y
+   kdialog --msgbox "Now move your cursor to the edge of your shot and press enter"
+   eval $(xdotool getmouselocation --shell)
+else
+   # Why would you run this script if you're using Mir (pre-Wayland) or fbdev?!
+   echo "circa: error: unrecognised session type '$XDG_SESSION_TYPE'" >&2
+   exit 1
+fi
+
+# Quick calculation
+RADIUS=$(bc <<< "sqrt(($X-$X_CENTRE)^2+($Y-$Y_CENTRE)^2)")
+
+# Final processing with ImageMagick
+$MAGICK $CIRCA_TEMP -alpha on \( +clone -channel a -evaluate multiply 0 -draw "ellipse $X_CENTRE,$Y_CENTRE $RADIUS,$RADIUS 0,360" \) -compose DstIn -composite -trim "$TARGET/$(date +%Y%m%d_%Hh%Mh%Ss)_circa.png"
+
+# Delete tempfile
+rm $CIRCA_TEMP

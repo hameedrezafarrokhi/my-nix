@@ -204,6 +204,10 @@
    #sox
     sox_ng
 
+    scrot
+
+    xbanish
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -293,7 +297,7 @@
    ++ [(pkgs.callPackage ../myPackages/xobbright.nix { })]
 
   #++ [(pkgs.callPackage ../myPackages/gloom.nix { })]
-  #++ [(pkgs.callPackage ../myPackages/xdimmer.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/xdimmer.nix { })] # broken build
    ++ [(pkgs.callPackage ../myPackages/xsct_gui.nix { })]
    ++ [(pkgs.callPackage ../myPackages/cdim.nix { })]
 
@@ -381,6 +385,24 @@
 
    ++ [(pkgs.callPackage ../myPackages/kdocker.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/count-clicks.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xqlock.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/flackern.nix { })] # build fails
+   ++ [(pkgs.callPackage ../myPackages/back-round.nix {
+          conf = ''
+static const char *bg_color = "#000000"; /* backround color */
+static const char *text_color = "#FFFFFF"; /* text message color */
+static const char *font_name = "Comic Sans MS"; /* text size (must be a valid size) */
+static const int max_input = 1000; /* max input signs of message */
+static const int max_fonts = 10000;
+static const int set_utf8 = 1; /* if zero listens to system variable 'LC_CTYPE' */
+          '';
+      })]
+   ++ [(pkgs.callPackage ../myPackages/magnify.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xcross.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xfidget-spinner.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/tsmp.nix { })]   # stupid nob project
+
    ++ [(pkgs.callPackage ../myPackages/hcorner.nix { })]
    ++ [(pkgs.callPackage ../myPackages/cortile.nix { })]
    ++ [(pkgs.callPackage ../myPackages/cortile-addons.nix { })]
@@ -392,6 +414,19 @@
    ++ [(pkgs.callPackage ../myPackages/sxot.nix { })]
    ++ [(pkgs.callPackage ../myPackages/selx.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xkeyjoy.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fittsmon.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/fittsmon-gui.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/autolock.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/gofer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zowon.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xuv.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xcalendar.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/xpaper.nix { })] # doesnt work properly
+  #++ [(pkgs.callPackage ../myPackages/xcrop.nix { })] # build fail
+   ++ [(pkgs.callPackage ../myPackages/scrnsvr.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/x11-clicker.nix { })] # doesnt work properly
+   ++ [(pkgs.callPackage ../myPackages/wallrs.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/xfireworks.nix { })]
 
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
@@ -583,6 +618,7 @@
    ++ [(pkgs.callPackage ../myPackages/bars/cairo-dock-plugins.nix {
           cairo-dock = pkgs.callPackage ../myPackages/bars/cairo-dock.nix { };
       })]
+  #++ [(pkgs.callPackage ../myPackages/bars/hbar.nix { })]
 
 
    ++ [(pkgs.callPackage ../myPackages/clackit.nix { })]

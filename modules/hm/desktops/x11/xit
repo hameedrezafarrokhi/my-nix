@@ -1,0 +1,38 @@
+#!/bin/sh
+
+#
+# xit
+#
+
+xit_main() {
+	local TTY="$(tty)"
+	local VT="${TTY##*/tty}"
+	local XAUTH="$(od --address-radix="n" --read-bytes="16" --format="x" "/dev/urandom" | tr --delete " ")"
+
+	export X11C="${X11C:-${XDG_CONFIG_HOME:-${HOME}/.config}/X11}"
+	export X11D="${X11D:-${XDG_DATA_HOME:-${HOME}/.local/share}/X11}"
+	export XINITDIR="${XINITDIR:-${X11C}/xinit}"
+
+	export XAUTHORITY="${XAUTHORITY:-${X11D}/xauth/xauthority}"
+	export XRESOURCES="${XRESOURCES:-${XINITDIR}/xresources}"
+	export XINITRC="${XINITRC:-${XINITDIR}/xinitrc}"
+	export XSERVERRC="${XSERVERRC:-${XINITDIR}/xserverrc}"
+
+	export DISPLAY="${DISPLAY:-:0}"
+
+	export XVT="${XVT:-vt${XDG_VTNR:-${VT:-1}}}"
+
+	if [ ! -f "${XAUTHORITY}" ]; then
+		mkdir --parents "$(dirname "${XAUTHORITY}")"
+
+		touch "${XAUTHORITY}"
+	fi
+
+	xauth add "${DISPLAY}" "MIT-MAGIC-COOKIE-1" "${XAUTH}"
+
+	if [ -f "${XINITRC}" ] && [ -f "${XSERVERRC}" ]; then
+		exec xinit "${XINITRC}" -- "${XSERVERRC}" "${DISPLAY}" -auth "${XAUTHORITY}" "${XVT}" "${@}"
+	fi
+}
+
+xit_main "${@}"

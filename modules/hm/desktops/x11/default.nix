@@ -4,6 +4,11 @@ let
 
   cfg = config.my.x11;
 
+  xit = pkgs.writeShellScriptBin "xit" ''
+    # Credits: https://codeberg.org/ocdb/xit
+    ${builtins.readFile ./xit}
+  '';
+
   weswrap = pkgs.writeShellScriptBin "weswrap" ''
 
     # Credits: https://codeberg.org/Sivecano/weswrap
@@ -12,6 +17,26 @@ let
     coproc WESTON { ${pkgs.weston}/bin/weston --shell=kiosk-shell.so --socket=$$ 2>&1; }
     grep -q "kiosk-shell.so'"  <&"$WESTON"
     WAYLAND_DISPLAY=$$ "$@"
+  '';
+
+  xlaunch = pkgs.writeShellScriptBin "xlaunch" ''
+    # Credits: https://codeberg.org/slashpotato/xlaunch
+    export SDL_VIDEODRIVER=x11
+    export WINIT_UNIX_BACKEND=x11
+    export _JAVA_AWT_WM_NONREPARENTING=1
+    export GDK_BACKEND=x11
+    export QT_QPA_PLATFORM=xcb
+
+    unset WAYLAND_DISPLAY
+
+    if [ $# -eq 0 ]; then
+        echo "No command provided. Please specify a command to run."
+        exit 1
+    fi
+
+    exec "$@"
+
+    SDL_VIDEODRIVER=x11 WINIT_UNIX_BACKEND=x11 _JAVA_AWT_WM_NONREPARENTING=1 GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb env -u WAYLAND_DISPLAY $*
   '';
 
   sxoti-a = pkgs.writeShellScriptBin "sxoti-a" ''
@@ -31,6 +56,14 @@ let
  #sxotv-f = pkgs.writeShellScriptBin "sxotv-f" ''
  #  ${builtins.readFile ./sxotv-a}
  #'';
+
+  circa = pkgs.writeShellScriptBin "circa" ''
+    # Credits: https://codeberg.org/hellfire103/circa
+    if [[ -z $XDG_SESSION_TYPE ]]; then
+       export XDG_SESSION_TYPE=x11
+    fi
+    ${builtins.readFile ./circa}
+  '';
 
   x-cursor = pkgs.writeShellScriptBin "x-cursor" ''sleep 3 && xsetroot -cursor_name left_ptr'';
   x-cursor-start = pkgs.writeTextFile {
@@ -899,10 +932,15 @@ in
       xfilesthumb
 
       weswrap
+      xlaunch
 
       sxotv-a
       sxoti-a
       sxoti-f
+
+      circa
+
+      xit
     ];
 
     xsession = {

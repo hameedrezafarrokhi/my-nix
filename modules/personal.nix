@@ -142,6 +142,7 @@
      #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
      #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm"
+      "treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
 
      #"fluorite"
 
@@ -154,6 +155,7 @@
      #"simplewm" "superiorxwm" "marswm" "notewm" "ywm" "NsCDE" "srwm"
      #"dfpwm" "stevewm" "nyxwm-float" "mitewm-go" "mitewm" "qpwm" "wm0"
      #"makron" "fwwm" "sewm" "go-afwm" "dubwm" "wmsquared"
+      "yafwm"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
