@@ -2,10 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  fontconfig,
-  freetype,
-  pkg-config,
-  ffmpeg,
+
   libx11,
   libxft,
   libxrandr,
@@ -34,9 +31,10 @@
   libxcb-errors,
   libxcb-cursor,
 
-  makeWrapper,
-  autoPatchelfHook,
-  zlib,
+  fontconfig,
+  freetype,
+
+  pkg-config,
 
   glew,
   libGL,
@@ -45,18 +43,22 @@
   glfw,
   egl-x11,
   egl-wayland,
-  freeglut,
+
+  makeWrapper,
+  autoPatchelfHook,
+  zlib,
+
 }:
 
 stdenv.mkDerivation rec {
-  pname = "musializer";
-  version = "2026-06-27";
+  pname = "sowon";
+  version = "2025-12-03";
 
   src = fetchFromGitHub {
     owner = "tsoding";
-    repo = "musializer";
-    rev = "4d7d2fa849ef66e94ce03a53a2e7aa3e36aa2392";
-    sha256 = "1sqnshy3dihxwnsx3rv2241jk8vajsx73q0r7f9k4v2268c4igxh";
+    repo = "sowon";
+    rev = "79b0f4fa3a3f3a6a702e9d25e69d9d7b1f011a06";
+    sha256 = "0nsknsnpx274cly584kl3wbbkq3mlqwflwa2a1wy6q3ihw49v9vf";
   };
 
   nativeBuildInputs = [
@@ -67,7 +69,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     zlib
-    ffmpeg
     libx11
     libxft
     libxrandr
@@ -96,7 +97,9 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
-    freeglut
+    fontconfig
+    freetype
+
     glew
     libGL
     libGLU
@@ -106,39 +109,35 @@ stdenv.mkDerivation rec {
     egl-wayland
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-    cc -o nob nob.c
-    ./nob
-
-    runHook postBuild
-  '';
+  makeFlags = [
+   #"CC=${stdenv.cc.targetPrefix}cc"
+    "PREFIX=${placeholder "out"}"
+  ];
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp build/musializer $out/bin/musializer
+    cp sowon $out/bin/sowon
 
     runHook postInstall
   '';
 
   postFixup = ''
-    wrapProgram $out/bin/musializer \
+    wrapProgram $out/bin/sowon \
       --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
 
-    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/musializer || true
+    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/sowon || true
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/tsoding/musializer";
+    homepage = "https://github.com/tsoding/sowon";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "musializer";
+    mainProgram = "sowon";
   };
 }

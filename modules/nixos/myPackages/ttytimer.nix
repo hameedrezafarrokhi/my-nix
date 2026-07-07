@@ -1,11 +1,8 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
-  fontconfig,
-  freetype,
-  pkg-config,
-  ffmpeg,
+  fetchFromGitea,
+
   libx11,
   libxft,
   libxrandr,
@@ -34,40 +31,42 @@
   libxcb-errors,
   libxcb-cursor,
 
-  makeWrapper,
-  autoPatchelfHook,
-  zlib,
+  fontconfig,
+  freetype,
 
-  glew,
-  libGL,
-  libGLU,
-  libGLX,
-  glfw,
-  egl-x11,
-  egl-wayland,
-  freeglut,
+  pkg-config,
+
+  ncurses5,
+
+  writeText,
+  conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "musializer";
-  version = "2026-06-27";
+  pname = "ttytimer";
+  version = "2025-12-18";
 
-  src = fetchFromGitHub {
-    owner = "tsoding";
-    repo = "musializer";
-    rev = "4d7d2fa849ef66e94ce03a53a2e7aa3e36aa2392";
-    sha256 = "1sqnshy3dihxwnsx3rv2241jk8vajsx73q0r7f9k4v2268c4igxh";
+  src = fetchFromGitea {
+    domain = "codeberg.org";
+    owner = "laladrik";
+    repo = "ttytimer";
+    rev = "f0e80902bb6a9002dd298b63b71660b438c3d469";
+    sha256 = "1viviq2w1m47ia3ana6kp6px9hrsgwk8cp2s6wqqlxwn0w4h3k50";
   };
+
+  postPatch =
+    let
+      configFile =
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "ttytimer.h" conf;
+    in
+    lib.optionalString (conf != null) "cp ${configFile} ttytimer.h";
+
 
   nativeBuildInputs = [
     pkg-config
-    makeWrapper
-    autoPatchelfHook
   ];
 
   buildInputs = [
-    zlib
-    ffmpeg
     libx11
     libxft
     libxrandr
@@ -96,21 +95,21 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
-    freeglut
-    glew
-    libGL
-    libGLU
-    libGLX
-    glfw
-    egl-x11
-    egl-wayland
+    fontconfig
+    freetype
+
+    ncurses5
+  ];
+
+  makeFlags = [
+   #"CC=${stdenv.cc.targetPrefix}cc"
+    "PREFIX=${placeholder "out"}"
   ];
 
   buildPhase = ''
     runHook preBuild
 
-    cc -o nob nob.c
-    ./nob
+    make TOOT=no
 
     runHook postBuild
   '';
@@ -119,26 +118,19 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    cp build/musializer $out/bin/musializer
+    cp ttytimer $out/bin/ttytimer
+    chmod +x $out/bin/ttytimer
 
-    runHook postInstall
-  '';
-
-  postFixup = ''
-    wrapProgram $out/bin/musializer \
-      --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
-
-    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/musializer || true
+    runHook postBuild
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/tsoding/musializer";
+    homepage = "https://codeberg.org/laladrik/ttytimer";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "musializer";
+    mainProgram = "ttytimer";
   };
 }

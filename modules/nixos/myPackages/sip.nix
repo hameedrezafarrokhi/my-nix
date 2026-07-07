@@ -1,11 +1,8 @@
 {
   lib,
-  stdenv,
-  fetchFromGitHub,
-  fontconfig,
-  freetype,
-  pkg-config,
-  ffmpeg,
+  gcc13Stdenv,
+  fetchFromGitea,
+
   libx11,
   libxft,
   libxrandr,
@@ -34,40 +31,31 @@
   libxcb-errors,
   libxcb-cursor,
 
-  makeWrapper,
-  autoPatchelfHook,
-  zlib,
+  fontconfig,
+  freetype,
 
-  glew,
-  libGL,
-  libGLU,
-  libGLX,
-  glfw,
-  egl-x11,
-  egl-wayland,
-  freeglut,
+  pkg-config,
+  imlib2Full,
+
 }:
 
-stdenv.mkDerivation rec {
-  pname = "musializer";
-  version = "2026-06-27";
+gcc13Stdenv.mkDerivation rec {
+  pname = "sip";
+  version = "2023-11-23";
 
-  src = fetchFromGitHub {
-    owner = "tsoding";
-    repo = "musializer";
-    rev = "4d7d2fa849ef66e94ce03a53a2e7aa3e36aa2392";
-    sha256 = "1sqnshy3dihxwnsx3rv2241jk8vajsx73q0r7f9k4v2268c4igxh";
+  src = fetchFromGitea {
+    domain = "codeberg.org";
+    owner = "marendowski";
+    repo = "sip";
+    rev = "035bfdd61a7ba79809ba3b36a2abb96a2e5f330a";
+    sha256 = "1h2c2a25l73a25z7r8kq0y7w3xcwk7f8f5n94131z4dhscxxc9z4";
   };
 
   nativeBuildInputs = [
     pkg-config
-    makeWrapper
-    autoPatchelfHook
   ];
 
   buildInputs = [
-    zlib
-    ffmpeg
     libx11
     libxft
     libxrandr
@@ -96,21 +84,15 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
-    freeglut
-    glew
-    libGL
-    libGLU
-    libGLX
-    glfw
-    egl-x11
-    egl-wayland
+    fontconfig
+    freetype
+    imlib2Full
   ];
 
   buildPhase = ''
     runHook preBuild
 
-    cc -o nob nob.c
-    ./nob
+    gcc -Wall -Wextra -pedantic -lX11 -lImlib2 -o sip sip.c
 
     runHook postBuild
   '';
@@ -119,26 +101,18 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    cp build/musializer $out/bin/musializer
+    cp sip $out/bin/sip
 
     runHook postInstall
   '';
 
-  postFixup = ''
-    wrapProgram $out/bin/musializer \
-      --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
-
-    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/musializer || true
-  '';
-
   meta = with lib; {
-    homepage = "https://github.com/tsoding/musializer";
+    homepage = "https://codeberg.org/marendowski/sip";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "musializer";
+    mainProgram = "sip";
   };
 }

@@ -428,6 +428,21 @@ static const int set_utf8 = 1; /* if zero listens to system variable 'LC_CTYPE' 
    ++ [(pkgs.callPackage ../myPackages/wallrs.nix { })]
    ++ [(pkgs.callPackage ../myPackages/xfireworks.nix { })]
 
+   ++ [(pkgs.callPackage ../myPackages/mine.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/ded.nix { })]  # build fail
+   ++ [(pkgs.callPackage ../myPackages/musializer.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/sowon.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/zoomx-og.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/zoomx.nix { })]
+  #++ [(pkgs.callPackage ../myPackages/sip.nix { })]  # build fail
+   ++ [(pkgs.callPackage ../myPackages/xdpms-helper.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/swp.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/mu.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/ttytimer.nix { })] # has unknown lib "toot.h"
+  #++ [(pkgs.callPackage ../myPackages/monica.nix { })] # build fail
+
+
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]
    ++ [(pkgs.callPackage ../myPackages/fabric-cli.nix { })]
    ++ [(pkgs.callPackage ../myPackages/gray.nix { })]
@@ -619,6 +634,7 @@ static const int set_utf8 = 1; /* if zero listens to system variable 'LC_CTYPE' 
           cairo-dock = pkgs.callPackage ../myPackages/bars/cairo-dock.nix { };
       })]
   #++ [(pkgs.callPackage ../myPackages/bars/hbar.nix { })]
+   ++ [(pkgs.callPackage ../myPackages/bars/xtatusbar.nix { })]
 
 
    ++ [(pkgs.callPackage ../myPackages/clackit.nix { })]

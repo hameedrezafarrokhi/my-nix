@@ -1,11 +1,8 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
-  fontconfig,
-  freetype,
-  pkg-config,
-  ffmpeg,
+  fetchFromGitea,
+
   libx11,
   libxft,
   libxrandr,
@@ -34,40 +31,40 @@
   libxcb-errors,
   libxcb-cursor,
 
-  makeWrapper,
-  autoPatchelfHook,
-  zlib,
+  fontconfig,
+  freetype,
 
-  glew,
-  libGL,
-  libGLU,
-  libGLX,
-  glfw,
-  egl-x11,
-  egl-wayland,
-  freeglut,
+  pkg-config,
+
+  writeText,
+  conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "musializer";
-  version = "2026-06-27";
+  pname = "sowm";
+  version = "2020-10-21";
 
-  src = fetchFromGitHub {
-    owner = "tsoding";
-    repo = "musializer";
-    rev = "4d7d2fa849ef66e94ce03a53a2e7aa3e36aa2392";
-    sha256 = "1sqnshy3dihxwnsx3rv2241jk8vajsx73q0r7f9k4v2268c4igxh";
+  src = fetchFromGitea {
+    domain = "codeberg.org";
+    owner = "dylanaraps";
+    repo = "sowm";
+    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
+    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
   };
+
+  postPatch =
+    let
+      configFile =
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+    in
+    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+
 
   nativeBuildInputs = [
     pkg-config
-    makeWrapper
-    autoPatchelfHook
   ];
 
   buildInputs = [
-    zlib
-    ffmpeg
     libx11
     libxft
     libxrandr
@@ -96,21 +93,19 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
-    freeglut
-    glew
-    libGL
-    libGLU
-    libGLX
-    glfw
-    egl-x11
-    egl-wayland
+    fontconfig
+    freetype
+  ];
+
+  makeFlags = [
+   #"CC=${stdenv.cc.targetPrefix}cc"
+    "PREFIX=${placeholder "out"}"
   ];
 
   buildPhase = ''
     runHook preBuild
 
-    cc -o nob nob.c
-    ./nob
+
 
     runHook postBuild
   '';
@@ -119,26 +114,18 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    cp build/musializer $out/bin/musializer
+    cp sowm $out/bin/sowm
 
     runHook postInstall
   '';
 
-  postFixup = ''
-    wrapProgram $out/bin/musializer \
-      --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
-
-    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/musializer || true
-  '';
-
   meta = with lib; {
-    homepage = "https://github.com/tsoding/musializer";
+    homepage = "https://codeberg.org/dylanaraps/sowm";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "musializer";
+    mainProgram = "sowm";
   };
 }

@@ -2,10 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  fontconfig,
-  freetype,
-  pkg-config,
-  ffmpeg,
+
   libx11,
   libxft,
   libxrandr,
@@ -34,40 +31,29 @@
   libxcb-errors,
   libxcb-cursor,
 
-  makeWrapper,
-  autoPatchelfHook,
-  zlib,
+  fontconfig,
+  freetype,
 
-  glew,
-  libGL,
-  libGLU,
-  libGLX,
-  glfw,
-  egl-x11,
-  egl-wayland,
-  freeglut,
+  pkg-config,
+
 }:
 
 stdenv.mkDerivation rec {
-  pname = "musializer";
-  version = "2026-06-27";
+  pname = "zoomx-og";
+  version = "2021-02-20";
 
   src = fetchFromGitHub {
-    owner = "tsoding";
-    repo = "musializer";
-    rev = "4d7d2fa849ef66e94ce03a53a2e7aa3e36aa2392";
-    sha256 = "1sqnshy3dihxwnsx3rv2241jk8vajsx73q0r7f9k4v2268c4igxh";
+    owner = "nprezant";
+    repo = "zoomx";
+    rev = "0fbe35169a5c31a405706383a326544daae77402";
+    sha256 = "1y7jf54ff7s4xcppm17ivbi33m37lhw58n23lmy3m0yiq52k6xa5";
   };
 
   nativeBuildInputs = [
     pkg-config
-    makeWrapper
-    autoPatchelfHook
   ];
 
   buildInputs = [
-    zlib
-    ffmpeg
     libx11
     libxft
     libxrandr
@@ -96,21 +82,14 @@ stdenv.mkDerivation rec {
     libxcb-errors
     libxcb-cursor
 
-    freeglut
-    glew
-    libGL
-    libGLU
-    libGLX
-    glfw
-    egl-x11
-    egl-wayland
+    fontconfig
+    freetype
   ];
 
   buildPhase = ''
     runHook preBuild
 
-    cc -o nob nob.c
-    ./nob
+    gcc -g zoomx.c -L/usr/X11R6/lib -lX11 -o zoomx
 
     runHook postBuild
   '';
@@ -119,26 +98,18 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     mkdir -p $out/bin
-    cp build/musializer $out/bin/musializer
+    cp zoomx $out/bin/zoomx-og
 
     runHook postInstall
   '';
 
-  postFixup = ''
-    wrapProgram $out/bin/musializer \
-      --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
-
-    patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" $out/bin/musializer || true
-  '';
-
   meta = with lib; {
-    homepage = "https://github.com/tsoding/musializer";
+    homepage = "https://github.com/nprezant/zoomx";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "musializer";
+    mainProgram = "zoomx-og";
   };
 }
