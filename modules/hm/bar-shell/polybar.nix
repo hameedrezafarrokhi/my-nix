@@ -23,6 +23,63 @@ let
     $HOME/.polybar_modules
   '';
 
+  polybar-cava = pkgs.writeShellScriptBin "polybar-cava" ''
+    bar="▁▂▃▄▅▆▇█"
+    dict="s/;//g;"
+
+    ${builtins.readFile ./polybar-cava}
+
+    # write cava config
+    config_file="/tmp/polybar_cava_config"
+    echo "
+    [general]
+    bars = 10
+
+    [output]
+    method = raw
+    raw_target = /dev/stdout
+    data_format = ascii
+    ascii_max_range = 7
+    " > $config_file
+
+    # read stdout from cava
+    cava -p $config_file | while read -r line; do
+        echo $line | sed $dict
+    done
+  '';
+
+  polybar-cava-dots = pkgs.writeShellScriptBin "polybar-cava-dots" ''
+    config_file="/tmp/$(whoami)_cava_config"
+    pipe="/tmp/$(whoami)-cava.fifo"
+
+    if [ -p $pipe ]; then
+        unlink $pipe
+    fi
+    mkfifo $pipe
+
+    echo "
+    [general]
+    bars = $1
+    lower_cutoff_freq = 20
+
+    [input]
+    method = pulse
+    source = auto
+
+    [output]
+    method = raw
+    raw_target = $pipe
+    data_format = ascii
+    ascii_max_range = 5
+    " > $config_file
+
+    cava -p $config_file &
+
+    while read -r cmd; do
+        echo $cmd | sed "s/;//g;"
+    done < $pipe
+  '';
+
   poly-idle-inhibit = pkgs.writeShellScriptBin "poly-idle-inhibit" ''
     CURRENT_TIMEOUT=$(xset q | awk '/timeout:/ {print $2}')
 
@@ -385,6 +442,8 @@ in
     poly-modules-rofi
     poly-super
     poly-fetch
+    polybar-cava
+    polybar-cava-dots
   ];
 
  #my.poly-height = "18";
@@ -472,6 +531,8 @@ in
        #dpi = 96;
         modules = {
           left = "apps pp battery temp memory cpu filesystem networkspeeddown networkspeedup player xwindow"; #networkspeeddown-wired networkspeedup-wired
+          # polybar-cava-dots polybar-cava (cpu intensive)
+          # wayves anim (cpu intensive, but better than two above)
           center = "xworkspaces";
           right = "lock tray picom bspwm notif idle keyboard-layout light pulseaudio date hour power";
         };
@@ -964,6 +1025,42 @@ in
         label-full = "";
         label-low = " 󱈸";
        #bar-capacity-width = 10;
+      };
+
+      "module/polybar-cava" = {
+        type = "custom/script";
+        tail = true;
+        exec = "polybar-cava";
+        format = "<label>";
+       #format-font = 5;
+        label = "%output%";
+      };
+
+      "module/polybar-cava-dots" = {
+        type = "custom/script";
+        tail = true;
+        exec = "polybar-cava-dots 12";
+        format = "<label>";
+        label = "%output%";
+        format-padding = 0;
+      };
+
+      "module/wayves" = {
+        type = "custom/script";
+        tail = true;
+        exec = "wayves";
+        format = "<label>";
+        label = "%output%";
+        format-padding = 0;
+      };
+
+      "module/anim" = {
+        type = "custom/script";
+        tail = true;
+        exec = "bar-catloop";
+        format = "<label>";
+        label = "%output%";
+        format-padding = 0;
       };
 
       "settings" = {

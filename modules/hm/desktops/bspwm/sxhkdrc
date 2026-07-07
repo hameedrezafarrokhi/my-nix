@@ -515,8 +515,8 @@ super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
       poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
 
 # Polybar Modules
-super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,z}
-      poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,aaa}
+super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,g,e,r,z}
+      poly-modules {player,xworkspaces,lock,tray,picom,notif,idle,keyboard-layout,pulseaudio,hour,power,bspwm,date,polybar-cava,polybar-cava-dots,wayves,aaa}
 
 # Polybar Modules
 super + ctrl + y ; {bracketleft,bracketright,backslash}

@@ -1,0 +1,10 @@
+
+
+# creating "dictionary" to replace char with bar
+i=0
+while [ $i -lt ${#bar} ]
+do
+    dict="${dict}s/$i/${bar:$i:1}/g;"
+    i=$((i=i+1))
+done
+

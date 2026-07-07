@@ -2,6 +2,11 @@
 
 { config = lib.mkIf (config.my.software.tools.enable) {
 
+  fonts.packages = [
+    (pkgs.callPackage ../myPackages/bar-skull-cat-fonts.nix { })
+    (pkgs.callPackage ../myPackages/fonts/binary-clock.nix { })
+  ];
+
   environment.systemPackages =
 
   (utils.removePackagesByName ( with pkgs; [
@@ -208,6 +213,12 @@
 
     xbanish
 
+    cavasik
+    cavalcade
+
+    cliphist
+    sass
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -233,6 +244,17 @@
     '')
 
   ]
+
+    ++ [(pkgs.callPackage ../myPackages/fonts/binary-clock.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/wayves.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/cysystemd.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/mewline.nix { })]  # run problem with glib
+   #++ [(pkgs.callPackage ../myPackages/pawlette.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/bar-skull-cat.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/bar-skull-cat-fonts.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
 
@@ -441,6 +463,18 @@ static const int set_utf8 = 1; /* if zero listens to system variable 'LC_CTYPE' 
    ++ [(pkgs.callPackage ../myPackages/mu.nix { })]
    ++ [(pkgs.callPackage ../myPackages/ttytimer.nix { })] # has unknown lib "toot.h"
   #++ [(pkgs.callPackage ../myPackages/monica.nix { })] # build fail
+
+  #++ [(pkgs.callPackage ../myPackages/xava.nix { })]  # build problem with magock
+  #++ [(pkgs.callPackage ../myPackages/raviz.nix { })] # build problem, needs git clone
+   ++ [(pkgs.callPackage ../myPackages/mrmessy.nix { })]
+
+   ++ [(pkgs.callPackage ../myPackages/pulsepointer.nix { })]
+   #TIP: run when music running to identify source:
+   #, pactl list short sources
+   #CURSOR_EQ_SOURCE="alsa_output.pci-0000_00_1b.0.analog-stereo.monitor" pulsepointer
+
+  #++ [(pkgs.callPackage ../myPackages/wiremann.nix { })] # doesnt work
+
 
 
    ++ [(pkgs.callPackage ../myPackages/fabric.nix { })]

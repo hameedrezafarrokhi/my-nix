@@ -223,6 +223,8 @@ let
   Poly3 = "${MonoSpace}:size=${toString PolySizeSmall}:weight=${PolyWeight};${toString PolyScaleSmall}";
   PolySymbols = "${Symbols}:${toString PolySize}:weight=${PolyWeight};${toString PolyScale}";
   PolyEmoji = "${Emoji}:${toString PolyEmojiSize}";
+  PolyDots = "BinaryClock:style:BoldMono:size=8";
+  PolyAnim = "Waycat:9:weight=medium;1";
   awesome-wmFont = "${Sans} Bold ${toString SansSize}";
   i3Style = "Bold Semi-Condensed";
   i3BarStyle = "Regular Semi-Condensed";
@@ -6574,6 +6576,8 @@ in
             font-2 = Poly2;
             font-3 = Poly3;
             font-4 = PolyEmoji;
+            font-5 = PolyDots;
+            font-6 = PolyAnim;
             #font-1 = "FontAwesome:size=12;3";
             #font-2 = "Hack Nerd Font:size=12;3";
           };
@@ -6710,6 +6714,20 @@ in
             ramp-capacity-2 = "";
             ramp-capacity-3 = "";
             ramp-capacity-4 = "";
+          };
+          "module/polybar-cava" = {
+            label-foreground = Accent;
+          };
+          "module/polybar-cava-dots" = {
+            label-foreground = Accent;
+            format-font = 6;
+          };
+          "module/wayves" = {
+            label-foreground = Accent;
+          };
+          "module/anim" = {
+            label-foreground = Text;
+            format-font = 7;
           };
         };
       };

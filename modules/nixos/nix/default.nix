@@ -262,6 +262,12 @@ in
           pkgs.libxtst
           pkgs.libindicator
           pkgs.ffmpeg-full
+          pkgs.dbus
+          pkgs.alsa-lib
+          pkgs.alsa-tools
+         #pkgs.pulseaudio
+          pkgs.pipewire
+          pkgs.libpulseaudio
 
         ] ++ config.home-manager.users.${admin}.home.packages;
 
