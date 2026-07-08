@@ -6523,6 +6523,24 @@ in
         };
       };
 
+      fetch = {
+        enable = true;
+        info = [
+          "os" "host" "kernel" "uptime" "packages" "shell" "display"
+          "wm" "theme" "icons" "font" "terminal" "cpu" "gpu" "memory"
+          "swap" "disk" "ip" "battery" "locale" "colors"
+        ];
+        labelColor = "cyan";
+        separator = "-";
+        shading = "░▒▓█";
+        light = "top-left";
+        spin = "y"; # x y xy
+        speed = 2.0;
+        size = 1.5;
+       #height = 30;
+       #extraConfig = '' '';
+      };
+
       #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };
     };
 

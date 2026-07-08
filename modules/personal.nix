@@ -479,6 +479,7 @@
             dockbarx.enable = true;
             dunst.enable = true;
             fastfetch.enable = true;
+            fetch.enable = true;
             fd.enable = true;
             flameshot.enable = true;
             foliate.enable = false;

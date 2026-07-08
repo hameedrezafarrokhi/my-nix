@@ -60,6 +60,8 @@
     pkgs.doublecmd
     pkgs.xfe
 
+    pkgs.meld
+
   ] ) config.my.software.files.exclude)
 
    ++

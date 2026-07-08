@@ -245,9 +245,13 @@
 
   ]
 
+    ++ [(pkgs.callPackage ../myPackages/fetch.nix { })]
+
     ++ [(pkgs.callPackage ../myPackages/fonts/binary-clock.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/wayves.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/meowtrics.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/cysystemd.nix { })]
    #++ [(pkgs.callPackage ../myPackages/mewline.nix { })]  # run problem with glib

@@ -27,6 +27,7 @@ in
     dockbarx.enable = lib.mkEnableOption "dockbarx";
     dunst.enable = lib.mkEnableOption "dunst";
     fastfetch.enable = lib.mkEnableOption "fastfetch";
+    fetch.enable = lib.mkEnableOption "fetch";
     fd.enable = lib.mkEnableOption "fd";
     flameshot.enable = lib.mkEnableOption "flameshot";
     foliate.enable = lib.mkEnableOption "foliate";
@@ -100,6 +101,7 @@ in
       ./dockbarx.nix
       ./dunst.nix
       ./fastfetch.nix
+      ./fetch.nix
       ./fd.nix
       ./flameshot.nix
       ./foliate.nix
