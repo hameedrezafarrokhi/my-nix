@@ -260,6 +260,11 @@
     ++ [(pkgs.callPackage ../myPackages/bar-skull-cat.nix { })]
     ++ [(pkgs.callPackage ../myPackages/bar-skull-cat-fonts.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/rofi-blocks.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/rofi-ytm.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/yt-search-rofi-blocks.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/rofi-blocks-apps.nix { })]
+
    #++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/avvie.nix { })]
