@@ -219,6 +219,10 @@
     cliphist
     sass
 
+    onagre
+
+
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -264,6 +268,8 @@
     ++ [(pkgs.callPackage ../myPackages/rofi-ytm.nix { })]
     ++ [(pkgs.callPackage ../myPackages/yt-search-rofi-blocks.nix { })]
     ++ [(pkgs.callPackage ../myPackages/rofi-blocks-apps.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/uwatch.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/appmenu-gtk-module.nix { })]
 

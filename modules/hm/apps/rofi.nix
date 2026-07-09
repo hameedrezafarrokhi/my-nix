@@ -427,6 +427,14 @@ in
     rofi-clock
     rofi-yt
     rofi-quick-calc
+
+    pkgs.todofi-sh
+    pkgs.clerk
+
+    pkgs.bzmenu
+    pkgs.iwmenu
+    pkgs.pwmenu
+
   ];
 
   programs.rofi = {

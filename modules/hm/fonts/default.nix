@@ -14,6 +14,10 @@ in
 
     home.packages = with pkgs; [
 
+        emojipick
+        emoji-picker
+        bemoji
+
         junction-font
 
         noto-fonts /*noto-fonts-emoji*/ noto-fonts-color-emoji noto-fonts-monochrome-emoji noto-fonts-emoji-blob-bin
