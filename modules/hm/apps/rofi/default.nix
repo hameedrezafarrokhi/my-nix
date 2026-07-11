@@ -539,6 +539,7 @@ in
     (pkgs.callPackage ./apps/rofi-powerblur.nix { })
    #(pkgs.callPackage ./apps/mounch.nix { })
    #(pkgs.callPackage ./apps/marcador.nix { })
+    (pkgs.callPackage ./apps/marcador-bin.nix { })
     (pkgs.callPackage ./apps/rofi-shell.nix {
       bg = "#24273a";
       fg = "#cad3f5";

@@ -233,6 +233,9 @@
 
     haskellPackages.greenclip
 
+    handlr-regex
+   #handlr
+
 
   ] ) config.my.software.tools.exclude)
 
