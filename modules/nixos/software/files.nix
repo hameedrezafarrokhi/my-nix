@@ -62,6 +62,8 @@
 
     pkgs.meld
 
+    pkgs.mc
+
   ] ) config.my.software.files.exclude)
 
    ++

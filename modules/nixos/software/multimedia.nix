@@ -18,6 +18,7 @@
    #handbrake                     ##CD/DVD ripper/player
    #ruffle                        ##Flash player
    #celluloid                     ##MPV backend (Another)
+    mplayer
 
   ############################################################   MUSIC_PLAYER
 

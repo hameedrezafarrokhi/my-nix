@@ -221,7 +221,17 @@
 
     onagre
 
+    ddgr
 
+    maim
+    simple-mtpfs
+    mpc
+
+    translate-shell
+
+   #sitespeed-io
+
+    haskellPackages.greenclip
 
 
   ] ) config.my.software.tools.exclude)
@@ -249,7 +259,15 @@
 
   ]
 
+    ++ [(pkgs.callPackage ../../hm/apps/rofi/apps/rofi-shell.nix {
+           bg = "#24273a";
+           fg = "#cad3f5";
+           bgAlt = "#1e2030";
+    })]
+
     ++ [(pkgs.callPackage ../myPackages/fetch.nix { })]
+
+    ++ [(pkgs.callPackage ../myPackages/xdisplayinfo.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/fonts/binary-clock.nix { })]
 

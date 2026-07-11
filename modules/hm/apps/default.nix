@@ -135,7 +135,7 @@ in
       ./plank.nix
       ./qutebrowser.nix
       ./resources.nix
-      ./rofi.nix
+      ./rofi
       ./sioyek.nix
       ./starship.nix
       ./superfile.nix

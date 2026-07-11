@@ -85,6 +85,8 @@ in
         comic-mono
 
         fira-sans
+        fira-code-symbols
+        fira-code
         fantasque-sans-mono
         icomoon-feather
 
@@ -108,6 +110,8 @@ in
       ]
 
      #++ [ mypkgs.fallback.corefonts ]
+     #++ [(pkgs.callPackage ../../../hm/apps/rofi/apps/rofi-powerblur.nix { })]
+     #++ [(pkgs.callPackage ../../../hm/apps/rofi/apps/rofi-shell.nix { })]
 
       ;
     };

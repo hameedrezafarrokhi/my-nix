@@ -38,6 +38,8 @@ in
         inter
 
         fira-sans
+        fira-code-symbols
+        fira-code
         fantasque-sans-mono
         icomoon-feather
 

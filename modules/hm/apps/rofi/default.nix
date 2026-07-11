@@ -1,6 +1,63 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nix-path, ... }:
 
 let
+
+  rofi-shortcuts = pkgs.writeShellScriptBin "rofi-shortcuts" ''
+    #"$(cat ~/.config/rofi/rofi-shortcuts/rofi-shortcuts.conf | rofi -i -dmenu -p 'shortcuts')"
+    "$(cat ${nix-path}/modules/hm/apps/rofi/rofi-shortcuts.conf | rofi -i -dmenu -p 'shortcuts')"
+  '';
+
+  rofi-scrn = pkgs.writeShellScriptBin "rofi-scrn" ''
+    # Credits: https://github.com/ceuk/rofi-screenshot
+    export ROFI_SCREENSHOT_DIR=$XDG_PICTURES_DIR/Screenshots
+    export ROFI_SCREENSHOT_DATE_FORMAT="+%d-%m-%Y %H:%M:%S"
+    ${builtins.readFile ./scripts/rofi-screenshot}
+  ''; # -s for stop recording
+
+  rofi-books = pkgs.writeShellScriptBin "rofi-books" ''
+    # Credits: https://github.com/miroslavvidovic/rofi-scripts
+    ${builtins.readFile ./scripts/rofi-books}
+  '';
+
+  rofi-github = pkgs.writeShellScriptBin "rofi-github" ''
+    # Credits: https://github.com/miroslavvidovic/rofi-scripts
+    ${builtins.readFile ./scripts/rofi-github}
+  '';
+
+  rofi-web = pkgs.writeShellScriptBin "rofi-web" ''
+    # Credits: https://github.com/miroslavvidovic/rofi-scripts
+    ${builtins.readFile ./scripts/rofi-web}
+  '';
+
+  rofi_trans = pkgs.writeShellScriptBin "rofi_trans" ''
+    # Credits: https://github.com/garyparrot/rofi-translate
+    ${builtins.readFile ./scripts/rofi_trans}
+  '';
+
+  rofi_trans_brief = pkgs.writeShellScriptBin "rofi_trans_brief" ''
+    # Credits: https://github.com/garyparrot/rofi-translate
+    ${builtins.readFile ./scripts/rofi_trans_brief}
+  '';
+
+  rofi_trans_delete = pkgs.writeShellScriptBin "rofi_trans_delete" ''
+    # Credits: https://github.com/garyparrot/rofi-translate
+    ${builtins.readFile ./scripts/rofi_trans_delete}
+  '';
+
+  rofi_trans_verbose = pkgs.writeShellScriptBin "rofi_trans_verbose" ''
+    # Credits: https://github.com/garyparrot/rofi-translate
+    ${builtins.readFile ./scripts/rofi_trans_verbose}
+  '';
+
+  rofi_verbose = pkgs.writeShellScriptBin "rofi_verbose" ''
+    # Credits: https://github.com/garyparrot/rofi-translate
+    ${builtins.readFile ./scripts/rofi_verbose}
+  '';
+
+  rofi-sound = pkgs.writeShellScriptBin "rofi-sound" ''
+    # Credits: https://github.com/kellya/rofi-sound
+    ${builtins.readFile ./scripts/rofi-sound}
+  '';
 
   rofi-clock = pkgs.writeShellScriptBin "rofi-clock" ''
 #!/bin/bash
@@ -420,13 +477,30 @@ if __name__ == "__main__":
 
 in
 
-{ config = lib.mkIf (config.my.apps.rofi.enable) {
+{
+  imports = [
+
+  ];
+
+  config = lib.mkIf (config.my.apps.rofi.enable) {
 
   home.packages = [
     pkgs.rofi-systemd
     rofi-clock
     rofi-yt
     rofi-quick-calc
+    rofi-scrn
+    rofi-github
+    rofi-books
+    rofi-web
+    rofi_verbose
+    rofi_trans
+    rofi_trans_brief
+    rofi_trans_delete
+    rofi_trans_verbose
+    rofi-sound
+    rofi-shortcuts
+
 
     pkgs.todofi-sh
     pkgs.clerk
@@ -434,6 +508,47 @@ in
     pkgs.bzmenu
     pkgs.iwmenu
     pkgs.pwmenu
+
+    pkgs.ffcast
+    pkgs.slop
+    pkgs.xclip
+
+    pkgs.udiskie
+
+    pkgs.ddgr
+
+    # themes
+    (pkgs.callPackage ./themes/newmanls.nix { })
+    (pkgs.callPackage ./themes/murzchnvok.nix { })
+
+    # apps
+    (pkgs.callPackage ./apps/rofi-desktop.nix { })
+    (pkgs.callPackage ./apps/rofication.nix { })
+    (pkgs.callPackage ./apps/rofi-ftw.nix { })
+    (pkgs.callPackage ./apps/menu-calc.nix { })
+    (pkgs.callPackage ./apps/rofi-udiskie.nix { })
+    (pkgs.callPackage ./apps/rofi-search.nix { })
+    (pkgs.callPackage ./apps/rofi-commands.nix { })
+    (pkgs.callPackage ./apps/rofi-ytx.nix { })
+    (pkgs.callPackage ./apps/rofi-cliphist.nix { })
+    (pkgs.callPackage ./apps/rofi-copyq.nix { })
+    (pkgs.callPackage ./apps/rofi-extended.nix { })
+    (pkgs.callPackage ./apps/rofi-mixer.nix { })
+    (pkgs.callPackage ./apps/rofi-fontawesome.nix { })
+   #(pkgs.callPackage ./apps/rofi-chrome-switch.nix { })
+    (pkgs.callPackage ./apps/rofi-powerblur.nix { })
+   #(pkgs.callPackage ./apps/mounch.nix { })
+   #(pkgs.callPackage ./apps/marcador.nix { })
+    (pkgs.callPackage ./apps/rofi-shell.nix {
+      bg = "#24273a";
+      fg = "#cad3f5";
+      bgAlt = "#1e2030";
+    })
+
+    (pkgs.callPackage ./apps/xdisplayinfo.nix { })
+
+    # modules
+    (pkgs.callPackage ./modules/python-rofi.nix { })
 
   ];
 
@@ -468,7 +583,8 @@ in
       rofi-pulse-select
 
     ]
-    ++ [(pkgs.callPackage ../../nixos/myPackages/rofi-blocks.nix { })]
+    ++ [(pkgs.callPackage ../../../nixos/myPackages/rofi-blocks.nix { })]
+   #++ [(pkgs.callPackage ./apps/rofi-chrome-switch.nix { })]
     ;
 
     modes = [
