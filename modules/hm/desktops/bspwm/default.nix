@@ -212,7 +212,76 @@ in
         bspc rule -a *:*:"Save As" layer=above state=floating
         bspc rule -a *:*:"Select file to open" layer=above state=floating
         bspc rule -a *:*:"Select file to save to" layer=above state=floating
-        
+
+        bspc rule -a *:*:"HiFile - Properties" layer=above state=floating
+        bspc rule -a *:*:"Delete item" layer=above state=floating
+        bspc rule -a *:*:"Delete items" layer=above state=floating
+        bspc rule -a *:*:"Copy path" layer=above state=floating
+        bspc rule -a *:*:"Move or copy" layer=above state=floating
+        bspc rule -a *:*:"Make folder" layer=above state=floating
+        bspc rule -a *:*:"Create file" layer=above state=floating
+        bspc rule -a *:*:"Rename item" layer=above state=floating
+        bspc rule -a *:*:"Open folder with" layer=above state=floating
+
+        # bspc rule -a *:*:"Open *. with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.png with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.jpg with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.jpeg with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.mp4 with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.mpeg with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.mp3 with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.sh with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.txt with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.mkv with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.tar with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.tar.gz with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.gz with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.pdf with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.py with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.c with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.h with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.cpp with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.nix with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.josn with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.toml with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.yaml with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.conf with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.ini with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.rs with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.go with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.odt with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.md with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.css with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.scss with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.glsl with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.cfg with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.html with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.theme with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.docx with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.xlsx with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.js with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.1 with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.xz with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.svg with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.diff with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.zip with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.rar with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.lock with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.tgz with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.yml with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.lua with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.vim with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.wav with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.rasi with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.xpm with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.xbm with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.db with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.m4a with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.gif with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.flac with" layer=above state=floating
+        # bspc rule -a *:*:"Open *.mov with" layer=above state=floating
+
+
         bspc rule -a *:*:"Error" layer=above state=floating
         bspc rule -a *:*:"Find" layer=above state=floating
         bspc rule -a *:*:"Question" layer=above state=floating
