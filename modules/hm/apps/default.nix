@@ -49,6 +49,7 @@ in
     ludusavi.enable = lib.mkEnableOption "ludusavi";
     lutris.enable = lib.mkEnableOption "lutris";
     mangohud.enable = lib.mkEnableOption "mangohud";
+    mpd.enable =  lib.mkEnableOption "mpd";
     mpv.enable = lib.mkEnableOption "mpv";
     neovim.enable = lib.mkEnableOption "neovim";
     nautilus.enable = lib.mkEnableOption "nautilus";
@@ -123,6 +124,7 @@ in
       ./ludusavi.nix
       ./lutris.nix
       ./mangohud.nix
+      ./mpd.nix
       ./mpv.nix
       ./neovim.nix
       ./nautilus.nix

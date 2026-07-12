@@ -129,7 +129,7 @@
       # Git-Wms
 
         # Dynamic
-      "vxwm" "tile"
+      "vxwm"
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
@@ -141,8 +141,8 @@
      #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
      #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
-     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm"
-      "treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
+     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm" "tile"
+     #"treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
 
      #"fluorite"
 
@@ -155,7 +155,7 @@
      #"simplewm" "superiorxwm" "marswm" "notewm" "ywm" "NsCDE" "srwm"
      #"dfpwm" "stevewm" "nyxwm-float" "mitewm-go" "mitewm" "qpwm" "wm0"
      #"makron" "fwwm" "sewm" "go-afwm" "dubwm" "wmsquared"
-      "yafwm"
+     #"yafwm"
 
        # Bouncy :)
      #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
@@ -501,6 +501,7 @@
             ludusavi.enable = false;
             lutris.enable = true;
             mangohud.enable = true;
+            mpd.enable = false;
             mpv.enable = true;
             neovim.enable = true;
             nautilus.enable = false;

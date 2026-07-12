@@ -1,0 +1,128 @@
+#!/bin/bash
+
+EDITOR=nvim
+VIEW=zathura
+TERMINAL=kitty
+THEME=spotlight-dark
+
+# <<------ Directories ------>> #
+book_library="/path/to/books/"
+note_library="/path/to/notes/"
+template_library="/path/to/note/templates/"
+article_library="/path/to/articles/"
+
+# <<------ Options ------>> #
+declare -A actions
+actions["📑 Create Note"]=$template_library
+actions["🔖 View Notes"]=$note_library
+actions["📚 Books"]=$book_library
+actions["📜 Articles"]=$article_library
+actions["⏬ Download Books"]="download_books"
+
+# <<------ Main ------>> #
+create_document() {
+  document_type=$(echo -e "Basic\nLaTeX\nBeamer\nRmark" | rofi -dmenu -i -p "What kind of note?" -theme $THEME)
+
+  if [ -z "$document_type" ]; then
+    return
+  fi
+
+  case "$document_type" in
+    Basic)
+      template="SimpleNote.md"
+      EXTENSION="md"
+      message="Basic Document Created!"
+      ;;
+    LaTeX)
+      template="LaTeX.tex"
+      EXTENSION="tex"
+      message="LaTeX Document Created!"
+      ;;
+    Beamer)
+      template="Presentation.tex"
+      EXTENSION="tex"
+      message="Beamer Presentation Created!"
+      ;;
+    Rmark)
+      template="RMarkdown.rmd"
+      EXTENSION="rmd"
+      message="R Markdown Document Created!"
+      ;;
+    *)
+      echo "Invalid option"
+      return 1
+      ;;
+  esac
+
+  cn_name=$(rofi -dmenu -p "Enter a name for the note:" -theme $THEME)
+
+  if [ -z "$cn_name" ]; then
+    return
+  fi
+
+  if [ -f "$directory/$cn_name.$EXTENSION" ]; then
+    if ! (echo -e "Yes\nNo" | rofi -dmenu -p "Note already exists. Overwrite?" -theme $THEME | grep -q "Yes"); then
+      return
+    fi
+  fi
+
+  notify-send "$message"
+  cp "$directory/Templates/$template" "$directory/$cn_name.$EXTENSION"
+  "$TERMINAL" -e "$EDITOR" "$directory/$cn_name.$EXTENSION"
+}
+
+open_document() {
+    FILE=$(find "$directory" -type f -name "*.pdf" -printf "%f\n" | rofi -theme $THEME -dmenu -i -p "Select PDF:")
+    if [[ -n "$FILE" ]]; then
+        FULL_PATH=$(find "$directory" -type f -name "$FILE" -print -quit)
+        zathura "$FULL_PATH"
+    fi
+}
+
+edit_notes() {
+    FILE=$(find "$directory" -type f -name "*.md" -printf "%f\n" | rofi -theme $THEME -dmenu -i -p "Select Note:")
+    if [[ -n "$FILE" ]]; then
+        FULL_PATH=$(find "$directory" -type f -name "$FILE" -print -quit)
+        $TERMINAL -e $EDITOR "$FULL_PATH"
+    fi
+}
+
+download_books() {
+  bookname=$(echo "" | rofi -dmenu -p "Enter book name:" -theme $THEME)
+  if [ -z "$bookname" ]
+  then
+      echo "No book name entered"
+      exit 1
+  fi
+
+  kitty -T "dropbooks" -e libby --rofi $bookname
+}
+
+main() {
+  selected_action=$(printf '%s\n' "${!actions[@]}" | rofi -dmenu -i -p "📂 Choose an action:" -theme $THEME)
+  
+  if [ -z "$selected_action" ]; then
+    exit 0
+  fi
+
+  selected_dir_or_func="${actions[$selected_action]}"
+
+  if [ "$selected_dir_or_func" = "download_books" ]; then
+    $selected_dir_or_func
+  else
+    directory="$selected_dir_or_func"
+    case $selected_action in
+      "📑 Create Note")
+        create_document
+        ;;
+      "🔖 View Notes")
+        edit_notes
+        ;;
+      "📚 Books" | "📜 Articles")
+        open_document
+        ;;
+    esac
+  fi
+}
+
+main

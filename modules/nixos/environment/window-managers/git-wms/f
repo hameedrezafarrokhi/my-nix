@@ -1,5 +1,4 @@
-milb=make it like bspwm
-nn=needs net
-
-sowm - mlib, nn for patch
-aphelia - keybinds dont work
+# fix these src (switch to git)
+devoidwm
+hogewm
+mdtwm

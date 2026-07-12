@@ -18,8 +18,6 @@ stdenv.mkDerivation rec {
     hash = "sha256-DNQf6clFoDbLTSjGVGWdD2wjV3N5vyA8j1ooct7u5Ow=";
   };
 
- #src = ./aphelia;
-
   buildInputs = [ libX11 ];
 
   #makeFlags = [

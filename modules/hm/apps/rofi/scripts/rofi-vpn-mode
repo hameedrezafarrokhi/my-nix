@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Rofi VPN Mode
+# Usage: rofi -show vpn -modi "vpn:~/.local/bin/rofi-vpn-mode.sh"
+
+get_vpn_list() {
+    # Get list of VPN connections (properly handle spaces in names)
+    vpn_connections=$(nmcli -t -f NAME,TYPE connection show | grep ':vpn$' | cut -d: -f1)
+    
+    if [ -z "$vpn_connections" ]; then
+        echo "No VPN connections found"
+        return
+    fi
+    
+    # Build list with status
+    while IFS= read -r vpn; do
+        # Check if VPN is active (use exact name matching)
+        if nmcli -t -f NAME connection show --active | grep -Fx "$vpn" > /dev/null; then
+            echo "🟢 $vpn"
+        else
+            echo "⚫ $vpn"
+        fi
+    done <<< "$vpn_connections"
+}
+
+toggle_vpn() {
+    local selection="$1"
+    
+    # Extract VPN name (remove emoji and space)
+    vpn_name=$(echo "$selection" | sed 's/^[🟢⚫] //')
+    
+    # Toggle VPN
+    if echo "$selection" | grep -q "🟢"; then
+        # Disconnect
+        nmcli connection down "$vpn_name" 2>&1
+        notify-send "VPN" "Disconnected from $vpn_name"
+    else
+        # Connect
+        nmcli connection up "$vpn_name" 2>&1
+        notify-send "VPN" "Connected to $vpn_name"
+    fi
+}
+
+# Main logic
+if [ "$ROFI_RETV" = "0" ] || [ -z "$ROFI_RETV" ]; then
+    # Initial call - show VPN list
+    get_vpn_list
+elif [ "$ROFI_RETV" = "1" ]; then
+    # Item selected - toggle VPN and refresh
+    toggle_vpn "$1"
+    # Output new list to refresh the menu
+    get_vpn_list
+fi

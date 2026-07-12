@@ -270,6 +270,11 @@
 
     ++ [(pkgs.callPackage ../myPackages/fetch.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/noctavox.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/gomu.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/muzi.nix { })] # build fail
+   #++ [(pkgs.callPackage ../myPackages/nncmpp.nix { })] # build stuff needs fix im lazy
+
     ++ [(pkgs.callPackage ../myPackages/xdisplayinfo.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/fonts/binary-clock.nix { })]

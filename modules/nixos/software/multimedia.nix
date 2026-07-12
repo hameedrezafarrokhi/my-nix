@@ -43,6 +43,9 @@
    #cavalier                      ##Visualisation for audio
    #eartag                        ##Audio metadata editor
 
+    termusic
+    ytermusic
+
   ################################################################   PICTURES
 
     pix                           ##Image viewer (Cinnamon)

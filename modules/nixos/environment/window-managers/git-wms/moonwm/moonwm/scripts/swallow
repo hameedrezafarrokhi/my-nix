@@ -1,7 +1,0 @@
-#!/bin/sh
-
-moonctl setswallow 1
-$@
-ret="$?"
-moonctl setswallow 0
-exit $ret

@@ -1,9 +1,0 @@
-XCOMM
-XCOMM Imakefile for qvwm sounds
-XCOMM
-
-#include "../Config.tmpl"
-
-SOUNDS = chimes.wav
-
-InstallMultiple($(SOUNDS),$(SNDDIR))

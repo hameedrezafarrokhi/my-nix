@@ -1,0 +1,306 @@
+#!/bin/bash
+# rofi-wpctl - PipeWire Audio Control via Rofi
+# A beautiful interface for managing audio devices and volumes
+
+set -euo pipefail
+
+# Colors and styling for rofi
+ROFI_THEME="${ROFI_THEME:-}"
+ROFI_PROMPT_COLOR="${ROFI_PROMPT_COLOR:-#7aa2f7}"
+
+# Icons (using unicode symbols, customize as needed)
+ICON_OUTPUT="🔊"
+ICON_INPUT="🎤"
+ICON_VOLUME="🔉"
+ICON_APP="🎵"
+ICON_DEFAULT="⭐"
+ICON_ACTIVE="▶"
+ICON_MUTED="🔇"
+
+# Rofi command wrapper
+rofi_cmd() {
+    rofi -dmenu -i -p "$1" \
+        -theme-str 'window {width: 600px;}' \
+        -theme-str 'listview {lines: 10;}' \
+        ${ROFI_THEME:+-theme "$ROFI_THEME"}
+}
+
+# Get default sink ID
+get_default_sink() {
+    wpctl status | grep -A 100 "Audio" | grep -A 100 "Sinks:" | grep -B 1 "vol:" | grep "*" | awk '{print $2}' | tr -d '*.'
+}
+
+# Get default source ID
+get_default_source() {
+    wpctl status | grep -A 100 "Audio" | grep -A 100 "Sources:" | grep -B 1 "vol:" | grep "*" | awk '{print $2}' | tr -d '*.'
+}
+
+# List audio sinks (outputs)
+list_sinks() {
+    local default_id
+    default_id=$(get_default_sink)
+
+    wpctl status | grep -A 100 "Sinks:" | grep -B 100 "Sink endpoints:" | grep -E "^\s+[0-9]+" | while read -r line; do
+        local id name marker icon
+        id=$(echo "$line" | awk '{print $2}' | tr -d '*.')
+        name=$(echo "$line" | sed -E 's/^\s+[*│├└─]*\s*[0-9]+\.\s+//')
+
+        # Check if this is the default
+        if [[ "$line" == *"*"* ]]; then
+            marker="$ICON_DEFAULT"
+        else
+            marker=" "
+        fi
+
+        # Check if muted
+        if [[ "$name" == *"[MUTED]"* ]]; then
+            icon="$ICON_MUTED"
+        else
+            icon="$ICON_OUTPUT"
+        fi
+
+        echo "$id|$marker $icon $name"
+    done
+}
+
+# List audio sources (inputs)
+list_sources() {
+    local default_id
+    default_id=$(get_default_source)
+
+    wpctl status | grep -A 100 "Sources:" | grep -B 100 "Source endpoints:" | grep -E "^\s+[0-9]+" | while read -r line; do
+        local id name marker icon
+        id=$(echo "$line" | awk '{print $2}' | tr -d '*.')
+        name=$(echo "$line" | sed -E 's/^\s+[*│├└─]*\s*[0-9]+\.\s+//')
+
+        # Check if this is the default
+        if [[ "$line" == *"*"* ]]; then
+            marker="$ICON_DEFAULT"
+        else
+            marker=" "
+        fi
+
+        # Check if muted
+        if [[ "$name" == *"[MUTED]"* ]]; then
+            icon="$ICON_MUTED"
+        else
+            icon="$ICON_INPUT"
+        fi
+
+        echo "$id|$marker $icon $name"
+    done
+}
+
+# List active streams (per-app)
+list_streams() {
+    wpctl status | grep -A 100 "Streams:" | grep -E "^\s+[0-9]+" | while read -r line; do
+        local id name
+        id=$(echo "$line" | awk '{print $2}' | tr -d '.')
+        name=$(echo "$line" | sed -E 's/^\s+[│├└─]*\s*[0-9]+\.\s+//')
+
+        echo "$id|$ICON_APP $name"
+    done
+}
+
+# Switch default sink
+switch_sink() {
+    local sinks selection id
+    sinks=$(list_sinks)
+
+    if [[ -z "$sinks" ]]; then
+        notify-send "No audio outputs found" "PipeWire" -u low
+        return
+    fi
+
+    selection=$(echo "$sinks" | awk -F'|' '{print $2}' | rofi_cmd "Select Output Device")
+
+    if [[ -n "$selection" ]]; then
+        # Extract ID from the full sinks list
+        id=$(echo "$sinks" | grep -F "$selection" | awk -F'|' '{print $1}')
+        wpctl set-default "$id"
+        notify-send "Output Device Changed" "$selection" -u low
+    fi
+}
+
+# Switch default source
+switch_source() {
+    local sources selection id
+    sources=$(list_sources)
+
+    if [[ -z "$sources" ]]; then
+        notify-send "No audio inputs found" "PipeWire" -u low
+        return
+    fi
+
+    selection=$(echo "$sources" | awk -F'|' '{print $2}' | rofi_cmd "Select Input Device")
+
+    if [[ -n "$selection" ]]; then
+        id=$(echo "$sources" | grep -F "$selection" | awk -F'|' '{print $1}')
+        wpctl set-default "$id"
+        notify-send "Input Device Changed" "$selection" -u low
+    fi
+}
+
+# Volume control menu
+volume_control() {
+    local choice
+    choice=$(cat <<EOF | rofi_cmd "Volume Control"
+$ICON_OUTPUT System Output
+$ICON_INPUT System Input
+$ICON_APP Application Volume
+EOF
+)
+
+    case "$choice" in
+        "$ICON_OUTPUT"*)
+            adjust_sink_volume
+            ;;
+        "$ICON_INPUT"*)
+            adjust_source_volume
+            ;;
+        "$ICON_APP"*)
+            adjust_stream_volume
+            ;;
+    esac
+}
+
+# Adjust sink volume
+adjust_sink_volume() {
+    local sinks selection id action
+    sinks=$(list_sinks)
+
+    if [[ -z "$sinks" ]]; then
+        notify-send "No audio outputs found" "PipeWire" -u low
+        return
+    fi
+
+    selection=$(echo "$sinks" | awk -F'|' '{print $2}' | rofi_cmd "Select Output for Volume Control")
+
+    if [[ -n "$selection" ]]; then
+        id=$(echo "$sinks" | grep -F "$selection" | awk -F'|' '{print $1}')
+
+        action=$(cat <<EOF | rofi_cmd "Volume Action"
+🔊 +10%
+🔉 +5%
+🔈 -5%
+🔇 -10%
+🔕 Toggle Mute
+EOF
+)
+
+        case "$action" in
+            *"+10%"*) wpctl set-volume "$id" 10%+ ;;
+            *"+5%"*)  wpctl set-volume "$id" 5%+ ;;
+            *"-5%"*)  wpctl set-volume "$id" 5%- ;;
+            *"-10%"*) wpctl set-volume "$id" 10%- ;;
+            *"Mute"*) wpctl set-mute "$id" toggle ;;
+        esac
+    fi
+}
+
+# Adjust source volume
+adjust_source_volume() {
+    local sources selection id action
+    sources=$(list_sources)
+
+    if [[ -z "$sources" ]]; then
+        notify-send "No audio inputs found" "PipeWire" -u low
+        return
+    fi
+
+    selection=$(echo "$sources" | awk -F'|' '{print $2}' | rofi_cmd "Select Input for Volume Control")
+
+    if [[ -n "$selection" ]]; then
+        id=$(echo "$sources" | grep -F "$selection" | awk -F'|' '{print $1}')
+
+        action=$(cat <<EOF | rofi_cmd "Volume Action"
+🔊 +10%
+🔉 +5%
+🔈 -5%
+🔇 -10%
+🔕 Toggle Mute
+EOF
+)
+
+        case "$action" in
+            *"+10%"*) wpctl set-volume "$id" 10%+ ;;
+            *"+5%"*)  wpctl set-volume "$id" 5%+ ;;
+            *"-5%"*)  wpctl set-volume "$id" 5%- ;;
+            *"-10%"*) wpctl set-volume "$id" 10%- ;;
+            *"Mute"*) wpctl set-mute "$id" toggle ;;
+        esac
+    fi
+}
+
+# Adjust stream (per-app) volume
+adjust_stream_volume() {
+    local streams selection id action
+    streams=$(list_streams)
+
+    if [[ -z "$streams" ]]; then
+        notify-send "No active streams found" "PipeWire" -u low
+        return
+    fi
+
+    selection=$(echo "$streams" | awk -F'|' '{print $2}' | rofi_cmd "Select Application")
+
+    if [[ -n "$selection" ]]; then
+        id=$(echo "$streams" | grep -F "$selection" | awk -F'|' '{print $1}')
+
+        action=$(cat <<EOF | rofi_cmd "Volume Action"
+🔊 +10%
+🔉 +5%
+🔈 -5%
+🔇 -10%
+🔕 Toggle Mute
+EOF
+)
+
+        case "$action" in
+            *"+10%"*) wpctl set-volume "$id" 10%+ ;;
+            *"+5%"*)  wpctl set-volume "$id" 5%+ ;;
+            *"-5%"*)  wpctl set-volume "$id" 5%- ;;
+            *"-10%"*) wpctl set-volume "$id" 10%- ;;
+            *"Mute"*) wpctl set-mute "$id" toggle ;;
+        esac
+    fi
+}
+
+# Main menu
+main_menu() {
+    local choice
+    choice=$(cat <<EOF | rofi_cmd "PipeWire Audio Control"
+$ICON_OUTPUT Switch Output Device
+$ICON_INPUT Switch Input Device
+$ICON_VOLUME Volume Control
+EOF
+)
+
+    case "$choice" in
+        "$ICON_OUTPUT"*)
+            switch_sink
+            ;;
+        "$ICON_INPUT"*)
+            switch_source
+            ;;
+        "$ICON_VOLUME"*)
+            volume_control
+            ;;
+    esac
+}
+
+# Parse command line arguments
+case "${1:-menu}" in
+    sink|output)
+        switch_sink
+        ;;
+    source|input)
+        switch_source
+        ;;
+    volume|vol)
+        volume_control
+        ;;
+    menu|*)
+        main_menu
+        ;;
+esac
