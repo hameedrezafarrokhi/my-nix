@@ -57,6 +57,14 @@
    #catppuccin-grub
 
     gowall
+    dipc
+    stylish
+    wpgtk
+   #wallrizz   # WARNING has insecure deps (quickjs)
+   #hyprlax    # wayland only
+   #sunpaper   # LARGE SIZE
+    lutgen-studio
+
 
   ] ) config.my.software.theming.exclude)
 

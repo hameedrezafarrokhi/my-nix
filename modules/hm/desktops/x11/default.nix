@@ -857,6 +857,7 @@ in
     home.packages = [
       pkgs.picom
       pkgs.feh
+      pkgs.nitrogen
       pkgs.xsetroot
       pkgs.hsetroot
       pkgs.xrefresh

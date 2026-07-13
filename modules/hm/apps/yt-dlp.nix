@@ -15,4 +15,8 @@
    #extraConfig = "";
   };
 
+  home.packages = [
+    pkgs.ytdl-sub
+  ];
+
 };}

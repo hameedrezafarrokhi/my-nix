@@ -172,8 +172,6 @@
    #luastatus
    #lesbar
 
-    wpgtk
-
     esshader
     gpupad
     kodelife
@@ -204,6 +202,9 @@
     (neowall.overrideAttrs (old: {
       buildInputs = old.buildInputs ++ [ libglvnd libxkbcommon ];
     }))
+
+   #glpaper   # wayland only
+   #shaderbg  # wayland only
 
 
    #sox
@@ -239,6 +240,10 @@
     spotatui
 
     beep
+
+    projectm_3
+
+   #gtklock-playerctl-module
 
 
   ] ) config.my.software.tools.exclude)

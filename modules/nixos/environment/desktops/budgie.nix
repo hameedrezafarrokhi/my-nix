@@ -109,6 +109,7 @@ in
   environment.systemPackages = [
    #budgie-env-desktop
    budgie-env
+   pkgs.budgie-media-player-applet
   ];
 
   environment.shellAliases = {

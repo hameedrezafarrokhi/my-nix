@@ -54,6 +54,8 @@
 
       kdePackages.plasma-keyboard
 
+     #plasmusic-toolbar   # player widget for plasma bar
+
     ]
 
    #++ [(pkgs.callPackage ../../myPackages/plasma-smart-video-wallpaper-reborn.nix { })]

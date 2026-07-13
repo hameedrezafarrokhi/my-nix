@@ -111,6 +111,15 @@
     pkgs.cantata
     pkgs.euphonica
     pkgs.ymuse
+    pkgs.ario
+    pkgs.inori
+    pkgs.plattenalbum
+    pkgs.miniplayer
+
+    # tui
+    pkgs.ncmpc
+    pkgs.libmpdclient
+
 
   ];
 

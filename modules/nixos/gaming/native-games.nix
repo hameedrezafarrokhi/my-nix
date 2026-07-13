@@ -41,6 +41,8 @@
 
    #pkgs.brogue-ce
 
+    pkgs.tecnoballz
+
   ];
 
 };}
