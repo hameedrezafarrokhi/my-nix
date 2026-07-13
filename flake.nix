@@ -73,6 +73,8 @@
 #            drew-wm = { url = "github:drewgrif/dwm-setup";
 #                               flake = false; };
 
+          ytm-player = { url = "github:peternaame-boop/ytm-player"; };
+
   # My_Stuff
               assets = { url = "github:hameedrezafarrokhi/assets";
                                 flake = false; };

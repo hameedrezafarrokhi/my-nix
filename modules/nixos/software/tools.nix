@@ -236,6 +236,10 @@
     handlr-regex
    #handlr
 
+    spotatui
+
+    beep
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -262,6 +266,8 @@
 
   ]
 
+    ++ [(inputs.ytm-player.packages.${pkgs.stdenv.hostPlatform.system}.ytm-player-full)]
+
     ++ [(pkgs.callPackage ../../hm/apps/rofi/apps/rofi-shell.nix {
            bg = "#24273a";
            fg = "#cad3f5";
@@ -274,6 +280,12 @@
     ++ [(pkgs.callPackage ../myPackages/gomu.nix { })]
    #++ [(pkgs.callPackage ../myPackages/muzi.nix { })] # build fail
    #++ [(pkgs.callPackage ../myPackages/nncmpp.nix { })] # build stuff needs fix im lazy
+    ++ [(pkgs.callPackage ../myPackages/tmplayer.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/podden.nix { })]  # doesnt work
+   #++ [(pkgs.callPackage ../myPackages/rhythm.nix { })]  # buld fail. cmakelist shit
+    ++ [(pkgs.callPackage ../myPackages/minimalistmp3player.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/listnr.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/musicsharp.nix { })] # doesnt work
 
     ++ [(pkgs.callPackage ../myPackages/xdisplayinfo.nix { })]
 
