@@ -286,6 +286,8 @@
     ++ [(pkgs.callPackage ../myPackages/minimalistmp3player.nix { })]
     ++ [(pkgs.callPackage ../myPackages/listnr.nix { })]
    #++ [(pkgs.callPackage ../myPackages/musicsharp.nix { })] # doesnt work
+    ++ [(pkgs.callPackage ../myPackages/orbit.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/feather.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/xdisplayinfo.nix { })]
 
