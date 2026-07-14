@@ -4,6 +4,8 @@
 
  #my = { };
 
+  time.hardwareClockInLocalTime = false;
+
   home-manager = {
     users = {
       ${admin} = {
@@ -27,6 +29,17 @@
               dpi = "";
               position = "right";
             };
+          };
+        };
+        services.polybar.settings = {
+          "module/light".card = "intel_backlight";
+          "module/temp" = {
+            zone-type = "x86_pkg_temp";
+            thermal-zone = 1;
+          };
+          "module/battery" = {
+           #battery = ;
+            adapter = "ACAD";
           };
         };
       };

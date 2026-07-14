@@ -16,28 +16,39 @@
       gpu = "none";
       cpu = {
         brand = "intel";
+        scx.enable = true;
+        thermald.enable = true;
         opt = "power-profiles-daemon";
       };
       ram-tmp = {
         zram.enable = true;
         tmpfs.enable = true;
+        nohang.enable = true;
       };
+     #fan = "cooler-control";
       mounts = [ ];
       bluetooth.enable = true;
       sound = "pipewire";
       dbus.enable = true;
-      fwupd.enable = true;
+      fwupd.enable = false;
       libinput.enable = true;
       touchegg.enable = false;
+      fusuma.enable = false;
       keyboard = {
         enable = true;
        #xremap.enable = false;
       };
       storage.enable = true;
+      gamepads.enable = false;
+      logitech.enable = false;
+      printer.enable = false;
+      scanner.enable = false;
       power = {
         upower.enable = false;
       };
+      cd.enable = false;
       screen.enable = true;
+      rgb.enable = false;
       android.enable = true;
     };
 
@@ -45,11 +56,135 @@
       startx.enable = true;
       sx.enable = true;
     };
+    remoteDesktop = {
+      xpra.enable = false;
+      vnc.enable =  false;
+    };
     display-manager = "sddm";
-    defaultSession = "plasma";
-    desktops = [ "plasma" ];
+    defaultSession = "none+bspwm"; # "plasma";
+    desktops = [
+
+      # Wayland
+      "plasma"
+     #"cosmic"
+
+      # Gnome-Based
+     #"cinnamon"
+     #"mate"
+     #"budgie"
+     #"gnome" "pantheon"  # WARNING THE DEVIL
+
+      # X11
+      "xfce"
+     #"lumina"
+     #"lxqt"
+     #"enlightenment"
+
+      # Misc
+     #"retroarch"
+     #"cde"
+
+    ];
     default-gnome-based-de = "gnome";
-    window-managers = [ "hyprland" "niri" "i3" "drew-wm" "titus-wm" "bspwm" ];
+    window-managers = [
+
+      # Wayland
+
+        # Tiling
+     #"hyprland"
+     #"niri"
+     #"qtile"
+     #"dwl" "mango"
+     #"sway" "river"
+
+       # Floating
+     #"wayfire" "labwc"
+     #"miracle-wm" "miriway"
+
+      # X11
+
+        # Manual
+     #"notion" "i3" "ratpoison" "hypr" "herbstluftwm"
+      "bspwm"
+
+        # Dynamic
+     #"awesome" "leftwm" "dk" "wmderland"
+     #"sawfish" "jwm" "spectrwm" "pekwm" "oxwm"
+     #"xmonad" "ragnarwm" "exwm"
+     #"titus-wm" "drew-wm" "dwm" "chadwm"
+
+        # Floating
+      "openbox"
+     #"icewm" "fluxbox" "twm"
+     #"windowlab" "windowmaker" "berry"
+     #"fvwm3" "mlvwm"
+     #"fvwm2"
+     #"e16"
+
+      # NEW
+     #"tinywm" "2bwm" "windowchef" "evilwm" "lwm" "wmfs"
+     #"afterstep" "nimdow" "shod" "smallwm" "katriawm" "wmii"
+     #"hackedbox" "mwm" "cwm" "stumpwm" "clfswm"
+
+
+      # Git-Wms
+
+        # Dynamic
+     #"vxwm"
+     #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
+     #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
+     #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
+     #"frankenwm" "howm" "matchbox" "zwm-c" "zwm" "zwm-zig" "wingo" "worm" "pwm"
+     #"moonwm" "worm-quad" "dowm" "rubywm" "hadlock" "wtftw" "minyaty" "oxwm-r"
+     #"hsdwm" "gar" "kopiwm" "critwm" "ferriswm" "karuiwm" "cupidwm" "devwm"
+     #"glitch" "heawm" "gowm" "pointblank" "troodon" "tatami" "gridwm" "cluless"
+     #"torba" "scrotwm" "cocowm" "mxswm" "crubwm" "voxwm" "sweetwm" "subtle-rs"
+     #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
+     #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
+     #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
+     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm" "tile"
+     #"treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
+
+     #"fluorite"
+
+        # Floating
+     #"sowm" "aphelia" "mcwm" "jbwm" "ewm" "safwm" "sophy" "rwm" "cygnus"
+     #"fowm" "hogewm" "barigui" "iguassu" "verysmallwm" "verystupidwm"
+     #"xpywm" "xswm" "biscuitwm" "aewmpp" "clarawm" "blackbox" "goomwwm"
+     #"compiz-reloaded" "echinus" "progman" "karmen" "9wm" "ctwm"
+     #"wmx" "flwm" "adwm" "vtwm" "larswm" "emwm" "eggwm" "uwm" "vswm"
+     #"simplewm" "superiorxwm" "marswm" "notewm" "ywm" "NsCDE" "srwm"
+     #"dfpwm" "stevewm" "nyxwm-float" "mitewm-go" "mitewm" "qpwm" "wm0"
+     #"makron" "fwwm" "sewm" "go-afwm" "dubwm" "wmsquared"
+     #"yafwm"
+
+       # Bouncy :)
+     #"bouncy-window-manager" /*Rust*/ "bouncy-wm" /*Go*/ "stressfulwm" /*C*/
+     #"bouncewm" /*C,not-working*/  "bouncewm-kacper" /*C,not-working*/
+     #"bounce-wm"/*C,not-working*/  "bouncywm-ruby" /*Ruby,not-working*/
+
+        # Bad Builds (needs fix)
+     #"plwm" "octopus" "page" "nimwin"
+     #"yggdrasilwm" "bond-wm" "fyrwm"
+     #"waimea" "moksha" "nsfwm" "mdtwm"
+     #"customwm" cant find wlroots
+     #"xwm" needs 'mk' compiler
+     #"sswm" needs cargo lock
+     #"amiwb" i have to fix all the makefiles in subdirs in src for /usr stuff
+     #"slacker" same as amiwb
+     #"foxwm" no cmakelist
+     #"basketcase" cant find fltk
+     #"gooeyde" cmake problems
+     #"solbourne" Imake shit
+
+        # Broken Builds
+     #"zwm-zig2" "zwm-cpp" "derpy-wm"
+     #"lwm-c" "xmt" "hana" "unknowwm"
+     #"compiz" "windwm" "qvwm" "fxwm"
+     #"bouncywm"/*nim*/ "window_manager"
+     #"mswm"
+
+    ];
     rices-shells = config.home-manager.users.${admin}.my.rices-shells;
     x11.enable = true;
     xdg.enable = true;
@@ -67,17 +202,23 @@
       enable = true;
       ssh.enable = true;
       vpn.enable = true;
+      shares.enable = true;
+      avahi.enable = true;
       nm-applet.enable = true;
+      nfs.enable = false;
+      torrent.enable = false;
       tools.enable = true;
     };
 
     services.enable = true;
 
     locale = "en_US.UTF-8";
+    geoclue.enable = false;
     timeZone = "Asia/Tehran";
     fonts.enable = true;
 
-    search.enable = true;
+    tasks.enable = false;
+    search.enable = false;
 
     user = {
       enable = true;
@@ -93,8 +234,8 @@
     };
 
     shell = {
-      shells = [ "bash" "fish" ];
-      default = "fish";
+      shells = config.home-manager.users.${admin}.my.shells;
+      default = config.home-manager.users.${admin}.my.defaultShell;
       alias.enable = true;
     };
 
@@ -103,6 +244,9 @@
     containers = {
       flatpak.enable = true;
       appimage.enable = true;
+      podman.enable = false;
+      docker.enable = false;
+      waydroid.enable = false;
     };
 
     backup = {
@@ -115,64 +259,113 @@
     software = {
       ai = {
         enable = false;
+        exclude = with pkgs; [ gpt4all gpt4all-cuda chatd aichat yai ];
+        include = with pkgs; [ ];
       };
       codecs = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       internet = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       multimedia = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       wallpaper = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       disk-utils = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       files = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       docs = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       tools = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       audio-control = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       daw = {
         enable = false;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       productivity = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       fetch = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       basic-cli = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       terminals = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       wine = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       hardware-monitor = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       peripherals = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       social = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
       theming = {
         enable = true;
+        exclude = with pkgs; [ ];
+        include = with pkgs; [ ];
       };
+    };
+
+    gaming = {
+      steam.enable = true;
+      native-games.enable = false;
+      launchers.enable = false;
+      tools.enable = false;
+      emulators.enable = false;
+      cli-games.enable = true;
     };
 
     default = config.home-manager.users.${admin}.my.default;
@@ -181,6 +374,8 @@
     home-manager.enable = true;
 
   };
+
+ #systemd.services."home-manager-hrf".serviceConfig.TimeoutStartSec = lib.mkForce "5m";
 
   home-manager = {
     users = {
@@ -198,15 +393,17 @@
 
           nix.enable = true;
 
-          shells = [ "bash" "fish" ];
+          shells = [ "bash" "fish" "nu" ];
+          defaultShell = "fish";
           shellAliases = true;
           xdg.enable = true;
-          uwsm.enable = true;
+          uwsm.enable = false;
           x11.enable = true;
 
           ssh.enable = true;
 
           audio.enable = true;
+          display.enable = true;
           keyboard = {
             xremap.enable = true;
           };
@@ -216,86 +413,171 @@
             appletrc = null;
             kate.enable = true;
             konsole.enable = true;
-            elisa.enable = true;
+            elisa.enable = false;
             ghostwriter.enable = true;
             okular.enable = true;
             wallpaper-engine.enable = false;
           };
-          hypr = {
-            hyprland.enable = true;
-          };
-          niri.enable = true;
-          dwm.enable = true;
-          i3.enable = true;
+         #cosmic.enable = true;
+          gnome.enable = true;
+         #cinnamon.enable = true;
+         #mate.enable = true;
+          xfce.enable = true;
+         #hypr = {
+         #  hyprland.enable = true;
+         #};
+         #niri.enable = true;
+         #sway.enable = true;
+         #river.enable = true;
+         #wayfire.enable = true;
+         #labwc.enable = false;
+         #dwm.enable = false;
+         #i3.enable = false;
+          openbox.enable = true;
+         #xmonad.enable = true;
+         #awesome.enable = true;
+         #qtile.enable = true;
           bspwm.enable = true;
-          rices-shells = [ "niri-dms" "niri-noctalia" "hyprland-caelestia" "hyprland-exo" ];
+         #spectrwm.enable = true;
+         #herbstluftwm.enable = true;
+         #fluxbox.enable = true;
+         #mango.enable = false;
+         #ragnar.enable = false;
+          rices-shells = [
 
+           #"niri-dms" "niri-noctalia"
+            /*"hyprland-uwsm"*/ /*"hyprland-noctalia"*/ /*"hyprland-caelestia"*/ /*"hyprland-dms"*/ /*"hyprland-ax"*/ /*"hyprland-ashell"*/ /*"hyprland-exo"*/ /*"hyprland-ambxst" */
 
-          bar-shell.shells = [ "quickshell" "ignis" "polybar" ];
+          ];
 
+          distrobox.enable = false;
+
+          bar-shell.shells = [
+           #"quickshell"
+            # wayland
+            /*"ags"*/ /*"waybar"*/ /*"ashell"*/ /*"ignis"*/
+            # x11
+            "polybar"
+            "tint2"
+           #"yambar"
+           #"trayer"
+          ];
           apps = {
             alacritty.enable = true;
             amberol.enable = true;
+            atuin.enable = true;
+            bat.enable = true;
+            bazaar.enable = false;
+            better-control.enable = true;
+            bluetuith.enable = true;
             borg.enable = true;
+            broot.enable = true;
             btop.enable = true;
             cava.enable = true;
             copyq.enable = true;
+            crystal-dock.enable = false;
             direnv.enable = true;
             dockbarx.enable = true;
             dunst.enable = true;
             fastfetch.enable = true;
+            fetch.enable = true;
             fd.enable = true;
             flameshot.enable = true;
-            foliate.enable = true;
+            foliate.enable = false;
             freetube.enable = true;
             fzf.enable = true;
+            fusuma.enable = false;
+            geany.enable = false;
             git.enable = true;
-            ghostty.enable = true;
+            ghostty.enable = false;
             gpg.enable = true;
+            helix.enable = false;
             htop.enable = true;
+            jgmenu.enable = true;
+            joplin.enable = false;
             kdeconnect.enable = true;
             keyrings.enable = true;
             kitty.enable = true;
             lf.enable = true;
+            ludusavi.enable = false;
+            lutris.enable = false;
+            mangohud.enable = false;
+            mpd.enable = false;
+            mpv.enable = true;
             neovim.enable = true;
-            nautilus.enable = true;
+            nautilus.enable = false;
+            notes.enable = true;
             obs.enable = true;
+            obsidian.enable = false;
             onboard.enable = true;
             onlyoffice.enable = true;
             pay-respects.enable = true;
-            plank.enable = true;
+            plank.enable = false;
             qutebrowser.enable = true;
+            rbw.enable = true;
             resources.enable = true;
             rofi.enable = true;
             sioyek.enable = true;
             starship.enable = true;
             superfile.enable = true;
-            awww.enable = true;
+            awww.enable = false;
             television.enable = true;
             tldr.enable = true;
+            tmux.enable = true;
             udiskie.enable = true;
             vim.enable = true;
             yazi.enable = true;
             yt-dlp.enable = true;
+            wezterm.enable = false;
+            wlogout.enable = true;
+            zed.enable = false;
+            zoxide.enable = true;
 
             webapps.enable = true;
+          };
+
+          gaming = {
+            proton = {
+              cachy.enable = false;
+              ge.enable = false;
+              sarek.enable = false;
+            };
           };
 
           default = {
 
             terminal = "kitty";
+
             tui-editor = "nvim";
             gui-editor = "org.kde.kate";
             gui-editor-alt-name = "kate";
-            file-manager = "org.kde.dolphin";
+
+           #file-manager = "org.kde.dolphin";
+           #file-alt = "dolphin";
+            file-manager = "HiFile";
+            file-alt = "hifile";
+
             browser = "brave-browser";
             browser-alt-name = "brave";
             browser-package = pkgs.brave;
-            image-viewer = "org.kde.gwenview";
-            video-player = "org.gnome.Showtime";
+
+           #image-viewer = "org.kde.gwenview";
+           #image-alt = "gwenview";
+            image-viewer = "pix";
+            image-alt = "pix";
+
+            video-player = "mpv"; #"org.gnome.Showtime";
+
             audio-player = "io.bassi.Amberol";
+            audio-alt = "amberol";
+
             pdf-viewer = "org.kde.okular";
-            archive-manager = "org.kde.ark";
+            pdf-alt = "okular";
+
+           #archive-manager = "org.kde.ark";
+           #archive-alt = "ark";
+            archive-manager = "org.gnome.FileRoller";
+            archive-alt = "file-roller";
           };
 
           firefox.enable = true;
@@ -320,14 +602,58 @@
           homeDirectory = "/home/test";
         };
 
-        imports = [ ./hm/keyboard ];
+        catppuccin.autoEnable = false;
+
+        imports = [
+          ./hm/keyboard
+          ./hm/xdg
+        ];
 
         my.keyboard.xremap.enable = true;
+
+        xdg.enable = true;
+
+        my = {
+          default = {
+
+            terminal = "kitty";
+
+            tui-editor = "nvim";
+            gui-editor = "org.kde.kate";
+            gui-editor-alt-name = "kate";
+
+           #file-manager = "org.kde.dolphin";
+           #file-alt = "dolphin";
+            file-manager = "HiFile";
+            file-alt = "hifile";
+
+            browser = "brave-browser";
+            browser-alt-name = "brave";
+            browser-package = pkgs.brave;
+
+           #image-viewer = "org.kde.gwenview";
+           #image-alt = "gwenview";
+            image-viewer = "pix";
+            image-alt = "pix";
+
+            video-player = "mpv"; #"org.gnome.Showtime";
+
+            audio-player = "io.bassi.Amberol";
+            audio-alt = "amberol";
+
+            pdf-viewer = "org.kde.okular";
+            pdf-alt = "okular";
+
+           #archive-manager = "org.kde.ark";
+           #archive-alt = "ark";
+            archive-manager = "org.gnome.FileRoller";
+            archive-alt = "file-roller";
+          };
+        };
 
       };
 
     };
   };
-
 
 }
