@@ -513,6 +513,7 @@
             pay-respects.enable = true;
             plank.enable = false;
             qutebrowser.enable = true;
+            rbw.enable = true;
             resources.enable = true;
             rofi.enable = true;
             sioyek.enable = true;

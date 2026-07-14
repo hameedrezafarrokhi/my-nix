@@ -61,6 +61,7 @@ in
     pay-respects.enable = lib.mkEnableOption "pay-respects";
     plank.enable = lib.mkEnableOption "plank";
     qutebrowser.enable = lib.mkEnableOption "qutebrowser";
+    rbw.enable = lib.mkEnableOption "rbw";
     resources.enable = lib.mkEnableOption "resources";
     rofi.enable = lib.mkEnableOption "rofi";
     sioyek.enable = lib.mkEnableOption "sioyek";
@@ -136,6 +137,7 @@ in
       ./pay-respects.nix
       ./plank.nix
       ./qutebrowser.nix
+      ./rbw.nix
       ./resources.nix
       ./rofi
       ./sioyek.nix

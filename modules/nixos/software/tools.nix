@@ -245,6 +245,8 @@
 
    #gtklock-playerctl-module
 
+   #proton-cli  # WARNING TODO add after update
+
 
   ] ) config.my.software.tools.exclude)
 

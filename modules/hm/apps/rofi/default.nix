@@ -145,6 +145,9 @@ in
     rofi-noter
     rofi-vpn-list
 
+   #pkgs.rofi-rbw-x11
+   #pkgs.rofi-rbw-wayland
+    pkgs.rofi-rbw
 
     pkgs.todofi-sh
     pkgs.clerk
@@ -225,8 +228,8 @@ in
       rofi-pass-wayland
       rofi-pass
       rofi-obsidian
-      rofi-rbw-x11
-      rofi-rbw-wayland
+     #rofi-rbw-x11
+     #rofi-rbw-wayland
       rofi-rbw
       rofi-pulse-select
 
