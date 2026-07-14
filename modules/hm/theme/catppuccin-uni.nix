@@ -2958,7 +2958,7 @@ in
           color1 = Red; # red
           color9 = Maroon;
           color2 = Green; # green
-          color10 = Jade;
+          color10 = Green; #Jade;
           color3 = Yellow; # yellow
           color11 = Peach;
           color4 = Blue; # blue
