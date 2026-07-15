@@ -1,11 +1,9 @@
 {
   disko.devices = {
     disk = {
-      main = {
-                                                      # ssd
-       #device = "/dev/disk/by-id/ata-ADATA_XPG_EX500_43A313212082";
-                                                      # hdd
-        device = "/dev/disk/by-id/ata-ADATA_XPG_EX500_439262E8505D";
+      red = {
+       #device = "/dev/disk/by-id/ata-ADATA_XPG_EX500_43A313212082"; # ssd box (128G)
+        device = "/dev/disk/by-id/ata-ADATA_XPG_EX500_439262E8505D"; # hdd box (750G)
         type = "disk";
         content = {
           type = "gpt";

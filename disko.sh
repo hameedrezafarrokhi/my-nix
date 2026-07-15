@@ -26,6 +26,10 @@ echo ""
 read -p "Continue? (y/n): " CONT
 [[ "$CONT" != "y" ]] && echo "Aborted." && exit 1
 
+export HOSTNAME
+export USERNAME
+export PROFILE
+export DISK_PATH
 
 # ---------------------------
 # 2. IF LIVE ISO
@@ -37,12 +41,13 @@ if [[ "$IS_LIVE" == "y" ]]; then
 
     if [[ ! -d nixos ]]; then
         echo "Cloning repository..."
-        git clone https://github.com/hameedrezafarrokhi/my-nix/
+        git clone https://github.com/hameedrezafarrokhi/my-nix/ "$HOME/nixos"
     else
         echo "Repository already exists, skipping clone."
     fi
-fi
 
+    cd "$HOME/nixos"
+fi
 
 # ---------------------------
 # 3. INSTALLATION WITH DISKO
@@ -51,62 +56,62 @@ fi
 echo "=== Running Disko Installation ==="
 
 sudo nix run 'github:nix-community/disko/latest#disko-install' -- \
-    --flake "nixos#$HOSTNAME" \
-    --disk main "$DISK_PATH"
-
+    --flake .#"$HOSTNAME" \
+    --disk "$HOSTNAME" "$DISK_PATH"
 
 # ---------------------------
 # 4. POST INSTALL: REMOUNT DISK
 # ---------------------------
 
-echo "=== Post-Install: Unmounting previous mounts ==="
+ echo "=== Post-Install: Unmounting previous mounts ==="
 
-# Unmount anything mounted in /mnt (but not /mnt itself)
-for mount_point in $(mount | grep '/mnt' | awk '{print $3}'); do
-    if [ "$mount_point" != "/mnt" ]; then
-        echo "Unmounting $mount_point"
-        sudo umount "$mount_point" || true
-    fi
-done
+ # Unmount anything mounted in /mnt (but not /mnt itself)
+ for mount_point in $(mount | grep '/mnt' | awk '{print $3}'); do
+     if [ "$mount_point" != "/mnt" ]; then
+         echo "Unmounting $mount_point"
+         sudo umount "$mount_point" || true
+     fi
+ done
 
-echo "=== Mounting target system ==="
-# Mount the new root partition at /mnt
-sudo mkdir -p /mnt/temp
-sudo mount "${DISK_PATH}2" /mnt/temp
+ echo "=== Mounting target system ==="
+ # Mount the new root partition at /mnt
+ sudo mkdir -p /mnt/temp
+ sudo mount "${DISK_PATH}2" /mnt/temp
 
-# Create /boot and mount the boot partition
-sudo mkdir -p /mnt/temp/boot
-sudo mount -o umask=077 "${DISK_PATH}1" /mnt/temp/boot
-
+ # Create /boot and mount the boot partition
+ sudo mkdir -p /mnt/temp/boot
+ sudo mount -o umask=077 "${DISK_PATH}1" /mnt/temp/boot
 
 # ---------------------------
 # 5. ENTER NIXOS (CHROOT)
 # ---------------------------
 
 echo "=== Entering nixos-enter environment ==="
-sudo nixos-enter --root /mnt/temp <<EOF
-echo "=== Inside nixos-enter ==="
+#sudo nixos-enter --root /mnt/temp
 
-# Change passwords  (NOT WORKING)
-echo "Setting passwords..."
-passwd root
-passwd $USERNAME
-
-# Clone repo inside new system    (Replace On New Boot (Persmission Issues Of Ownership(root owns it in chroot)))
-if [[ ! -d /home/$USERNAME/nixos ]]; then
-    sudo -u $USERNAME git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/$USERNAME/nixos
-fi
-
-rm -rf /home/$USERNAME/nixos/.git
-rm -f /home/$USERNAME/nixos/.gitignore
-
-# Rebuild system (might show errors — allowed)
-cd /home/$USERNAME/nixos
-echo "Running nixos-rebuild boot..."
-nixos-rebuild boot --flake .#$HOSTNAME || echo "Errors occurred but continuing."
-
-echo "=== nixos-enter phase complete ==="
-EOF
+#sudo nixos-enter --root /mnt/temp <<EOF
+#echo "=== Inside nixos-enter ==="
+#
+## Change passwords  (NOT WORKING)
+#echo "Setting passwords..."
+#passwd root
+#passwd $USERNAME
+#
+## Clone repo inside new system    (Replace On New Boot (Persmission Issues Of Ownership(root owns it in chroot)))
+#if [[ ! -d /home/$USERNAME/nixos ]]; then
+#    sudo -u $USERNAME git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/$USERNAME/nixos
+#fi
+#
+#rm -rf /home/$USERNAME/nixos/.git
+#rm -f /home/$USERNAME/nixos/.gitignore
+#
+## Rebuild system (might show errors — allowed)
+#cd /home/$USERNAME/nixos
+#echo "Running nixos-rebuild boot..."
+#nixos-rebuild boot --flake .#$HOSTNAME || echo "Errors occurred but continuing."
+#
+#echo "=== nixos-enter phase complete ==="
+#EOF
 
 echo ""
 echo "=== Script Finished Successfully ==="

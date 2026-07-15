@@ -10214,6 +10214,7 @@ in
         fi
       '';
       ghostwriter-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        touch $HOME/.local/share/ghostwriter/themes/hm-theme.json
         rm -f $HOME/.local/share/ghostwriter/themes/hm-theme.json
         echo ' { "dark": { "accent": "${Accent}", "background": "${Base}", "block": "${Green}", "cursor": "${Rosewater}", "emphasis": "${Maroon}", "error": "${Red}", "foreground": "${Text}", "heading": "${Text}", "link": "${Blue}", "markup": "${Overlay0}", "selection": "${Surface2}" }, "light": { "accent": "#209fb5", "background": "#eff1f5", "block": "#40a02b", "cursor": "#dc8a78", "emphasis": "#e64553", "error": "#d20f39", "foreground": "#4c4f69", "heading": "#4c4f69", "link": "#1e66f5", "markup": "#9ca0b0", "selection": "#acb0be" } } ' >> "$HOME/.local/share/ghostwriter/themes/hm-theme.json"
       '';
@@ -10229,6 +10230,43 @@ in
       tuxedo-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         touch ${config.xdg.configHome}/tuxedo/config.toml
         ${pkgs.gnused}/bin/sed -i '/^theme =.*/d; $a theme = hm-theme' ${config.xdg.configHome}/tuxedo/config.toml
+      '';
+      polybar-modules-dummy = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        if [ ! -f "$HOME/.polybar_modules" ]; then
+          touch "$HOME/.polybar_modules"
+          echo '
+          #!/usr/bin/env bash
+          polybar-msg action a module_hide
+          polybar-msg action aa module_hide
+          polybar-msg action date module_hide
+          polybar-msg action xwindow module_hide
+          polybar-msg action polybar-cava module_hide
+          polybar-msg action polybar-cava-dots module_hide
+          polybar-msg action networkspeedup module_show
+          polybar-msg action networkspeeddown module_show
+          polybar-msg action filesystem module_show
+          polybar-msg action memory module_show
+          polybar-msg action cpu module_show
+          polybar-msg action picom module_show
+          polybar-msg action battery module_show
+          polybar-msg action light module_show
+          polybar-msg action temp module_show
+          polybar-msg action player module_show
+          polybar-msg action pp module_show
+          polybar-msg action tray module_show
+          polybar-msg action bspwm module_show
+          polybar-msg action idle module_show
+          polybar-msg action lock module_show
+          polybar-msg action xworkspaces module_show
+          polybar-msg action apps module_show
+
+          polybar-msg action notif module_show
+          polybar-msg action keyboard-layout module_show
+          polybar-msg action pulseaudio module_show
+          polybar-msg action power module_show
+          polybar-msg action hour module_show
+          ' >> "$HOME/.polybar_modules"
+        fi
       '';
     };
 
