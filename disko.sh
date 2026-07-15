@@ -57,68 +57,54 @@ echo "=== Running Disko Installation ==="
 
 sudo nix run 'github:nix-community/disko/latest#disko-install' -- \
     --flake .#"$HOSTNAME" \
-    --disk "$HOSTNAME" "$DISK_PATH"
+    --disk "$HOSTNAME" "$DISK_PATH" || true
 
 # ---------------------------
 # 4. POST INSTALL: REMOUNT DISK
 # ---------------------------
 
- echo "=== Post-Install: Unmounting previous mounts ==="
+set +e +u
+set +o pipefail
 
- # Unmount anything mounted in /mnt (but not /mnt itself)
- for mount_point in $(mount | grep '/mnt' | awk '{print $3}'); do
-     if [ "$mount_point" != "/mnt" ]; then
-         echo "Unmounting $mount_point"
-         sudo umount "$mount_point" || true
-     fi
- done
+echo "=== Post-Install: Unmounting previous mounts ==="
 
- echo "=== Mounting target system ==="
- # Mount the new root partition at /mnt
- sudo mkdir -p /mnt/temp
- sudo mount "${DISK_PATH}2" /mnt/temp
+# Unmount anything mounted in /mnt (but not /mnt itself)
+for mount_point in $(mount | grep '/mnt' | awk '{print $3}'); do
+    if [ "$mount_point" != "/mnt" ]; then
+        echo "Unmounting $mount_point"
+        sudo umount "$mount_point" || true
+    fi
+done
 
- # Create /boot and mount the boot partition
- sudo mkdir -p /mnt/temp/boot
- sudo mount -o umask=077 "${DISK_PATH}1" /mnt/temp/boot
+echo "=== Mounting target system ==="
+# Mount the new root partition at /mnt
+sudo mkdir -p /mnt/temp
+sudo mount "${DISK_PATH}2" /mnt/temp
+
+# Create /boot and mount the boot partition
+sudo mkdir -p /mnt/temp/boot
+sudo mount -o umask=077 "${DISK_PATH}1" /mnt/temp/boot
 
 # ---------------------------
 # 5. ENTER NIXOS (CHROOT)
 # ---------------------------
 
 echo "=== Entering nixos-enter environment ==="
-#sudo nixos-enter --root /mnt/temp
 
-#sudo nixos-enter --root /mnt/temp <<EOF
-#echo "=== Inside nixos-enter ==="
-#
-## Change passwords  (NOT WORKING)
-#echo "Setting passwords..."
-#passwd root
-#passwd $USERNAME
-#
-## Clone repo inside new system    (Replace On New Boot (Persmission Issues Of Ownership(root owns it in chroot)))
-#if [[ ! -d /home/$USERNAME/nixos ]]; then
-#    sudo -u $USERNAME git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/$USERNAME/nixos
-#fi
-#
-#rm -rf /home/$USERNAME/nixos/.git
-#rm -f /home/$USERNAME/nixos/.gitignore
-#
-## Rebuild system (might show errors — allowed)
-#cd /home/$USERNAME/nixos
-#echo "Running nixos-rebuild boot..."
-#nixos-rebuild boot --flake .#$HOSTNAME || echo "Errors occurred but continuing."
-#
-#echo "=== nixos-enter phase complete ==="
-#EOF
+sudo nixos-enter --root /mnt/temp -- bash -c "
+  passwd root
+  passwd '$USERNAME'
+"
+
+sudo nixos-enter --root /mnt/temp -- runuser -u "$USERNAME" -- git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/"$USERNAME"/nixos
+sudo nixos-enter --root /mnt/temp -- bash -c "nixos-rebuild boot --flake /home/'$USERNAME'/nixos#'$HOSTNAME' || echo 'Errors occurred but continuing.' "
 
 echo ""
 echo "=== Script Finished Successfully ==="
 
-# echo "=== Unmounting ==="  # Figure Out Passwd First
-#
-# sudo umount ${DISK_PATH}1
-# sudo umount ${DISK_PATH}2
-#
-# echo "=== Done. Enjoy ==="
+echo "=== Unmounting ==="  # Figure Out Passwd First
+
+sudo umount "${DISK_PATH}1"
+sudo umount "${DISK_PATH}2"
+
+echo "=== Done. Ready For Reboot ==="

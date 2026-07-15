@@ -10214,22 +10214,26 @@ in
         fi
       '';
       ghostwriter-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        touch $HOME/.local/share/ghostwriter/themes/hm-theme.json
-        rm -f $HOME/.local/share/ghostwriter/themes/hm-theme.json
-        echo ' { "dark": { "accent": "${Accent}", "background": "${Base}", "block": "${Green}", "cursor": "${Rosewater}", "emphasis": "${Maroon}", "error": "${Red}", "foreground": "${Text}", "heading": "${Text}", "link": "${Blue}", "markup": "${Overlay0}", "selection": "${Surface2}" }, "light": { "accent": "#209fb5", "background": "#eff1f5", "block": "#40a02b", "cursor": "#dc8a78", "emphasis": "#e64553", "error": "#d20f39", "foreground": "#4c4f69", "heading": "#4c4f69", "link": "#1e66f5", "markup": "#9ca0b0", "selection": "#acb0be" } } ' >> "$HOME/.local/share/ghostwriter/themes/hm-theme.json"
+        if [ -f "$HOME/.local/share/ghostwriter/themes/hm-theme.json" ]; then
+          rm -f $HOME/.local/share/ghostwriter/themes/hm-theme.json
+          echo ' { "dark": { "accent": "${Accent}", "background": "${Base}", "block": "${Green}", "cursor": "${Rosewater}", "emphasis": "${Maroon}", "error": "${Red}", "foreground": "${Text}", "heading": "${Text}", "link": "${Blue}", "markup": "${Overlay0}", "selection": "${Surface2}" }, "light": { "accent": "#209fb5", "background": "#eff1f5", "block": "#40a02b", "cursor": "#dc8a78", "emphasis": "#e64553", "error": "#d20f39", "foreground": "#4c4f69", "heading": "#4c4f69", "link": "#1e66f5", "markup": "#9ca0b0", "selection": "#acb0be" } } ' >> "$HOME/.local/share/ghostwriter/themes/hm-theme.json"
+        fi
       '';
       hifile-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf General ActivePanel Left
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences ApplicationStyle ${config.xdg.configHome}/HiFile/hm-theme.json
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences CustomeTheme ${config.xdg.configHome}/HiFile/hm-theme.json
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences ShowHiddenItems true
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences Terminal ${config.my.default.terminal}
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences TextEditor ${config.my.default.gui-editor-alt-name}
-        ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf PreferencesDialog TextEditorHistory ${config.my.default.gui-editor-alt-name}
+        if [ -f "${config.xdg.configHome}/HiFile/HiFile.conf" ]; then
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf General ActivePanel Left
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences ApplicationStyle ${config.xdg.configHome}/HiFile/hm-theme.json
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences CustomeTheme ${config.xdg.configHome}/HiFile/hm-theme.json
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences ShowHiddenItems true
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences Terminal ${config.my.default.terminal}
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf Preferences TextEditor ${config.my.default.gui-editor-alt-name}
+          ${pkgs.crudini}/bin/crudini --set ${config.xdg.configHome}/HiFile/HiFile.conf PreferencesDialog TextEditorHistory ${config.my.default.gui-editor-alt-name}
+        fi
       '';
       tuxedo-theme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        touch ${config.xdg.configHome}/tuxedo/config.toml
-        ${pkgs.gnused}/bin/sed -i '/^theme =.*/d; $a theme = hm-theme' ${config.xdg.configHome}/tuxedo/config.toml
+        if [ -f "${config.xdg.configHome}/tuxedo/config.toml" ]; then
+          ${pkgs.gnused}/bin/sed -i '/^theme =.*/d; $a theme = hm-theme' ${config.xdg.configHome}/tuxedo/config.toml
+        fi
       '';
       polybar-modules-dummy = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ ! -f "$HOME/.polybar_modules" ]; then
@@ -10266,6 +10270,8 @@ in
           polybar-msg action power module_show
           polybar-msg action hour module_show
           ' >> "$HOME/.polybar_modules"
+
+          chmod +x "$HOME/.polybar_modules"
         fi
       '';
     };
