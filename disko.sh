@@ -2,109 +2,74 @@
 set -euo pipefail
 
 echo "=== NixOS Reproducibility Script ==="
+echo "===================================="
+echo "=                                  ="
+echo "=          Pre Install             ="
+echo "=                                  ="
+echo "===================================="
 
-# ---------------------------
-# 1. ASK FOR VARIABLES
-# ---------------------------
-
-read -p "Is this running from a live ISO? (y/n): " IS_LIVE
 read -p "Hostname: " HOSTNAME
 read -p "Disk (e.g. sda, nvme0n1): " DISK
 read -p "Username: " USERNAME
-read -p "Profile (personal/work/etc): " PROFILE
-
+read -p "Git URL: " GITURL
 DISK_PATH="/dev/$DISK"
 
 echo ""
 echo "Summary:"
-echo "Live ISO:     $IS_LIVE"
 echo "Hostname:     $HOSTNAME"
 echo "Disk:         $DISK_PATH"
 echo "User:         $USERNAME"
-echo "Profile:      $PROFILE"
+echo "Git:          $GITURL"
 echo ""
 read -p "Continue? (y/n): " CONT
 [[ "$CONT" != "y" ]] && echo "Aborted." && exit 1
 
 export HOSTNAME
 export USERNAME
-export PROFILE
 export DISK_PATH
 
-# ---------------------------
-# 2. IF LIVE ISO
-# ---------------------------
-
-if [[ "$IS_LIVE" == "y" ]]; then
-    echo "=== Running Live ISO setup ==="
-    mkdir -p nixos
-
-    if [[ ! -d nixos ]]; then
-        echo "Cloning repository..."
-        git clone https://github.com/hameedrezafarrokhi/my-nix/ "$HOME/nixos"
-    else
-        echo "Repository already exists, skipping clone."
-    fi
-
-    cd "$HOME/nixos"
-fi
-
-# ---------------------------
-# 3. INSTALLATION WITH DISKO
-# ---------------------------
-
-echo "=== Running Disko Installation ==="
+echo "===================================="
+echo "=                                  ="
+echo "=         Install Phase            ="
+echo "=                                  ="
+echo "===================================="
+echo "==== Running Disko Installation ===="
 
 sudo nix run 'github:nix-community/disko/latest#disko-install' -- \
     --flake .#"$HOSTNAME" \
     --disk "$HOSTNAME" "$DISK_PATH" || true
 
-# ---------------------------
-# 4. POST INSTALL: REMOUNT DISK
-# ---------------------------
-
+echo "===================================="
+echo "=                                  ="
+echo "=          Post Install            ="
+echo "=                                  ="
+echo "===================================="
 set +e +u
 set +o pipefail
 
-echo "=== Post-Install: Unmounting previous mounts ==="
-
-# Unmount anything mounted in /mnt (but not /mnt itself)
+echo "==== Unmounting previous mounts ===="
 for mount_point in $(mount | grep '/mnt' | awk '{print $3}'); do
     if [ "$mount_point" != "/mnt" ]; then
         echo "Unmounting $mount_point"
         sudo umount "$mount_point" || true
     fi
 done
-
-echo "=== Mounting target system ==="
-# Mount the new root partition at /mnt
-sudo mkdir -p /mnt/temp
-sudo mount "${DISK_PATH}2" /mnt/temp
-
-# Create /boot and mount the boot partition
+echo "====   Mounting target system   ===="
 sudo mkdir -p /mnt/temp/boot
+sudo mount "${DISK_PATH}2" /mnt/temp
 sudo mount -o umask=077 "${DISK_PATH}1" /mnt/temp/boot
 
-# ---------------------------
-# 5. ENTER NIXOS (CHROOT)
-# ---------------------------
-
-echo "=== Entering nixos-enter environment ==="
-
+echo "====   Nixos-Enter Environment  ===="
 sudo nixos-enter --root /mnt/temp -- bash -c "
   passwd root
   passwd '$USERNAME'
 "
-
-sudo nixos-enter --root /mnt/temp -- runuser -u "$USERNAME" -- git clone https://github.com/hameedrezafarrokhi/my-nix/ /home/"$USERNAME"/nixos
+sudo nixos-enter --root /mnt/temp -- runuser -u "$USERNAME" -- git clone "$GITURL" /home/"$USERNAME"/nixos
 sudo nixos-enter --root /mnt/temp -- bash -c "nixos-rebuild boot --flake /home/'$USERNAME'/nixos#'$HOSTNAME' || echo 'Errors occurred but continuing.' "
 
 echo ""
 echo "=== Script Finished Successfully ==="
-
-echo "=== Unmounting ==="  # Figure Out Passwd First
-
+echo "====        Unmounting          ===="
 sudo umount "${DISK_PATH}1"
 sudo umount "${DISK_PATH}2"
-
-echo "=== Done. Ready For Reboot ==="
+echo "====   Done. Ready For Reboot   ===="
