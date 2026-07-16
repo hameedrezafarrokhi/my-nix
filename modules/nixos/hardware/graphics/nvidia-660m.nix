@@ -289,6 +289,66 @@ in
     };
   };
 
+  # NVIDIA issue after systemd v256; laptops freeze after sleep, randomly!
+  systemd.services = {
+    systemd-suspend = {
+      overrideStrategy = "asDropinIfExists";
+      serviceConfig = {
+        Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
+      };
+    };
+    systemd-suspend-then-hibernate = {
+      overrideStrategy = "asDropinIfExists";
+      serviceConfig = {
+        Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
+      };
+    };
+    systemd-hibernate = {
+      overrideStrategy = "asDropinIfExists";
+      serviceConfig = {
+        Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
+      };
+    };
+    systemd-hybrid-sleep = {
+      overrideStrategy = "asDropinIfExists";
+      serviceConfig = {
+        Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
+      };
+    };
+    nvidia-suspend = {
+      overrideStrategy = "asDropinIfExists";
+      serviceConfig = {
+        Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
+      };
+    };
+  };
+
+  powerManagement = {
+    powerDownCommands =
+      let
+        proton-kill = pkgs.writeShellScriptBin "proton-kill" ''
+          if pgrep protonvpn > /dev/null; then
+            pkill protonvpn && protonvpn disconnect && touch /tmp/protonvpn-stop
+          fi
+        '';
+      in
+    ''
+      ${proton-kill}/bin/proton-kill
+    '';
+    powerUpCommands =
+      let
+        proton-resume = pkgs.writeShellScriptBin "proton-resume" ''
+          if [ -f "/tmp/protonvpn-stop" ]; then
+            proton-vpn-old &
+            rm -f /tmp/protonvpn-stop
+          fi
+        '';
+      in
+    ''
+      ${proton-resume}/bin/proton-resume
+    '';
+  };
+
 };}
 
 /*
