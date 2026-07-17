@@ -323,12 +323,23 @@ in
     };
   };
 
+            #${pkgs.util-linux}/bin/runuser -u "${admin}" -- ${pkgs.proton-vpn-cli}/bin/protonvpn disconnect || true && \
+            #${pkgs.procps}/bin/pkill protonvpn || true && \
+
+
+       #proton-vpn-old = pkgs.writeShellScriptBin "proton-vpn-old" ''
+       #  ${mypkgs.old-stable.protonvpn-gui}/bin/protonvpn-app
+       #'';
+
+            #${pkgs.util-linux}/bin/runuser -u "${admin}" -- ${proton-vpn-old}/bin/proton-vpn-old || true & \
+
   powerManagement = {
     powerDownCommands =
       let
         proton-kill = pkgs.writeShellScriptBin "proton-kill" ''
-          if pgrep protonvpn > /dev/null; then
-            pkill protonvpn && protonvpn disconnect && touch /tmp/protonvpn-stop
+          if ${pkgs.procps}/bin/pgrep protonvpn > /dev/null; then
+            ${pkgs.util-linux}/bin/kill -STOP "$(${pkgs.procps}/bin/pgrep -n protonvpn)" || true
+            ${pkgs.coreutils-full}/bin/touch /tmp/protonvpn-stop || true
           fi
         '';
       in
@@ -339,7 +350,7 @@ in
       let
         proton-resume = pkgs.writeShellScriptBin "proton-resume" ''
           if [ -f "/tmp/protonvpn-stop" ]; then
-            proton-vpn-old &
+            ${pkgs.util-linux}/bin/kill -CONT "$(${pkgs.procps}/bin/pgrep -n protonvpn)" || true
             rm -f /tmp/protonvpn-stop
           fi
         '';
