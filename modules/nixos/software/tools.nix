@@ -158,7 +158,7 @@
    #lemonbar-xft
    #taffybar
    #xmobar
-   #eww
+    eww
    #polybar
    #slstatus
    #dwmbar
@@ -282,6 +282,18 @@
     })]
 
     ++ [(pkgs.callPackage ../myPackages/fetch.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/widget-command.nix { })]  # new project, does nothing
+    ++ [(pkgs.callPackage ../myPackages/swgt.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/soko.nix { })]  # build fail. cant find sdl image lib in subpackage for c
+    ++ [(pkgs.callPackage ../myPackages/macaron.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/ewwii.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/stw-git.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/menmu.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/xsetcursor.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/nimlaunch.nix { })]  # cant find the bin
+    ++ [(pkgs.callPackage ../myPackages/bubbly.nix { })]
+
 
     ++ [(pkgs.callPackage ../myPackages/noctavox.nix { })]
     ++ [(pkgs.callPackage ../myPackages/gomu.nix { })]

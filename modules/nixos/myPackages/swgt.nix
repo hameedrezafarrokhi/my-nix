@@ -1,8 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitea,
-
+  fetchFromGitHub,
   libx11,
   libxft,
   libxrandr,
@@ -21,43 +20,30 @@
   libxcomp,
   libxcomposite,
   libxkbcommon,
-
-  libxcb,
-  libxcb-wm,
-  libxcb-util,
-  libxcb-render-util,
-  libxcb-keysyms,
-  libxcb-image,
-  libxcb-errors,
-  libxcb-cursor,
-
   fontconfig,
   freetype,
-
   pkg-config,
-
   writeText,
   conf ? null,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
-  version = "2020-10-21";
+  pname = "swgt";
+  version = "2025-08-26";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
-    owner = "dylanaraps";
-    repo = "sowm";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+  src = fetchFromGitHub {
+    owner = "Kubandir";
+    repo = "swgt";
+    rev = "75294618c47bc90e0c31f2598db270033adffae4";
+    sha256 = "0w6pfn8naj9hvk2d241svjqgynldagzdljk6nvva19lcsnj4nr2b";
   };
 
   postPatch =
     let
       configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
+        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.h" conf;
     in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
+    lib.optionalString (conf != null) "cp ${configFile} config.h";
 
 
   nativeBuildInputs = [
@@ -83,49 +69,26 @@ stdenv.mkDerivation rec {
     libxcomp
     libxcomposite
     libxkbcommon
-
-    libxcb
-    libxcb-wm
-    libxcb-util
-    libxcb-render-util
-    libxcb-keysyms
-    libxcb-image
-    libxcb-errors
-    libxcb-cursor
-
     fontconfig
     freetype
   ];
-
-  makeFlags = [
-   #"CC=${stdenv.cc.targetPrefix}cc"
-    "PREFIX=${placeholder "out"}"
-  ];
-
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    cp swgt $out/bin/swgt
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://codeberg.org/dylanaraps/sowm";
+    homepage = "https://github.com/Kubandir/swgt";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "swgt";
   };
 }

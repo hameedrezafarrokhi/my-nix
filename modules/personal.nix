@@ -141,8 +141,8 @@
      #"rustile" "poorwm" "neowm" "ltwm" "dael" "miawm" "irwm" "ttwm" "2am-qwm"
      #"rondo" "pywm" "qtwm" "dash" "ferawm" "dxwm" "boringwm" "oxidewm" "sirenwm"
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
-     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm" "tile"
-     #"treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
+     #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm" "tile" "raijuwm"
+     #"treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm" "nora"
 
      #"fluorite"
 
@@ -392,7 +392,7 @@
 
           nix.enable = true;
 
-          shells = [ "bash" "fish" "nu" ];
+          shells = [ "bash" "fish" "nu" "dash" ];
           defaultShell = "fish";
           shellAliases = true;
           xdg.enable = true;

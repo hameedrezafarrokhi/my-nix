@@ -42,7 +42,8 @@ in
        "chamferwm" "legacywm" "lwm-c" "ywm" "minimalwm" "pgwm"
        "rdwm" "rustwm" "bond-wm" "fyrwm" "nyxwm" "foxwm" "tile"
        "wmwm" "mdtwm" "go-afwm" "xwm" "wmsquared" "treewm" "musca"
-       "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm"
+       "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm" "nora"
+       "raijuwm"
 
        "bouncy-window-manager" "bouncy-wm" "bounce-wm" "bouncywm"
        "bouncywm-ruby" "bouncewm-kacper" "bouncewm" "stressfulwm"
@@ -298,6 +299,8 @@ in
     ./git-wms/zdwm
     ./git-wms/reversewm
     ./git-wms/librarywm
+    ./git-wms/nora
+    ./git-wms/raijuwm
 
 
     ./git-wms/bouncy-window-manager

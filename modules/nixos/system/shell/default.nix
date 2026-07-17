@@ -12,14 +12,14 @@ in
 
     shells = lib.mkOption {
 
-     type = lib.types.listOf (lib.types.enum [ "bash" "fish" "zsh" ]);
+     type = lib.types.listOf (lib.types.enum [ "bash" "fish" "zsh" "dash" "nu" ]);
      default = [ ];
 
     };
 
     default = lib.mkOption {
 
-     type = lib.types.nullOr (lib.types.enum [ "bash" "fish" "zsh" ]);
+     type = lib.types.nullOr (lib.types.enum [ "bash" "fish" "zsh" "dash" "nu" ]);
      default = null;
 
     };
@@ -28,7 +28,7 @@ in
 
   };
 
-  imports = [ ./bash.nix ./fish.nix ./zsh.nix ];
+  imports = [ ./bash.nix ./fish.nix ./zsh.nix ./dash.nix ./nu.nix ];
 
 
 }
