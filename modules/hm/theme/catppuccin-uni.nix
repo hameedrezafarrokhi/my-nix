@@ -2444,7 +2444,7 @@ in
         };
       };
       workspace = {
-        lookAndFeel = plasma-look; # Global Theme  # plasma-apply-lookandfeel --list
+       #lookAndFeel = plasma-look; # Global Theme  # plasma-apply-lookandfeel --list
         widgetStyle = plasma-widget;
         theme = plasma-theme; # Plasma Style  # # plasma-apply-desktoptheme --list-themes
         colorScheme = plasma-color; # plasma-apply-colorscheme --list-schemes
@@ -2456,6 +2456,8 @@ in
           # plasma-apply-cursortheme --list-themes
           theme = plasma-cursor;
           size = cursor-size;
+         #animationTime = ; # null or (positive integer, meaning >0)
+          cursorFeedback = "Bouncing"; # null or one of "Bouncing", "Blinking", "Static", "None"
         };
         iconTheme = qt-icon;
         splashScreen = {
@@ -2479,6 +2481,7 @@ in
         #  interval = 300;
         #  path = [ "" "" ];
         #};
+        clickItemTo = "select"; #  null or one of "open", "select"
       };
       kscreenlocker.appearance.wallpaper = wallpaper;
       fonts = {
@@ -3904,6 +3907,7 @@ in
           {
             plugin = nvim-package;
             config = nvim-config;
+            type = "viml"; # "viml" or "lua"
           }
         ];
       };

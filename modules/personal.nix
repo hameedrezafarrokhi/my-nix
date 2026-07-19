@@ -129,7 +129,7 @@
       # Git-Wms
 
         # Dynamic
-      "vxwm"
+      "vxwm" "hana"
      #"ragnar" "suswm" "chibiwm" "custard" "monsterwm" "monsterwm-xcb" "moody"
      #"catwm-og" "catwm-djmasde" "catwm-ahmadinne" "sara" "dminiwm" "eowm"
      #"meow" "meowwm" "sexywm" "mmwm" "coma" "philoswm" "devoidwm" "calavera"
@@ -143,7 +143,6 @@
      #"seiwm" "fleon" "absent" "chamferwm" "legacywm" "minimalwm" "pgwm" "nwm"
      #"rdwm" "rustwm" "fensterchef" "nyxwm" "fluid-wm" "wmwm" "tile" "raijuwm"
      #"treewm" "musca" "matwm2" "sdorfehs" "zdwm" "reversewm" "librarywm" "nora"
-
      #"fluorite"
 
         # Floating
@@ -178,7 +177,7 @@
 
         # Broken Builds
      #"zwm-zig2" "zwm-cpp" "derpy-wm"
-     #"lwm-c" "xmt" "hana" "unknowwm"
+     #"lwm-c" "xmt" "unknowwm"
      #"compiz" "windwm" "qvwm" "fxwm"
      #"bouncywm"/*nim*/ "window_manager"
      #"mswm"

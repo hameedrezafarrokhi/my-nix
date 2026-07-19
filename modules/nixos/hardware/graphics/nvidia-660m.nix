@@ -321,6 +321,45 @@ in
         Environment = ''"SYSTEMD_SLEEP_FREEZE_USER_SESSIONS=false"'';
       };
     };
+
+    # powerUpCommands replacement
+    post-resume-nvidia-script = {
+      description = "run commands after sleep for nvidia issues";
+      after = [
+       #"suspend.target"
+       #"hibernate.target"
+       #"hybrid-sleep.target"
+       #"suspend-then-hibernate.target"
+
+       #"systemd-suspend.service"
+       #"systemd-hibernate.service"
+       #"systemd-hybrid-sleep.service"
+       #"systemd-suspend-then-hibernate.service"
+
+        "nvidia-resume.service"
+        "nvidia-hibernate.service"
+      ];
+      wantedBy = [
+        "suspend.target"
+        "hibernate.target"
+        "hybrid-sleep.target"
+        "suspend-then-hibernate.target"
+      ];
+      serviceConfig = {
+       #User = admin;
+        Type = "oneshot";
+        ExecStart =
+          let
+            post-resume-nvidia-script = pkgs.writeShellScriptBin "post-resume-nvidia-script" ''
+              if [ -f "/tmp/protonvpn-stop" ]; then
+                ${pkgs.util-linux}/bin/kill -CONT "$(${pkgs.procps}/bin/pgrep -n protonvpn)" || true
+                rm -f /tmp/protonvpn-stop
+              fi
+            '';
+          in
+        "${post-resume-nvidia-script}/bin/post-resume-nvidia-script";
+      };
+    };
   };
 
             #${pkgs.util-linux}/bin/runuser -u "${admin}" -- ${pkgs.proton-vpn-cli}/bin/protonvpn disconnect || true && \
@@ -346,19 +385,21 @@ in
     ''
       ${proton-kill}/bin/proton-kill
     '';
-    powerUpCommands =
-      let
-        proton-resume = pkgs.writeShellScriptBin "proton-resume" ''
-          if [ -f "/tmp/protonvpn-stop" ]; then
-            ${pkgs.util-linux}/bin/kill -CONT "$(${pkgs.procps}/bin/pgrep -n protonvpn)" || true
-            rm -f /tmp/protonvpn-stop
-          fi
-        '';
-      in
-    ''
-      ${proton-resume}/bin/proton-resume
-    '';
+   #powerUpCommands =  # Depricated, use oneshot systemd services instead
+   #  let
+   #    proton-resume = pkgs.writeShellScriptBin "proton-resume" ''
+   #      if [ -f "/tmp/protonvpn-stop" ]; then
+   #        ${pkgs.util-linux}/bin/kill -CONT "$(${pkgs.procps}/bin/pgrep -n protonvpn)" || true
+   #        rm -f /tmp/protonvpn-stop
+   #      fi
+   #    '';
+   #  in
+   #''
+   #  ${proton-resume}/bin/proton-resume
+   #'';
   };
+
+
 
 };}
 
