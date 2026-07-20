@@ -1,4 +1,4 @@
-{ config, pkgs, lib, mypkgs, ... }:
+{ config, pkgs, lib, mypkgs, inputs, ... }:
 
 let
 
@@ -23,6 +23,9 @@ in
       pkgs.gearlever                     ##AppImage management
      #pkgs.appimageupdate
      #mypkgs.stable.appimageupdate-qt
+
+     #inputs.app-manager.packages.x86_64-linux.default
+      inputs.app-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     ];
 

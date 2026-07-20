@@ -30,17 +30,13 @@
   # 3rd_PARTY
 #     xlibre-overlay = { url = "git+https://codeberg.org/takagemacoed/xlibre-overlay?ref=dev-for-26.05"; };
 
-           nix-alien = { url = "github:thiagokokada/nix-alien"; };
-
          nix-flatpak = { url = "github:gmodena/nix-flatpak/?ref=latest"; };
         xremap-flake = { url = "github:xremap/nix-flake";
                                 inputs.nixpkgs.follows = "nixpkgs"; };
+
 #     cosmic-manager = { url = "github:HeitorAugustoLN/cosmic-manager";
 #                               inputs.nixpkgs.follows = "nixpkgs";
 #                               inputs.home-manager.follows = "home-manager"; };
-
-             lazyvim = { url = "github:pfassina/lazyvim-nix";
-                                inputs.nixpkgs.follows = "nixpkgs"; };
 
           catppuccin = { url = "github:catppuccin/nix";};
               stylix = { url = "github:danth/stylix";
@@ -73,6 +69,11 @@
 #            drew-wm = { url = "github:drewgrif/dwm-setup";
 #                               flake = false; };
 
+             lazyvim = { url = "github:pfassina/lazyvim-nix";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+         app-manager = { url = "github:kem-a/AppManager";
+                                inputs.nixpkgs.follows = "nixpkgs"; };
+           nix-alien = { url = "github:thiagokokada/nix-alien"; };
           ytm-player = { url = "github:peternaame-boop/ytm-player"; };
 
   # My_Stuff

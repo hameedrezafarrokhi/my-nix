@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "app-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784362394,
+        "narHash": "sha256-CJXA94MNKLYleuJIUrCzvWoV+i6bSiS4mxzgmNAa2T8=",
+        "owner": "kem-a",
+        "repo": "AppManager",
+        "rev": "46e07bbab78bfa2f31d7d273b294f13dd25714ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kem-a",
+        "repo": "AppManager",
+        "type": "github"
+      }
+    },
     "assets": {
       "flake": false,
       "locked": {
@@ -674,6 +694,7 @@
     },
     "root": {
       "inputs": {
+        "app-manager": "app-manager",
         "assets": "assets",
         "catppuccin": "catppuccin",
         "disko": "disko",
