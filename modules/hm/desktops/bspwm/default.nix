@@ -189,6 +189,7 @@ in
         bspc rule -a "Better_control.py" state=floating sticky=on layer=above rectangle=900x600+240+50
         bspc rule -a systemctltui layer=above state=floating rectangle=1150x650+100+55
         bspc rule -a "Bongo Cat" layer=above state=floating sticky=on focus=off follow=off border=off
+        bspc rule -a "SWGT" layer=above state=floating follow=off focus=off manage=on border=off sticky=on
 
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating
@@ -301,6 +302,12 @@ in
         notify-send -e -u low -t 1 'Hello:)'
 
         bsp-shake &
+
+        if hash swgt >/dev/null 2>&1; then
+          pkill swgt
+          sleep 0.5
+          swgt & xdotool mousemove "$(($(xdisplayinfo --width)-1))" "$(($(xdisplayinfo --height)/2))" && xdotool mousemove "$(($(xdisplayinfo --width)/2))" "$(($(xdisplayinfo --height)/2))"
+        fi &
       '';
 
       startupPrograms = [

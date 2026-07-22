@@ -38,6 +38,11 @@ stdenv.mkDerivation rec {
     sha256 = "0w6pfn8naj9hvk2d241svjqgynldagzdljk6nvva19lcsnj4nr2b";
   };
 
+  prePatch = ''
+    substituteInPlace swgt.c \
+      --replace-fail 'attrs.override_redirect = True;' 'attrs.override_redirect = False;'
+  '';
+
   postPatch =
     let
       configFile =
