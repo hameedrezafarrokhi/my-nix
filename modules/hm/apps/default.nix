@@ -69,6 +69,7 @@ in
     starship.enable = lib.mkEnableOption "starship";
     superfile.enable = lib.mkEnableOption "superfile";
     awww.enable = lib.mkEnableOption "awww";
+    taskwarrior.enable = lib.mkEnableOption "taskwarrior";
     television.enable = lib.mkEnableOption "television";
     tldr.enable = lib.mkEnableOption "tldr";
     tmux.enable = lib.mkEnableOption "tmux";
@@ -146,6 +147,7 @@ in
       ./starship.nix
       ./superfile.nix
       ./swww.nix
+      ./taskwarrior.nix
       ./tldr.nix
       ./tmux.nix
       ./udiskie.nix

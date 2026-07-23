@@ -315,6 +315,8 @@ in
           dockx
         fi &
 
+        cp -f ${nix-path}/modules/hm/desktops/bspwm/fittsmonrc $HOME/.config/fittsmon/fittsmonrc
+
         if hash fittsmon >/dev/null 2>&1; then
           pkill fittsmon
           sleep 0.5

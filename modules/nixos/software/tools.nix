@@ -278,6 +278,8 @@
 
     xournalpp
 
+   #vice # Emulators for a variety of 8-bit Commodore computers
+
 
   ] ) config.my.software.tools.exclude)
 

@@ -168,6 +168,8 @@ let
 
   traymd-theme = "system";
 
+  taskwarrior-theme = "dark-16"; #bubblegum-256"; #"dark-blue-256";
+
   wlogout-button-style = "wleave";
   wlogout-icon-shutdown = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/catppuccin/wlogout/refs/heads/main/icons/${wlogout-button-style}/${flavor}/${accent}/shutdown.svg";
@@ -6561,6 +6563,10 @@ in
         size = 1.5;
        #height = 30;
        #extraConfig = '' '';
+      };
+
+      taskwarrior = {
+        colorTheme = taskwarrior-theme;
       };
 
       #btop.settings = { color_theme = "catppuccin_${flavor}.theme"; };

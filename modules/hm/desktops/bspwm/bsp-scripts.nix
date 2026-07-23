@@ -13,6 +13,25 @@ let
     plank &
   '';
 
+  bsp-swgt-hide = pkgs.writeShellScriptBin "bsp-swgt-hide" ''
+    sleep 0.2
+    swgt_id=$(xdo id -N SWGT)
+    screen_w=$(xdisplayinfo --width)
+    swgt_pos=$(bspc query -T -n "$(xdo id -N SWGT)" | jq '.client.floatingRectangle.x')
+    if [ "$swgt_pos" == "$screen_w" ]; then
+      if xdo id -N SWGT >/dev/null; then
+        #sleep 0.3
+        bspc node "$swgt_id" -g hidden
+      fi
+    else
+      exec "$0" "$@"
+    fi
+  '';
+
+  bsp-swgt-show = pkgs.writeShellScriptBin "bsp-swgt-show" ''
+    bspc node $(xdo id -N SWGT) -g hidden=off
+  '';
+
   bsp-clock = pkgs.writeShellScriptBin "bsp-clock" ''
     if pgrep "peaclock" > /dev/null; then
       state="$(bspc query -T -n $(xdo id -N peaclock) | jq '.hidden')"
@@ -2065,6 +2084,8 @@ in
       bsp-send-prev-follow-empty
       bsp-send-prev-empty
       bsp-send-next-empty
+      bsp-swgt-hide
+      bsp-swgt-show
 
       bsp-crystal
 

@@ -520,6 +520,7 @@
             starship.enable = true;
             superfile.enable = true;
             awww.enable = true;
+            taskwarrior.enable = true;
             television.enable = true;
             tldr.enable = true;
             tmux.enable = true;
