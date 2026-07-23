@@ -268,7 +268,7 @@
     '')
 
     (pkgs.writeShellScriptBin "peaclock-widget" ''
-      ${config.my.default.terminal} --name peaclock --class peaclock sh -c 'peaclock --config-dir ~/.config/peaclock'
+      ${config.my.default.terminal} --name peaclock --class peaclock --title "peaclock" sh -c 'peaclock --config-dir ~/.config/peaclock'
     '')
 
   ]

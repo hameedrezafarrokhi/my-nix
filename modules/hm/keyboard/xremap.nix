@@ -31,7 +31,9 @@ let
         pkill better-control
       fi
     else
-      better-control
+      better-control &
+      sleep 2
+      wmctrl -r "Better Control" -b add,skip_taskbar
     fi
   '';
 

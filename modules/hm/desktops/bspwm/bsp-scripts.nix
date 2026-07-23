@@ -23,7 +23,9 @@ let
         pgrep "peaclock" && bspc node $(xdo id -N peaclock)  -f
       fi
     else
-      peaclock-widget
+      peaclock-widget &
+      sleep 2
+      wmctrl -r "peaclock" -b add,skip_taskbar
     fi
   '';
 

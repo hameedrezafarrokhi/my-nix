@@ -314,6 +314,9 @@ in
           sleep 0.5
           swgt & xdotool mousemove "$(($(xdisplayinfo --width)-1))" "$(($(xdisplayinfo --height)/2))" && xdotool mousemove "$(($(xdisplayinfo --width)/2))" "$(($(xdisplayinfo --height)/2))"
         fi &
+
+        sleep 2
+        wmctrl -r "SWGT" -b add,skip_taskbar
       '';
 
       startupPrograms = [
