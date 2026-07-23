@@ -20,6 +20,7 @@
 
   environment.systemPackages = [
     pkgs.nethogs
+    pkgs.netpeek
   ];
 
 };}

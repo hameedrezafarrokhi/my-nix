@@ -35,7 +35,7 @@
    #tdrop                        ## anything dropdown!
    #hdrop                        ## tdrop for hyprland
 
-    yad
+    roxterm
 
   ] ) config.my.software.terminals.exclude)
 

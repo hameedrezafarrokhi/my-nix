@@ -28,6 +28,8 @@
     pkgs._2048-in-terminal
     pkgs.tcl2048
 
+    pkgs.cl-wordle
+
    #mypkgs.stable.xsnow
     pkgs.zsnow
 

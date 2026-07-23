@@ -43,6 +43,7 @@ in
     jgmenu.enable = lib.mkEnableOption "jgmenu";
     joplin.enable = lib.mkEnableOption "joplin";
     kdeconnect.enable =  lib.mkEnableOption "kde connect";
+    keepass.enable = lib.mkEnableOption "keepass";
     keyrings.enable = lib.mkEnableOption "keyrings";
     kitty.enable = lib.mkEnableOption "kitty";
     lf.enable = lib.mkEnableOption "lf";
@@ -119,6 +120,7 @@ in
       ./jgmenu.nix
       ./joplin.nix
       ./kdeconnect.nix
+      ./keepass.nix
       ./keyrings.nix
       ./kitty.nix
       ./lf.nix

@@ -34,6 +34,7 @@
           "mail"
           "fwupd-refresh"
           "cdrom"
+          "Git"
 
           # Experimental WARNING MIGHT BREAK STUFF, UNTESTED!!!!!!!
           "tape" "floppy"

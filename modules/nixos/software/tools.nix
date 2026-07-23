@@ -11,6 +11,8 @@
 
   (utils.removePackagesByName ( with pkgs; [
 
+    yad
+
     better-control   usbguard
 
     libnotify
@@ -247,6 +249,35 @@
 
    #proton-cli  # WARNING TODO add after update
 
+    (keepass.override { plugins = [
+      keepass-diff
+      keepass-keeagent
+      keepass-otpkeyprov
+      keepass-keepassrpc
+      keepass-qrcodeview
+      keepass-keetraytotp
+      keepass-keepasshttp
+      keepass-charactercopy
+    ];})
+    keepass-diff
+    (git-credential-keepassxc.override {
+        withNotification = true;
+        withYubikey = false;
+        withStrictCaller = false;
+        withAll = false;
+    })
+    keepassxc
+    keepassxc-go
+    kpcli
+    keedump
+    keepmenu
+    keepwn
+    keeweb
+    gnome-secrets
+
+
+    xournalpp
+
 
   ] ) config.my.software.tools.exclude)
 
@@ -280,6 +311,13 @@
            fg = "#cad3f5";
            bgAlt = "#1e2030";
     })]
+
+    ++ [(pkgs.callPackage ../myPackages/wordle-cli.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/wordle-cli-py.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/clidle.nix { })]
+
+   #++ [(pkgs.callPackage ../myPackages/pykeepass-cache.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/passhole.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/fetch.nix { })]
 

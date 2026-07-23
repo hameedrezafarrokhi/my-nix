@@ -303,6 +303,18 @@ in
 
         bsp-shake &
 
+        if hash xbanish >/dev/null 2>&1; then
+          pkill xbanish
+          sleep 0.5
+          xbanish -t 5 -s
+        fi &
+
+        if hash dockx >/dev/null 2>&1; then
+          pkill dockx
+          sleep 0.5
+          dockx
+        fi &
+
         if hash fittsmon >/dev/null 2>&1; then
           pkill fittsmon
           sleep 0.5

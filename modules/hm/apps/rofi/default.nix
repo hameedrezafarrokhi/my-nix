@@ -7,6 +7,11 @@ let
     ${builtins.readFile ./scripts/rofi-noter}
   '';
 
+  rofi-keepassxc = pkgs.writeShellScriptBin "rofi-keepassxc" ''
+    # Credits: https://github.com/wzykubek/rofi-keepassxc
+    ${builtins.readFile ./scripts/rofi-keepassxc}
+  '';
+
   rofi-books = pkgs.writeShellScriptBin "rofi-books" ''
     # Credits: https://github.com/miroslavvidovic/rofi-scripts
     ${builtins.readFile ./scripts/rofi-books}
@@ -144,6 +149,7 @@ in
     rofi-checklist
     rofi-noter
     rofi-vpn-list
+    rofi-keepassxc
 
    #pkgs.rofi-rbw-x11
    #pkgs.rofi-rbw-wayland

@@ -494,6 +494,7 @@
             jgmenu.enable = true;
             joplin.enable = false;
             kdeconnect.enable = true;
+            keepass.enable = true;
             keyrings.enable = true;
             kitty.enable = true;
             lf.enable = true;

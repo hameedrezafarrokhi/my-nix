@@ -2415,7 +2415,8 @@ in
         if hash alttab >/dev/null 2>&1; then
           pkill alttab
           sleep 0.5
-          alttab -mk "Alt_L" -kk grave -w 1 -d 1 -s 2 -p "center" -ck Escape -dk c -sc 1 -nk Right -pk Left -bk "Shift_L" -t 150x150 -i 60x60 -vp "focus" -s 2 -theme ${gtk-icon} -bg "${Crust}" -fg "${Text}" -frame "${Accent}" -inact "${Overlay0}" -bw 7 -bc "${TBlack}" -font "${alttabFont}" -b 1 -ns &
+          alttab -mk "Alt_L" -kk grave -w 1 -d 1 -s 2 -p "center" -ck Escape -dk c -sc 1 -nk Right -pk Left -bk "Shift_L" -t 150x150 -i 60x60 -vp "focus" -s 2 -theme ${gtk-icon} -bg "${Crust}" -fg "${Text}" -frame "${Accent}" -inact "${Overlay0}" -bw 7 -bc "${TBlack}" -font "${alttabFont}" -b 1 &
+          # "-ns" for forcing the skip_taskbar hints from apps (makes SWGT show in opened windows for example)
         fi &
       '';
       settings = {
