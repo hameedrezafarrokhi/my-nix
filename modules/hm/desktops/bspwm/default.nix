@@ -303,6 +303,12 @@ in
 
         bsp-shake &
 
+        if hash fittsmon >/dev/null 2>&1; then
+          pkill fittsmon
+          sleep 0.5
+          fittsmon
+        fi &
+
         if hash swgt >/dev/null 2>&1; then
           pkill swgt
           sleep 0.5
