@@ -314,9 +314,12 @@
            bgAlt = "#1e2030";
     })]
 
+    ++ [(pkgs.callPackage ../myPackages/lockpicker.nix { })]
+
     ++ [(pkgs.callPackage ../myPackages/wordle-cli.nix { })]
     ++ [(pkgs.callPackage ../myPackages/wordle-cli-py.nix { })]
     ++ [(pkgs.callPackage ../myPackages/clidle.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/blurble.nix { })]
 
    #++ [(pkgs.callPackage ../myPackages/pykeepass-cache.nix { })]
     ++ [(pkgs.callPackage ../myPackages/passhole.nix { })]
