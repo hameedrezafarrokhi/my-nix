@@ -36,6 +36,21 @@ let
     builtin cd
   '';
 
+  run-pkgs = pkgs.writeShellScriptBin "run-pkgs" ''
+    nix run --impure --expr '(import <nixpkgs> {}).callPackage "'"$1"'" {}'
+  '';
+
+  build-pkgs = pkgs.writeShellScriptBin "build-pkgs" ''
+    mkdir -p $HOME/builds
+    cd $HOME/builds
+    rm -rf result
+    nix-build -E '(import <nixpkgs> {}).callPackage "'"$1"'" {}'
+  '';
+
+  shell-pkgs = pkgs.writeShellScriptBin "shell-pkgs" ''
+    nix shell --impure --expr '(import <nixpkgs> {}).callPackage "'"$1"'" {}'
+  '';
+
 in
 
 {
@@ -188,6 +203,9 @@ in
       trim-gen
       lock-up lock-backup
       full-nix-backup
+      shell-pkgs
+      run-pkgs
+      build-pkgs
 
     ]
     ;
