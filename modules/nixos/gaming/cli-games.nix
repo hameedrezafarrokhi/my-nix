@@ -20,7 +20,13 @@
    #pkgs.pacman-game   # DARWIN Only
     pkgs.nsnake
     mypkgs.stable.greed
+
    #pkgs.bsdgames      # WARNING MESSES WITH INTERAVTIVE SHELL (Use With Comma)
+    pkgs.nbsdgames
+
+    pkgs.sssnake
+    pkgs.snake4
+
     pkgs.moon-buggy
     pkgs.nudoku
     pkgs.nethack

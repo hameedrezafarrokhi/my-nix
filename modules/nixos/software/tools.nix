@@ -314,6 +314,20 @@
            bgAlt = "#1e2030";
     })]
 
+   #++ [(pkgs.callPackage ../myPackages/2d-supermario.nix { })] # doesnt work
+    ++ [(pkgs.callPackage ../myPackages/minesweeper.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/minesweeper-py.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/snake-cli.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/py-flappy-bird.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/flappy-bird.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/ascii-bird.nix { })]  # doesnt work
+    ++ [(pkgs.callPackage ../myPackages/clipinball.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/breakout-game-cli.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/pong-command.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/pong-cli.nix { })]  # doesnt build (old rust)
+    ++ [(pkgs.callPackage ../myPackages/pong-cli-bin.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/atari-cli.nix { })]
+
     ++ [(pkgs.callPackage ../myPackages/lockpicker.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/wordle-cli.nix { })]

@@ -43,6 +43,9 @@
 
     pkgs.tecnoballz
 
+   #pkgs.mariokart64recomp  # needs rom for build ????
+    pkgs.pong3d
+
   ];
 
 };}
