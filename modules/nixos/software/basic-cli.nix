@@ -39,7 +39,17 @@
    #bat
    #ninja
 
-    python3
+    (python3.withPackages (ps: with ps; [
+      pillow
+      requests
+      xlib
+      psutil
+      pygame
+      pygobject3
+      configparser
+      datetime
+      numpy
+    ]))
 
     trashy
    #net-tools

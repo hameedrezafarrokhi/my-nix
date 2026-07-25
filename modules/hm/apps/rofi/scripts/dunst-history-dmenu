@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Simple Notification Manager for dunst(1).
+
+# Copyright (c) 2026 Lou Woell lou@repetitions.de
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+### Dependencies:
+# bash
+# jq
+# dunst
+
+DMENU_ARGS="-p Notification: "
+
+show () {
+    for id in $@; do
+        dunstctl history-pop $id
+    done
+}
+
+remove () {
+    for id in $@; do
+        dunstctl history-rm $id
+    done
+}
+
+action () {
+    for id in $@; do
+        dunstctl history-pop $id &&
+            dunstctl action 0
+    done
+}
+
+context () {
+    show $@
+    dunstctl context
+}
+
+# Get dunst history as json array of item objects
+# {id: <id>, string: <display-string>}.
+items=$(
+    dunstctl history |
+    jq -r '[ .
+       ["data"].[].[] |
+       {
+        "id": .["id"].data,
+        "string": [ .["appname", "summary"].data ] | join(": ")
+       }
+    ]'
+)
+
+# Get user selection. dmenu prints the display string of the selection to
+# stdout. Would be nicer if we could get an index. As is we need to deal
+# with possibly non-unique display strings.
+selected_name=$(
+    jq -r '.[] | .string' <<<$items |
+        dmenu $DMENU_ARGS
+)
+# get dmenu exit code.
+action_code=$?
+
+# retrieve id of notifications matching the selected display string. Because
+# there may be more than one item matching the selected display string,
+# $selected_id may contain multiple ids.
+selected_id=$(
+    jq -r '.[] | select(.string == "'"$selected_name"'").id' <<<$items
+)
+
+# [d|be]menu signals different actions based on exit code.
+#  0: User selected Item with RET
+#  1: User exited without selecting Item
+# 1X: User selected Item with M-[0-9]
+case $action_code in
+    0 ) show    $selected_id;;         # RET
+    10) remove  $selected_id &&        # M-1 -> recurs
+              exec $0;;
+    11) action  $selected_id;;         # M-2
+    12) context $selected_id;;         # M-3
+    * ) exit    $action_code;;         # default
+esac
+
+exit 0

@@ -385,6 +385,11 @@
     ++ [(pkgs.callPackage ../myPackages/rofi-ytm.nix { })]
     ++ [(pkgs.callPackage ../myPackages/yt-search-rofi-blocks.nix { })]
     ++ [(pkgs.callPackage ../myPackages/rofi-blocks-apps.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/dunst-notif-history.nix { })]
+
+
+    ++ [(pkgs.callPackage ../myPackages/dunst-notification-history.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/dunst-history-reporting.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/uwatch.nix { })]
 

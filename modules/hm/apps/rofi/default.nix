@@ -7,6 +7,11 @@ let
     ${builtins.readFile ./scripts/rofi-noter}
   '';
 
+  rofi-dunst = pkgs.writeShellScriptBin "rofi-dunst" ''
+    # Credits: https://codeberg.org/lou/dunst-history-dmenu/src/branch/main/dunst-history-dmenu.sh
+    ${builtins.readFile ./scripts/dunst-history-dmenu}
+  '';
+
   rofi-keepassxc = pkgs.writeShellScriptBin "rofi-keepassxc" ''
     # Credits: https://github.com/wzykubek/rofi-keepassxc
     ${builtins.readFile ./scripts/rofi-keepassxc}
@@ -150,6 +155,7 @@ in
     rofi-noter
     rofi-vpn-list
     rofi-keepassxc
+    rofi-dunst
 
    #pkgs.rofi-rbw-x11
    #pkgs.rofi-rbw-wayland
