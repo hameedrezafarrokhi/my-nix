@@ -136,6 +136,9 @@
 
     go
     cargo-all-features
+    cargo
+    rustc
+    gcc
 
     toml2nix
     yaml2nix
