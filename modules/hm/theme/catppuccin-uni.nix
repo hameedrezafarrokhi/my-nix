@@ -10274,6 +10274,7 @@ in
           polybar-msg action lock module_show
           polybar-msg action xworkspaces module_show
           polybar-msg action apps module_show
+          polybar-msg action kdecon module_show
 
           polybar-msg action notif module_show
           polybar-msg action keyboard-layout module_show

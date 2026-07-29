@@ -317,6 +317,10 @@
            bgAlt = "#1e2030";
     })]
 
+
+    ++ [(pkgs.callPackage ../myPackages/kdeconnect-polybar/kdeconnect-polybar.nix { })]
+
+
    #++ [(pkgs.callPackage ../myPackages/2d-supermario.nix { })] # doesnt work
     ++ [(pkgs.callPackage ../myPackages/minesweeper.nix { })]
     ++ [(pkgs.callPackage ../myPackages/minesweeper-py.nix { })]

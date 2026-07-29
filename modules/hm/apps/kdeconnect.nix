@@ -6,7 +6,7 @@
 
     enable = true;
     package = pkgs.kdePackages.kdeconnect-kde;
-    indicator = true;
+    indicator = false;
 
   };
 

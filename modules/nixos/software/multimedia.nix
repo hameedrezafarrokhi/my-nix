@@ -73,8 +73,8 @@
     tauon
    #headset      # music player for youtube and reddit
    #deadbeef
-   #cmus
-   #cmusfm       # last.fm/libre.fm for cmus
+    cmus
+    cmusfm       # last.fm/libre.fm for cmus
    #museeks
    #musikcube    # tui
    #gapless

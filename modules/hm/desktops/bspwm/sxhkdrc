@@ -511,8 +511,8 @@ super + shift + alt + g
       systemctl --user restart bsppoly.service
 
 # Polybar Modules
-super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o}
-      poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow}
+super + ctrl + y ; {a,p,m,c,f,d,u,equal,minus,o,j}
+      poly-modules {apps,pp,memory,cpu,filesystem,networkspeeddown,networkspeedup,networkspeeddown-wired,networkspeedup-wired,xwindow,kdecon}
 
 # Polybar Modules
 super + ctrl + y ; {s,w,l,y,x,n,i,k,v,t,q,b,h,g,e,r,z}

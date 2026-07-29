@@ -534,7 +534,7 @@ in
           # polybar-cava-dots polybar-cava (cpu intensive)
           # wayves anim (cpu intensive, but better than two above)
           center = "xworkspaces";
-          right = "lock tray picom bspwm notif idle keyboard-layout light pulseaudio date hour power";
+          right = "lock tray kdecon picom bspwm notif idle keyboard-layout light pulseaudio date hour power";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -878,7 +878,7 @@ in
        #interface = "wlp3s0";
         unknown-as-up = true;
         interval = 3.0;
-        label-connected = ''"%downspeed:4%%{O-8pt}"'';
+        label-connected = ''"%signal%%downspeed:4%%{O-8pt}"'';
         format-connected = "%{T3}<label-connected>%{O-2pt}%{T-}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
@@ -981,8 +981,12 @@ in
         poll-interval = 0;
         enable-scroll = true;
         scroll-interval = 2;
-        format = "<ramp>%{O-8pt}";
+       #format = "<ramp>%{O-8pt}";
        #label = "%percentage%%";
+
+        format = "%{A1:notify-send hello:}<ramp>%{O-8pt}%{A}";
+       #label = "%{A1:notify-send hello:}%<ramp>%{O-8pt}%%{A}";
+
         ramp-0 = lib.mkDefault "󰽢"; # "🌕";
         ramp-1 = lib.mkDefault "󰽦"; # "🌔";
         ramp-2 = lib.mkDefault "󰽣"; # "🌓";
@@ -1061,6 +1065,13 @@ in
         format = "<label>";
         label = "%output%";
         format-padding = 0;
+      };
+
+      "module/kdecon" = {
+        type = "custom/script";
+        exec = "kdeconnect-polybar --daemon -b";
+        tail = true;
+        label = "%{O-8pt}%output%%{O-8pt}";
       };
 
       "settings" = {

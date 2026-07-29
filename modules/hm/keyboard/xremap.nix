@@ -722,6 +722,8 @@ in
           remap:
             Super-Shift-v:
               launch: [ "copyq", "menu" ]
+            Super-Shift-Alt-v:
+              launch: [ "copyq", "show" ]
             Super-Ctrl-t:
               launch: [ "xremap-time" ]
             Super-Ctrl-q:
