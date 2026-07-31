@@ -28,13 +28,12 @@ static TrackedDevice *find_or_create(RenderState *state, const char *id) {
     return td;
 }
 
-void render_state_init(RenderState *state, Display *dpy, const char *self_exe, int show_battery, int show_name) {
+void render_state_init(RenderState *state, Display *dpy, const char *self_exe, int show_battery) {
     state->devices = NULL;
     state->count = 0;
     state->dpy = dpy;
     state->self_exe = self_exe;
     state->show_battery = show_battery;
-    state->show_name = show_name;
 }
 
 void render_state_free(RenderState *state) {
@@ -51,10 +50,8 @@ static const char *color_for_battery(int battery) {
     return BATTERY_BANDS[BATTERY_BAND_COUNT - 1].color;
 }
 
-/* Icon only (no battery percentage) -- kept separate from the percent
- * span below so the device name can be inserted between them. */
-static const char *icon_only(int battery, const char *devtype) {
-    static char buf[64];
+static const char *icon_for(int battery, const char *devtype, int show_percent) {
+    static char buf[128];
     int is_tablet = (devtype && strcmp(devtype, "tablet") == 0);
     const char *icon;
     const char *color;
@@ -70,19 +67,26 @@ static const char *icon_only(int battery, const char *devtype) {
         color = color_for_battery(battery);
     }
 
-    snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", color, icon);
+    if (show_percent && battery >= 0) {
+        snprintf(buf, sizeof(buf), "%%{F%s}%s %d%%{F-}", color, icon, battery);
+    } else {
+        snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", color, icon);
+    }
     return buf;
 }
 
-/* Battery-colored percentage span, e.g. "%{F#fff}87%{F-}". Empty
- * string if battery < 0 (unknown/not applicable). */
-static const char *percent_only(int battery) {
-    static char buf[48];
-    if (battery < 0) {
-        buf[0] = '\0';
-        return buf;
-    }
-    snprintf(buf, sizeof(buf), "%%{F%s}%d%%{F-}", color_for_battery(battery), battery);
+/* Best-effort SIM signal strength via connectivity_report. Returns an
+ * empty string if the device has no cellular subscription (e.g. a
+ * tablet) or the plugin isn't available -- never fails loudly. */
+static const char *signal_icon_for(const char *devpath) {
+    if (!SHOW_SIGNAL_STRENGTH) return "";
+
+    int bars = -1;
+    if (!kdc_get_signal_bars(devpath, &bars)) return "";
+
+    static const char *icons[] = { ICON_SIGNAL_0, ICON_SIGNAL_1, ICON_SIGNAL_2, ICON_SIGNAL_3, ICON_SIGNAL_4 };
+    static char buf[64];
+    snprintf(buf, sizeof(buf), "%s ", icons[bars]);
     return buf;
 }
 
@@ -105,109 +109,6 @@ static void sb_append(strbuf *s, const char *str) {
     s->len += l;
 }
 
-/* Truncates `name` (UTF-8) to at most max_chars *characters* (not
- * bytes), appending DEVICE_NAME_TRUNCATE_SUFFIX if it had to shorten
- * anything. max_chars <= 0 means no limit. This is a plain character
- * count for bar text (polybar renders it with its own font, so we
- * have no pixel-width information here, unlike the menu widgets). */
-static void truncate_name_chars(char *out, size_t outsz, const char *name, int max_chars) {
-    if (max_chars <= 0 || !name) {
-        snprintf(out, outsz, "%s", name ? name : "");
-        return;
-    }
-
-    int chars = 0;
-    const char *p = name;
-    while (*p) {
-        unsigned char c = (unsigned char)*p;
-        int len = 1;
-        if ((c & 0xE0) == 0xC0) len = 2;
-        else if ((c & 0xF0) == 0xE0) len = 3;
-        else if ((c & 0xF8) == 0xF0) len = 4;
-
-        if (chars >= max_chars) break;
-        p += len;
-        chars++;
-    }
-
-    if (*p == '\0') {
-        snprintf(out, outsz, "%s", name);
-        return;
-    }
-
-    size_t n = (size_t)(p - name);
-    if (n >= outsz) n = outsz - 1;
-    memcpy(out, name, n);
-    out[n] = '\0';
-
-    size_t used = strlen(out);
-    if (used < outsz - 1) {
-        snprintf(out + used, outsz - used, "%s", DEVICE_NAME_TRUNCATE_SUFFIX);
-    }
-}
-
-/* Expands {SELF}/{ID}/{NAME} placeholders in a POLYBAR_ACTION_* click
- * template. Not shell-quoted for the caller -- same convention as the
- * built-in default command, which quotes {NAME} itself where needed. */
-static void expand_action_template(char *out, size_t outsz, const char *tmpl,
-                                    const char *self_exe, const char *id, const char *name) {
-    size_t out_len = 0;
-    out[0] = '\0';
-
-    for (const char *p = tmpl; *p && out_len + 1 < outsz; ) {
-        const char *rep = NULL;
-        size_t skip = 0;
-
-        if (strncmp(p, "{SELF}", 6) == 0) { rep = self_exe; skip = 6; }
-        else if (strncmp(p, "{ID}", 4) == 0) { rep = id; skip = 4; }
-        else if (strncmp(p, "{NAME}", 6) == 0) { rep = name; skip = 6; }
-
-        if (rep) {
-            size_t rl = strlen(rep);
-            size_t space = outsz - out_len - 1;
-            size_t n = rl < space ? rl : space;
-            memcpy(out + out_len, rep, n);
-            out_len += n;
-            out[out_len] = '\0';
-            p += skip;
-        } else {
-            out[out_len++] = *p++;
-            out[out_len] = '\0';
-        }
-    }
-}
-
-/* Appends one %{An:cmd:} tag per configured (or, for slot 1, defaulted)
- * polybar click action to `piece`. Returns how many were opened, so
- * the caller can close the same number of %{A} tags afterward. */
-static int append_action_tags(strbuf *piece, const char *self_exe, const char *id,
-                               const char *name, const char *default_a1_cmd) {
-    static const char *templates[5] = {
-        POLYBAR_ACTION_1, POLYBAR_ACTION_2, POLYBAR_ACTION_3, POLYBAR_ACTION_4, POLYBAR_ACTION_5
-    };
-    int opened = 0;
-
-    for (int slot = 0; slot < 5; slot++) {
-        const char *tmpl = templates[slot];
-        char cmd[600];
-
-        if (slot == 0 && (!tmpl || tmpl[0] == '\0')) {
-            snprintf(cmd, sizeof(cmd), "%s", default_a1_cmd);
-        } else if (tmpl && tmpl[0] != '\0') {
-            expand_action_template(cmd, sizeof(cmd), tmpl, self_exe, id, name);
-        } else {
-            continue;
-        }
-
-        char tag[700];
-        snprintf(tag, sizeof(tag), "%%{A%d:%s:}", slot + 1, cmd);
-        sb_append(piece, tag);
-        opened++;
-    }
-
-    return opened;
-}
-
 char *render_module(RenderState *state) {
     int count = 0;
     char **ids = kdc_get_device_ids(&count);
@@ -228,10 +129,7 @@ char *render_module(RenderState *state) {
         kdc_is_paired(devpath, &trusted);
 
         TrackedDevice *td = find_or_create(state, ids[i]);
-
-        char piece_static[1024];
-        char *piece_dyn = NULL;
-        const char *piece = piece_static;
+        char piece[1024];
 
         if (reachable && trusted) {
             char batpath[320];
@@ -241,45 +139,12 @@ char *render_module(RenderState *state) {
 
             int is_low = (LOW_BATTERY_THRESHOLD >= 0 && battery >= 0 && battery <= LOW_BATTERY_THRESHOLD);
             const char *low_prefix = is_low ? ICON_LOW_BATTERY : "";
+            const char *signal_prefix = signal_icon_for(devpath);
 
-            char default_cmd[300];
-            snprintf(default_cmd, sizeof(default_cmd), "%s -n '%s' -i %s -m",
-                     state->self_exe, name ? name : "", ids[i]);
-
-            strbuf piece_sb;
-            sb_init(&piece_sb);
-
-            int opened = append_action_tags(&piece_sb, state->self_exe, ids[i], name ? name : "", default_cmd);
-
-            sb_append(&piece_sb, low_prefix);
-            sb_append(&piece_sb, icon_only(battery, devtype));
-
-            int have_name = state->show_name && name && name[0] != '\0';
-            int have_percent = state->show_battery && battery >= 0;
-
-            if (have_name) {
-                char spacer[24];
-                snprintf(spacer, sizeof(spacer), "%%{O%d}", ICON_NAME_SPACING_PX);
-                sb_append(&piece_sb, spacer);
-
-                char truncated[256];
-                truncate_name_chars(truncated, sizeof(truncated), name, DEVICE_NAME_MAX_CHARS);
-                sb_append(&piece_sb, truncated);
-            }
-
-            if (have_percent) {
-                char spacer[24];
-                int px = have_name ? NAME_BATTERY_SPACING_PX : ICON_NAME_SPACING_PX;
-                snprintf(spacer, sizeof(spacer), "%%{O%d}", px);
-                sb_append(&piece_sb, spacer);
-                sb_append(&piece_sb, percent_only(battery));
-            }
-
-            for (int k = 0; k < opened; k++) sb_append(&piece_sb, "%{A}");
-            sb_append(&piece_sb, SEPARATOR);
-
-            piece_dyn = piece_sb.buf;
-            piece = piece_dyn;
+            snprintf(piece, sizeof(piece),
+                     "%%{A1:%s -n '%s' -i %s -m:}%s%s%s%%{A}%s",
+                     state->self_exe, name ? name : "", ids[i],
+                     low_prefix, signal_prefix, icon_for(battery, devtype, state->show_battery), SEPARATOR);
 
             if (td) {
                 if (td->known && !td->was_reachable) {
@@ -303,7 +168,7 @@ char *render_module(RenderState *state) {
             }
 
         } else if (!reachable && trusted) {
-            snprintf(piece_static, sizeof(piece_static), "%s%s", icon_only(-1, devtype), SEPARATOR);
+            snprintf(piece, sizeof(piece), "%s%s", icon_for(-1, devtype, 0), SEPARATOR);
 
             if (td) {
                 if (NOTIFY_ON_DISCONNECT && td->known && td->was_reachable) {
@@ -336,9 +201,9 @@ char *render_module(RenderState *state) {
                 td->notified_pairing = 0;
             }
 
-            snprintf(piece_static, sizeof(piece_static),
+            snprintf(piece, sizeof(piece),
                      "%%{A1:%s -n %s -i %s -p:}%s%%{A}%s",
-                     state->self_exe, name ? name : "", ids[i], icon_only(-2, devtype), SEPARATOR);
+                     state->self_exe, name ? name : "", ids[i], icon_for(-2, devtype, 0), SEPARATOR);
 
             if (td) {
                 td->known = 1;
@@ -348,19 +213,12 @@ char *render_module(RenderState *state) {
         }
 
         sb_append(&out, piece);
-        free(piece_dyn);
         free(name);
         free(devtype);
     }
 
-    if (count == 0 && SHOW_ICON_WHEN_NO_DEVICES) {
-        char buf[64];
-        snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", COLOR_NO_DEVICES, ICON_NO_DEVICES);
-        sb_append(&out, buf);
-    }
-
     size_t seplen = strlen(SEPARATOR);
-    if (out.len >= seplen && count > 0) out.buf[out.len - seplen] = '\0';
+    if (out.len >= seplen) out.buf[out.len - seplen] = '\0';
 
     kdc_free_device_ids(ids, count);
     return out.buf;

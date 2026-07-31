@@ -121,7 +121,8 @@ in
       (pkgs.callPackage ../../myPackages/xdg-xmenu.nix { })
      #(pkgs.callPackage ../../myPackages/xfiles.nix { })
       (pkgs.callPackage ../../myPackages/xclickroot.nix { })
-      (pkgs.callPackage ../../myPackages/xwww.nix { })
+     #(pkgs.callPackage ../../myPackages/xwww.nix { })
+      (pkgs.callPackage ../../myPackages/xwww-c/xwww.nix { })
 
     ];
 

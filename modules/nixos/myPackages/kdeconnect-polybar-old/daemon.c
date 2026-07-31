@@ -81,7 +81,7 @@ static void render_and_print_if_changed(RenderState *state, char **last, int jso
     }
 }
 
-int daemon_run(Display *dpy, const char *self_exe, int show_battery, int show_name, int json_mode) {
+int daemon_run(Display *dpy, const char *self_exe, int show_battery, int json_mode) {
     DBusConnection *conn = kdc_conn();
 
     DBusError err;
@@ -117,7 +117,7 @@ int daemon_run(Display *dpy, const char *self_exe, int show_battery, int show_na
     sigaction(SIGTERM, &sa, NULL);
 
     RenderState state;
-    render_state_init(&state, dpy, self_exe, show_battery, show_name);
+    render_state_init(&state, dpy, self_exe, show_battery);
 
     char *last = NULL;
     render_and_print_if_changed(&state, &last, json_mode); /* initial state, printed at startup */

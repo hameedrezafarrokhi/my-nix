@@ -22,10 +22,9 @@ typedef struct {
     Display *dpy;           /* used to pop the pairing-request menu; may be NULL to skip that (e.g. plain -d dump) */
     const char *self_exe;   /* embedded into click-handler commands   */
     int show_battery;       /* print numeric battery % next to the icon */
-    int show_name;          /* print device name between icon and battery % */
 } RenderState;
 
-void render_state_init(RenderState *state, Display *dpy, const char *self_exe, int show_battery, int show_name);
+void render_state_init(RenderState *state, Display *dpy, const char *self_exe, int show_battery);
 void render_state_free(RenderState *state);
 
 /* Builds the polybar module text for current device state (caller

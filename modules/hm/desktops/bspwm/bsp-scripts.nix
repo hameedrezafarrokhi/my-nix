@@ -2160,6 +2160,7 @@ in
        ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
       #After = "graphical-session.target";
       #Wants = "graphical-session.target";
+       After = [ "bsppoly.service" ];
       };
       Service = {
         Type = "simple";

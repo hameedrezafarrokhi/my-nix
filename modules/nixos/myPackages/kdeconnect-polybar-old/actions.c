@@ -201,19 +201,17 @@ void action_show_menu(Display *dpy, const char *dev_id_in, const char *dev_name_
     kdc_get_int(batpath, KDC_BATTERY_IFACE, "charge", &battery);
 
     int signal_bars = -1;
-    int have_signal = SHOW_SIGNAL_STRENGTH && kdc_get_signal_bars(devpath, &signal_bars);
+    int have_signal = kdc_get_signal_bars(devpath, &signal_bars);
 
-    char header_main[192];
-    if (battery >= 0) {
-        snprintf(header_main, sizeof(header_main), "%s \u2014 Battery: %d%%",
+    char header[192];
+    if (battery >= 0 && have_signal) {
+        snprintf(header, sizeof(header), "%s \u2014 Battery: %d%%, Signal: %d/4",
+                 dev_name ? dev_name : "Device", battery, signal_bars);
+    } else if (battery >= 0) {
+        snprintf(header, sizeof(header), "%s \u2014 Battery: %d%%",
                  dev_name ? dev_name : "Device", battery);
     } else {
-        snprintf(header_main, sizeof(header_main), "%s", dev_name ? dev_name : "Device");
-    }
-
-    char header_signal[64];
-    if (have_signal) {
-        snprintf(header_signal, sizeof(header_signal), "Signal: %d/4", signal_bars);
+        snprintf(header, sizeof(header), "%s", dev_name ? dev_name : "Device");
     }
 
     /* other currently connected devices, for an always-available
@@ -258,7 +256,7 @@ void action_show_menu(Display *dpy, const char *dev_id_in, const char *dev_name_
         while (CUSTOM_MENU_ENTRIES[custom_count].command != NULL) custom_count++;
     }
 
-    int max_items = 3 /* header row + signal row + sep */
+    int max_items = 2 /* header + sep */
                   + 9 /* ping/find/sendfile/browse/clipboard/sms/switch/pair/unpair/openapp -- generous */
                   + 3 /* separators between groups */
                   + (custom_count > 0 ? custom_count + 1 : 0);
@@ -271,8 +269,7 @@ void action_show_menu(Display *dpy, const char *dev_id_in, const char *dev_name_
     }
 
     int ni = 0;
-    items[ni++] = (MenuItem){ header_main, 0, 0, NULL, 0 };
-    if (have_signal) items[ni++] = (MenuItem){ header_signal, 0, 0, NULL, 0 };
+    items[ni++] = (MenuItem){ header, 0, 0, NULL, 0 };
     items[ni++] = (MenuItem){ NULL, 0, 0, NULL, 0 };
     if (SHOW_MENU_PING)         items[ni++] = (MenuItem){ "Ping", ACT_PING, 1, NULL, 0 };
     if (SHOW_MENU_FIND_DEVICE)  items[ni++] = (MenuItem){ "Find Device", ACT_FIND, 1, NULL, 0 };

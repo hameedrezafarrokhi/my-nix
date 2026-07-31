@@ -9,15 +9,14 @@
  *
  * `show_battery` controls whether the numeric battery percentage is
  * printed next to the icon (see config.h SHOW_BATTERY_PERCENT_DEFAULT
- * / the -b CLI flag); `show_name` does the same for the device name
- * (SHOW_DEVICE_NAME_DEFAULT / --show-name) -- neither changes what's
- * queried over D-Bus, only what's printed. `json_mode` switches the
- * printed format from polybar markup to one JSON array per line (see
- * render.h's render_module_json).
+ * / the -b CLI flag) -- it doesn't change what's queried over D-Bus,
+ * only what's printed. `json_mode` switches the printed format from
+ * polybar markup to one JSON array per line (see render.h's
+ * render_module_json).
  *
  * While idle, the process blocks in poll() on the D-Bus socket fd
  * (plus an internal self-pipe used for clean signal-based shutdown):
  * genuinely 0% CPU, not fast polling. Returns a process exit code. */
-int daemon_run(Display *dpy, const char *self_exe, int show_battery, int show_name, int json_mode);
+int daemon_run(Display *dpy, const char *self_exe, int show_battery, int json_mode);
 
 #endif /* DAEMON_H */

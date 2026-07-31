@@ -5,73 +5,6 @@ directly over D-Bus (no `qdbus`), draws its own popup menus with Xlib
 + Xft (no `rofi`), has its own searchable file picker (no `zenity`),
 and runs as a signal-driven daemon for genuinely 0% idle CPU.
 
-## Latest round
-
-### Corner rounding: smoother alignment
-
-The border and inner content were being rounded with two *different*
-circle algorithms (`XFillArc` for the fill vs. the row-based math used
-for the window's clipped shape), which left them very slightly
-misaligned -- that mismatch, not just plain non-anti-aliased pixels,
-is what made corners look jagged. Both now use the identical per-row
-formula, so the fill and the actual clipped window shape line up
-exactly. This is the "simple fix" -- true anti-aliased smoothing would
-need an XRender-based fractional-coverage mask, which is a much bigger
-undertaking and out of scope per your call.
-
-### Signal strength: menu only, never the bar
-
-Removed entirely from the polybar module (confirmed dead code -- it
-never worked there, which is exactly why you never saw it; not worth
-chasing further since it doesn't belong there anyway). In the `-m`
-menu, the header is now two rows instead of one: `NAME — Battery: X%`
-on its own line, `Signal: Y/4` on the line below (only shown if the
-device actually reports a signal, and only at all if
-`SHOW_SIGNAL_STRENGTH` in `config.h` is on).
-
-### Bar module: device name + configurable spacing
-
-- `SHOW_DEVICE_NAME_DEFAULT` (config.h) / `--show-name` (CLI,
-  overrides the default either way) prints the device name between
-  the icon and the battery percentage. `DEVICE_NAME_MAX_CHARS` caps
-  it (UTF-8-character-safe truncation with `DEVICE_NAME_TRUNCATE_SUFFIX`
-  appended); `0` means no limit.
-- `ICON_NAME_SPACING_PX` / `NAME_BATTERY_SPACING_PX` control the gap
-  between segments using polybar's `%{O<px>}` pixel-offset tag --
-  exact regardless of bar font/size, unlike padding with literal
-  spaces.
-- Font size per segment isn't done, as agreed -- polybar only lets you
-  switch between pre-configured `font-N` slots by index, not set an
-  arbitrary literal point size from a module script, so it would've
-  required you to also hand-configure matching `font-N` entries in
-  your bar config to mean anything. Not worth the indirection for what
-  you asked for.
-- **One visible side effect worth knowing about**: since spacing is
-  now handled uniformly via `%{O}` tags instead of a hardcoded literal
-  space character, this changes *how* the icon-to-percentage gap is
-  produced even when the device name is off and only `-b` is used --
-  same visual result (icon, gap, number), different mechanism
-  underneath. Nothing else about the default battery-percent display
-  changed.
-
-### A2-A5: configurable polybar click actions
-
-`POLYBAR_ACTION_1` through `POLYBAR_ACTION_5` in `config.h` (buttons
-1=left, 2=middle, 3=right, 4=scroll up, 5=scroll down). Every slot
-defaults to `""` (unbound) **except slot 1**, where `""` specifically
-means "fall back to the built-in default" (open the `-m` action menu)
--- that's what keeps every existing setup working unmodified with zero
-config changes. `{SELF}`/`{ID}`/`{NAME}` placeholders are available in
-custom templates; you're responsible for your own shell-quoting in
-them, the same way the built-in default quotes `{NAME}` itself.
-
-### "Nothing connected" icon (opt-in)
-
-Blank stays the default when zero devices are known to KDE Connect at
-all. `SHOW_ICON_WHEN_NO_DEVICES` (off by default) plus
-`ICON_NO_DEVICES`/`COLOR_NO_DEVICES` let you show something instead if
-you'd rather not have a blank module.
-
 ## This round's fixes and additions
 
 ### Bug fixes
@@ -265,26 +198,11 @@ markup (not both meaningfully at once, obviously).
 ## CLI reference
 
 ```
-polybar-kdeconnect --daemon [-b] [-j] [--show-name]
-polybar-kdeconnect -d [-b] [-j] [--show-name]
+polybar-kdeconnect --daemon [-b] [-j]
+polybar-kdeconnect -d [-b] [-j]
 polybar-kdeconnect -m [-n NAME -i ID] [--at-pointer | --x N --y N]
 polybar-kdeconnect -n NAME -i ID -p [position opts]   (compat alias for -m)
-
-polybar-kdeconnect --ping [-n NAME -i ID]
-polybar-kdeconnect --find-device [-n NAME -i ID]
-polybar-kdeconnect --send-file [-n NAME -i ID] [position opts]
-polybar-kdeconnect --browse-files [-n NAME -i ID]
-polybar-kdeconnect --send-clipboard [-n NAME -i ID]
-polybar-kdeconnect --pair [-n NAME -i ID]
-polybar-kdeconnect --unpair [-n NAME -i ID]
-polybar-kdeconnect --messages
-polybar-kdeconnect --open-app
 ```
-
-The direct action flags use the same device auto-resolution as `-m`
-when `-i`/`-n` are omitted (config.h `DEFAULT_DEVICE_ID` > live
-detection), and run just that one action without opening any menu --
-useful for dedicated keybindings.
 
 ## Default-device resolution for `-m`
 
@@ -323,14 +241,13 @@ output actually changed. None of the flags added this round (`-b`,
 
 ## What's configurable in config.h
 
-Polybar output (icons per state, no-devices icon, battery bands,
-low-battery threshold, device name display + truncation, inter-segment
-spacing, A2-A5 click actions), menu appearance (font, colors, padding,
-min/max width, corner radius, RTL, position defaults), per-entry menu
-toggles, custom menu entries, file picker (start dir, icons, hidden
-files, size, centering), notifications (four independent toggles),
-daemon behavior (D-Bus timeout, debounce), default device, and the two
-external app launcher binaries.
+Polybar output (icons per state, battery bands, low-battery
+threshold, signal-strength icons), menu appearance (font, colors,
+padding, min/max width, corner radius, RTL, position defaults),
+per-entry menu toggles, custom menu entries, file picker (start dir,
+icons, hidden files, size, centering), notifications (four
+independent toggles), daemon behavior (D-Bus timeout, debounce),
+default device, and the two external app launcher binaries.
 
 ## Functionality preserved from the original bash script
 

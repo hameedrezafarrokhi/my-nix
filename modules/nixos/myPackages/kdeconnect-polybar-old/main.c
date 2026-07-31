@@ -24,7 +24,6 @@ enum {
     OPT_UNPAIR,
     OPT_MESSAGES,
     OPT_OPEN_APP,
-    OPT_SHOW_NAME,
 };
 
 static const char *resolve_self_exe(void) {
@@ -40,11 +39,10 @@ static const char *resolve_self_exe(void) {
 static void usage(const char *prog) {
     fprintf(stderr,
         "Usage:\n"
-        "  %s --daemon [-b] [-j] [--show-name]     run persistent daemon (use with polybar tail=true)\n"
+        "  %s --daemon [-b] [-j]                  run persistent daemon (use with polybar tail=true)\n"
         "                                            -b/--battery-percent: also print numeric battery %%\n"
-        "                                            --show-name: also print device name (between icon and %%)\n"
         "                                            -j/--json: print JSON instead of polybar markup\n"
-        "  %s -d [-b] [-j] [--show-name]            print module text once and exit\n"
+        "  %s -d [-b] [-j]                         print module text once and exit\n"
         "  %s -m [-n NAME -i ID] [pos. opts]       device action menu (auto-picks the connected\n"
         "                                            device if -i is omitted; see README)\n"
         "  %s -n NAME -i ID -p [pos. opts]         same as -m (kept for compatibility)\n"
@@ -65,7 +63,6 @@ static void usage(const char *prog) {
 int main(int argc, char *argv[]) {
     int opt_daemon = 0, opt_once = 0, opt_menu = 0, opt_pmenu = 0;
     int opt_battery_percent = SHOW_BATTERY_PERCENT_DEFAULT;
-    int opt_show_name = SHOW_DEVICE_NAME_DEFAULT;
     int opt_json = 0;
     int opt_ping = 0, opt_find = 0, opt_send_file = 0, opt_browse = 0;
     int opt_clipboard = 0, opt_pair = 0, opt_unpair = 0, opt_messages = 0, opt_open_app = 0;
@@ -103,7 +100,6 @@ int main(int argc, char *argv[]) {
         {"unpair",          no_argument,       0, OPT_UNPAIR},
         {"messages",        no_argument,       0, OPT_MESSAGES},
         {"open-app",        no_argument,       0, OPT_OPEN_APP},
-        {"show-name",       no_argument,       0, OPT_SHOW_NAME},
         {0, 0, 0, 0}
     };
 
@@ -130,7 +126,6 @@ int main(int argc, char *argv[]) {
             case OPT_UNPAIR: opt_unpair = 1; break;
             case OPT_MESSAGES: opt_messages = 1; break;
             case OPT_OPEN_APP: opt_open_app = 1; break;
-            case OPT_SHOW_NAME: opt_show_name = 1; break;
             default: break;
         }
     }
@@ -161,10 +156,10 @@ int main(int argc, char *argv[]) {
     int rc = 0;
 
     if (opt_daemon) {
-        rc = daemon_run(dpy, self_exe, opt_battery_percent, opt_show_name, opt_json);
+        rc = daemon_run(dpy, self_exe, opt_battery_percent, opt_json);
     } else if (opt_once) {
         RenderState state;
-        render_state_init(&state, dpy, self_exe, opt_battery_percent, opt_show_name);
+        render_state_init(&state, dpy, self_exe, opt_battery_percent);
         char *out = opt_json ? render_module_json(&state) : render_module(&state);
         printf("%s\n", out);
         free(out);

@@ -56,59 +56,12 @@ static const BatteryBand BATTERY_BANDS[BATTERY_BAND_COUNT] = {
     {  0, "#ff0000" },
 };
 
-/* When zero devices are known to KDE Connect at all (never paired
- * anything), the module is blank by default -- that stays the
- * default. Setting this to 1 shows ICON_NO_DEVICES/COLOR_NO_DEVICES
- * instead of blank. */
-#define SHOW_ICON_WHEN_NO_DEVICES 1
-#define ICON_NO_DEVICES    "󰥍"
-#define COLOR_NO_DEVICES   "#444444"
-
-/* Device name in the bar module, between the icon and the battery
- * percentage. Default off; overridable per-run with --show-name
- * regardless of what's set here (same pattern as -b/--battery-percent).
- * DEVICE_NAME_MAX_CHARS truncates to that many *characters* (not
- * bytes -- UTF-8 safe), appending DEVICE_NAME_TRUNCATE_SUFFIX. 0
- * means no limit. */
-#define SHOW_DEVICE_NAME_DEFAULT     0
-#define DEVICE_NAME_MAX_CHARS        7
-#define DEVICE_NAME_TRUNCATE_SUFFIX  "\u2026"
-
-/* Horizontal spacing in the bar module between icon/name/battery,
- * using polybar's %{O<px>} pixel-offset tag -- exact regardless of
- * bar font/size, unlike padding with literal space characters. Only
- * takes effect between segments that are actually both enabled (e.g.
- * ICON_NAME_SPACING_PX does nothing if SHOW_DEVICE_NAME is off). */
-#define ICON_NAME_SPACING_PX      4
-#define NAME_BATTERY_SPACING_PX   4
-
-/* Polybar click actions for the device icon. Each is a full shell
- * command run via execvp-style invocation when that mouse button is
- * clicked (polybar buttons: 1=left, 2=middle, 3=right, 4=scroll up,
- * 5=scroll down). {SELF} expands to this binary's path, {ID} to the
- * device id, {NAME} to the device name (NOT shell-quoted for you --
- * quote it yourself in the template if you use it, the way the
- * built-in default does).
- *
- * Leave a slot as "" to not bind that button at all -- except slot 1,
- * where "" falls back to the built-in default (open the -m action
- * menu for that device), which is what makes this backward compatible
- * with every existing setup that hasn't touched this section. */
-#define POLYBAR_ACTION_1  ""   /* empty = default: {SELF} -n '{NAME}' -i {ID} -m */
-#define POLYBAR_ACTION_2  "notify-send hello"
-#define POLYBAR_ACTION_3  ""
-#define POLYBAR_ACTION_4  ""
-#define POLYBAR_ACTION_5  ""
-
 /* ==================================================================
  * SIM / CELLULAR SIGNAL STRENGTH
  * ================================================================== */
 /* Read from KDE Connect's connectivity_report plugin, confirmed live:
  * plain int property "cellularNetworkStrength" (0-4) and string
- * property "cellularNetworkType" at <devpath>/connectivity_report.
- *
- * Only shown in the -m action menu header, on its own row below
- * battery -- never in the polybar bar module itself. */
+ * property "cellularNetworkType" at <devpath>/connectivity_report. */
 
 #define SHOW_SIGNAL_STRENGTH   1
 
@@ -145,7 +98,7 @@ static const BatteryBand BATTERY_BANDS[BATTERY_BAND_COUNT] = {
  * with "..." -- submenu arrows and any protected suffix text (like
  * the header's "Battery: N%, Signal: N/4") are never truncated, only
  * the truncatable label portion is. */
-#define MENU_MAX_WIDTH       360
+#define MENU_MAX_WIDTH       560
 
 /* Corner radius in px for both popup menus, applied by clipping the
  * window's real bounding shape via the X Shape extension -- the

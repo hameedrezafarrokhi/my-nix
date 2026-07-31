@@ -1,0 +1,57 @@
+# xwww config -- place at $HOME/.config/xwww/xwwwrc
+# Anything not set here falls back to the built-in defaults; CLI flags
+# always override whatever is set here.
+
+# Transition to use when not overridden by --animation/--random.
+ANIMATION="fade"
+
+# Comma-separated list to pick randomly from instead of ANIMATION.
+# Leave empty to disable. If set, it's the same as always passing --random.
+# RND="fade,wipe-left,wipe-right,circle-out,dissolve,wave"
+
+# --- timing ---------------------------------------------------------
+# Preferred: total transition length in milliseconds.
+DURATION_MS=500
+
+# Legacy alternative: fixed frame count instead of a duration (set
+# DURATION_MS=0 to force this mode).
+# FRAMES=20
+
+# Cap on frames per second (0 = uncapped, render as fast as possible).
+FPS_CAP=120
+
+# Easing curve applied to transition progress.
+# linear | ease-in-quad | ease-out-quad | ease-in-out-quad |
+# ease-in-cubic | ease-out-cubic | ease-in-out-cubic
+EASING="ease-out-cubic"
+
+# --- image placement -------------------------------------------------
+# fill (cover+crop, default) | fit (contain+letterbox) | stretch |
+# center (no scaling) | tile
+SCALE_MODE="fill"
+
+# Padding color for fit/center/tile, "#RRGGBB" or "#AARRGGBB".
+BG_COLOR="#000000"
+
+# --- performance -------------------------------------------------------
+# Render animation frames at this fraction of full output resolution,
+# then upscale for display; the final frame is always full quality.
+# 1.0 = full res always (best quality). Lower this (e.g. 0.5) on old/slow
+# CPUs, especially with 4K panels or "heavier" effects (wave/spin/circle).
+RENDER_SCALE=1.0
+
+# Worker threads for frame rendering. 0 = auto-detect CPU count.
+THREADS=0
+
+# --- multi-monitor -----------------------------------------------------
+# "all" spans the whole X screen (default). Or a specific monitor name
+# as reported by RandR/Xinerama, e.g. "monitor-0". Setting a single
+# monitor leaves the others exactly as they were.
+OUTPUT="all"
+
+# --- per-effect tuning ---------------------------------------------------
+WAVE_AMP=50
+WAVE_LENGTH=200
+PIXELATE_SIZE=64
+BLINDS_COUNT=12
+CHECKER_SIZE=48

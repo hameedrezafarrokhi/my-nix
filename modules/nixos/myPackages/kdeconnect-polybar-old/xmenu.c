@@ -208,29 +208,17 @@ static void fill_rounded_rect(Display *dpy, Drawable d, GC gc, XftColor *color,
     if (radius > w / 2) radius = w / 2;
     if (radius > h / 2) radius = h / 2;
 
-    /* Same row-by-row inset math as apply_rounded_shape(), on purpose:
-     * using XFillArc here (a different circle algorithm than the
-     * shape mask's) left the fill and the window's actual clipped
-     * shape very slightly misaligned, which is what made the corners
-     * look jagged/uneven rather than just "not anti-aliased". Sharing
-     * one formula guarantees the two line up exactly. */
-    for (int row = 0; row < h; row++) {
-        int dy = 0;
-        if (row < radius) {
-            dy = radius - row;
-        } else if (row >= h - radius) {
-            dy = radius - (h - 1 - row);
-        }
+    /* central cross covering everything except the four corners */
+    XFillRectangle(dpy, d, gc, x + radius, y, (unsigned)(w - 2 * radius), (unsigned)h);
+    XFillRectangle(dpy, d, gc, x, y + radius, (unsigned)radius, (unsigned)(h - 2 * radius));
+    XFillRectangle(dpy, d, gc, x + w - radius, y + radius, (unsigned)radius, (unsigned)(h - 2 * radius));
 
-        int inset = 0;
-        if (dy > 0) {
-            double dx = sqrt((double)(radius * radius) - (double)(dy * dy));
-            inset = radius - (int)dx;
-            if (inset < 0) inset = 0;
-        }
-
-        XFillRectangle(dpy, d, gc, x + inset, y + row, (unsigned)(w - 2 * inset), 1);
-    }
+    /* four corner quarter-circles (angles in 64ths of a degree) */
+    int d2 = radius * 2;
+    XFillArc(dpy, d, gc, x, y, (unsigned)d2, (unsigned)d2, 90 * 64, 90 * 64);
+    XFillArc(dpy, d, gc, x + w - d2, y, (unsigned)d2, (unsigned)d2, 0 * 64, 90 * 64);
+    XFillArc(dpy, d, gc, x, y + h - d2, (unsigned)d2, (unsigned)d2, 180 * 64, 90 * 64);
+    XFillArc(dpy, d, gc, x + w - d2, y + h - d2, (unsigned)d2, (unsigned)d2, 270 * 64, 90 * 64);
 }
 
 static void draw_menu(MenuCtx *ctx, XftDraw *draw, GC gc, Window win, MenuItem *items, int count,
