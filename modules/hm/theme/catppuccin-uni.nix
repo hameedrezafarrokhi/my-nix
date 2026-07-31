@@ -4,6 +4,7 @@
   lib,
   inputs,
   nix-path,
+  admin,
   ...
 }:
 
@@ -894,6 +895,8 @@ let
     }
   '';
 
+  bspborder = pkgs.callPackage ../../nixos/myPackages/bspborder/bspborder.nix { };
+
   bsp-tabbed = pkgs.callPackage ../desktops/bspwm/tabbed/bsp-tabbed.nix {
     customConfig = ''
       static char *font         = "${bspTabFont}";
@@ -1770,7 +1773,8 @@ in
       bsp-dim
       notif-flash
       bsp-border-color
-      bsp-app-border
+     #bsp-app-border
+      bspborder
       bsp-tabbed
       bsp-default-icon
       bsptab
@@ -10295,7 +10299,8 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart = "${bsp-app-border}/bin/bsp-app-border";
+       #ExecStart = "${bsp-app-border}/bin/bsp-app-border";
+        ExecStart = "${bspborder}/bin/bspborder -c /home/${admin}/nixos/modules/hm/desktops/bspwm/bspborder.conf";
         Restart = "on-failure";
       };
       #Install = {

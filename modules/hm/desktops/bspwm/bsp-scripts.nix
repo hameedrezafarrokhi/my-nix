@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nix-path, nix-path-alt, mypkgs, ... }:
+{ config, pkgs, lib, nix-path, nix-path-alt, mypkgs, admin, ... }:
 
 let
 
@@ -1400,9 +1400,11 @@ let
     done
   '';
 
-  bspi = pkgs.writeScriptBin "bspi" ''
-    ${builtins.readFile ./bspi.py}
-  '';
+ #bspi = pkgs.writeScriptBin "bspi" ''
+ #  ${builtins.readFile ./bspi.py}
+ #'';
+
+  bspi = pkgs.callPackage ../../../nixos/myPackages/bspi/bspi.nix { };
 
   bsp-window-rules-add = pkgs.writeScriptBin "bsp-window-rules-add" ''
     bspc rule -a kate desktop='^2' follow=on
@@ -1500,6 +1502,8 @@ let
         notify-send -e -u low -t 2000 "Per App Border Color" "On"
     fi
   '';
+
+  bspwm-sounds = pkgs.callPackage ../../../nixos/myPackages/bspwm-sounds/bspwm-sounds.nix { };
 
   bsp-de-sounds = pkgs.writeShellScriptBin "bsp-de-sounds" ''
     ${builtins.readFile ./sounds}
@@ -2056,6 +2060,7 @@ in
       bsp-auto-color
       bsp-de-sounds
       bsp-sounds-toggle
+      bspwm-sounds
       bsp-recalculate-layout
       bsp-move-master
       bsp-stack-zoom-oneshot
@@ -2078,7 +2083,7 @@ in
       bspad
       scratchpad
       scratch-tog
-      bspi
+     #bspi
       tint-go-below
       bsp-send-follow-empty
       bsp-send-prev-follow-empty
@@ -2158,8 +2163,11 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart = "${bsp-icon-bar}/bin/bsp-icon-bar";
+       #ExecStart = "${bsp-icon-bar}/bin/bsp-icon-bar";
+        ExecStart = "${bspi}/bin/bspi -c /home/${admin}/nixos/modules/hm/desktops/bspwm/bspi.ini";
         Restart = "on-failure";
+        RestartSec = 1;
+        Environment="BSPWM_SOCKET=/tmp/bspwm_0_0-socket";
       };
      #Install = {
      #  WantedBy = [ "graphical-session.target" ];
@@ -2188,7 +2196,8 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart = "${bsp-de-sounds}/bin/bsp-de-sounds";
+       #ExecStart = "${bsp-de-sounds}/bin/bsp-de-sounds";
+        ExecStart = "${bspwm-sounds}/bin/bspwm-sounds /home/${admin}/nixos/modules/hm/desktops/bspwm/sounds.conf";
         Restart = "on-failure";
       };
      #Install = {

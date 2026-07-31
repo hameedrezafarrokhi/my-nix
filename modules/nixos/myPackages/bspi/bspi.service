@@ -1,0 +1,20 @@
+[Unit]
+Description=bspi - bspwm desktop icon renamer
+# Only makes sense once your X session / bspwm is up. If you start this
+# from inside bspwmrc instead of systemd, you don't need this unit at
+# all - see the README.
+After=graphical-session.target
+
+[Service]
+Type=simple
+# bspi inherits BSPWM_SOCKET automatically if this unit is part of the
+# same systemd --user session as bspwm (e.g. started from bspwmrc via
+# `systemctl --user start bspi`). If you run it some other way and
+# BSPWM_SOCKET isn't inherited, uncomment and adjust:
+# Environment=BSPWM_SOCKET=/tmp/bspwm_0_0-socket
+ExecStart=/usr/local/bin/bspi
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=graphical-session.target

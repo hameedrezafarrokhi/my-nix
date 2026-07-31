@@ -559,11 +559,14 @@ in
        #icon-3 = "mail;♝";
        #icon-4 = "web;♞";
        #icon-default = "♟";
-        label-active = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+       #label-active = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+        label-active = "%{O-4pt}%name%%{O-2pt}";
         label-active-padding = 1;
-        label-occupied = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+       #label-occupied = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+        label-occupied = "%{O-4pt}%name%%{O-2pt}";
         label-occupied-padding = 1;
-        label-urgent = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+       #label-urgent = "%{O-2pt}%index%: %{O-4pt}%name%%{O-2pt}";
+        label-urgent = "%{O-4pt}%name%%{O-2pt}";
         label-urgent-padding = 1;
         label-empty = "";
         label-empty-padding = 0;

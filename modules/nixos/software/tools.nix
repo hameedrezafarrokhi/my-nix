@@ -319,6 +319,7 @@
 
 
     ++ [(pkgs.callPackage ../myPackages/kdeconnect-polybar/kdeconnect-polybar.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/bspi/bspi.nix { })]
 
 
    #++ [(pkgs.callPackage ../myPackages/2d-supermario.nix { })] # doesnt work
