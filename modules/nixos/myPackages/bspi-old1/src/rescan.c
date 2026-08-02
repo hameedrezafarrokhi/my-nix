@@ -120,8 +120,7 @@ static void rename_desktop(const char *sock_path, long long id, const char *name
 }
 
 static void process_desktop(const char *sock_path, const bspi_config_t *cfg,
-                             xclass_ctx_t *xctx, const json_value_t *desktop,
-                             int ws_index, int focused) {
+                             xclass_ctx_t *xctx, const json_value_t *desktop, int ws_index) {
     long long id = json_get_int(json_object_get(desktop, "id"), -1);
     if (id < 0) {
         LOGW("skipping a desktop with no usable id in bspwm's output");
@@ -148,19 +147,6 @@ static void process_desktop(const char *sock_path, const bspi_config_t *cfg,
         collect_classes(root, xctx, &cfg->ignore, &cl);
     }
 
-    /* "Occupied" for the [workspaces-*] sections uses this exact same
-     * signal - a sticky-only or ignored-only desktop counts as
-     * unoccupied, consistent with it showing the same `_other` icon a
-     * literally empty desktop would. */
-    int occupied = cl.count > 0;
-
-    /* If nothing at all is configured under [Icons] (not even
-     * `_other`), icon_table_lookup() below always returns NULL and
-     * icons_part naturally stays empty in every branch - so a
-     * bare-bones config with only [workspaces...] sections and no
-     * [Icons] section produces desktop names that are *just* the
-     * configured prefix, with no icon and no extra trailing space,
-     * exactly as if app-icon lookups didn't exist at all. */
     char icons_part[NAME_BUF_LEN];
     if (cl.count == 0) {
         const char *other = icon_table_lookup(&cfg->icons, "_other");
@@ -169,7 +155,7 @@ static void process_desktop(const char *sock_path, const bspi_config_t *cfg,
         build_icon_string(&cl, &cfg->icons, icons_part, sizeof(icons_part));
     }
 
-    const char *prefix = bspi_config_ws_prefix_for(cfg, ws_index, occupied, focused);
+    const char *prefix = bspi_config_ws_prefix(cfg, ws_index);
     char new_name[NAME_BUF_LEN];
     if (prefix && *prefix) {
         if (icons_part[0] != '\0') {
@@ -220,19 +206,10 @@ int bspi_rescan(const char *sock_path, const bspi_config_t *cfg, xclass_ctx_t *x
     for (json_value_t *mon = monitors->array_head; mon; mon = mon->next) {
         json_value_t *desktops = json_object_get(mon, "desktops");
         if (!desktops || desktops->type != JT_ARRAY) continue;
-
-        /* "Focused" means "currently shown on its monitor" (per-monitor
-         * focus), not "the one globally-focused monitor's desktop" -
-         * this matches how a per-monitor bar module like polybar's
-         * bspwm module highlights a desktop. */
-        long long focused_id = json_get_int(json_object_get(mon, "focusedDesktopId"), -1);
-
         int ws_index = 0;
         for (json_value_t *desk = desktops->array_head; desk; desk = desk->next) {
             ws_index++;
-            long long desk_id = json_get_int(json_object_get(desk, "id"), -1);
-            int focused = (desk_id >= 0 && desk_id == focused_id);
-            process_desktop(sock_path, cfg, xctx, desk, ws_index, focused);
+            process_desktop(sock_path, cfg, xctx, desk, ws_index);
         }
     }
 

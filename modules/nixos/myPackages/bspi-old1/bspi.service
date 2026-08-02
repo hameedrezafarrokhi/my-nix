@@ -4,14 +4,6 @@ Description=bspi - bspwm desktop icon renamer
 # from inside bspwmrc instead of systemd, you don't need this unit at
 # all - see the README.
 After=graphical-session.target
-# If a bar module (e.g. polybar) is also started by systemd around the
-# same time, ordering after it here - in addition to bspi's own
-# built-in --startup-delay - further reduces the odds of bspi's very
-# first burst of renames landing in the middle of that program's own
-# startup handshake with bspwm (see the README's "renaming didn't
-# react to focus changes" / boot-race notes). Uncomment and adjust the
-# unit name to match your setup:
-# After=polybar.service
 
 [Service]
 Type=simple

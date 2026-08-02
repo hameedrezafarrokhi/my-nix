@@ -13,7 +13,6 @@ state = {
     "monitors": [
         {
             "name": "eDP-1",
-            "focusedDesktopId": 100,  # desktop 100 is the focused one on this monitor
             "desktops": [
                 {
                     "id": 100,
@@ -87,21 +86,7 @@ state = {
                     },
                 },
             ],
-        },
-        {
-            # A second, independent monitor whose sole desktop is both
-            # empty *and* focused - the one combination not otherwise
-            # exercised above (workspaces-unoccupied-focused).
-            "name": "HDMI-1",
-            "focusedDesktopId": 300,
-            "desktops": [
-                {
-                    "id": 300,
-                    "name": "stale",
-                    "root": None,
-                },
-            ],
-        },
+        }
     ]
 }
 
@@ -124,16 +109,7 @@ def handle(conn):
     except socket.timeout:
         pass
 
-    args_raw = data.split(b"\x00")
-    # The wire protocol NUL-terminates every argument, including the
-    # last one, so a well-formed message always splits into exactly
-    # one trailing empty token that isn't a real argument - drop only
-    # that one. Don't filter empty strings in general: a legitimate
-    # argument (e.g. renaming a desktop to an empty name) is itself an
-    # empty string and must stay at its original position.
-    if args_raw and args_raw[-1] == b"":
-        args_raw = args_raw[:-1]
-    args = args_raw
+    args = [a for a in data.split(b"\x00") if a != b""]
     if not args:
         conn.close()
         return

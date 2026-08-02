@@ -1,0 +1,76 @@
+# countdown widget config
+# Copy to ~/.config/countdown/countdown.conf and edit.
+# Any of these can also be overridden by a matching command-line flag.
+# Lines starting with # are comments. Blank lines are ignored.
+
+# --- timing ---
+time = 5m
+format = hh:mm:ss
+
+# --- position (pixels; negative = measured from the right/bottom edge) ---
+# x = 40
+# y = 40
+
+# --- appearance ---
+font = Sans
+size = 48
+color = #ffffff
+
+flash = false
+flash_speed = 5
+# style of the continuous pulse: fade (default) | throb | blink
+flash_style = fade
+
+# whether flash / an in-progress scroll transition keeps animating while
+# the timer is counting down vs. while it's paused
+animate_when_active = true
+animate_when_paused = false
+
+# with a multi-field format (e.g. hh:mm:ss), true = flash pulses every
+# field together; false = only the fastest-changing field (e.g. seconds)
+# pulses, minutes/hours stay still. Digit-change transitions (scroll /
+# scroll_style) always only move whichever field actually changed either way.
+animate_all_segments = true
+
+bg = shadow
+bg_color = #000000aa
+bg_size = auto
+
+# odometer-style digit transition duration in seconds; 0 = instant
+scroll = 0
+# style of that transition: slide (default) | flip | bounce
+scroll_style = slide
+
+sticky = true
+
+# take/release input focus on mouse enter/leave; turn off if your WM
+# handles this in a way you don't like
+focus_follow = true
+
+# label = Meeting starts in
+# on_finish = notify-send "Countdown" "Time's up!"
+
+# quit automatically (exit code 0) once the timer hits 0 and any alarm has
+# finished playing; default off, the widget just stays showing 0
+exit_on_finish = false
+
+# runs only if this process is about to exit with code 0 (auto-exit-on-finish
+# above, or a clean Ctrl+C) -- never runs on the right-click cancel/exit-1 path
+# on_success = echo "done successfully" >> ~/countdown.log
+
+# sound file to play when the timer hits 0 (tries paplay/aplay/ffplay/play,
+# whichever is installed)
+# alarm = /usr/share/sounds/freedesktop/stereo/complete.oga
+# how many times to play it; 0 = keep repeating until you move the mouse
+# over the widget or press a key
+alarm_repeat = 1
+
+# --- click / scroll bindings ---
+# available actions: none, exit, reset, pause, surprise, inc:<seconds>, dec:<seconds>
+# (left-click-and-hold to drag is always on and can't be remapped)
+click.right = exit
+click.right2 = reset
+click.left = pause
+click.left2 = surprise
+click.scroll_up = inc:60
+click.scroll_down = dec:60

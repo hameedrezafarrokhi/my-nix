@@ -7,30 +7,6 @@ and runs as a signal-driven daemon for genuinely 0% idle CPU.
 
 ## Latest round
 
-### Bar module order and coloring fixed
-
-Order is now icon -> battery -> name (was icon -> name -> battery).
-Spacing constants renamed to match: `ICON_BATTERY_SPACING_PX` and
-`BATTERY_NAME_SPACING_PX` (replacing `ICON_NAME_SPACING_PX`/
-`NAME_BATTERY_SPACING_PX` from last round -- if you'd already
-customized those, re-apply the values under the new names).
-
-The device name is now colored to match the icon/battery for that
-device's current state (battery band color, or the disconnected/new-
-device color) instead of the bar's plain default foreground. Override
-with a fixed color via `DEVICE_NAME_COLOR_OVERRIDE` in `config.h` if
-you'd rather it not track battery color.
-
-### No-devices icon: click actions
-
-`NO_DEVICE_ACTION_1` through `_5` in `config.h`, same shape as
-`POLYBAR_ACTION_*` but for the opt-in "nothing connected" icon. Since
-there's no specific device to target, `{ID}`/`{NAME}` expand to empty
-strings, and slot 1 defaults to genuinely unbound (no built-in
-fallback makes sense here, unlike the per-device menu). A natural
-choice for slot 1 is `{SELF} --open-app`, to jump to KDE Connect's own
-settings for pairing a new device.
-
 ### Corner rounding: smoother alignment
 
 The border and inner content were being rounded with two *different*

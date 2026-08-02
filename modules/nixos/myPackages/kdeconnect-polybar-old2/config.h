@@ -64,46 +64,23 @@ static const BatteryBand BATTERY_BANDS[BATTERY_BAND_COUNT] = {
 #define ICON_NO_DEVICES    "󰥍"
 #define COLOR_NO_DEVICES   "#444444"
 
-/* Click actions for the "nothing connected" icon above (only relevant
- * if SHOW_ICON_WHEN_NO_DEVICES is on). Separate from POLYBAR_ACTION_*
- * below since there's no specific device to target -- {ID} and {NAME}
- * expand to empty strings here, only {SELF} is meaningful. Unlike
- * POLYBAR_ACTION_1, an empty slot 1 here means genuinely unbound (no
- * click action at all), since there's no obvious universal default
- * when there's no device to act on. You might want e.g.
- * `{SELF} --open-app` on slot 1, to jump straight to KDE Connect's own
- * settings for pairing a new device. */
-#define NO_DEVICE_ACTION_1  "{SELF} -m"
-#define NO_DEVICE_ACTION_2  "kdeconnect-polybar --open-app`"
-#define NO_DEVICE_ACTION_3  ""
-#define NO_DEVICE_ACTION_4  ""
-#define NO_DEVICE_ACTION_5  ""
-
-/* Device name in the bar module, in icon -> battery -> name order.
- * Default off; overridable per-run with --show-name regardless of
- * what's set here (same pattern as -b/--battery-percent).
+/* Device name in the bar module, between the icon and the battery
+ * percentage. Default off; overridable per-run with --show-name
+ * regardless of what's set here (same pattern as -b/--battery-percent).
  * DEVICE_NAME_MAX_CHARS truncates to that many *characters* (not
  * bytes -- UTF-8 safe), appending DEVICE_NAME_TRUNCATE_SUFFIX. 0
- * means no limit.
- *
- * DEVICE_NAME_COLOR_OVERRIDE: by default (left empty) the name is
- * colored the same as the icon/battery for that device's current
- * state (battery band color, or the disconnected/new-device color) --
- * not a fixed color. Set this to a "#rrggbb" to always use that color
- * for the name instead, regardless of battery/connection state. */
+ * means no limit. */
 #define SHOW_DEVICE_NAME_DEFAULT     0
-#define DEVICE_NAME_MAX_CHARS        6
+#define DEVICE_NAME_MAX_CHARS        7
 #define DEVICE_NAME_TRUNCATE_SUFFIX  "\u2026"
-#define DEVICE_NAME_COLOR_OVERRIDE   ""
 
-/* Horizontal spacing in the bar module, in icon -> battery -> name
- * order, using polybar's %{O<px>} pixel-offset tag -- exact
- * regardless of bar font/size, unlike padding with literal space
- * characters. Only takes effect between segments that are actually
- * both enabled (e.g. ICON_BATTERY_SPACING_PX does nothing if
- * SHOW_BATTERY_PERCENT is off). */
-#define ICON_BATTERY_SPACING_PX     4
-#define BATTERY_NAME_SPACING_PX     4
+/* Horizontal spacing in the bar module between icon/name/battery,
+ * using polybar's %{O<px>} pixel-offset tag -- exact regardless of
+ * bar font/size, unlike padding with literal space characters. Only
+ * takes effect between segments that are actually both enabled (e.g.
+ * ICON_NAME_SPACING_PX does nothing if SHOW_DEVICE_NAME is off). */
+#define ICON_NAME_SPACING_PX      4
+#define NAME_BATTERY_SPACING_PX   4
 
 /* Polybar click actions for the device icon. Each is a full shell
  * command run via execvp-style invocation when that mouse button is

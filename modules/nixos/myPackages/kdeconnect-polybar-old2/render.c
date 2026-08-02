@@ -51,26 +51,26 @@ static const char *color_for_battery(int battery) {
     return BATTERY_BANDS[BATTERY_BAND_COUNT - 1].color;
 }
 
-/* The color a device's icon/battery/name are shown in for its current
- * state: battery == -1 is disconnected-but-paired, -2 is a new/
- * unpaired device, anything >= 0 is battery-band colored. */
-static const char *state_color(int battery) {
-    if (battery == -1) return COLOR_DISCONNECTED;
-    if (battery == -2) return COLOR_NEWDEVICE;
-    return color_for_battery(battery);
-}
-
 /* Icon only (no battery percentage) -- kept separate from the percent
  * span below so the device name can be inserted between them. */
 static const char *icon_only(int battery, const char *devtype) {
     static char buf[64];
     int is_tablet = (devtype && strcmp(devtype, "tablet") == 0);
-    const char *icon = is_tablet ? ICON_TABLET : ICON_SMARTPHONE;
+    const char *icon;
+    const char *color;
 
-    if (battery == -1) icon = ICON_DISCONNECTED_DEVICE;
-    else if (battery == -2) icon = ICON_NEW_DEVICE;
+    if (battery == -1) {
+        icon = ICON_DISCONNECTED_DEVICE;
+        color = COLOR_DISCONNECTED;
+    } else if (battery == -2) {
+        icon = ICON_NEW_DEVICE;
+        color = COLOR_NEWDEVICE;
+    } else {
+        icon = is_tablet ? ICON_TABLET : ICON_SMARTPHONE;
+        color = color_for_battery(battery);
+    }
 
-    snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", state_color(battery), icon);
+    snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", color, icon);
     return buf;
 }
 
@@ -177,15 +177,14 @@ static void expand_action_template(char *out, size_t outsz, const char *tmpl,
     }
 }
 
-/* Appends one %{An:cmd:} tag per configured (or, for slot 1 when
- * default_a1_cmd is non-NULL, defaulted) click action to `piece`.
- * Returns how many were opened, so the caller can close the same
- * number of %{A} tags afterward. `default_a1_cmd` may be NULL to mean
- * "no fallback -- leave slot 1 unbound like any other empty slot"
- * (used for the no-devices icon, which has no specific device to
- * default to). */
-static int append_action_tags(strbuf *piece, const char *self_exe, const char *id, const char *name,
-                               const char *default_a1_cmd, const char *const templates[5]) {
+/* Appends one %{An:cmd:} tag per configured (or, for slot 1, defaulted)
+ * polybar click action to `piece`. Returns how many were opened, so
+ * the caller can close the same number of %{A} tags afterward. */
+static int append_action_tags(strbuf *piece, const char *self_exe, const char *id,
+                               const char *name, const char *default_a1_cmd) {
+    static const char *templates[5] = {
+        POLYBAR_ACTION_1, POLYBAR_ACTION_2, POLYBAR_ACTION_3, POLYBAR_ACTION_4, POLYBAR_ACTION_5
+    };
     int opened = 0;
 
     for (int slot = 0; slot < 5; slot++) {
@@ -193,7 +192,6 @@ static int append_action_tags(strbuf *piece, const char *self_exe, const char *i
         char cmd[600];
 
         if (slot == 0 && (!tmpl || tmpl[0] == '\0')) {
-            if (!default_a1_cmd) continue;
             snprintf(cmd, sizeof(cmd), "%s", default_a1_cmd);
         } else if (tmpl && tmpl[0] != '\0') {
             expand_action_template(cmd, sizeof(cmd), tmpl, self_exe, id, name);
@@ -248,43 +246,33 @@ char *render_module(RenderState *state) {
             snprintf(default_cmd, sizeof(default_cmd), "%s -n '%s' -i %s -m",
                      state->self_exe, name ? name : "", ids[i]);
 
-            static const char *const connected_templates[5] = {
-                POLYBAR_ACTION_1, POLYBAR_ACTION_2, POLYBAR_ACTION_3, POLYBAR_ACTION_4, POLYBAR_ACTION_5
-            };
-
             strbuf piece_sb;
             sb_init(&piece_sb);
 
-            int opened = append_action_tags(&piece_sb, state->self_exe, ids[i], name ? name : "",
-                                             default_cmd, connected_templates);
+            int opened = append_action_tags(&piece_sb, state->self_exe, ids[i], name ? name : "", default_cmd);
 
             sb_append(&piece_sb, low_prefix);
             sb_append(&piece_sb, icon_only(battery, devtype));
 
-            int have_percent = state->show_battery && battery >= 0;
             int have_name = state->show_name && name && name[0] != '\0';
-
-            if (have_percent) {
-                char spacer[24];
-                snprintf(spacer, sizeof(spacer), "%%{O%d}", ICON_BATTERY_SPACING_PX);
-                sb_append(&piece_sb, spacer);
-                sb_append(&piece_sb, percent_only(battery));
-            }
+            int have_percent = state->show_battery && battery >= 0;
 
             if (have_name) {
                 char spacer[24];
-                int px = have_percent ? BATTERY_NAME_SPACING_PX : ICON_BATTERY_SPACING_PX;
-                snprintf(spacer, sizeof(spacer), "%%{O%d}", px);
+                snprintf(spacer, sizeof(spacer), "%%{O%d}", ICON_NAME_SPACING_PX);
                 sb_append(&piece_sb, spacer);
 
                 char truncated[256];
                 truncate_name_chars(truncated, sizeof(truncated), name, DEVICE_NAME_MAX_CHARS);
+                sb_append(&piece_sb, truncated);
+            }
 
-                const char *name_color = (DEVICE_NAME_COLOR_OVERRIDE[0] != '\0')
-                                          ? DEVICE_NAME_COLOR_OVERRIDE : state_color(battery);
-                char name_span[320];
-                snprintf(name_span, sizeof(name_span), "%%{F%s}%s%%{F-}", name_color, truncated);
-                sb_append(&piece_sb, name_span);
+            if (have_percent) {
+                char spacer[24];
+                int px = have_name ? NAME_BATTERY_SPACING_PX : ICON_NAME_SPACING_PX;
+                snprintf(spacer, sizeof(spacer), "%%{O%d}", px);
+                sb_append(&piece_sb, spacer);
+                sb_append(&piece_sb, percent_only(battery));
             }
 
             for (int k = 0; k < opened; k++) sb_append(&piece_sb, "%{A}");
@@ -366,23 +354,9 @@ char *render_module(RenderState *state) {
     }
 
     if (count == 0 && SHOW_ICON_WHEN_NO_DEVICES) {
-        static const char *const no_device_templates[5] = {
-            NO_DEVICE_ACTION_1, NO_DEVICE_ACTION_2, NO_DEVICE_ACTION_3, NO_DEVICE_ACTION_4, NO_DEVICE_ACTION_5
-        };
-
-        strbuf nd_sb;
-        sb_init(&nd_sb);
-
-        int opened = append_action_tags(&nd_sb, state->self_exe, "", "", NULL, no_device_templates);
-
-        char icon[64];
-        snprintf(icon, sizeof(icon), "%%{F%s}%s%%{F-}", COLOR_NO_DEVICES, ICON_NO_DEVICES);
-        sb_append(&nd_sb, icon);
-
-        for (int k = 0; k < opened; k++) sb_append(&nd_sb, "%{A}");
-
-        sb_append(&out, nd_sb.buf);
-        free(nd_sb.buf);
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%%{F%s}%s%%{F-}", COLOR_NO_DEVICES, ICON_NO_DEVICES);
+        sb_append(&out, buf);
     }
 
     size_t seplen = strlen(SEPARATOR);

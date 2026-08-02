@@ -96,33 +96,9 @@ module/script decides what to display rather than from bspi itself -
 let me know which one you're using (polybar's built-in
 `internal/bspwm` module vs. a custom script) and I can dig further.
 
-## Bug fix: stale/stuck desktop right after boot, fixed by restarting the bar
+## New config: `[ignore]` and `[workspaces]`
 
-If a bar module (polybar in particular) is launched by the same
-session/systemd startup as bspi, there's a boot-time race: bspwm's
-desktops start out with their raw default names (`1`, `2`, `3`...),
-and the moment bspi connects it immediately fires off a burst of
-renames to bring every desktop's name in line with its actual content
-- all at once. If that burst happens to land in the middle of the bar
-module's *own* first-time state capture from bspwm, the bar can end up
-with a stale/incomplete picture that doesn't self-correct until it
-reconnects fresh (e.g. you restart it) - the telltale sign being that
-the bug only ever shows up right after boot and a restart of the *bar*,
-not bspi, clears it.
-
-bspi can't fix a bar's own startup handling from the outside, but it
-can stop being the trigger: it now waits `--startup-delay` (default
-500ms, one time only, before the very first rescan) after connecting,
-giving other bspwm-aware programs started around the same time a
-moment to finish their own startup first. If you still see this after
-upgrading, try raising `--startup-delay` (e.g. `1500`), and/or add an
-explicit systemd ordering dependency on your bar's unit in
-`bspi.service` (see the commented example there) so the race can't
-happen at all rather than just becoming less likely.
-
-## New config: `[ignore]` and `[workspaces...]`
-
-New optional sections in `bspi.ini` (see the commented examples at
+Two new optional sections in `bspi.ini` (see the commented examples at
 the bottom of the shipped config):
 
 ```ini
@@ -160,64 +136,7 @@ ws3 =
   in `bspi_rescan()` (move the `ws_index` counter outside the
   per-monitor loop) - happy to adjust if that's what you actually want.
 
-### Per-state workspace prefixes
-
-Beyond the plain `[workspaces]` section, you can give a desktop a
-*different* prefix depending on its current state - whether it has
-anything worth showing ("occupied" - a sticky-only or ignored-only
-desktop still counts as unoccupied, same as a literally empty one) and
-whether it's the desktop currently shown on its monitor ("focused"):
-
-```ini
-[workspaces-occupied-focused]
-ws1 = 1
-
-[workspaces-occupied]
-ws1 = 1
-
-[workspaces-unoccupied-focused]
-ws1 = 1
-
-[workspaces-unoccupied]
-ws1 =
-```
-
-(`[workspaces-occupied]` and `[workspaces-unoccupied]` are the
-*unfocused* variant of each - no `-focused` suffix means idle.) Same
-`ws1`..`ws20` key format as the plain section in every case.
-
-How these combine with each other and with the plain `[workspaces]`
-section:
-
-1. **None of the four state sections have any entries at all** -
-   plain `[workspaces]` is used for every state, unchanged from before.
-   This is exactly the original, single-tier behavior, so an existing
-   config with only `[workspaces]` keeps working with no changes.
-2. **Exactly one of the four has any entries** - that section is used
-   for *every* state (occupied, unoccupied, focused, unfocused alike),
-   taking over the role `[workspaces]` played in (1). Handy for a
-   config that only ever wants, say, plain numbers regardless of
-   state, but written under one of the state sections instead of the
-   plain one for whatever reason.
-3. **Two or more are in use** - for a given desktop, the section
-   matching its exact current state is used if it has a value for that
-   position; if not, its same-occupancy, opposite-focus counterpart is
-   tried next (`occupied-focused` \<-\> `occupied`,
-   `unoccupied-focused` \<-\> `unoccupied`); if that's *also* unset for
-   this position, it falls back to the plain `[workspaces]` value.
-
-### Icons are entirely optional
-
-If `[Icons]` has no entries at all (or the section is left out of the
-config entirely), desktop names become *just* whatever
-`[workspaces...]` prefix applies - no icon, no `_other` fallback, and
-no stray trailing space, even for an occupied desktop. This isn't a
-separate mode to opt into; it falls directly out of the icon lookup
-returning nothing to append, so a bare-bones config with only
-`[workspaces]` sections and no `[Icons]` section just shows workspace
-numbers/prefixes and nothing else.
-
-
+## Building
 
 ```sh
 make

@@ -21,7 +21,6 @@ log_level_t g_log_level = LOG_LVL_INFO;
 #define PROGRAM_NAME "bspi"
 #define DEBOUNCE_MS_DEFAULT 50
 #define MAX_COALESCE_MS 250
-#define STARTUP_DELAY_MS_DEFAULT 500
 #define RECONNECT_BACKOFF_MIN_MS 200
 #define RECONNECT_BACKOFF_MAX_MS 5000
 
@@ -37,7 +36,6 @@ typedef struct {
     const char *config_arg;
     const char *socket_arg;
     int debounce_ms;
-    int startup_delay_ms;
     int once;
     int verbose;
 } options_t;
@@ -54,15 +52,6 @@ static void print_usage(void) {
         "  -c, --config PATH     Path to bspi.ini (see below for the default search order)\n"
         "      --socket PATH     Path to bspwm's socket (default: $BSPWM_SOCKET)\n"
         "      --debounce MS     Coalesce bursts of events for this many ms (default: %d)\n"
-        "      --startup-delay MS\n"
-        "                        Wait this long after connecting before the first rescan,\n"
-        "                        one time only (default: %d). Gives other bspwm-aware\n"
-        "                        programs started around the same time (e.g. a polybar\n"
-        "                        module launched by the same systemd/session startup)\n"
-        "                        a moment to finish their own initial state capture\n"
-        "                        before bspi starts renaming desktops - if a bar module\n"
-        "                        ever shows a stale/stuck desktop right after boot but\n"
-        "                        not afterwards, try raising this.\n"
         "      --once            Do a single rescan and exit, instead of running as a daemon\n"
         "  -v, --verbose         Increase log verbosity (repeatable)\n"
         "  -h, --help            Show this help and exit\n"
@@ -71,7 +60,7 @@ static void print_usage(void) {
         "  1. $XDG_CONFIG_HOME/bspi/bspi.ini\n"
         "  2. ~/.config/bspi/bspi.ini\n"
         "  3. the directory containing the bspi executable itself\n",
-        DEBOUNCE_MS_DEFAULT, STARTUP_DELAY_MS_DEFAULT);
+        DEBOUNCE_MS_DEFAULT);
 }
 
 static int file_exists(const char *path) {
@@ -115,25 +104,6 @@ static long now_ms(void) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (long)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
-}
-
-/* Waits up to `ms` milliseconds, or until a signal arrives on sigfd -
- * draining it and reflecting SIGHUP/SIGINT/SIGTERM into
- * g_should_reload/g_should_exit exactly like the main loop does.
- * A no-op if ms <= 0. Shared by the one-time startup delay and the
- * reconnect backoff below, so Ctrl-C (or a service stop) during
- * either is handled promptly instead of blocking. */
-static void interruptible_wait(int sigfd, int ms) {
-    if (ms <= 0) return;
-    struct pollfd fds[1] = { { .fd = sigfd, .events = POLLIN } };
-    poll(fds, 1, ms);
-    if (fds[0].revents & POLLIN) {
-        struct signalfd_siginfo si;
-        while (read(sigfd, &si, sizeof(si)) == sizeof(si)) {
-            if (si.ssi_signo == SIGHUP) g_should_reload = 1;
-            else g_should_exit = 1;
-        }
-    }
 }
 
 /* One (re)connect-and-serve cycle. Returns when the subscribe
@@ -248,7 +218,6 @@ int main(int argc, char **argv) {
         .config_arg = NULL,
         .socket_arg = NULL,
         .debounce_ms = DEBOUNCE_MS_DEFAULT,
-        .startup_delay_ms = STARTUP_DELAY_MS_DEFAULT,
         .once = 0,
         .verbose = 0,
     };
@@ -261,8 +230,6 @@ int main(int argc, char **argv) {
             opt.socket_arg = argv[++i];
         } else if (strcmp(a, "--debounce") == 0 && i + 1 < argc) {
             opt.debounce_ms = atoi(argv[++i]);
-        } else if (strcmp(a, "--startup-delay") == 0 && i + 1 < argc) {
-            opt.startup_delay_ms = atoi(argv[++i]);
         } else if (strcmp(a, "--once") == 0) {
             opt.once = 1;
         } else if (strcmp(a, "-v") == 0 || strcmp(a, "--verbose") == 0) {
@@ -334,21 +301,21 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    if (opt.startup_delay_ms > 0) {
-        LOGI("waiting %dms before the first rescan (gives other bspwm-aware "
-             "programs, e.g. a polybar module started around the same time, "
-             "a moment to finish their own startup first - see --startup-delay)",
-             opt.startup_delay_ms);
-        interruptible_wait(sigfd, opt.startup_delay_ms);
-    }
-
     int backoff_ms = RECONNECT_BACKOFF_MIN_MS;
     while (!g_should_exit) {
         serve(sock_path, &cfg, &xctx, config_path, opt.debounce_ms, sigfd);
         if (g_should_exit) break;
 
         LOGI("reconnecting to bspwm in %dms", backoff_ms);
-        interruptible_wait(sigfd, backoff_ms);
+        struct pollfd fds[1] = { { .fd = sigfd, .events = POLLIN } };
+        poll(fds, 1, backoff_ms);
+        if (fds[0].revents & POLLIN) {
+            struct signalfd_siginfo si;
+            while (read(sigfd, &si, sizeof(si)) == sizeof(si)) {
+                if (si.ssi_signo == SIGHUP) g_should_reload = 1;
+                else g_should_exit = 1;
+            }
+        }
         backoff_ms *= 2;
         if (backoff_ms > RECONNECT_BACKOFF_MAX_MS) backoff_ms = RECONNECT_BACKOFF_MAX_MS;
     }
