@@ -1,0 +1,106 @@
+# cursor-scaler configuration
+#
+# Copy this file to:
+#   $XDG_CONFIG_HOME/cursor-scaler/config.conf
+#   (usually ~/.config/cursor-scaler/config.conf)
+#
+# Every setting here can also be passed as a --flag on the command line,
+# and command-line flags always win over this file. Run
+# `cursor-scaler --help` to see the flag names, or
+# `cursor-scaler --print-config` to see the values actually in effect.
+
+# ---- Shake detection -------------------------------------------------
+
+# How many direction reversals within shake_timeout are needed before a
+# wiggle counts as a "shake". Lower = more sensitive / easier to trigger.
+shake_threshold = 8
+
+# Seconds of no reversal before the reversal streak resets to zero.
+shake_timeout = 0.3
+
+# Minimum pointer motion (px) needed to register as "moving in a
+# direction" at all. Filters out jitter/noise.
+movement_threshold = 5
+
+# ---- Scaling -----------------------------------------------------------
+
+# 1.0 = the cursor's normal on-screen size.
+min_scale = 1.0
+
+# Cap on how large the cursor can get.
+max_scale = 30.0
+
+# How fast the cursor grows *while you're actively shaking*, in scale
+# units per second. Growth is always linear and tracks the shake in
+# real time (no eased "ticks" - this is what makes it feel smooth and
+# proportional to how much you're shaking, at any fps). E.g. 6.0 means
+# one continuous second of shaking takes you from 1x to ~7x.
+zoom_in_rate = 6.0
+
+# ---- Animation -----------------------------------------------------------
+
+# Seconds for the single shrink-back-to-normal transition once you stop
+# shaking. This is the only place `easing` below applies - zooming IN
+# is always linear/direct, by design.
+zoom_out_duration = 0.18
+
+# Eases the shrink-back transition only. One of: linear, quad-in,
+# quad-out, quad-in-out, cubic-in, cubic-out, cubic-in-out, expo-out,
+# back-out.
+easing = cubic-out
+
+# Frame cap while actively zooming/animating. Idle CPU usage is 0
+# regardless of this value. Match your monitor's refresh rate - e.g.
+# leave this at 60 for a 60Hz display; higher just burns CPU with no
+# visible benefit.
+fps = 60
+
+# ---- Cursor source -----------------------------------------------------
+
+# xcursor name to magnify.
+cursor_name = left_ptr
+
+# xcursor theme to load it from. Leave blank to use $XCURSOR_THEME /
+# your desktop's configured theme.
+cursor_theme =
+
+# Base bitmap resolution to load before scaling. 0 = automatically use
+# the largest bitmap the theme actually ships (recommended - this alone
+# fixes most pixelation you'd see from a fixed 32px source).
+cursor_size = 0
+
+# Path to the *source* SVG for this cursor, if you have it (many themes,
+# including Catppuccin, publish these in their git repo separately from
+# the compiled xcursor theme). When set, cursor-scaler rasterizes the
+# SVG once, at startup, at the resolution needed for max_scale, and
+# scales down from that per frame - genuinely lossless-looking at any
+# zoom level, and cheap, since the SVG is only rasterized once rather
+# than on every frame. Requires a build with librsvg support
+# (`cursor-scaler --print-config` shows svg_support_built).
+# If left blank, a small set of conventional theme install locations
+# are auto-searched as a best-effort convenience.
+svg_path =
+
+# Force-disable SVG rendering even if a matching SVG is found.
+disable_svg = false
+
+# ---- Rendering -----------------------------------------------------------
+
+# XRender scaling filter used to downscale the source image: nearest,
+# bilinear, good, best.
+filter = best
+
+# auto = use the XShape window cutout automatically when no compositor
+#        is detected running (fixes the black-box-behind-cursor issue).
+# on   = always use it.
+# off  = never use it (assume you always have a compositor).
+shape_mode = auto
+
+# ---- Fullscreen guard ---------------------------------------------------
+
+# Don't engage the shake-to-zoom effect while the currently focused
+# window is fullscreen (e.g. a game). Detection is best-effort (checks
+# the EWMH fullscreen state, plus a borderless-window-covering-the-
+# screen heuristic as a fallback) and is only ever checked right as a
+# shake is about to start, so it costs essentially nothing.
+disable_in_fullscreen = true

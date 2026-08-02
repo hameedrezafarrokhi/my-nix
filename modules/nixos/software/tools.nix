@@ -320,6 +320,8 @@
 
     ++ [(pkgs.callPackage ../myPackages/xcountdown/xcountdown.nix { })]
 
+    ++ [(pkgs.callPackage ../myPackages/cursor-shake-zoom/cursor-shake-zoom.nix { })]
+
     ++ [(pkgs.callPackage ../myPackages/kdeconnect-polybar/kdeconnect-polybar.nix { })]
     ++ [(pkgs.callPackage ../myPackages/bspi/bspi.nix { })]
 
@@ -432,7 +434,7 @@
 
     ++ [(pkgs.callPackage ../myPackages/nyancat.nix { })]
 
-    ++ [(pkgs.callPackage ../myPackages/x11_shake_to_magnify_cursor.nix { })]
+   #++ [(pkgs.callPackage ../myPackages/x11_shake_to_magnify_cursor.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/jiggle.nix { })]
 

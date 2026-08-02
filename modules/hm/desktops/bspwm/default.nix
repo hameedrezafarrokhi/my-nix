@@ -301,7 +301,8 @@ in
         polybar-msg action "#pp.hook.1"
         notify-send -e -u low -t 1 'Hello:)'
 
-        bsp-shake &
+        #bsp-shake &
+        systemctl --user restart xcursorshake.service
 
         if hash xbanish >/dev/null 2>&1; then
           pkill xbanish
