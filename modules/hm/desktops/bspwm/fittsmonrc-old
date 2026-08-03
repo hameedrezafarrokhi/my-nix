@@ -50,8 +50,8 @@ WheelDownOnce=
 LeftButton=
 RightButton=
 MiddleButton=
-Enter=
-Leave=
+Enter=bsp-swgt-show
+Leave=bsp-swgt-hide
 
 [BottomLeft]
 WheelUp=
