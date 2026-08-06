@@ -202,7 +202,7 @@
       vpn.enable = true;
       shares.enable = true;
       avahi.enable = true;
-      nm-applet.enable = true;
+      nm-applet.enable = false;
       nfs.enable = false;
       torrent.enable = false;
       tools.enable = true;
@@ -524,7 +524,7 @@
             television.enable = true;
             tldr.enable = true;
             tmux.enable = true;
-            udiskie.enable = true;
+            udiskie.enable = false;
             vim.enable = true;
             yazi.enable = true;
             yt-dlp.enable = true;

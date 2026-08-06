@@ -31,6 +31,7 @@ let
   gtk-cursor-package = myCursorCatppuccin;
   x-cursor = "catppuccin-${flavor}-${accent}-cursors";
   x-cursor-package = myCursorCatppuccin;
+  cursor-scaler-svg = "/run/current-system/sw/share/icons/${x-cursor}/cursors_scalable/left_ptr/default.svg";
   plasma-cursor = "catppuccin-${flavor}-${accent}-cursors";
   plasma-cursor-package = myCursorCatppuccin;
   hypr-cursor = "catppuccin-${flavor}-${accent}-cursors";
@@ -6703,6 +6704,14 @@ in
             format-connected-prefix-foreground = Blue;
             #label-connected-background = #FF0000
           };
+          "module/network" = {
+            label-disconnected = ''"󰤮"'';
+            ramp-signal-0 = "󰤯";
+            ramp-signal-1 = "󰤟";
+            ramp-signal-2 = "󰤢";
+            ramp-signal-3 = "󰤥";
+            ramp-signal-4 = "󰤨";
+          };
           "module/networkspeedup-wired" = {
             format-connected-prefix-foreground = Red;
             #label-connected-background = #FF0000
@@ -9601,101 +9610,466 @@ in
         word_wrap=true
       '';
 
-      "xwww/xwwwrc".text = ''
-        TRANSITION_CMD="feh --bg-fill --no-fehbg "
-        #FINAL_CMD="feh --bg-fill --no-fehbg "
-        FINAL_CMD="fehb "
+      "networkmanager-dmenu/config.ini".text = ''
+        [dmenu]
+        dmenu_command = rofi -theme ${config.xdg.configHome}/rofi/themes/keybinds.rasi
+        active_chars = ==
+        highlight = True
+        highlight_fg =
+        highlight_bg =
+        highlight_bold = True
+        compact = True
+        pinentry =
+        wifi_icons = 󰤯󰤟󰤢󰤥󰤨
+        format = {name:<{max_len_name}s}  {sec:<{max_len_sec}s} {icon:>4}
+        list_saved = False
+        prompt = Networks
 
-        #TRANSITION_CMD="hsetroot -cover "
-        #FINAL_CMD="hsetroot -cover "
+        [dmenu_passphrase]
+        obscure = False
+        obscure_color = #222222
 
+        [pinentry]
+        description = Get network password
+        prompt = Password:
 
-        ACCEL=(-hwaccel vaapi)
+        [editor]
+        terminal = kitty
+        gui_if_available = True
+        gui = nm-connection-editor
 
-
-        PIXELATE_SIZE=64
-        WAVE_AMP=80
-        WAVE_LENGHT=250
-
-
-        #R_X=1366
-        #R_Y=768
-        #R_X=1920
-        #R_Y=1080
-        #R_X=956
-        #R_Y=538
-
-        #FORMAT=bmp
-        #SPEED=0
-        #FRAMES=14
-
-        #ANIMATION="pixelate"
-        #ANIMATION="wave"
-        #ANIMATION="fade"
-        #ANIMATION="spin"
-        #ANIMATION="test"
-
-        #RND="slide-up,slide-down,slide-left,slide-right"
-        #RND="push-up,emerge-down,push-left,emerge-right"
-        #RND="circle-out,circle-in"
-        #RND="oblique-right,oblique-left"
-        #RND="open,close"
-        #RND="zoom-out"
-
-
-
-        # Presets
-
-         # Fast Pixels
-        #R_X=956
-        #R_Y=538
-        #FORMAT=bmp
-        #SPEED=0.04
-        #FRAMES=6
-        #ANIMATION="pixelate"
-
-         # Fast Slides
-        #R_X=1366
-        #R_Y=768
-        #SPEED=0
-        #FRAMES=14
-        #FORMAT=bmp
-        #RND="slide-up,slide-down,slide-left,slide-right"
-
-         # Fast Push/Emerge
-        #R_X=1366
-        #R_Y=768
-        #SPEED=0
-        #FRAMES=20
-        #FORMAT=webp
-        #RND="push-up,emerge-down,push-left,emerge-right"
-
-         # Fast Emerge
-        R_X=1366
-        R_Y=768
-        SPEED=0
-        FRAMES=14
-        FORMAT=webp
-        ANIMATION="emerge-down"
-
-
-         # Fast Circles
-        #R_X=956
-        #R_Y=538
-        #SPEED=0
-        #FRAMES=10
-        #FORMAT=bmp
-        #RND="circle-out,circle-in"
-
-         # Smooth Obliques
-        #R_X=956
-        #R_Y=538
-        #SPEED=0.025
-        #FRAMES=24
-        #FORMAT=bmp
-        #RND="oblique-right,oblique-left"
-
+        [nmdm]
+        rescan_delay = 3
       '';
+
+      "xwww/xwwwrc".text = ''
+# xwww config -- place at $HOME/.config/xwww/xwwwrc
+# Anything not set here falls back to the built-in defaults; CLI flags
+# always override whatever is set in the GLOBAL section below (i.e.
+# everything before the first [section] header).
+
+# Transition to use when not overridden by --animation/--random.
+ANIMATION="ripple"
+
+# Comma-separated list to pick randomly from instead of ANIMATION.
+# Leave empty to disable. If set, it's the same as always passing --random.
+# RND="fade,wipe-left,wipe-right,circle-out,dissolve,wave"
+
+# --- timing ---------------------------------------------------------
+# Preferred: total transition length in milliseconds.
+DURATION_MS=5000
+
+# Legacy alternative: fixed frame count instead of a duration (set
+# DURATION_MS=0, or just set FRAMES, which does this automatically).
+# FRAMES=20
+
+# Cap on frames per second (0 = uncapped, render as fast as possible).
+FPS_CAP=0
+
+# Easing curve applied to transition progress. Run `xwww --list-easings`
+# for the full set: linear, ease-{in,out,in-out}-{quad,cubic,sine,expo,
+# back,bounce}, ease-in-elastic, ease-out-elastic.
+EASING="ease-out-cubic"
+
+# Or use a custom CSS-style cubic-bezier(x1,y1,x2,y2) curve instead of a
+# named preset -- either form works:
+# EASING="bezier(0.68,-0.55,0.27,1.55)"
+# BEZIER=0.68,-0.55,0.27,1.55
+
+# --- image placement -------------------------------------------------
+# fill (cover+crop, default) | fit (contain+letterbox) | stretch |
+# center (no scaling) | tile
+SCALE_MODE="fill"
+
+# Padding color for fit/center/tile, "#RRGGBB" or "#AARRGGBB".
+BG_COLOR="#000000"
+
+# --- performance -------------------------------------------------------
+# Render animation frames at this fraction of full output resolution,
+# then upscale for display; the final frame is always full quality.
+# 1.0 = full res always (best quality). Lower this (e.g. 0.5) on old/slow
+# CPUs, especially with 4K panels or "heavier" effects (wave/spin/circle).
+RENDER_SCALE=1.0
+
+# Worker threads for frame rendering. 0 = auto-detect CPU count.
+THREADS=0
+
+# --- multi-monitor -----------------------------------------------------
+# "all" spans the whole X screen (default). Or a specific monitor name
+# as reported by RandR/Xinerama, e.g. "monitor-0". Setting a single
+# monitor leaves the others exactly as they were.
+OUTPUT="all"
+
+# --- per-effect fine control (global defaults; see sections below to
+# override per-effect) ---------------------------------------------------
+WAVE_AMP=50
+WAVE_LENGTH=200
+PIXELATE_SIZE=64
+BLINDS_COUNT=12          # also used by stripes-*
+CHECKER_SIZE=48
+ORIGIN_X=50               # origin for circle-*/diamond/clock/fire-ring/burn/
+ORIGIN_Y=50               # bubbles/ripple; percentages: 0,0=top-left, 100,100=bottom-right
+OBLIQUE_ANGLE=45          # sweep angle (degrees) for oblique-*/stripes-oblique-*
+CURL_PCT=5                # roll/curl radius for page-turn/roll-away/carpet, % of canvas
+SHARD_SIZE=64             # cell size for shatter
+PIVOT_PCT=50              # hinge position for half-swing-*, 0-100
+BURN_PATCHES=10           # ignition points for burn / bubble count for bubbles
+BURN_JAGGEDNESS=0.5       # 0-1, how irregular burn's patch edges are
+CUBE_ZOOM=0.3             # 0-1, how far cube shrinks mid-spin
+CUBE_SPIN_SPEED=1.5       # extra full rotations for cube before settling
+AXISSPIN_VERTICAL=false   # spin axis-spin around the horizontal axis instead
+AXISSPIN_TURNS=6          # total rotations across axis-spin's whole duration
+RIPPLE_AMP=30             # pixel displacement amplitude for ripple
+RIPPLE_FREQ=0.8          # wave frequency for ripple
+RIPPLE_DROPLETS=0         # extra random droplets beyond the origin one, 0-4
+FLICKER_MIN_BRIGHTNESS=0.12 # floor brightness for flicker's dim moments
+FLICKER_COUNT=8           # flicker keyframes per half (dimming / brightening)
+
+# logo-sting needs a logo image to do anything (otherwise it just fades):
+# LOGO_PATH="/home/you/Pictures/logo.png"   # file or a directory (random pick)
+# LOGO_SOUND="/home/you/Sounds/sting.wav"   # optional, needs paplay/aplay/ffplay/mpv
+# LOGO_STATIC_FRAC=0.15     # fraction of duration the logo holds still
+# LOGO_FADEIN_FRAC=0.15     # fraction spent popping the logo in
+# LOGO_SPIN_SPEED=3.0       # rotations during the zoom-out/spin phase
+# LOGO_ZOOM_SPEED=1.0       # easing exponent for how the zoom-out accelerates
+
+# --- slideshow / daemon-style mode --------------------------------------
+# Also settable via --slideshow/--interval/--shuffle on the CLI.
+# SLIDESHOW_INTERVAL=300
+# SLIDESHOW_SHUFFLE=false
+
+# --- per-effect overrides ------------------------------------------------
+# Anything inside a [effect-name] section only applies when that specific
+# effect is the one running (chosen via ANIMATION=, --animation, or picked
+# by --random) -- it overrides both the global section above AND any CLI
+# flags for that run, since it's the most specific scope. Use this to
+# give particular effects their own timing/feel.
+
+[wave]
+DURATION_MS=800
+WAVE_AMP=90
+WAVE_LENGTH=150
+
+[circle-out]
+ORIGIN_X=35
+ORIGIN_Y=45
+
+[circle-in]
+ORIGIN_X=70
+ORIGIN_Y=70
+
+[burn]
+DURATION_MS=1500
+BURN_PATCHES=14
+BURN_JAGGEDNESS=0.7
+
+[bubbles]
+DURATION_MS=3000
+BURN_PATCHES=50
+
+[shatter]
+DURATION_MS=900
+SHARD_SIZE=48
+
+[ripple]
+DURATION_MS=5000
+
+[page-turn-left]
+CURL_PCT=8
+DURATION_MS=700
+
+[logo-sting]
+LOGO_PATH="${inputs.assets}/icons/xfiles.pngn";
+DURATION_MS=1500
+LOGO_SPIN_SPEED=4
+      '';
+
+      "countdown/countdown.conf".text = ''
+# countdown widget config
+# Copy to ~/.config/countdown/countdown.conf and edit.
+# Any of these can also be overridden by a matching command-line flag.
+# Lines starting with # are comments. Blank lines are ignored.
+
+# --- timing ---
+time = 5m
+format = hh:mm:ss
+
+# --- position (pixels; negative = measured from the right/bottom edge) ---
+x = 40
+y = 40
+
+# --- appearance ---
+font = Sans
+size = 36
+color = ${Text}
+
+flash = false
+flash_speed = 5
+# style of the continuous pulse: fade (default) | throb | blink
+flash_style = fade
+
+# whether flash / an in-progress scroll transition keeps animating while
+# the timer is counting down vs. while it's paused
+animate_when_active = true
+animate_when_paused = false
+
+# with a multi-field format (e.g. hh:mm:ss), true = flash pulses every
+# field together; false = only the fastest-changing field (e.g. seconds)
+# pulses, minutes/hours stay still. Digit-change transitions (scroll /
+# scroll_style) always only move whichever field actually changed either way.
+animate_all_segments = false
+
+bg = circle
+bg_color = ${Crust}aa
+bg_size = auto
+
+# odometer-style digit transition duration in seconds; 0 = instant
+scroll = 1
+# style of that transition: slide (default) | flip | bounce
+scroll_style = bounce
+
+sticky = true
+
+# take/release input focus on mouse enter/leave; turn off if your WM
+# handles this in a way you don't like
+focus_follow = true
+
+# label = Meeting starts in
+# on_finish = notify-send "Countdown" "Time's up!"
+
+# quit automatically (exit code 0) once the timer hits 0 and any alarm has
+# finished playing; default off, the widget just stays showing 0
+exit_on_finish = false
+
+# runs only if this process is about to exit with code 0 (auto-exit-on-finish
+# above, or a clean Ctrl+C) -- never runs on the right-click cancel/exit-1 path
+# on_success = echo "done successfully" >> ~/countdown.log
+
+# sound file to play when the timer hits 0 (tries paplay/aplay/ffplay/play,
+# whichever is installed)
+# alarm = /usr/share/sounds/freedesktop/stereo/complete.oga
+# how many times to play it; 0 = keep repeating until you move the mouse
+# over the widget or press a key
+alarm_repeat = 1
+
+# --- click / scroll bindings ---
+# available actions: none, exit, reset, pause, surprise, inc:<seconds>, dec:<seconds>
+# (left-click-and-hold to drag is always on and can't be remapped)
+click.right = exit
+click.right2 = reset
+click.left = pause
+click.left2 = surprise
+click.scroll_up = inc:5
+click.scroll_down = dec:5
+      '';
+
+"cursor-scaler/config.conf" = {
+      text = ''
+# cursor-scaler configuration
+#
+# Copy this file to:
+#   $XDG_CONFIG_HOME/cursor-scaler/config.conf
+#   (usually ~/.config/cursor-scaler/config.conf)
+#
+# Every setting here can also be passed as a --flag on the command line,
+# and command-line flags always win over this file. Run
+# `cursor-scaler --help` to see the flag names, or
+# `cursor-scaler --print-config` to see the values actually in effect.
+
+# ---- Shake detection -------------------------------------------------
+
+# How many direction reversals within shake_timeout are needed before a
+# wiggle counts as a "shake". Lower = more sensitive / easier to trigger.
+shake_threshold = 10
+
+# Seconds of no reversal before the reversal streak resets to zero.
+shake_timeout = 0.4
+
+# Minimum pointer motion (px) needed to register as "moving in a
+# direction" at all. Filters out jitter/noise.
+movement_threshold = 10
+
+# ---- Scaling -----------------------------------------------------------
+
+# 1.0 = the cursor's normal on-screen size.
+min_scale = 1.0
+
+# Cap on how large the cursor can get.
+max_scale = 30.0
+
+# How fast the cursor grows *while you're actively shaking*, in scale
+# units per second. Growth is always linear and tracks the shake in
+# real time (no eased "ticks" - this is what makes it feel smooth and
+# proportional to how much you're shaking, at any fps). E.g. 6.0 means
+# one continuous second of shaking takes you from 1x to ~7x.
+zoom_in_rate = 10.0
+
+# ---- Animation -----------------------------------------------------------
+
+# Seconds for the single shrink-back-to-normal transition once you stop
+# shaking. This is the only place `easing` below applies - zooming IN
+# is always linear/direct, by design.
+zoom_out_duration = 0.18
+
+# Eases the shrink-back transition only. One of: linear, quad-in,
+# quad-out, quad-in-out, cubic-in, cubic-out, cubic-in-out, expo-out,
+# back-out.
+easing = expo-out
+
+# Frame cap while actively zooming/animating. Idle CPU usage is 0
+# regardless of this value. Match your monitor's refresh rate - e.g.
+# leave this at 60 for a 60Hz display; higher just burns CPU with no
+# visible benefit.
+fps = 60
+
+# ---- Cursor source -----------------------------------------------------
+
+# xcursor name to magnify.
+cursor_name = left_ptr
+
+# xcursor theme to load it from. Leave blank to use $XCURSOR_THEME /
+# your desktop's configured theme.
+cursor_theme =
+
+# Base bitmap resolution to load before scaling. 0 = automatically use
+# the largest bitmap the theme actually ships (recommended - this alone
+# fixes most pixelation you'd see from a fixed 32px source).
+cursor_size = 0
+
+# Path to the *source* SVG for this cursor, if you have it (many themes,
+# including Catppuccin, publish these in their git repo separately from
+# the compiled xcursor theme). When set, cursor-scaler rasterizes the
+# SVG once, at startup, at the resolution needed for max_scale, and
+# scales down from that per frame - genuinely lossless-looking at any
+# zoom level, and cheap, since the SVG is only rasterized once rather
+# than on every frame. Requires a build with librsvg support
+# (`cursor-scaler --print-config` shows svg_support_built).
+# If left blank, a small set of conventional theme install locations
+# are auto-searched as a best-effort convenience.
+#svg_path = "/nix/store/xf5b9k751jl91pziiaw7gz94jlka29kc-catppuccin-cursors-2.0.0-macchiatoSapphire/share/icons/catppuccin-macchiato-sapphire-cursors/cursors_scalable/left_ptr/default.svg"
+svg_path = ${cursor-scaler-svg}
+
+# Force-disable SVG rendering even if a matching SVG is found.
+disable_svg = false
+
+# ---- Rendering -----------------------------------------------------------
+
+# XRender scaling filter used to downscale the source image: nearest,
+# bilinear, good, best.
+filter = best
+
+# auto = use the XShape window cutout automatically when no compositor
+#        is detected running (fixes the black-box-behind-cursor issue).
+# on   = always use it.
+# off  = never use it (assume you always have a compositor).
+shape_mode = auto
+
+# ---- Fullscreen guard ---------------------------------------------------
+
+# Don't engage the shake-to-zoom effect while the currently focused
+# window is fullscreen (e.g. a game). Detection is best-effort (checks
+# the EWMH fullscreen state, plus a borderless-window-covering-the-
+# screen heuristic as a fallback) and is only ever checked right as a
+# shake is about to start, so it costs essentially nothing.
+disable_in_fullscreen = true
+      '';
+};
+
+     #"xwww/xwwwrc".text = ''
+     #  TRANSITION_CMD="feh --bg-fill --no-fehbg "
+     #  #FINAL_CMD="feh --bg-fill --no-fehbg "
+     #  FINAL_CMD="fehb "
+     #
+     #  #TRANSITION_CMD="hsetroot -cover "
+     #  #FINAL_CMD="hsetroot -cover "
+     #
+     #
+     #  ACCEL=(-hwaccel vaapi)
+     #
+     #
+     #  PIXELATE_SIZE=64
+     #  WAVE_AMP=80
+     #  WAVE_LENGHT=250
+     #
+     #
+     #  #R_X=1366
+     #  #R_Y=768
+     #  #R_X=1920
+     #  #R_Y=1080
+     #  #R_X=956
+     #  #R_Y=538
+     #
+     #  #FORMAT=bmp
+     #  #SPEED=0
+     #  #FRAMES=14
+     #
+     #  #ANIMATION="pixelate"
+     #  #ANIMATION="wave"
+     #  #ANIMATION="fade"
+     #  #ANIMATION="spin"
+     #  #ANIMATION="test"
+     #
+     #  #RND="slide-up,slide-down,slide-left,slide-right"
+     #  #RND="push-up,emerge-down,push-left,emerge-right"
+     #  #RND="circle-out,circle-in"
+     #  #RND="oblique-right,oblique-left"
+     #  #RND="open,close"
+     #  #RND="zoom-out"
+     #
+     #
+     #
+     #  # Presets
+     #
+     #   # Fast Pixels
+     #  #R_X=956
+     #  #R_Y=538
+     #  #FORMAT=bmp
+     #  #SPEED=0.04
+     #  #FRAMES=6
+     #  #ANIMATION="pixelate"
+     #
+     #   # Fast Slides
+     #  #R_X=1366
+     #  #R_Y=768
+     #  #SPEED=0
+     #  #FRAMES=14
+     #  #FORMAT=bmp
+     #  #RND="slide-up,slide-down,slide-left,slide-right"
+     #
+     #   # Fast Push/Emerge
+     #  #R_X=1366
+     #  #R_Y=768
+     #  #SPEED=0
+     #  #FRAMES=20
+     #  #FORMAT=webp
+     #  #RND="push-up,emerge-down,push-left,emerge-right"
+     #
+     #   # Fast Emerge
+     #  R_X=1366
+     #  R_Y=768
+     #  SPEED=0
+     #  FRAMES=14
+     #  FORMAT=webp
+     #  ANIMATION="emerge-down"
+     #
+     #
+     #   # Fast Circles
+     #  #R_X=956
+     #  #R_Y=538
+     #  #SPEED=0
+     #  #FRAMES=10
+     #  #FORMAT=bmp
+     #  #RND="circle-out,circle-in"
+     #
+     #   # Smooth Obliques
+     #  #R_X=956
+     #  #R_Y=538
+     #  #SPEED=0.025
+     #  #FRAMES=24
+     #  #FORMAT=bmp
+     #  #RND="oblique-right,oblique-left"
+     #
+     #'';
 
       "ragnarwm/ragnar.cfg".text = lib.mkBefore ''
 

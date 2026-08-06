@@ -60,7 +60,7 @@ static const BatteryBand BATTERY_BANDS[BATTERY_BAND_COUNT] = {
  * anything), the module is blank by default -- that stays the
  * default. Setting this to 1 shows ICON_NO_DEVICES/COLOR_NO_DEVICES
  * instead of blank. */
-#define SHOW_ICON_WHEN_NO_DEVICES 1
+#define SHOW_ICON_WHEN_NO_DEVICES 0
 #define ICON_NO_DEVICES    "󰥍"
 #define COLOR_NO_DEVICES   "#444444"
 

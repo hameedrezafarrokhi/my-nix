@@ -323,6 +323,7 @@
     ++ [(pkgs.callPackage ../myPackages/cursor-shake-zoom/cursor-shake-zoom.nix { })]
 
     ++ [(pkgs.callPackage ../myPackages/kdeconnect-polybar/kdeconnect-polybar.nix { })]
+    ++ [(pkgs.callPackage ../myPackages/udisk-polybar/udisk-polybar.nix { })]
     ++ [(pkgs.callPackage ../myPackages/bspi/bspi.nix { })]
 
 

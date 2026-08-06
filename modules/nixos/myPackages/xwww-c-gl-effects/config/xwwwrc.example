@@ -1,0 +1,128 @@
+# xwww config -- place at $HOME/.config/xwww/xwwwrc
+# Anything not set here falls back to the built-in defaults; CLI flags
+# always override whatever is set in the GLOBAL section below (i.e.
+# everything before the first [section] header).
+
+# Transition to use when not overridden by --animation/--random.
+ANIMATION="fade"
+
+# Comma-separated list to pick randomly from instead of ANIMATION.
+# Leave empty to disable. If set, it's the same as always passing --random.
+# RND="fade,wipe-left,wipe-right,circle-out,dissolve,wave"
+
+# --- timing ---------------------------------------------------------
+# Preferred: total transition length in milliseconds.
+DURATION_MS=500
+
+# Legacy alternative: fixed frame count instead of a duration (set
+# DURATION_MS=0, or just set FRAMES, which does this automatically).
+# FRAMES=20
+
+# Cap on frames per second (0 = uncapped, render as fast as possible).
+FPS_CAP=120
+
+# Easing curve applied to transition progress. Run `xwww --list-easings`
+# for the full set: linear, ease-{in,out,in-out}-{quad,cubic,sine,expo,
+# back,bounce}, ease-in-elastic, ease-out-elastic.
+EASING="ease-out-cubic"
+
+# Or use a custom CSS-style cubic-bezier(x1,y1,x2,y2) curve instead of a
+# named preset -- either form works:
+# EASING="bezier(0.68,-0.55,0.27,1.55)"
+# BEZIER=0.68,-0.55,0.27,1.55
+
+# --- image placement -------------------------------------------------
+# fill (cover+crop, default) | fit (contain+letterbox) | stretch |
+# center (no scaling) | tile
+SCALE_MODE="fill"
+
+# Padding color for fit/center/tile, "#RRGGBB" or "#AARRGGBB".
+BG_COLOR="#000000"
+
+# --- performance -------------------------------------------------------
+# Render animation frames at this fraction of full output resolution,
+# then upscale for display; the final frame is always full quality.
+# 1.0 = full res always (best quality). Lower this (e.g. 0.5) on old/slow
+# CPUs, especially with 4K panels or "heavier" effects (wave/spin/circle).
+RENDER_SCALE=1.0
+
+# Worker threads for frame rendering. 0 = auto-detect CPU count.
+THREADS=0
+
+# --- multi-monitor -----------------------------------------------------
+# "all" spans the whole X screen (default). Or a specific monitor name
+# as reported by RandR/Xinerama, e.g. "monitor-0". Setting a single
+# monitor leaves the others exactly as they were.
+OUTPUT="all"
+
+# --- per-effect fine control (global defaults; see sections below to
+# override per-effect) ---------------------------------------------------
+WAVE_AMP=50
+WAVE_LENGTH=200
+PIXELATE_SIZE=64
+BLINDS_COUNT=12          # also used by stripes-*
+CHECKER_SIZE=48
+ORIGIN_X=50               # origin for circle-*/diamond/clock/fire-ring/burn/
+ORIGIN_Y=50               # bubbles/ripple; percentages: 0,0=top-left, 100,100=bottom-right
+OBLIQUE_ANGLE=45          # sweep angle (degrees) for oblique-*/stripes-oblique-*
+CURL_PCT=5                # roll/curl radius for page-turn/roll-away/carpet, % of canvas
+SHARD_SIZE=64             # cell size for shatter
+PIVOT_PCT=50              # hinge position for half-swing-*, 0-100
+BURN_PATCHES=10           # ignition points for burn / bubble count for bubbles
+BURN_JAGGEDNESS=0.5       # 0-1, how irregular burn's patch edges are
+CUBE_ZOOM=0.3             # 0-1, how far cube shrinks mid-spin
+CUBE_SPIN_SPEED=1.5       # extra full rotations for cube before settling
+AXISSPIN_VERTICAL=false   # spin axis-spin around the horizontal axis instead
+AXISSPIN_TURNS=6          # total rotations across axis-spin's whole duration
+RIPPLE_AMP=18             # pixel displacement amplitude for ripple
+RIPPLE_FREQ=0.15          # wave frequency for ripple
+RIPPLE_DROPLETS=0         # extra random droplets beyond the origin one, 0-4
+FLICKER_MIN_BRIGHTNESS=0.12 # floor brightness for flicker's dim moments
+FLICKER_COUNT=8           # flicker keyframes per half (dimming / brightening)
+
+# logo-sting needs a logo image to do anything (otherwise it just fades):
+# LOGO_PATH="/home/you/Pictures/logo.png"   # file or a directory (random pick)
+# LOGO_SOUND="/home/you/Sounds/sting.wav"   # optional, needs paplay/aplay/ffplay/mpv
+# LOGO_STATIC_FRAC=0.15     # fraction of duration the logo holds still
+# LOGO_FADEIN_FRAC=0.15     # fraction spent popping the logo in
+# LOGO_SPIN_SPEED=3.0       # rotations during the zoom-out/spin phase
+# LOGO_ZOOM_SPEED=1.0       # easing exponent for how the zoom-out accelerates
+
+# --- slideshow / daemon-style mode --------------------------------------
+# Also settable via --slideshow/--interval/--shuffle on the CLI.
+# SLIDESHOW_INTERVAL=300
+# SLIDESHOW_SHUFFLE=false
+
+# --- per-effect overrides ------------------------------------------------
+# Anything inside a [effect-name] section only applies when that specific
+# effect is the one running (chosen via ANIMATION=, --animation, or picked
+# by --random) -- it overrides both the global section above AND any CLI
+# flags for that run, since it's the most specific scope. Use this to
+# give particular effects their own timing/feel.
+
+[wave]
+DURATION_MS=800
+WAVE_AMP=90
+WAVE_LENGTH=150
+
+[circle-out]
+ORIGIN_X=100
+ORIGIN_Y=100
+
+[burn]
+DURATION_MS=1500
+BURN_PATCHES=14
+BURN_JAGGEDNESS=0.7
+
+[shatter]
+DURATION_MS=900
+SHARD_SIZE=48
+
+[page-turn-left]
+CURL_PCT=8
+DURATION_MS=700
+
+[logo-sting]
+LOGO_PATH="/home/you/Pictures/logo.png"
+DURATION_MS=3000
+LOGO_SPIN_SPEED=4

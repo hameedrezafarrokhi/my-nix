@@ -21,6 +21,8 @@ let
 
   poly-modules-load = pkgs.writeShellScriptBin "poly-modules-load" ''
     $HOME/.polybar_modules
+    sleep 1
+    $HOME/.polybar_modules
   '';
 
   polybar-cava = pkgs.writeShellScriptBin "polybar-cava" ''
@@ -534,7 +536,7 @@ in
           # polybar-cava-dots polybar-cava (cpu intensive)
           # wayves anim (cpu intensive, but better than two above)
           center = "xworkspaces";
-          right = "lock tray kdecon picom bspwm notif idle keyboard-layout light pulseaudio date hour power";
+          right = "lock tray udisk kdecon picom bspwm notif idle keyboard-layout network light pulseaudio date hour power";
         };
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -881,10 +883,20 @@ in
        #interface = "wlp3s0";
         unknown-as-up = true;
         interval = 3.0;
-        label-connected = ''"%signal%%downspeed:4%%{O-8pt}"'';
+        label-connected = ''"%downspeed:4%%{O-8pt}"'';
         format-connected = "%{T3}<label-connected>%{O-2pt}%{T-}";
         format-connected-prefix = ''""'';
         speed-unit = '''';
+      };
+
+      "module/network" = {
+        format-connected = ''"%{A1:networkmanager_dmenu:}<ramp-signal>%{O-8pt}%{A}"'';
+        format-disconnected = ''"%{A1:networkmanager_dmenu:}<label-disconnected>%{O-8pt}%{A}"'';
+        interface-type = "wireless";
+        interval = 3.0;
+        label-connected = ''"%signal%%{O-8pt}"'';
+        type = "internal/network";
+        unknown-as-up = true;
       };
 
       "module/networkspeedup-wired" = {
@@ -987,7 +999,7 @@ in
        #format = "<ramp>%{O-8pt}";
        #label = "%percentage%%";
 
-        format = "%{A1:notify-send hello:}<ramp>%{O-8pt}%{A}";
+        format = "%{A1:xdotool search --class 'xsct_gui.py' windowclose %@  || xsct_gui:}<ramp>%{O-8pt}%{A}";
        #label = "%{A1:notify-send hello:}%<ramp>%{O-8pt}%%{A}";
 
         ramp-0 = lib.mkDefault "󰽢"; # "🌕";
@@ -1074,7 +1086,14 @@ in
         type = "custom/script";
         exec = "kdeconnect-polybar --daemon -b";
         tail = true;
-        label = "%{O-8pt}%output%%{O-8pt}";
+        label = "%output%%{O-8pt}";
+      };
+
+      "module/udisk" = {
+        type = "custom/script";
+        exec = "udisk-polybar --daemon";
+        tail = true;
+        label = "%{O-5pt}%output%%{O-10pt}";
       };
 
       "settings" = {

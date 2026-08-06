@@ -142,6 +142,7 @@ in
 
         [Desktop Entry]
         Name=NetworkManager Applet
+        Hidden=true
         Comment=Manage your network connections
         Icon=nm-device-wireless
         Exec=nm-applet

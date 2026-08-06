@@ -21,6 +21,7 @@
   environment.systemPackages = [
     pkgs.nethogs
     pkgs.netpeek
+    pkgs.networkmanager_dmenu
   ];
 
 };}

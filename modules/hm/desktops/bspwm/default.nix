@@ -324,14 +324,14 @@ in
           fittsmon
         fi &
 
-        if hash swgt >/dev/null 2>&1; then
-          pkill swgt
-          sleep 0.5
-          swgt & xdotool mousemove "$(($(xdisplayinfo --width)-1))" "$(($(xdisplayinfo --height)/2))" && xdotool mousemove "$(($(xdisplayinfo --width)/2))" "$(($(xdisplayinfo --height)/2))"
-        fi &
+        #if hash swgt >/dev/null 2>&1; then
+        #  pkill swgt
+        #  sleep 0.5
+        #  swgt & xdotool mousemove "$(($(xdisplayinfo --width)-1))" "$(($(xdisplayinfo --height)/2))" && xdotool mousemove "$(($(xdisplayinfo --width)/2))" "$(($(xdisplayinfo --height)/2))"
+        #fi &
 
-        sleep 2
-        wmctrl -r "SWGT" -b add,skip_taskbar
+        #sleep 2
+        #wmctrl -r "SWGT" -b add,skip_taskbar
       '';
 
       startupPrograms = [
