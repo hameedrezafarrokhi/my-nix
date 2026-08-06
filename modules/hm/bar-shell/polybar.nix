@@ -999,7 +999,8 @@ in
        #format = "<ramp>%{O-8pt}";
        #label = "%percentage%%";
 
-        format = "%{A1:xdotool search --class 'xsct_gui.py' windowclose %@  || xsct_gui:}<ramp>%{O-8pt}%{A}";
+        format = "%{A1:xdotool search --class 'xsct_gui.py' windowkill %@  || xsct_gui:}<ramp>%{O-8pt}%{A}";
+       #format = "%{A1:pkill -f 'python /home/hrf/.local/share/xsct_gui/xsct_gui.py' || xsct_gui:}<ramp>%{O-8pt}%{A}";
        #label = "%{A1:notify-send hello:}%<ramp>%{O-8pt}%%{A}";
 
         ramp-0 = lib.mkDefault "󰽢"; # "🌕";
