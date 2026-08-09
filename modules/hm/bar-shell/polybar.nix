@@ -21,8 +21,13 @@ let
 
   poly-modules-load = pkgs.writeShellScriptBin "poly-modules-load" ''
     $HOME/.polybar_modules
-    sleep 1
     $HOME/.polybar_modules
+    polybar-msg action "#power.hook.1"
+    polybar-msg action "#idle.hook.1"
+    polybar-msg action "#bspwm.hook.1"
+    polybar-msg action "#keyboard-layout.hook.0"
+    polybar-msg action "#picom.hook.1"
+    polybar-msg action "#pp.hook.1"
   '';
 
   polybar-cava = pkgs.writeShellScriptBin "polybar-cava" ''
@@ -583,7 +588,7 @@ in
       };
 
       "module/filesystem" = {
-        format-mounted = "<label-mounted>%{O-8pt}";
+        format-mounted = "%{A1:${config.my.default.file-alt}:}%{A2:baobab:}%{A3:udisk-polybar --generic-menu:}<label-mounted>%{O-8pt}%{A}%{A}%{A}";
         type = "internal/fs";
         interval = 180;
         mount-0 = "/";
@@ -667,7 +672,7 @@ in
       };
 
       "module/cpu" = {
-        format = "<label>%{O-7pt}";
+        format = "%{A1:xdotool search --class 'btop-app' windowkill %@  || btop-app:}<label>%{O-7pt}%{A}";
         type = "internal/cpu";
         interval = 02;
         format-prefix = '' %{O-6pt}'';
@@ -890,7 +895,7 @@ in
       };
 
       "module/network" = {
-        format-connected = ''"%{A1:networkmanager_dmenu:}<ramp-signal>%{O-8pt}%{A}"'';
+        format-connected = ''"%{A1:networkmanager_dmenu:}%{A2:nmreload:}%{A3:nmdown:}<ramp-signal>%{O-8pt}%{A}%{A}%{A}"'';
         format-disconnected = ''"%{A1:networkmanager_dmenu:}<label-disconnected>%{O-8pt}%{A}"'';
         interface-type = "wireless";
         interval = 3.0;
@@ -1094,7 +1099,7 @@ in
         type = "custom/script";
         exec = "udisk-polybar --daemon";
         tail = true;
-        label = "%{O-5pt}%output%%{O-10pt}";
+        label = "%{O-5pt}%output%%{O-8pt}";
       };
 
       "settings" = {

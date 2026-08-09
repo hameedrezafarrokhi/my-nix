@@ -319,6 +319,26 @@ static const SpaceBand SPACE_RAMP[SPACE_RAMP_COUNT] = {
 #define MENU_ACTION_UNMOUNT            1
 #define MENU_ACTION_EJECT              1   /* Drive.Eject -- spins down/unlocks tray, keeps USB power on */
 #define MENU_ACTION_POWER_OFF          1   /* Drive.PowerOff -- also cuts power to the USB port; "safely remove" */
+
+/* Eject and Power Off act on the whole DRIVE, not just the partition
+ * you clicked -- they fail with "device is busy" if *any* partition
+ * on that drive is still mounted, including ones other than the row
+ * you clicked (e.g. a USB stick with two partitions, only one
+ * mounted). This controls what happens with those still-mounted
+ * partitions before attempting Eject/Power Off:
+ *   NONE   -- old behavior: just try, fail with "busy" if anything's
+ *             still mounted, don't touch anything automatically.
+ *   PROMPT -- ask (one confirmation dialog, listing what's mounted)
+ *             before unmounting them and proceeding.
+ *   ALWAYS -- unmount them automatically, no prompt, then proceed.
+ * Applies to every partition sharing the same drive as the one you
+ * clicked Eject/Power Off on, including that partition itself if it's
+ * the one still mounted. */
+#define EJECT_POWEROFF_UNMOUNT_NONE   0
+#define EJECT_POWEROFF_UNMOUNT_PROMPT 1
+#define EJECT_POWEROFF_UNMOUNT_ALWAYS 2
+#define EJECT_POWEROFF_UNMOUNT_MODE EJECT_POWEROFF_UNMOUNT_PROMPT
+
 #define MENU_ACTION_OPEN_FILE_MANAGER  1
 #define MENU_ACTION_CHANGE_MOUNT_POINT 1   /* see "CHANGE MOUNT POINT" section below -- symlink-based */
 #define MENU_ACTION_COPY_MOUNT_PATH    1   /* copies the mount path to the X PRIMARY+CLIPBOARD selections */
@@ -356,7 +376,7 @@ static const CustomMenuEntry CUSTOM_DEVICE_MENU_ENTRIES[] = {
  * for you. xdg-open respects your configured default file manager;
  * override with e.g. "nautilus" or "pcmanfm" directly if you'd rather
  * skip the xdg-open indirection. */
-#define FILE_MANAGER_CMD "gio open '{MOUNTPOINT}'"
+#define FILE_MANAGER_CMD "hifile {MOUNTPOINT}"
 
 /* ==================================================================
  * CHANGE MOUNT POINT
@@ -383,6 +403,106 @@ static const CustomMenuEntry CUSTOM_DEVICE_MENU_ENTRIES[] = {
  * filesystem UUID so they survive reboots/replugs. */
 #define ENABLE_MOUNT_POINT_SYMLINKS 1
 #define SYMLINK_DEFAULT_PARENT_DIR  "~/Disks"
+
+/* ==================================================================
+ * ENCRYPTED (LUKS) CONTAINERS
+ * ==================================================================
+ * Unlocked via UDisks' own Encrypted interface (Unlock/Lock) -- same
+ * D-Bus connection as everything else, no cryptsetup/libblockdev
+ * dependency. A locked container shows as its own row (lock icon,
+ * "Unlock" only). Once unlocked, the container row disappears and
+ * the resulting cleartext filesystem takes its place as a normal
+ * device row, with an added "Lock" action (which unmounts it first
+ * if needed). */
+#define ENABLE_LUKS 1
+
+#define ICON_LUKS_LOCKED   "\uf023"  /*  closed padlock */
+#define ICON_LUKS_UNLOCKED "\uf09c"  /*  open padlock -- combined with the normal device icon on the cleartext row */
+
+#define MENU_ACTION_UNLOCK 1
+#define MENU_ACTION_LOCK   1
+#define CONFIRM_LOCK       0   /* locking is non-destructive (auto-unmounts first) so off by default, unlike CONFIRM_POWER_OFF */
+
+#define NOTIFY_ON_UNLOCK_SUCCESS 1
+#define NOTIFY_ON_UNLOCK_FAILURE 1
+#define NOTIFY_ON_LOCK           1
+
+/* Passphrase caching: kept ONLY in the kernel's per-UID user keyring
+ * (add_key()/keyctl, see passphrase_cache.c) -- never written to
+ * disk, never present in any config file, automatically gone once
+ * you're fully logged out (no processes/open files left under your
+ * UID). Global default plus per-device override, same matching rules
+ * as DEVICE_OVERRIDES. "Forget Passphrase" in the device menu clears
+ * a specific entry early if you don't want to wait for that. */
+#define REMEMBER_PASSPHRASE_DEFAULT 1
+
+typedef struct { const char *match; int remember; } PassphraseCacheOverride;
+static const PassphraseCacheOverride PASSPHRASE_CACHE_OVERRIDES[] = {
+    /* { "3A21-5F09", 0 }, */
+    { NULL, 0 } /* sentinel -- keep last */
+};
+
+/* ==================================================================
+ * MTP (Android / phones)
+ * ==================================================================
+ * No glib/gio linked into this binary -- we shell out to the `gio`
+ * command, same category of dependency as `xdg-open`. Attachment is
+ * detected via a udev monitor (added to the same poll() loop as
+ * everything else, so still 0% idle CPU) watching for USB devices
+ * carrying the ID_MTP_DEVICE=1 property, set by the mtp-probe udev
+ * rule that ships with libmtp. Mounting uses gvfs's MTP backend
+ * (`gio mount mtp://...`, actively maintained, genuinely
+ * bidirectional -- see mtp.h for why this replaced an earlier
+ * jmtpfs-based approach). gvfs also picks its own mount path under
+ * $XDG_RUNTIME_DIR/gvfs, so there's no MOUNT_DIR template to set here
+ * the way there is for disks/ISOs. Requires the `gvfs` package with
+ * its D-Bus service active (NixOS: `services.gvfs.enable = true;`). */
+#define ENABLE_MTP 1
+
+#define ICON_PHONE_GENERIC   "\uf10b"
+#define ICON_PHONE_MOUNTED   ""  /* "" -> falls back to ICON_PHONE_GENERIC */
+#define ICON_PHONE_UNMOUNTED ""
+
+/* Command used to invoke gvfs's `gio` tool. "gio" relies on your
+ * PATH at the time this binary was spawned -- if polybar (or
+ * whatever ultimately launches this module) runs with a minimal PATH
+ * that doesn't include it (common with some WM/session setups,
+ * especially on NixOS depending on how polybar itself was started),
+ * mounting will fail immediately with "command not found". Set this
+ * to an absolute path (e.g. "/run/current-system/sw/bin/gio" on
+ * NixOS -- run `which gio` in a normal terminal to find yours) if
+ * that happens; the failure notification will say explicitly whether
+ * this was the problem. */
+#define GIO_CMD "gio"
+
+#define MTP_COLOR_MODE COLOR_MODE_RAMP   /* reuses SPACE_RAMP/DEVICE_COLOR_CONSTANT/DEVICE_COLOR_UNMOUNTED from above -- MTP usage stats are best-effort (see README), not every phone reports them accurately */
+
+#define MENU_SHOW_MTP_SERIAL 1
+#define MENU_ACTION_MTP_MOUNT             1
+#define MENU_ACTION_MTP_UNMOUNT           1
+#define MENU_ACTION_MTP_OPEN_FILE_MANAGER 1
+#define MENU_ACTION_MTP_COPY_MOUNT_PATH   1
+#define MENU_ACTION_MTP_RELOAD            1
+
+static const CustomMenuEntry CUSTOM_MTP_MENU_ENTRIES[] = {
+    /* { "/home/you/bin/sync-photos.sh", "Sync Photos" }, */
+    { NULL, NULL } /* sentinel -- keep last */
+};
+
+/* Click actions for a phone's bar segment -- same placeholder/slot
+ * convention as POLYBAR_ACTION_1..5 above. {ID} here is the phone's
+ * serial (or "busnum:devnum" if the device didn't report one). Empty
+ * slot 1 defaults to opening the phone's action menu. */
+#define POLYBAR_MTP_ACTION_1  ""   /* empty = default: {SELF} --mtp -i {ID} -m */
+#define POLYBAR_MTP_ACTION_2  ""
+#define POLYBAR_MTP_ACTION_3  ""
+#define POLYBAR_MTP_ACTION_4  ""
+#define POLYBAR_MTP_ACTION_5  ""
+
+#define NOTIFY_ON_MTP_MOUNT_SUCCESS   1
+#define NOTIFY_ON_MTP_MOUNT_FAILURE   1
+#define NOTIFY_ON_MTP_UNMOUNT_SUCCESS 1
+#define NOTIFY_ON_MTP_ATTACHED        1  /* phone detected but not yet mounted -- no automount for MTP: MTP is too slow/quirky for a surprise background mount, always a manual click */
 
 /* ==================================================================
  * SAFETY: dangerous actions never offered, regardless of any config
@@ -442,6 +562,50 @@ static const CustomMenuEntry CUSTOM_GENERIC_MENU_ENTRIES[] = {
     /* { "/home/you/bin/open-file-manager.sh", "Open File Manager" }, */
     { NULL, NULL } /* sentinel -- keep last */
 };
+
+/* ==================================================================
+ * MOUNTED ISOs IN THE BAR
+ * ==================================================================
+ * An ISO/image you mount via "Mount ISO / Image..." can optionally
+ * get its own bar segment and dedicated menu, same idea as a regular
+ * disk -- separate from the generic menu's "Detach ISO..." list
+ * (which still exists regardless of this, and still shows every
+ * loop-mounted image, tracked or not). Only images mounted through
+ * this module's own "Mount ISO" are ever shown here: a typical
+ * desktop already has many unrelated /dev/loopN devices in
+ * background use (snap packages, flatpak runtimes, squashfs images),
+ * and showing all of them would flood the bar -- this module tracks
+ * which loop devices it created itself ($XDG_CACHE_HOME/polybar-udisks
+ * /iso-loops) specifically to be able to tell the difference. */
+#define SHOW_MOUNTED_ISOS_IN_BAR 1
+
+#define ICON_ISO_MOUNTED "\uf1c9"
+
+#define MENU_SHOW_ISO_BACKING_FILE  1
+#define MENU_SHOW_ISO_MOUNT_POINT   1
+#define MENU_SHOW_ISO_USED          1
+#define MENU_SHOW_ISO_FREE          1
+#define MENU_SHOW_ISO_TOTAL         1
+
+#define MENU_ACTION_ISO_OPEN_FILE_MANAGER 1
+#define MENU_ACTION_ISO_COPY_MOUNT_PATH   1
+#define MENU_ACTION_ISO_DETACH            1   /* unmounts + deletes the loop device -- the ISO equivalent of Unmount/Eject/Power Off combined, since there's no drive to separately eject or power off */
+#define MENU_ACTION_ISO_RELOAD            1
+#define CONFIRM_ISO_DETACH                1   /* non-destructive (it's read-only media you can just remount), off by default unlike CONFIRM_POWER_OFF */
+
+static const CustomMenuEntry CUSTOM_ISO_MENU_ENTRIES[] = {
+    /* { "/home/you/bin/verify-checksum.sh", "Verify Checksum" }, */
+    { NULL, NULL } /* sentinel -- keep last */
+};
+
+/* Click actions for an ISO's bar segment -- same convention as
+ * POLYBAR_ACTION_1..5. Empty slot 1 defaults to opening the ISO's
+ * dedicated menu. */
+#define POLYBAR_ISO_ACTION_1  ""   /* empty = default: {SELF} --iso -i {ID} -m */
+#define POLYBAR_ISO_ACTION_2  ""
+#define POLYBAR_ISO_ACTION_3  ""
+#define POLYBAR_ISO_ACTION_4  ""
+#define POLYBAR_ISO_ACTION_5  ""
 
 /* ==================================================================
  * JSON OUTPUT -- see README for the schema. No separate config knob

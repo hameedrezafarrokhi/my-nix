@@ -33,6 +33,7 @@
 #include "notify.h"
 #include "render.h"
 #include "state_file.h"
+#include "passphrase_cache.h"
 #include "config.h"
 
 enum {
@@ -45,6 +46,9 @@ enum {
     ACT_REMOVE_MOUNT_POINT,
     ACT_COPY_MOUNT_PATH,
     ACT_RELOAD,
+    ACT_UNLOCK,
+    ACT_LOCK,
+    ACT_FORGET_PASSPHRASE,
     ACT_CUSTOM_BASE      = 1000,
 
     ACT_GENERIC_MOUNT_ISO   = 2000,
@@ -52,6 +56,13 @@ enum {
     ACT_GENERIC_RELOAD_ALL,
     ACT_GENERIC_DETACH_BASE = 3000,
     ACT_GENERIC_CUSTOM_BASE = 4000,
+
+    ACT_MTP_MOUNT = 5000,
+    ACT_MTP_UNMOUNT,
+    ACT_MTP_OPEN_FILE_MANAGER,
+    ACT_MTP_COPY_MOUNT_PATH,
+    ACT_MTP_RELOAD,
+    ACT_MTP_CUSTOM_BASE = 6000,
 };
 
 /* ------------------------------------------------------------------ */
@@ -331,6 +342,92 @@ int action_perform_power_off(Device *d) {
 }
 
 /* ------------------------------------------------------------------ */
+/* LUKS unlock / lock                                                   */
+/* ------------------------------------------------------------------ */
+
+void action_unlock_device(Display *dpy, int x, int y, Device *d) {
+    if (!d->is_locked) return;
+
+    int remember = device_should_remember_passphrase(d);
+    char *passphrase = NULL;
+    int from_cache = 0;
+
+    if (remember && d->uuid[0]) {
+        passphrase = passphrase_cache_get(d->uuid);
+        if (passphrase) from_cache = 1;
+    }
+
+    if (!passphrase) {
+        char prompt[300];
+        snprintf(prompt, sizeof(prompt), "Passphrase for %s:", d->display_name);
+        passphrase = xinput_show(dpy, x, y, prompt, "", 1 /* mask */);
+        if (!passphrase) return; /* cancelled */
+    }
+
+    char *cleartext_path = NULL, *err = NULL;
+    int ok = udisks_unlock(d->object_path, passphrase, &cleartext_path, &err);
+
+    if (ok) {
+        if (NOTIFY_ON_UNLOCK_SUCCESS) ud_notify("Unlocked", d->display_name);
+        if (remember && d->uuid[0]) passphrase_cache_set(d->uuid, passphrase);
+
+        if (cleartext_path) {
+            char *mp = NULL, *mount_err = NULL;
+            int mounted = udisks_mount(cleartext_path, &mp, &mount_err);
+            if (mounted) {
+                if (NOTIFY_ON_MOUNT_SUCCESS) {
+                    char body[600];
+                    snprintf(body, sizeof(body), "%s mounted at %s", d->display_name, mp ? mp : "?");
+                    ud_notify("Disk Mounted", body);
+                }
+            } else if (NOTIFY_ON_MOUNT_FAILURE) {
+                char body[600];
+                snprintf(body, sizeof(body), "%s: %s", d->display_name, mount_err ? mount_err : "unknown error");
+                ud_notify("Mount Failed", body);
+            }
+            free(mp);
+            free(mount_err);
+        }
+    } else {
+        if (NOTIFY_ON_UNLOCK_FAILURE) {
+            char body[600];
+            snprintf(body, sizeof(body), "%s: %s", d->display_name,
+                     err ? err : (from_cache ? "cached passphrase was rejected" : "unknown error"));
+            ud_notify("Unlock Failed", body);
+        }
+        if (from_cache && d->uuid[0]) passphrase_cache_forget(d->uuid); /* stale/wrong -- don't keep offering it */
+    }
+
+    free(cleartext_path);
+    free(err);
+    passphrase_cache_wipe(passphrase);
+}
+
+void action_lock_device(Display *dpy, int x, int y, Device *d) {
+    if (!d->parent_luks_path) return;
+
+    if (CONFIRM_LOCK) {
+        char q[300]; snprintf(q, sizeof(q), "Lock %s?", d->display_name);
+        if (!confirm_dialog(dpy, x, y, q)) return;
+    }
+
+    if (d->is_mounted) {
+        if (!action_perform_unmount(d, 0)) return; /* leave it alone if still busy -- don't force-lock over open files */
+    }
+
+    char *err = NULL;
+    int ok = udisks_lock(d->parent_luks_path, &err);
+    if (ok) {
+        if (NOTIFY_ON_LOCK) ud_notify("Locked", d->display_name);
+    } else if (NOTIFY_ON_LOCK) {
+        char body[600];
+        snprintf(body, sizeof(body), "%s: %s", d->display_name, err ? err : "unknown error");
+        ud_notify("Lock Failed", body);
+    }
+    free(err);
+}
+
+/* ------------------------------------------------------------------ */
 /* change mount point                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -344,7 +441,7 @@ static void change_mount_point(Display *dpy, int x, int y, Device *d) {
     char default_path[1300];
     snprintf(default_path, sizeof(default_path), "%s/%s", parent, leaf);
 
-    char *typed = xinput_show(dpy, x, y, "Symlink path (Enter=confirm, Esc=cancel):", default_path);
+    char *typed = xinput_show(dpy, x, y, "Symlink path (Enter=confirm, Esc=cancel):", default_path, 0);
     if (!typed || !typed[0]) { free(typed); return; }
 
     char expanded[1300];
@@ -394,9 +491,79 @@ static void remove_mount_point(Device *d) {
 /* device menu                                                          */
 /* ------------------------------------------------------------------ */
 
+/* Eject/Power Off act on the whole drive, not just `d` -- fails with
+ * "busy" if any sibling partition on the same drive is still
+ * mounted, `d` itself included. Per EJECT_POWEROFF_UNMOUNT_MODE,
+ * either does nothing extra (old behavior), prompts once and unmounts
+ * everything still mounted on the drive, or does that silently.
+ * Returns 1 to proceed with Eject/Power Off, 0 to abort (declined the
+ * prompt, or a required unmount failed). */
+static int ensure_drive_unmounted(Display *dpy, int x, int y, Device *d, DeviceList *list, const char *verb) {
+#if EJECT_POWEROFF_UNMOUNT_MODE == EJECT_POWEROFF_UNMOUNT_NONE
+    (void)dpy; (void)x; (void)y; (void)d; (void)list; (void)verb;
+    return 1;
+#else
+    if (!list || !d->drive_object_path) return 1;
+
+    Device *mounted[32];
+    int n_mounted = 0;
+    for (int i = 0; i < list->count && n_mounted < 32; i++) {
+        Device *cand = &list->items[i];
+        if (!cand->drive_object_path) continue;
+        if (strcmp(cand->drive_object_path, d->drive_object_path) != 0) continue;
+        if (cand->is_mounted) mounted[n_mounted++] = cand;
+    }
+    if (n_mounted == 0) return 1;
+
+#if EJECT_POWEROFF_UNMOUNT_MODE == EJECT_POWEROFF_UNMOUNT_PROMPT
+    char q[400];
+    if (n_mounted == 1) {
+        snprintf(q, sizeof(q), "%s is still mounted. Unmount it and %s?", mounted[0]->display_name, verb);
+    } else {
+        snprintf(q, sizeof(q), "%d partitions on this drive are still mounted. Unmount them and %s?",
+                 n_mounted, verb);
+    }
+    if (!confirm_dialog(dpy, x, y, q)) return 0;
+#endif
+
+    int all_ok = 1;
+    for (int i = 0; i < n_mounted; i++) {
+        if (!action_perform_unmount(mounted[i], 0)) all_ok = 0;
+    }
+    return all_ok;
+#endif
+}
+
 void action_open_device_menu(Display *dpy, int x, int y, Device *d, DeviceList *list) {
-    (void)list;
     save_last_device(d->object_path);
+
+#if ENABLE_LUKS
+    if (d->is_locked) {
+        MenuItem litems[8];
+        int ln = 0;
+        char lb1[600], lb2[600];
+        add_info(litems, &ln, d->display_name);
+        if (MENU_SHOW_DEVICE_NODE) {
+            snprintf(lb1, sizeof(lb1), "Device: %s", d->device_node);
+            add_info(litems, &ln, lb1);
+        }
+        snprintf(lb2, sizeof(lb2), "Locked (LUKS)");
+        add_info(litems, &ln, lb2);
+        add_sep(litems, &ln);
+        if (MENU_ACTION_UNLOCK) add_action(litems, &ln, "Unlock...", ACT_UNLOCK, 1);
+        add_action(litems, &ln, "Forget Cached Passphrase", ACT_FORGET_PASSPHRASE, 1);
+
+        const char *llabel = NULL;
+        int lid = xmenu_show(dpy, x, y, litems, ln, &llabel);
+        if (lid == ACT_UNLOCK) {
+            action_unlock_device(dpy, x, y, d);
+        } else if (lid == ACT_FORGET_PASSPHRASE) {
+            if (d->uuid[0]) passphrase_cache_forget(d->uuid);
+            ud_notify("Passphrase Forgotten", d->display_name);
+        }
+        return;
+    }
+#endif
 
     MenuItem items[64];
     int n = 0;
@@ -495,6 +662,13 @@ void action_open_device_menu(Display *dpy, int x, int y, Device *d, DeviceList *
     if (!d->is_protected && MENU_ACTION_POWER_OFF)
         add_action(items, &n, "Power Off (Safely Remove)", ACT_POWER_OFF, d->can_power_off);
 
+#if ENABLE_LUKS
+    if (d->is_encrypted && d->parent_luks_path && MENU_ACTION_LOCK)
+        add_action(items, &n, "Lock", ACT_LOCK, 1);
+    if (d->is_encrypted && d->parent_luks_uuid && d->parent_luks_uuid[0])
+        add_action(items, &n, "Forget Cached Passphrase", ACT_FORGET_PASSPHRASE, 1);
+#endif
+
     if (MENU_ACTION_RELOAD)
         add_action(items, &n, "Reload", ACT_RELOAD, 1);
 
@@ -525,8 +699,8 @@ void action_open_device_menu(Display *dpy, int x, int y, Device *d, DeviceList *
             break;
         }
         case ACT_EJECT: {
-            int go = 1;
-            if (CONFIRM_EJECT) {
+            int go = ensure_drive_unmounted(dpy, x, y, d, list, "eject");
+            if (go && CONFIRM_EJECT) {
                 char q[300]; snprintf(q, sizeof(q), "Eject %s?", d->display_name);
                 go = confirm_dialog(dpy, x, y, q);
             }
@@ -534,8 +708,8 @@ void action_open_device_menu(Display *dpy, int x, int y, Device *d, DeviceList *
             break;
         }
         case ACT_POWER_OFF: {
-            int go = 1;
-            if (CONFIRM_POWER_OFF) {
+            int go = ensure_drive_unmounted(dpy, x, y, d, list, "power off");
+            if (go && CONFIRM_POWER_OFF) {
                 char q[300]; snprintf(q, sizeof(q), "Power off %s? This cuts power to the port.", d->display_name);
                 go = confirm_dialog(dpy, x, y, q);
             }
@@ -556,6 +730,13 @@ void action_open_device_menu(Display *dpy, int x, int y, Device *d, DeviceList *
             break;
         case ACT_RELOAD:
             action_signal_daemon_reload();
+            break;
+        case ACT_LOCK:
+            action_lock_device(dpy, x, y, d);
+            break;
+        case ACT_FORGET_PASSPHRASE:
+            if (d->parent_luks_uuid && d->parent_luks_uuid[0]) passphrase_cache_forget(d->parent_luks_uuid);
+            ud_notify("Passphrase Forgotten", d->display_name);
             break;
         default:
             if (id >= ACT_CUSTOM_BASE && id < ACT_CUSTOM_BASE + 900) {
@@ -583,6 +764,8 @@ static void mount_iso(Display *dpy, int x, int y) {
 
     char *block_path = NULL, *mount_point = NULL, *err = NULL;
     int ok = udisks_loop_mount_file(paths[0], &block_path, &mount_point, &err);
+
+    if (block_path) state_mark_iso_loop(block_path); /* even on partial failure -- see udisks_loop_mount_file: the loop device may still have been created and attached even if mounting its filesystem then failed, and it should still be reachable/detachable */
 
     if (ok && NOTIFY_ON_MOUNT_SUCCESS) {
         char body[900];
@@ -617,8 +800,24 @@ static void detach_isos_menu(Display *dpy, int x, int y) {
         const char *file = raw[i].loop_backing_file ? raw[i].loop_backing_file : "(unknown file)";
         const char *base = strrchr(file, '/');
         base = base ? base + 1 : file;
+
+        /* Mounted state: check the loop device itself, and (for
+         * hybrid/bootable ISOs) any partition of it too -- see
+         * udisks_loop_mount_file's comment on why the filesystem
+         * doesn't always end up directly on the loop device. */
+        int mounted = raw[i].n_mount_points > 0;
+        if (!mounted) {
+            for (int j = 0; j < n_raw; j++) {
+                if (raw[j].partition_table_path && !strcmp(raw[j].partition_table_path, raw[i].path) &&
+                    raw[j].n_mount_points > 0) {
+                    mounted = 1;
+                    break;
+                }
+            }
+        }
+
         snprintf(labels[n_loops], sizeof(labels[n_loops]), "Detach: %s%s", base,
-                 (raw[i].n_mount_points > 0) ? "" : " (unmounted)");
+                 mounted ? "" : " (unmounted)");
         loop_paths[n_loops] = strdup(raw[i].path);
         add_action(items, &n, labels[n_loops], ACT_GENERIC_DETACH_BASE + n_loops, 1);
         n_loops++;
@@ -635,12 +834,119 @@ static void detach_isos_menu(Display *dpy, int x, int y) {
         int idx = id - ACT_GENERIC_DETACH_BASE;
         char *err = NULL;
         int ok = udisks_loop_delete(loop_paths[idx], &err);
+        if (ok) state_unmark_iso_loop(loop_paths[idx]);
         if (!ok && NOTIFY_ON_UNMOUNT_FAILURE) ud_notify("Detach Failed", err ? err : "unknown error");
         free(err);
     }
 
     for (int i = 0; i < n_loops; i++) free(loop_paths[i]);
     udisks_free_raw_objects(raw, n_raw);
+}
+
+/* ------------------------------------------------------------------ */
+/* iso (mounted image) menu                                             */
+/* ------------------------------------------------------------------ */
+
+enum { ACT_ISO_OPEN_FILE_MANAGER = 7000, ACT_ISO_COPY_MOUNT_PATH, ACT_ISO_DETACH, ACT_ISO_RELOAD, ACT_ISO_CUSTOM_BASE = 7100 };
+
+void action_open_iso_menu(Display *dpy, int x, int y, Device *d) {
+    MenuItem items[32];
+    int n = 0;
+    char pool[8][700];
+    int pn = 0;
+#define IBUF() pool[pn++]
+
+    add_info(items, &n, d->display_name);
+    if (MENU_SHOW_ISO_BACKING_FILE && d->loop_backing_file && d->loop_backing_file[0]) {
+        char *b = IBUF(); snprintf(b, 700, "File: %s", d->loop_backing_file);
+        add_info(items, &n, b);
+    }
+    if (d->is_mounted) {
+        if (MENU_SHOW_ISO_MOUNT_POINT) {
+            char *b = IBUF(); snprintf(b, 700, "Mount: %s", d->mount_point ? d->mount_point : "?");
+            add_info(items, &n, b);
+        }
+        if (d->usage_valid) {
+            char sz[16];
+            if (MENU_SHOW_ISO_USED) {
+                device_format_size(d->used_bytes, sz, sizeof(sz));
+                char *b = IBUF(); snprintf(b, 700, "Used: %s", sz);
+                add_info(items, &n, b);
+            }
+            if (MENU_SHOW_ISO_FREE) {
+                device_format_size(d->free_bytes, sz, sizeof(sz));
+                char *b = IBUF(); snprintf(b, 700, "Free: %s", sz);
+                add_info(items, &n, b);
+            }
+            if (MENU_SHOW_ISO_TOTAL) {
+                device_format_size(d->total_bytes, sz, sizeof(sz));
+                char *b = IBUF(); snprintf(b, 700, "Total: %s", sz);
+                add_info(items, &n, b);
+            }
+        }
+    } else {
+        char *b = IBUF(); snprintf(b, 700, "Not mounted");
+        add_info(items, &n, b);
+    }
+
+    add_sep(items, &n);
+
+    if (d->is_mounted && MENU_ACTION_ISO_OPEN_FILE_MANAGER)
+        add_action(items, &n, "Open in File Manager", ACT_ISO_OPEN_FILE_MANAGER, 1);
+    if (d->is_mounted && MENU_ACTION_ISO_COPY_MOUNT_PATH)
+        add_action(items, &n, "Copy Mount Path", ACT_ISO_COPY_MOUNT_PATH, 1);
+    if (MENU_ACTION_ISO_DETACH)
+        add_action(items, &n, "Detach", ACT_ISO_DETACH, 1);
+    if (MENU_ACTION_ISO_RELOAD)
+        add_action(items, &n, "Reload", ACT_ISO_RELOAD, 1);
+
+    if (CUSTOM_ISO_MENU_ENTRIES[0].command_template) add_sep(items, &n);
+    for (int i = 0; CUSTOM_ISO_MENU_ENTRIES[i].command_template; i++)
+        add_action(items, &n, CUSTOM_ISO_MENU_ENTRIES[i].label, ACT_ISO_CUSTOM_BASE + i, 1);
+
+    const char *label = NULL;
+    int id = xmenu_show(dpy, x, y, items, n, &label);
+    if (id < 0) return;
+
+    switch (id) {
+        case ACT_ISO_OPEN_FILE_MANAGER:
+            launch_file_manager(d);
+            break;
+        case ACT_ISO_COPY_MOUNT_PATH:
+            if (d->mount_point) copy_to_clipboard(dpy, d->mount_point);
+            break;
+        case ACT_ISO_DETACH: {
+            int go = 1;
+            if (CONFIRM_ISO_DETACH) {
+                char q[400]; snprintf(q, sizeof(q), "Detach %s?", d->display_name);
+                go = confirm_dialog(dpy, x, y, q);
+            }
+            if (go) {
+                char *err = NULL;
+                int ok = udisks_loop_delete(d->object_path, &err);
+                if (ok) {
+                    state_unmark_iso_loop(d->object_path);
+                    if (NOTIFY_ON_UNMOUNT_SUCCESS) ud_notify("ISO Detached", d->display_name);
+                } else if (NOTIFY_ON_UNMOUNT_FAILURE) {
+                    char body[900]; snprintf(body, sizeof(body), "%s: %s", d->display_name, err ? err : "unknown error");
+                    ud_notify("Detach Failed", body);
+                }
+                free(err);
+            }
+            break;
+        }
+        case ACT_ISO_RELOAD:
+            action_signal_daemon_reload();
+            break;
+        default:
+            if (id >= ACT_ISO_CUSTOM_BASE && id < ACT_ISO_CUSTOM_BASE + 900) {
+                int i = id - ACT_ISO_CUSTOM_BASE;
+                if (CUSTOM_ISO_MENU_ENTRIES[i].command_template)
+                    run_custom_entry(CUSTOM_ISO_MENU_ENTRIES[i].command_template, d);
+            }
+            break;
+    }
+#undef IBUF
 }
 
 void action_open_generic_menu(Display *dpy, int x, int y, DeviceList *list) {
@@ -688,4 +994,149 @@ void action_open_generic_menu(Display *dpy, int x, int y, DeviceList *list) {
         if (CUSTOM_GENERIC_MENU_ENTRIES[i].command_template)
             run_custom_entry(CUSTOM_GENERIC_MENU_ENTRIES[i].command_template, NULL);
     }
+}
+
+/* ------------------------------------------------------------------ */
+/* mtp (phone) menu                                                     */
+/* ------------------------------------------------------------------ */
+
+static void mtp_substitute_raw(const char *tmpl, const MtpDevice *m, char *out, size_t outlen) {
+    out[0] = '\0';
+    size_t o = 0;
+    for (const char *p = tmpl; *p && o < outlen - 1; ) {
+        const char *rep = NULL;
+        size_t skip = 0;
+        if (!strncmp(p, "{NAME}", 6)) { rep = m->display_name; skip = 6; }
+        else if (!strncmp(p, "{MOUNTPOINT}", 12)) { rep = m->mount_point ? m->mount_point : ""; skip = 12; }
+        else if (!strncmp(p, "{SELF}", 6)) { rep = render_self_path(NULL); skip = 6; }
+
+        if (rep) {
+            size_t rl = strlen(rep);
+            if (o + rl >= outlen) rl = outlen - 1 - o;
+            memcpy(out + o, rep, rl);
+            o += rl;
+            p += skip;
+        } else {
+            out[o++] = *p++;
+        }
+    }
+    out[o] = '\0';
+}
+
+static void mtp_run_custom_entry(const char *tmpl, const MtpDevice *m) {
+    char buf[2048];
+    mtp_substitute_raw(tmpl, m, buf, sizeof(buf));
+    char *argv[32];
+    if (split_ws(buf, argv, 32) > 0) spawn_argv(argv);
+}
+
+static void mtp_launch_file_manager(const MtpDevice *m) {
+    char tmpl[512];
+    snprintf(tmpl, sizeof(tmpl), "%s", FILE_MANAGER_CMD);
+    char *sp = strchr(tmpl, ' ');
+    char *rest = NULL;
+    if (sp) { *sp = '\0'; rest = sp + 1; }
+    char arg[1024] = "";
+    if (rest) mtp_substitute_raw(rest, m, arg, sizeof(arg));
+    char *argv[3];
+    int i = 0;
+    argv[i++] = tmpl;
+    if (arg[0]) argv[i++] = arg;
+    argv[i] = NULL;
+    spawn_argv(argv);
+}
+
+void action_open_mtp_menu(Display *dpy, int x, int y, MtpDevice *m) {
+    MenuItem items[32];
+    int n = 0;
+    char pool[8][600];
+    int pn = 0;
+#define MBUF() pool[pn++]
+
+    add_info(items, &n, m->display_name);
+    if (MENU_SHOW_MTP_SERIAL && m->serial[0]) {
+        char *b = MBUF(); snprintf(b, 600, "Serial: %s", m->serial);
+        add_info(items, &n, b);
+    }
+    if (m->is_mounted) {
+        char *b = MBUF(); snprintf(b, 600, "Mount: %s", m->mount_point ? m->mount_point : "?");
+        add_info(items, &n, b);
+        if (m->usage_valid) {
+            char sz[16];
+            device_format_size(m->used_bytes, sz, sizeof(sz));
+            char *b1 = MBUF(); snprintf(b1, 600, "Used: %s", sz);
+            add_info(items, &n, b1);
+            device_format_size(m->free_bytes, sz, sizeof(sz));
+            char *b2 = MBUF(); snprintf(b2, 600, "Free: %s", sz);
+            add_info(items, &n, b2);
+        } else {
+            char *b1 = MBUF(); snprintf(b1, 600, "Usage: unavailable (this phone/MTP stack doesn't report it)");
+            add_info(items, &n, b1);
+        }
+    } else {
+        char *b = MBUF(); snprintf(b, 600, "Not mounted");
+        add_info(items, &n, b);
+    }
+
+    add_sep(items, &n);
+
+    if (!m->is_mounted && MENU_ACTION_MTP_MOUNT) add_action(items, &n, "Mount", ACT_MTP_MOUNT, 1);
+    if (m->is_mounted && MENU_ACTION_MTP_UNMOUNT) add_action(items, &n, "Unmount", ACT_MTP_UNMOUNT, 1);
+    if (m->is_mounted && MENU_ACTION_MTP_OPEN_FILE_MANAGER)
+        add_action(items, &n, "Open in File Manager", ACT_MTP_OPEN_FILE_MANAGER, 1);
+    if (m->is_mounted && MENU_ACTION_MTP_COPY_MOUNT_PATH)
+        add_action(items, &n, "Copy Mount Path", ACT_MTP_COPY_MOUNT_PATH, 1);
+    if (MENU_ACTION_MTP_RELOAD) add_action(items, &n, "Reload", ACT_MTP_RELOAD, 1);
+
+    if (CUSTOM_MTP_MENU_ENTRIES[0].command_template) add_sep(items, &n);
+    for (int i = 0; CUSTOM_MTP_MENU_ENTRIES[i].command_template; i++)
+        add_action(items, &n, CUSTOM_MTP_MENU_ENTRIES[i].label, ACT_MTP_CUSTOM_BASE + i, 1);
+
+    const char *label = NULL;
+    int id = xmenu_show(dpy, x, y, items, n, &label);
+    if (id < 0) return;
+
+    switch (id) {
+        case ACT_MTP_MOUNT: {
+            char *err = NULL;
+            int ok = mtp_perform_mount(m, &err);
+            if (ok && NOTIFY_ON_MTP_MOUNT_SUCCESS) {
+                char body[900]; snprintf(body, sizeof(body), "%s mounted at %s", m->display_name, m->mount_point);
+                ud_notify("Phone Mounted", body);
+            } else if (!ok && NOTIFY_ON_MTP_MOUNT_FAILURE) {
+                char body[900]; snprintf(body, sizeof(body), "%s: %s", m->display_name, err ? err : "unknown error");
+                ud_notify("Mount Failed", body);
+            }
+            free(err);
+            break;
+        }
+        case ACT_MTP_UNMOUNT: {
+            char *err = NULL;
+            int ok = mtp_perform_unmount(m, &err);
+            if (ok && NOTIFY_ON_MTP_UNMOUNT_SUCCESS) ud_notify("Phone Unmounted", m->display_name);
+            else if (!ok) {
+                char body[900]; snprintf(body, sizeof(body), "%s: %s", m->display_name, err ? err : "unknown error");
+                ud_notify("Unmount Failed", body);
+            }
+            free(err);
+            break;
+        }
+        case ACT_MTP_OPEN_FILE_MANAGER:
+            mtp_launch_file_manager(m);
+            break;
+        case ACT_MTP_COPY_MOUNT_PATH:
+            if (m->mount_point) copy_to_clipboard(dpy, m->mount_point);
+            break;
+        case ACT_MTP_RELOAD:
+            action_signal_daemon_reload();
+            break;
+        default:
+            if (id >= ACT_MTP_CUSTOM_BASE && id < ACT_MTP_CUSTOM_BASE + 900) {
+                int i = id - ACT_MTP_CUSTOM_BASE;
+                if (CUSTOM_MTP_MENU_ENTRIES[i].command_template)
+                    mtp_run_custom_entry(CUSTOM_MTP_MENU_ENTRIES[i].command_template, m);
+            }
+            break;
+    }
+#undef MBUF
 }

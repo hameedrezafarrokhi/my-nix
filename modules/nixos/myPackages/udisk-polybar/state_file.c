@@ -157,3 +157,72 @@ pid_t load_daemon_pid(void) {
     fclose(f);
     return (got == 1 && v > 0) ? (pid_t)v : 0;
 }
+
+/* iso-loops file: one UDisks object path per line. Tiny, flat,
+ * rewritten in full on every change -- same reasoning as
+ * mount-links: there will never be more than a handful of entries. */
+
+int state_is_tracked_iso_loop(const char *object_path) {
+    if (!object_path || !object_path[0]) return 0;
+    char *path = state_path("iso-loops");
+    if (!path) return 0;
+    FILE *f = fopen(path, "r");
+    free(path);
+    if (!f) return 0;
+
+    char line[1024];
+    int found = 0;
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+        if (len > 0 && !strcmp(line, object_path)) { found = 1; break; }
+    }
+    fclose(f);
+    return found;
+}
+
+void state_mark_iso_loop(const char *object_path) {
+    if (!object_path || !object_path[0]) return;
+    if (state_is_tracked_iso_loop(object_path)) return; /* already there */
+
+    char *path = state_path("iso-loops");
+    if (!path) return;
+    FILE *f = fopen(path, "a");
+    if (f) {
+        fprintf(f, "%s\n", object_path);
+        fclose(f);
+    }
+    free(path);
+}
+
+void state_unmark_iso_loop(const char *object_path) {
+    if (!object_path || !object_path[0]) return;
+    char *path = state_path("iso-loops");
+    if (!path) return;
+
+    char **kept = NULL;
+    int n = 0;
+
+    FILE *in = fopen(path, "r");
+    if (in) {
+        char line[1024];
+        while (fgets(line, sizeof(line), in)) {
+            size_t len = strlen(line);
+            while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+            if (len == 0 || !strcmp(line, object_path)) continue; /* dropped */
+            kept = realloc(kept, sizeof(char *) * (n + 1));
+            kept[n++] = strdup(line);
+        }
+        fclose(in);
+    }
+
+    FILE *out = fopen(path, "w");
+    if (out) {
+        for (int i = 0; i < n; i++) fprintf(out, "%s\n", kept[i]);
+        fclose(out);
+    }
+
+    for (int i = 0; i < n; i++) free(kept[i]);
+    free(kept);
+    free(path);
+}

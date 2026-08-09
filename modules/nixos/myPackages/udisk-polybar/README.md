@@ -10,15 +10,8 @@ shelling out.
 This is Round 1: the core disk-management path end to end (discovery,
 filtering, mount/unmount/eject/power-off, usage checking, colors,
 menus, notifications, confirmation, automount, custom mount-point
-symlinks, ISO mounting). Two things were deliberately deferred to a
-later round, per our conversation:
-
-- **MTP (phones/Android via gvfs)** -- not implemented yet.
-- **LUKS-encrypted external drives** -- currently filtered out
-  entirely (see "What's filtered out" below), same as loop/zram
-  devices. Unlocking would mean a passphrase-entry dialog plus a fair
-  bit of state tracking for the resulting cleartext device; wanted to
-  get the core path solid first.
+symlinks, ISO mounting). Round 2 added LUKS unlock/lock and Android
+(MTP) support -- see their own sections below.
 
 UDisks2 itself is still the thing doing the actual mounting -- we
 decided against reinventing that layer (its own README explains why:
@@ -33,19 +26,24 @@ make
 make install    # copies to ~/.local/bin/polybar-udisks (override with PREFIX=)
 ```
 
-Needs `dbus-1`, `x11`, `xft`, `xext` dev packages (same as
-polybar-kdeconnect). On NixOS, something like:
+Needs `dbus-1`, `x11`, `xft`, `xext`, `libudev`, and `keyutils` dev
+packages. On NixOS, something like:
 
 ```nix
-buildInputs = [ dbus xorg.libX11 xorg.libXft xorg.libXext ];
+buildInputs = [ dbus xorg.libX11 xorg.libXft xorg.libXext systemd keyutils ];
 nativeBuildInputs = [ pkg-config ];
 ```
 
+Two optional runtime tools, needed only for the features they enable:
+`gio` (part of the `glib`/`gvfs` toolchain -- practically always
+already present on any Linux desktop) plus the `gvfs` package with its
+D-Bus service active for phone mounting, and a notification daemon
+(dunst, mako, etc) if you want `NOTIFY_ON_*` to do anything. Neither
+is required to build or to use the disk-management features.
+
 Running it needs `udisks2` and `polkit` active (they almost certainly
 already are on NixOS -- `services.udisks2.enable = true;` is the
-relevant option, on by default on most desktop configs) and a
-notification daemon if you want `NOTIFY_ON_*` to do anything (dunst,
-mako, etc -- optional).
+relevant option, on by default on most desktop configs).
 
 **Permissions:** UDisks' own polkit rules already allow the active
 local session user to mount/unmount/eject/power-off *removable* media
@@ -106,6 +104,10 @@ polybar-udisks -m [-i ID]               open a device's action menu
                                           (uses whichever device menu was opened
                                           most recently if -i is omitted, or the
                                           only device if exactly one is attached)
+polybar-udisks --mtp -m [-i ID]         open a phone's action menu
+                                          (ID is a serial, or "bus:dev";
+                                          omit -i if exactly one phone is attached)
+polybar-udisks --iso -m -i ID           open a mounted ISO's action menu
 polybar-udisks --generic-menu           open the non-device menu
 
   -j / --json          print JSON instead of polybar markup (-d/--daemon)
@@ -196,6 +198,17 @@ The protected-mount-prefix / `HintSystem` check described above is
 filter on which menu rows even appear, checked before any
 confirmation dialog would run.
 
+**Eject/Power Off and sibling partitions:** both act on the whole
+drive, not just the partition you clicked -- UDisks fails them with
+"busy" if *any* partition on that drive is still mounted, including
+ones other than the row you clicked (a USB stick with two partitions,
+only one mounted, is enough to trigger this). `EJECT_POWEROFF_UNMOUNT_MODE`
+controls what happens with those before attempting Eject/Power Off:
+`NONE` (old behavior -- just try, fail if busy), `PROMPT` (default --
+one confirmation dialog listing what's still mounted, then unmount and
+proceed), or `ALWAYS` (unmount everything on that drive silently, no
+prompt, then proceed).
+
 ## Notifications
 
 Nine independent `NOTIFY_ON_*` toggles (mount/unmount success and
@@ -227,15 +240,38 @@ replugging it does re-arm automount for that attachment, as expected.
 A one-shot `-d` invocation never automounts anything as a side effect
 of printing bar text.
 
-## ISO / image mounting (generic menu)
+## ISO / image mounting
 
-"Mount ISO / Image..." opens the same searchable file-browser widget
-kdeconnect's `--send-file` uses, attaches the chosen file as a loop
-device via UDisks' `Manager.LoopSetup`, and mounts it read-only.
-"Detach ISO..." lists everything currently loop-mounted through this
-module (or anything else visible as a loop device, honestly -- UDisks
-doesn't distinguish) with a Detach action for each, which unmounts
-then deletes the loop device.
+"Mount ISO / Image..." (generic menu) opens the same searchable
+file-browser widget kdeconnect's `--send-file` uses, attaches the
+chosen file as a loop device via UDisks' `Manager.LoopSetup`, and
+mounts it read-only. Handles both plain ISO9660/UDF images (the loop
+device itself gets the mountable filesystem) and hybrid/bootable ISOs
+-- common for Linux distro install media, meant to be `dd`'d to a USB
+stick and booted -- where UDisks instead exposes the filesystem on a
+*partition* of the loop device because of the embedded MBR/GPT table;
+this is detected and mounted automatically either way.
+
+**Mounted ISOs get their own bar segment and dedicated menu**
+(`SHOW_MOUNTED_ISOS_IN_BAR`, on by default) -- Open in File Manager,
+Copy Mount Path, Detach, Reload, custom entries
+(`CUSTOM_ISO_MENU_ENTRIES`), reachable via `--iso -m -i ID` (same
+click-action convention as everything else). Only images mounted
+*through this module* ever show up this way: a typical desktop already
+has plenty of unrelated `/dev/loopN` devices in background use (snap
+packages, flatpak runtimes, squashfs images), and showing all of them
+would flood the bar with noise nobody wants -- this module tracks
+which loop devices it created itself
+(`$XDG_CACHE_HOME/polybar-udisks/iso-loops`) specifically to be able
+to tell the difference.
+
+The generic menu's "Detach ISO..." list is still there regardless of
+`SHOW_MOUNTED_ISOS_IN_BAR`, and still shows *every* loop-mounted image
+system-wide, tracked by this module or not (UDisks itself doesn't
+distinguish) -- useful as a catch-all cleanup tool, or if you'd rather
+not have ISOs in the bar at all. Either detach path unmounts the loop
+device and/or its partition (whichever applies) then deletes the loop
+device.
 
 ## Icons, colors, bar fields, menu fields
 
@@ -250,14 +286,24 @@ used/free/total/percent in both the bar (`BAR_SHOW_*`) and the menu
 
 ## JSON output
 
-`-j`/`--json` with `-d` or `--daemon` prints a JSON array (one object
-per device) instead of polybar markup -- one line per invocation/
-render, same convention as the kdeconnect module. Fields: `id`,
-`name`, `node`, `label`, `uuid`, `fs_type`, `external`, `removable`,
-`mounted`, `mount_point`, `symlink`, `read_only`, `protected`,
-`ejectable`, `can_power_off`, `size_bytes`, `usage_valid`,
-`used_bytes`, `free_bytes`, `total_bytes`, `percent_used`,
-`drive_vendor`, `drive_model`, `connection_bus`, `color`.
+`-j`/`--json` with `-d` or `--daemon` prints a JSON array instead of
+polybar markup -- one line per invocation/render, same convention as
+the kdeconnect module. Every object has a `"kind"` field -- `"disk"`,
+`"iso"`, or `"phone"` -- since the array holds all three. ISO objects
+reuse the same shape as disk objects (most disk-specific fields like
+`uuid`/`ejectable`/`drive_vendor` just come back empty/false for
+them); `name` is the image's filename.
+
+Disk/ISO fields: `id`, `name`, `node`, `label`, `uuid`, `fs_type`,
+`external`, `removable`, `mounted`, `mount_point`, `symlink`,
+`read_only`, `protected`, `ejectable`, `can_power_off`, `encrypted`,
+`locked`, `size_bytes`, `usage_valid`, `used_bytes`, `free_bytes`,
+`total_bytes`, `percent_used`, `drive_vendor`, `drive_model`,
+`connection_bus`, `color`.
+
+Phone fields: `id` (serial, or "bus:dev"), `name`, `serial`, `vendor`,
+`model`, `mounted`, `mount_point`, `usage_valid`, `used_bytes`,
+`free_bytes`, `total_bytes`, `percent_used`, `color`.
 
 ## Custom menu entries
 
@@ -271,14 +317,125 @@ support for spaces inside a substituted value either. Point at a
 wrapper script for anything fancier than a plain command + one
 placeholder.
 
+## LUKS unlock/lock
+
+Locked LUKS containers show as their own row (lock icon, "Unlock"
+only, no size/usage stats). Unlocking calls UDisks' own `Encrypted`
+interface (`Unlock`/`Lock`) over the same D-Bus connection as
+everything else -- no `cryptsetup`/libblockdev dependency. Once
+unlocked, the container's row disappears and the resulting cleartext
+filesystem takes its place as an ordinary device row (mount/unmount/
+usage/etc all work exactly like any other disk), with an added "Lock"
+action that unmounts it first if needed.
+
+**Passphrase entry** reuses the same modal text box as "Change Mount
+Point" (`xinput.c`), in password mode (masked with bullets).
+**Caching** lives *only* in the kernel's per-UID user keyring
+(`add_key`/`request_key`/`keyctl_read_alloc`/`keyctl_revoke` --
+`passphrase_cache.c`) -- never written to disk, never in a config
+file, gone once you're fully logged out. (Deliberately the *user*
+keyring rather than the *session* keyring: the session keyring only
+persists if your login went through PAM's `pam_keyinit`, which plenty
+of setups -- bare `startx`/`xinit`, many minimal WM configs -- never
+do; without it, each of this module's short-lived one-shot processes
+would get its own throwaway session keyring destroyed the instant it
+exits, so caching would silently do nothing. The user keyring needs no
+such setup.) `REMEMBER_PASSPHRASE_DEFAULT` is on by default, with
+per-device overrides in `PASSPHRASE_CACHE_OVERRIDES`; "Forget Cached
+Passphrase" clears one early without waiting to log out. If a cached
+passphrase gets rejected (e.g. you changed it outside this tool),
+it's dropped automatically and you're prompted fresh.
+
+`CONFIRM_LOCK` (off by default -- locking is non-destructive, it
+unmounts cleanly first) and `MENU_ACTION_UNLOCK`/`MENU_ACTION_LOCK`
+toggle the feature as usual. `ENABLE_LUKS 0` disables it entirely and
+reverts to Round 1 behavior (locked containers filtered out, same as
+any other device with no `Filesystem` interface).
+
+**Other encryption formats:** this doesn't hardcode LUKS specifically
+-- it reacts to UDisks' generic `Encrypted` interface, which UDisks
+populates for whatever its `cryptsetup` can auto-probe via `blkid`.
+That already covers LUKS1/LUKS2 always, and on a reasonably modern
+`cryptsetup`/`udisks2` (which NixOS will have), **BitLocker (BITLK)**
+removable drives too -- should unlock through the exact same code
+path with zero changes here. VeraCrypt/TrueCrypt volumes are a
+different story: they deliberately have no on-disk signature (the
+whole point is plausible deniability), so UDisks can't and won't
+auto-detect them at all. Supporting those would mean a dedicated
+feature shelling out to the `veracrypt` CLI directly -- not
+implemented yet, see "What's next" below.
+
+## Android / MTP
+
+No glib/gio, no libmtp linked into this binary -- we shell out to the
+`gio` CLI (same category of dependency as `xdg-open`, not a library
+link). Two pieces:
+
+- **Detection**: a `libudev` monitor (folded into the daemon's
+  existing `poll()` set -- one more fd, still 0% idle CPU) watching
+  for USB devices carrying the `ID_MTP_DEVICE=1` property. That
+  property is set by the `mtp-probe` udev rule that ships with
+  `libmtp`.
+- **Mounting**: `gio mount mtp://[usb:BUS,DEV]/`, using gvfs's MTP
+  backend -- actively maintained (part of freedesktop.org/GNOME,
+  regular releases; the same code GNOME Files uses for Android
+  transfers every day) and genuinely bidirectional. `gio mount` alone
+  only creates a *virtual* GIO mount; what makes it usable from `cp`/
+  `rsync`/any non-GIO program is gvfs's own FUSE bridge
+  (`gvfsd-fuse`, part of the same `gvfs` package), which mirrors it as
+  a real POSIX path under `$XDG_RUNTIME_DIR/gvfs/mtp:host=...` --
+  this module locates that path (trying the known naming convention
+  first, then falling back to diffing the directory listing for a few
+  seconds in case gvfsd-fuse needs a moment) and treats it as the
+  phone's mount point everywhere else. Unmounting is `gio mount -u`.
+
+This replaced an earlier `jmtpfs`-based approach -- essentially
+unmaintained, and its phone-to-PC-only transfer limitation turned out
+to be a real, long-standing bug in the tool itself, not something
+fixable from our side. gvfs doesn't have that problem.
+
+**Requires the `gvfs` package with its D-Bus service active** -- on
+NixOS, `services.gvfs.enable = true;`. `gio` itself should already be
+present (it ships with `glib`, which is on virtually every Linux
+desktop already). If mounting fails immediately with a "command not
+found"-style error even though `gio` works fine in a terminal, the
+process this module was launched from (often polybar itself) likely
+has a minimal `PATH` that doesn't include it -- set `GIO_CMD` in
+`config.h` to its absolute path (`which gio` in a normal terminal)
+and rebuild. Failure notifications now include gio's actual error
+output, not a guess, which should make any other failure mode
+self-explanatory too.
+
+Phones appear as their own bar segments (after disks, same
+`SEPARATOR`) and get their own menu: Mount, Unmount, Open in File
+Manager, Copy Mount Path, Reload, custom entries
+(`CUSTOM_MTP_MENU_ENTRIES`).
+
+A few things worth knowing:
+
+- **No automount for MTP, ever** -- MTP is slow and occasionally flaky
+  to enumerate depending on the phone/Android skin; a background
+  automount on every phone unlock/screen-on would be more annoying
+  than useful. Always a manual click.
+- **Usage stats are best-effort.** `statvfs()` on the FUSE mount works
+  for many phones, but some MTP stacks under-report or don't implement
+  it at all -- the menu just shows "unavailable" rather than a wrong
+  number in that case.
+- Multiple phones attached at once are disambiguated by USB bus/device
+  number (built into the `mtp://[usb:...]/` URI), so two phones won't
+  collide.
+- `ENABLE_MTP 0` disables the whole feature (no udev monitor opened,
+  no phone rows, `mtp.c`'s functions become no-ops).
+
 ## What's next (not in this round)
 
-- MTP/gvfs support for phones.
-- LUKS unlock/lock for encrypted external drives (currently just
-  hidden, same as any other device with no `Filesystem` interface).
 - Real render-dedup in daemon mode (currently reprints on every
   periodic usage-check tick even if the numbers came out identical --
   harmless with polybar's `tail = true`, just a very slightly noisier
   log/pipe than strictly necessary).
+- VeraCrypt/TrueCrypt volume support (UDisks can't auto-detect these
+  by design -- no on-disk signature -- so it'd mean a dedicated
+  feature shelling out to the `veracrypt` CLI directly, similar in
+  spirit to how MTP works).
 
 Let me know what to tackle first.

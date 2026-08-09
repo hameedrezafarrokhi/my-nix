@@ -190,6 +190,8 @@ in
         bspc rule -a systemctltui layer=above state=floating rectangle=1150x650+100+55
         bspc rule -a "Bongo Cat" layer=above state=floating sticky=on focus=off follow=off border=off
         bspc rule -a "SWGT" layer=above state=floating follow=off focus=off manage=on border=off sticky=on
+        bspc rule -a "Notif_center.py" state=floating layer=above
+        bspc rule -a "btop-app" layer=above state=floating
 
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating
@@ -218,6 +220,8 @@ in
         bspc rule -a *:*:"Delete item" layer=above state=floating
         bspc rule -a *:*:"Delete items" layer=above state=floating
         bspc rule -a *:*:"Copy path" layer=above state=floating
+        bspc rule -a *:*:"Copy item" layer=above state=floating
+        bspc rule -a *:*:"Copy items" layer=above state=floating
         bspc rule -a *:*:"Move or copy" layer=above state=floating
         bspc rule -a *:*:"Make folder" layer=above state=floating
         bspc rule -a *:*:"Create file" layer=above state=floating
@@ -307,7 +311,8 @@ in
         if hash xbanish >/dev/null 2>&1; then
           pkill xbanish
           sleep 0.5
-          xbanish -t 5 -s
+          #xbanish -t 5 -s
+          xbanish
         fi &
 
         if hash dockx >/dev/null 2>&1; then

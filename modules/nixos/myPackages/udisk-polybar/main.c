@@ -5,13 +5,14 @@
 #include <X11/Xlib.h>
 
 #include "device.h"
+#include "mtp.h"
 #include "actions.h"
 #include "daemon.h"
 #include "render.h"
 #include "state_file.h"
 #include "config.h"
 
-enum { OPT_GENERIC_MENU = 300, OPT_AT_POINTER, OPT_X, OPT_Y };
+enum { OPT_GENERIC_MENU = 300, OPT_AT_POINTER, OPT_X, OPT_Y, OPT_MTP, OPT_ISO };
 
 static void usage(const char *prog) {
     fprintf(stderr,
@@ -21,6 +22,9 @@ static void usage(const char *prog) {
         "  %s -m [-i ID] [pos. opts]        open a device's action menu\n"
         "                                     (uses the most recently clicked device\n"
         "                                     if -i is omitted)\n"
+        "  %s --mtp -m [-i ID] [pos. opts]  open a phone's action menu\n"
+        "                                     (ID is a serial, or \"bus:dev\")\n"
+        "  %s --iso -m -i ID [pos. opts]    open a mounted ISO's action menu\n"
         "  %s --generic-menu [pos. opts]    open the non-device menu (Mount ISO, etc)\n"
         "\n"
         "Position overrides for -m/--generic-menu (default: config.h\n"
@@ -28,7 +32,7 @@ static void usage(const char *prog) {
         "  --at-pointer     force opening at the current pointer position\n"
         "  --x N            open at this fixed X coordinate\n"
         "  --y N            open at this fixed Y coordinate\n",
-        prog, prog, prog, prog);
+        prog, prog, prog, prog, prog, prog);
 }
 
 static void resolve_position(Display *dpy, int force_pointer, int has_x, int x_val,
@@ -46,13 +50,15 @@ static void resolve_position(Display *dpy, int force_pointer, int has_x, int x_v
 }
 
 int main(int argc, char *argv[]) {
-    int opt_daemon = 0, opt_once = 0, opt_menu = 0, opt_generic_menu = 0, opt_json = 0;
+    int opt_daemon = 0, opt_once = 0, opt_menu = 0, opt_generic_menu = 0, opt_json = 0, opt_mtp = 0, opt_iso = 0;
     int has_x = 0, has_y = 0, x_val = 0, y_val = 0, force_pointer = 0;
     const char *dev_id = NULL;
 
     static struct option long_opts[] = {
         {"daemon",        no_argument,       0, 'D'},
         {"json",          no_argument,       0, 'j'},
+        {"mtp",           no_argument,       0, OPT_MTP},
+        {"iso",           no_argument,       0, OPT_ISO},
         {"generic-menu",  no_argument,       0, OPT_GENERIC_MENU},
         {"at-pointer",    no_argument,       0, OPT_AT_POINTER},
         {"x",             required_argument, 0, OPT_X},
@@ -68,6 +74,8 @@ int main(int argc, char *argv[]) {
             case 'j': opt_json = 1; break;
             case 'i': dev_id = optarg; break;
             case 'm': opt_menu = 1; break;
+            case OPT_MTP: opt_mtp = 1; break;
+            case OPT_ISO: opt_iso = 1; break;
             case OPT_GENERIC_MENU: opt_generic_menu = 1; break;
             case OPT_AT_POINTER: force_pointer = 1; break;
             case OPT_X: has_x = 1; x_val = atoi(optarg); break;
@@ -94,8 +102,51 @@ int main(int argc, char *argv[]) {
     } else if (opt_once) {
         DeviceList list = { NULL, 0 };
         device_list_build(&list);
-        if (opt_json) render_json(&list);
-        else render_bar(&list);
+
+        int have_mtp = mtp_init();
+        MtpDeviceList mtp_list = { NULL, 0 };
+        if (have_mtp) mtp_list_build(&mtp_list, NULL);
+
+        if (opt_json) render_json(&list, have_mtp ? &mtp_list : NULL);
+        else render_bar(&list, have_mtp ? &mtp_list : NULL);
+
+        device_list_free(&list);
+        if (have_mtp) mtp_list_free(&mtp_list);
+    } else if (opt_menu && opt_mtp) {
+        int have_mtp = mtp_init();
+        MtpDeviceList mtp_list = { NULL, 0 };
+        if (have_mtp) mtp_list_build(&mtp_list, NULL);
+
+        MtpDevice *m = dev_id ? mtp_list_find(&mtp_list, dev_id) : NULL;
+        if (!m && mtp_list.count == 1) m = &mtp_list.items[0];
+
+        if (m) {
+            int x, y;
+            resolve_position(dpy, force_pointer, has_x, x_val, has_y, y_val, &x, &y);
+            action_open_mtp_menu(dpy, x, y, m);
+        } else {
+            fprintf(stderr, "polybar-udisks: no phone to show a menu for "
+                             "(pass -i ID, or click a phone segment so its ID is known)\n");
+            rc = 1;
+        }
+
+        if (have_mtp) mtp_list_free(&mtp_list);
+    } else if (opt_menu && opt_iso) {
+        DeviceList list = { NULL, 0 };
+        device_list_build(&list);
+
+        Device *d = dev_id ? device_list_find(&list, dev_id) : NULL;
+        if (d && !d->is_loop) d = NULL; /* only ever route a genuine ISO row here */
+
+        if (d) {
+            int x, y;
+            resolve_position(dpy, force_pointer, has_x, x_val, has_y, y_val, &x, &y);
+            action_open_iso_menu(dpy, x, y, d);
+        } else {
+            fprintf(stderr, "polybar-udisks: no mounted ISO to show a menu for (pass -i ID)\n");
+            rc = 1;
+        }
+
         device_list_free(&list);
     } else if (opt_menu) {
         DeviceList list = { NULL, 0 };

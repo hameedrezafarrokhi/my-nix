@@ -3,6 +3,7 @@
 
 #include <X11/Xlib.h>
 #include "device.h"
+#include "mtp.h"
 
 /* Mount/unmount/eject/power-off, with notifications wired to the
  * NOTIFY_ON_* toggles. No confirmation dialog and no Display needed
@@ -13,6 +14,27 @@ int action_perform_mount(Device *d, char **out_mount_point);
 int action_perform_unmount(Device *d, int force);
 int action_perform_eject(Device *d);
 int action_perform_power_off(Device *d);
+
+/* Unlocks the LUKS container `d` represents (must have d->is_locked
+ * set). Prompts for a passphrase (checking the session-keyring cache
+ * first if enabled for this device), then attempts to mount the
+ * resulting cleartext filesystem immediately. Notifications wired to
+ * the NOTIFY_ON_UNLOCK_ and NOTIFY_ON_MOUNT_ toggles. */
+void action_unlock_device(Display *dpy, int x, int y, Device *d);
+
+/* Locks the container behind cleartext row `d` (must have
+ * d->parent_luks_path set) -- unmounts first if needed. */
+void action_lock_device(Display *dpy, int x, int y, Device *d);
+
+/* Opens a phone's action menu (Mount/Unmount/Open in File Manager/
+ * Copy Mount Path/Reload/custom entries) -- same shape as
+ * action_open_device_menu but for an MtpDevice. */
+void action_open_mtp_menu(Display *dpy, int x, int y, MtpDevice *m);
+
+/* Opens a mounted ISO/image's dedicated menu (Open in File Manager/
+ * Copy Mount Path/Detach/Reload/custom entries). `d` must have
+ * d->is_loop set (see device.h). */
+void action_open_iso_menu(Display *dpy, int x, int y, Device *d);
 
 /* Opens the per-device popup menu at (x, y) and blocks until the user
  * picks something or cancels, performing whatever was picked

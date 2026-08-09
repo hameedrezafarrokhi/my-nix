@@ -52,6 +52,13 @@ int device_should_automount(const Device *d) {
     return AUTOMOUNT_GLOBAL_DEFAULT;
 }
 
+int device_should_remember_passphrase(const Device *d) {
+    for (int i = 0; PASSPHRASE_CACHE_OVERRIDES[i].match; i++) {
+        if (device_matches_pattern(d, PASSPHRASE_CACHE_OVERRIDES[i].match)) return PASSPHRASE_CACHE_OVERRIDES[i].remember;
+    }
+    return REMEMBER_PASSPHRASE_DEFAULT;
+}
+
 /* ------------------------------------------------------------------ */
 /* formatting                                                          */
 /* ------------------------------------------------------------------ */
@@ -83,6 +90,10 @@ static const char *icon_by_kind(const Device *d) {
 }
 
 const char *device_effective_icon(const Device *d) {
+#if ENABLE_LUKS
+    if (d->is_locked) return ICON_LUKS_LOCKED;
+#endif
+    if (d->is_loop) return ICON_ISO_MOUNTED[0] ? ICON_ISO_MOUNTED : ICON_DEVICE_GENERIC;
     const DeviceOverride *ov = find_override(d);
     if (ov) {
         const char *specific = d->is_mounted ? ov->icon_mounted : ov->icon_unmounted;
@@ -200,9 +211,11 @@ static int should_hide_raw(const UdisksRawObject *o) {
         if (FILTER_HIDE_ZRAM_DEVICES && !strncmp(o->device_node, "/dev/zram", 9)) return 1;
     }
 
-    /* Encrypted (LUKS) containers and anything without a recognized
-     * filesystem (extended partitions, empty partition tables, swap)
-     * are skipped for now -- see README's "not in this round" list. */
+    /* Anything without a recognized filesystem (extended partitions,
+     * empty partition tables, swap) is skipped. LUKS containers are
+     * handled separately in device_list_build() *before* this check
+     * runs against them, since a locked container legitimately has no
+     * Filesystem interface yet. */
     if (FILTER_REQUIRE_FILESYSTEM && !o->has_filesystem) return 1;
 
     if (FILTER_MIN_SIZE_BYTES > 0 && o->size < (unsigned long long)FILTER_MIN_SIZE_BYTES) return 1;
@@ -211,6 +224,54 @@ static int should_hide_raw(const UdisksRawObject *o) {
         if (raw_matches_pattern(o, HIDDEN_DEVICES[i])) return 1;
 
     return 0;
+}
+
+static void fill_common_fields(Device *d, const UdisksRawObject *o, const UdisksRawObject *drive_src) {
+    d->object_path = strdup(o->path);
+    d->device_node = strdup(o->device_node ? o->device_node : "");
+    d->label = strdup(o->id_label ? o->id_label : "");
+    d->uuid = strdup(o->id_uuid ? o->id_uuid : "");
+    d->fs_type = strdup(o->id_type ? o->id_type : "");
+    d->size_bytes = o->size;
+    d->read_only = o->read_only;
+    /* HintSystem, like the Drive-linked fields below, comes from
+     * `drive_src` too: UDisks appears to default a cleartext LUKS
+     * device's own HintSystem to true when it can't trace it back to
+     * a removable drive (which it usually can't, for the same reason
+     * its own Drive property is typically unset) -- this was
+     * silently marking every unlocked drive "protected" and hiding
+     * Eject/Power Off/Unmount, even though the underlying physical
+     * drive is perfectly ordinary and removable. */
+    d->hint_system = drive_src->hint_system;
+    d->is_loop = o->has_loop;
+    d->loop_backing_file = o->loop_backing_file ? strdup(o->loop_backing_file) : NULL;
+
+    /* Drive-linked fields (which physical drive this belongs to, and
+     * everything Eject/Power Off need) come from `drive_src`, not
+     * necessarily `o` itself -- for a LUKS cleartext device, `o`'s own
+     * Drive property is typically unset (only the locked container
+     * reliably carries it), so the caller passes the container's raw
+     * object here instead when there is one. For every non-encrypted
+     * device drive_src == o and this is just o's own info. */
+    d->drive_object_path = drive_src->drive_path ? strdup(drive_src->drive_path) : NULL;
+    d->drive_vendor = strdup(drive_src->drive_vendor ? drive_src->drive_vendor : "");
+    d->drive_model = strdup(drive_src->drive_model ? drive_src->drive_model : "");
+    d->drive_serial = strdup(drive_src->drive_serial ? drive_src->drive_serial : "");
+    d->connection_bus = strdup(drive_src->connection_bus ? drive_src->connection_bus : "");
+    d->removable = drive_src->drive_removable;
+    d->ejectable = drive_src->drive_ejectable;
+    d->can_power_off = drive_src->drive_can_power_off;
+}
+
+static void resolve_display_name(Device *d) {
+    const DeviceOverride *ov = find_override(d);
+    if (ov && ov->display_name && ov->display_name[0]) {
+        snprintf(d->display_name, sizeof(d->display_name), "%s", ov->display_name);
+    } else if (d->label[0]) {
+        snprintf(d->display_name, sizeof(d->display_name), "%s", d->label);
+    } else {
+        snprintf(d->display_name, sizeof(d->display_name), "%s", d->device_node);
+    }
 }
 
 int device_list_build(DeviceList *list) {
@@ -229,32 +290,120 @@ int device_list_build(DeviceList *list) {
 
     for (int i = 0; i < n_raw; i++) {
         UdisksRawObject *o = &raw[i];
+
+        if (o->has_loop && state_is_tracked_iso_loop(o->path)) {
+#if SHOW_MOUNTED_ISOS_IN_BAR
+            /* The mountable filesystem might be on the loop device
+             * itself, or (for hybrid/bootable ISOs) a partition of it
+             * -- see udisks_loop_mount_file's comment on why. Check
+             * both. */
+            int is_mounted = (o->n_mount_points > 0 && o->mount_points[0] && o->mount_points[0][0]);
+            char *mount_point = is_mounted ? strdup(o->mount_points[0]) : NULL;
+            if (!is_mounted) {
+                for (int k = 0; k < n_raw; k++) {
+                    if (raw[k].partition_table_path && !strcmp(raw[k].partition_table_path, o->path) &&
+                        raw[k].n_mount_points > 0 && raw[k].mount_points[0] && raw[k].mount_points[0][0]) {
+                        is_mounted = 1;
+                        mount_point = strdup(raw[k].mount_points[0]);
+                        break;
+                    }
+                }
+            }
+
+            Device d;
+            memset(&d, 0, sizeof(d));
+            d.object_path = strdup(o->path); /* the loop device's own path -- what Detach needs */
+            d.device_node = strdup(o->device_node ? o->device_node : "");
+            d.label = strdup("");
+            d.uuid = strdup("");
+            d.fs_type = strdup(o->id_type ? o->id_type : "");
+            d.drive_vendor = strdup(""); d.drive_model = strdup(""); d.drive_serial = strdup(""); d.connection_bus = strdup("");
+            d.is_loop = 1;
+            d.loop_backing_file = strdup(o->loop_backing_file ? o->loop_backing_file : "");
+            d.is_mounted = is_mounted;
+            d.mount_point = mount_point;
+            d.is_external = 1;
+            d.is_protected = 0; /* an ISO you mounted yourself is never "protected" -- always safe to detach */
+
+            const char *base = strrchr(d.loop_backing_file, '/');
+            base = base ? base + 1 : d.loop_backing_file;
+            snprintf(d.display_name, sizeof(d.display_name), "%s", base[0] ? base : d.device_node);
+
+            refresh_usage_one(&d);
+            resolve_color(&d);
+
+            items = realloc(items, sizeof(Device) * (count + 1));
+            items[count++] = d;
+#endif
+            continue; /* never fall through to the generic filtering path for a tracked ISO loop */
+        }
+
+        if (o->has_encrypted) {
+            /* Is there a currently-unlocked cleartext child pointing
+             * back at this container? If so, that cleartext object
+             * gets its own row below (with parent_luks_path set) and
+             * this container row is skipped entirely -- one row per
+             * physical drive, not two. */
+            int has_unlocked_child = 0;
+            for (int j = 0; j < n_raw; j++) {
+                if (raw[j].crypto_backing_device && !strcmp(raw[j].crypto_backing_device, o->path)) {
+                    has_unlocked_child = 1;
+                    break;
+                }
+            }
+            if (has_unlocked_child) continue;
+
+#if ENABLE_LUKS
+            if (o->hint_ignore) continue;
+            int skip = 0;
+            for (int h = 0; HIDDEN_DEVICES[h]; h++)
+                if (raw_matches_pattern(o, HIDDEN_DEVICES[h])) { skip = 1; break; }
+            if (skip) continue;
+
+            int external = classify_external(o);
+            if (!external && !SHOW_INTERNAL_DEVICES) continue;
+
+            Device d;
+            memset(&d, 0, sizeof(d));
+            fill_common_fields(&d, o, o);
+            d.is_encrypted = 1;
+            d.is_locked = 1;
+            d.is_external = external;
+            d.is_protected = is_protected_mount(NULL, d.hint_system);
+            resolve_display_name(&d);
+            resolve_color(&d); /* !is_mounted -> DEVICE_COLOR_UNMOUNTED, same as any unmounted device */
+
+            items = realloc(items, sizeof(Device) * (count + 1));
+            items[count++] = d;
+#endif
+            continue; /* never fall through to the generic path for a container row */
+        }
+
         if (should_hide_raw(o)) continue;
 
-        int external = classify_external(o);
+        /* For a cleartext device unlocked from a LUKS container, the
+         * dm-crypt object itself often doesn't carry its own Drive
+         * property -- only the locked container reliably does.
+         * Classifying external/internal from the cleartext object's
+         * own (possibly empty) drive info was silently dropping every
+         * unlocked drive under the default SHOW_INTERNAL_DEVICES 0
+         * filter, even though it was genuinely external and mounted.
+         * Classify from the container instead when there is one. */
+        const UdisksRawObject *classify_source = o;
+        if (o->crypto_backing_device) {
+            for (int k = 0; k < n_raw; k++) {
+                if (!strcmp(raw[k].path, o->crypto_backing_device)) {
+                    classify_source = &raw[k];
+                    break;
+                }
+            }
+        }
+        int external = classify_external(classify_source);
         if (!external && !SHOW_INTERNAL_DEVICES) continue;
 
         Device d;
         memset(&d, 0, sizeof(d));
-        d.object_path = strdup(o->path);
-        d.drive_object_path = o->drive_path ? strdup(o->drive_path) : NULL;
-        d.device_node = strdup(o->device_node ? o->device_node : "");
-        d.label = strdup(o->id_label ? o->id_label : "");
-        d.uuid = strdup(o->id_uuid ? o->id_uuid : "");
-        d.fs_type = strdup(o->id_type ? o->id_type : "");
-        d.size_bytes = o->size;
-        d.read_only = o->read_only;
-        d.hint_system = o->hint_system;
-        d.is_loop = o->has_loop;
-        d.loop_backing_file = o->loop_backing_file ? strdup(o->loop_backing_file) : NULL;
-
-        d.drive_vendor = strdup(o->drive_vendor ? o->drive_vendor : "");
-        d.drive_model = strdup(o->drive_model ? o->drive_model : "");
-        d.drive_serial = strdup(o->drive_serial ? o->drive_serial : "");
-        d.connection_bus = strdup(o->connection_bus ? o->connection_bus : "");
-        d.removable = o->drive_removable;
-        d.ejectable = o->drive_ejectable;
-        d.can_power_off = o->drive_can_power_off;
+        fill_common_fields(&d, o, classify_source);
 
         d.is_mounted = (o->n_mount_points > 0 && o->mount_points[0] && o->mount_points[0][0]);
         d.mount_point = d.is_mounted ? strdup(o->mount_points[0]) : NULL;
@@ -262,17 +411,14 @@ int device_list_build(DeviceList *list) {
         d.is_external = external;
         d.is_protected = is_protected_mount(d.mount_point, d.hint_system);
 
-        refresh_usage_one(&d);
-
-        const DeviceOverride *ov = find_override(&d);
-        if (ov && ov->display_name && ov->display_name[0]) {
-            snprintf(d.display_name, sizeof(d.display_name), "%s", ov->display_name);
-        } else if (d.label[0]) {
-            snprintf(d.display_name, sizeof(d.display_name), "%s", d.label);
-        } else {
-            snprintf(d.display_name, sizeof(d.display_name), "%s", d.device_node);
+        if (o->crypto_backing_device) {
+            d.is_encrypted = 1;
+            d.parent_luks_path = strdup(o->crypto_backing_device);
+            d.parent_luks_uuid = strdup(classify_source != o && classify_source->id_uuid ? classify_source->id_uuid : "");
         }
 
+        refresh_usage_one(&d);
+        resolve_display_name(&d);
         resolve_color(&d);
 
 #if ENABLE_MOUNT_POINT_SYMLINKS
@@ -309,6 +455,8 @@ void device_list_free(DeviceList *list) {
         free(d->drive_serial);
         free(d->connection_bus);
         free(d->symlink_path);
+        free(d->parent_luks_path);
+        free(d->parent_luks_uuid);
     }
     free(list->items);
     list->items = NULL;
