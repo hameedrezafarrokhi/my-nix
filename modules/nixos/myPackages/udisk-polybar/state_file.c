@@ -226,3 +226,104 @@ void state_unmark_iso_loop(const char *object_path) {
     free(kept);
     free(path);
 }
+
+/* scrcpy-procs file format: one "device_key\tpid\n" pair per line. */
+
+void state_set_scrcpy(const char *device_key, pid_t pid) {
+    if (!device_key || !device_key[0]) return;
+    state_remove_scrcpy(device_key);
+
+    char *path = state_path("scrcpy-procs");
+    if (!path) return;
+    FILE *f = fopen(path, "a");
+    if (f) {
+        fprintf(f, "%s\t%ld\n", device_key, (long)pid);
+        fclose(f);
+    }
+    free(path);
+}
+
+void state_remove_scrcpy(const char *device_key) {
+    if (!device_key || !device_key[0]) return;
+    char *path = state_path("scrcpy-procs");
+    if (!path) return;
+
+    char **kept = NULL;
+    int n = 0;
+
+    FILE *in = fopen(path, "r");
+    if (in) {
+        char line[512];
+        while (fgets(line, sizeof(line), in)) {
+            size_t len = strlen(line);
+            while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+            if (len == 0) continue;
+            char *tab = strchr(line, '\t');
+            size_t keylen = tab ? (size_t)(tab - line) : len;
+            if (keylen == strlen(device_key) && !strncmp(line, device_key, keylen)) continue;
+            kept = realloc(kept, sizeof(char *) * (n + 1));
+            kept[n++] = strdup(line);
+        }
+        fclose(in);
+    }
+
+    FILE *out = fopen(path, "w");
+    if (out) {
+        for (int i = 0; i < n; i++) fprintf(out, "%s\n", kept[i]);
+        fclose(out);
+    }
+
+    for (int i = 0; i < n; i++) free(kept[i]);
+    free(kept);
+    free(path);
+}
+
+pid_t state_get_scrcpy(const char *device_key) {
+    if (!device_key || !device_key[0]) return 0;
+    char *path = state_path("scrcpy-procs");
+    if (!path) return 0;
+    FILE *f = fopen(path, "r");
+    free(path);
+    if (!f) return 0;
+
+    pid_t result = 0;
+    char line[512];
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+        char *tab = strchr(line, '\t');
+        if (!tab) continue;
+        *tab = '\0';
+        if (strcmp(line, device_key) != 0) continue;
+        result = (pid_t)atol(tab + 1);
+        break;
+    }
+    fclose(f);
+    return result;
+}
+
+char **state_list_scrcpy(int *out_count) {
+    *out_count = 0;
+    char *path = state_path("scrcpy-procs");
+    if (!path) return NULL;
+    FILE *f = fopen(path, "r");
+    free(path);
+    if (!f) return NULL;
+
+    char **keys = NULL;
+    int n = 0;
+    char line[512];
+    while (fgets(line, sizeof(line), f)) {
+        size_t len = strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = '\0';
+        char *tab = strchr(line, '\t');
+        if (!tab) continue;
+        *tab = '\0';
+        if (line[0] == '\0') continue;
+        keys = realloc(keys, sizeof(char *) * (n + 1));
+        keys[n++] = strdup(line);
+    }
+    fclose(f);
+    *out_count = n;
+    return keys;
+}

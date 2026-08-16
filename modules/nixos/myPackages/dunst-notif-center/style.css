@@ -1,0 +1,172 @@
+/* dunst-notif-center — style.css
+ * This is plain GTK CSS (a subset of CSS3). Behavior/layout config lives in
+ * config.toml; this file is purely cosmetic: colors, fonts, hover states,
+ * paddings, and transitions.
+ */
+
+window#notif-center-window {
+    background-color: #1e1e2e;
+    border: 1px solid #313244;
+    border-radius: 10px;
+}
+
+/* ---------- top bar ---------- */
+
+box#topbar {
+    padding: 8px 10px;
+    border-bottom: 1px solid #313244;
+}
+
+entry#search-entry {
+    background-color: #313244;
+    color: #cdd6f4;
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+button.topbar-btn {
+    background-color: transparent;
+    color: #a6adc8;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+}
+button.topbar-btn:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+button.topbar-btn:checked {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+/* ---------- notification rows ---------- */
+
+row.notif-row {
+    background-color: #24273a;
+    border-bottom: 1px solid #313244;
+    transition: background-color 120ms ease-in-out;
+}
+row.notif-row:hover {
+    background-color: #2d2f4a;
+}
+row.notif-row.pinned {
+    background-color: #2a2b3d;
+    border-left: 3px solid #f9e2af;
+}
+row.notif-row.expanded {
+    background-color: #2d2f4a;
+}
+
+label.notif-header {
+    color: #cdd6f4;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 10.5pt;
+}
+
+label.notif-body {
+    color: #a6adc8;
+    font-family: sans-serif;
+    font-size: 9.5pt;
+}
+
+label.notif-timestamp {
+    color: #6c7086;
+    font-family: monospace;
+    font-size: 8.5pt;
+}
+
+box.urgency-dot {
+    min-width: 9px;
+    min-height: 9px;
+    border-radius: 5px;
+    margin-right: 2px;
+}
+box.urgency-dot.urgency-low      { background-color: #6c7086; }
+box.urgency-dot.urgency-normal   { background-color: #89b4fa; }
+box.urgency-dot.urgency-critical { background-color: #f38ba8; }
+box.urgency-dot.urgency-unknown  { background-color: #45475a; }
+
+button.notif-close-btn, button.notif-pin-btn {
+    background-color: transparent;
+    color: #6c7086;
+    border: none;
+    border-radius: 5px;
+    padding: 2px 5px;
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+}
+button.notif-close-btn:hover { background-color: #f38ba8; color: #1e1e2e; }
+button.notif-pin-btn:hover   { background-color: #f9e2af; color: #1e1e2e; }
+button.notif-pin-btn.active  { color: #f9e2af; }
+
+/* ---------- submenu (right-click expand) ---------- */
+
+box.notif-submenu {
+    background-color: #1e1e2e;
+    border-top: 1px dashed #313244;
+    padding: 4px 6px 6px 24px;
+}
+/* Applied when the row is in picture-background mode, so the expanding
+ * image stays visible behind the submenu instead of being hidden by its
+ * normal opaque background. Individual option hover/selection stays
+ * visible regardless — see button.submenu-item:hover below, which sets
+ * its own opaque background independent of the submenu container. */
+box.notif-submenu.transparent-bg {
+    background-color: transparent;
+    border-top-color: rgba(49, 50, 68, 0.5);
+}
+
+button.submenu-item {
+    background-color: transparent;
+    color: #a6adc8;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+}
+button.submenu-item:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* ---------- bottom bar ---------- */
+
+box#bottombar {
+    padding: 6px 10px;
+    border-top: 1px solid #313244;
+}
+
+button.bottombar-btn {
+    background-color: transparent;
+    color: #a6adc8;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    transition: background-color 120ms ease-in-out, color 120ms ease-in-out;
+}
+button.bottombar-btn:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+button.bottombar-btn:checked {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+/* ---------- scrollbar ---------- */
+
+scrolledwindow undershoot,
+scrolledwindow overshoot {
+    background: none;
+}
+scrollbar slider {
+    background-color: #45475a;
+    border-radius: 4px;
+    min-width: 6px;
+    min-height: 6px;
+}
+scrollbar slider:hover {
+    background-color: #585b70;
+}

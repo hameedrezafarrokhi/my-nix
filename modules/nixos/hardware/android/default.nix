@@ -8,6 +8,8 @@ let
       exit 0
     fi
     notify-send "Andriod Device" "Mounting at ~/Andriod"
+    pkill go-mtpfs
+    fusermount -u ~/Android
     mkdir -p ~/Android
     go-mtpfs -android ~/Android/ &
     sleep 2
@@ -20,6 +22,7 @@ let
       exit 0
     fi
     notify-send "Andriod Device" "Unmounting from ~/Andriod"
+    pkill go-mtpfs
     fusermount -u ~/Android
     [ ! -e ~/Android/"Internal shared storage" ] && notify-send "Andriod Device" "Unmounted"
   '';

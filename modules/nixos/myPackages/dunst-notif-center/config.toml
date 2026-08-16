@@ -1,0 +1,298 @@
+# dunst-notif-center config
+# Behavior, layout, and keybinds live here. Colors/fonts/hover-states/animations
+# live in style.css (GTK CSS). This mirrors SwayNotificationCenter's
+# config.json + style.css split.
+#
+# Paths support ~ expansion.
+
+[general]
+vim_keys = false                 # h/j/k/l + extra vim-ish binds alongside arrows
+default_sort = "time_desc"       # time_desc | time_asc | urgency | header
+default_group = "none"           # none | urgency | header | extension
+close_behavior = "click_outside"  # click_outside | leave | focus_out | none
+                                   #   click_outside: click anywhere outside the
+                                   #     window closes it (grabs the pointer while
+                                   #     shown; best-effort, WM-dependent)
+                                   #   leave: closes as soon as the mouse cursor
+                                   #     physically leaves the window bounds
+                                   #   focus_out: closes when the window loses
+                                   #     keyboard focus (on focus-follows-mouse
+                                   #     WMs this behaves like "leave")
+                                   #   none: only Escape/close_window keybind closes it
+close_on_expand_other = true     # expanding a row auto-collapses the previously expanded one
+animations = true                # expand/clear/remove transitions
+pinned_file = "~/.config/dunst-notif-center/pinned.json"
+socket_path = ""                  # daemon IPC socket. "" = auto:
+                                   # $XDG_RUNTIME_DIR/dunst-notif-center.sock,
+                                   # falling back to /tmp if unset.
+editor = "$EDITOR"                # command used for "open history file in editor"
+                                   # falls back to xdg-open if $EDITOR is unset
+poll_interval_ms = 0               # 0 = only refresh on open/actions. >0 = also poll dunst
+                                    # every N ms while window is open (e.g. 2000)
+history_save_dir = "~/.config/dunst-notif-center/history-saves"
+                                    # where the bottom bar's "Save" button dumps a
+                                    # timestamped snapshot of the current dunst history
+path_priority = "body"             # body | header — when a notification has a
+                                    # detected path in BOTH its header and body,
+                                    # which one wins (see path detection below)
+systemd_service_name = ""          # if set (e.g. "dunst-notif-center.service"),
+                                    # the Start d/Stop d/Reload d buttons use
+                                    # `systemctl --user start/stop/reload-or-restart
+                                    # <name>` instead of the built-in socket-based
+                                    # daemon control. If left blank, this is
+                                    # auto-detected on a best-effort basis (checks
+                                    # whether the CURRENT process is itself running
+                                    # under a systemd user unit, via /proc/self/cgroup
+                                    # — this only works when you're clicking the
+                                    # button from that same daemon's own window, not
+                                    # from an unrelated one-shot window; set this
+                                    # explicitly if you want it to always route
+                                    # through systemd regardless). Leave both unset/
+                                    # undetected for plain (non-systemd) behavior.
+
+[window]
+width = 420
+height = 640
+anchor = "top-right"      # top-left | top-right | bottom-left | bottom-right | center
+margin_x = 16
+margin_y = 40
+skip_taskbar = true
+always_on_top = true
+
+[entry]
+truncate_mode = "truncate"   # truncate | scroll | none
+body_max_lines = 2
+scroll_speed_px_per_s = 30    # only used when truncate_mode = "scroll"
+show_close_button = true
+show_pin_button = true
+close_icon = ""    # path to a custom close-button icon (svg/png). empty = default "✕" glyph
+pin_icon = ""      # path to a custom pin-button icon (svg/png). empty = default "📌" glyph
+                    # NOTE: the default glyph changes color when a notif is
+                    # pinned (via CSS); a custom image icon currently does
+                    # NOT get that same visual state change (color: only
+                    # affects text, not raster images) — same icon shown
+                    # either way if you set this.
+icon_button_size = 14   # px, only used when close_icon/pin_icon is set
+header_icon_size = 16   # px, for [[header_icons]] entries
+detect_colors = false    # if the header/body contains a hex or rgb()/rgba() color,
+                          # tint the row's background with it
+color_tint_opacity = 0.35  # 0.0-1.0 — detected colors are blended at this opacity
+                            # rather than used at full strength, so text stays readable
+pin_close_visibility = "always"  # always | hover — show pin/close buttons on
+                                  # every row, or only when hovering that row
+
+# Text shadow, applied only to rows whose background differs from the
+# normal theme (color-tint or picture-background mode) — helps text stay
+# readable against a variable background. No effect on normal rows.
+text_shadow_enabled = true
+text_shadow_offset_x = 1
+text_shadow_offset_y = 1
+text_shadow_blur = 2
+text_shadow_color = "rgba(0,0,0,0.8)"
+
+[timestamp]
+show = true
+format = "%H:%M  %d %b"
+
+[buttons_top]
+show = true
+show_sort = true
+show_group = true
+show_search = true
+
+[buttons_bottom]
+show = true
+show_clear_all = true
+show_pause_resume = true
+show_reload = true
+show_kill = true
+show_open_history = true
+
+[buttons_daemon]
+# second bottom row: controls for the daemon process itself, plus save/close
+show = true
+show_start = true
+show_stop = true
+show_reload = true
+show_config = true
+show_save = true
+show_close = true
+
+# --- Button label overrides ---------------------------------------------
+# Replace any button's text — e.g. with an icon glyph/emoji instead of the
+# default English label. Anything left as "" keeps the built-in default.
+[button_labels]
+icon_size = 14        # px — used only for parts below that resolve to an
+                       # icon file rather than plain text (see each entry:
+                       # any value ending in .svg/.png/.jpg/etc that exists
+                       # on disk is shown as an icon instead of text)
+sort = ""            # prefix before the sort mode name, default "Sort"
+group = ""            # prefix before the group mode name, default "Group"
+clear_all = ""
+pause = ""
+resume = ""
+reload = ""
+kill = ""
+open_log = ""
+start_d = ""
+stop_d = ""
+reload_d = ""
+config_d = ""
+save = ""
+close = ""
+
+# The mode-name half of "Sort: <name>" / "Group: <name>" — override
+# individually if you want icons here too.
+[sort_labels]
+time_desc = ""    # default "Newest"
+time_asc = ""     # default "Oldest"
+urgency = ""      # default "Urgency"
+header = ""       # default "A-Z"
+
+[group_labels]
+none = ""         # default "No group"
+urgency = ""      # default "By urgency"
+header = ""       # default "By header"
+extension = ""    # default "By type"
+
+# --- Bottom-row command overrides ---------------------------------------
+# Override what Start d/Stop d/Reload d/Config d/Save actually run. Empty =
+# built-in default behavior (which itself checks systemd_service_name — see
+# [general] — before falling back to the plain socket-based daemon control).
+# A non-empty value here always wins over both.
+[button_commands]
+start_d = ""
+stop_d = ""
+reload_d = ""
+config_d = ""
+save = ""
+
+[submenu]
+# these toggle the *menu entries*, not the underlying left-click/keybind actions
+show_clear = true
+show_show = true
+show_copy = true
+
+[keybinds]
+# GTK accelerator syntax, e.g. "<Shift>q", "<Ctrl>c", "space", "Return"
+clear_focused   = "q"
+copy_focused    = "c"
+clear_all       = "<Shift>q"
+show_focused    = "s"
+show_all        = "<Shift>s"
+expand_focused  = "space"
+activate        = "Return"
+nav_up          = "Up"
+nav_down        = "Down"
+nav_left        = "Left"
+nav_right       = "Right"
+close_window    = "Escape"
+focus_search    = "slash"
+
+# --- Urgency icons -----------------------------------------------------------
+# Optional: replace the colored dot with an icon file (svg/png) per urgency
+# level. Leave blank to keep the default colored dot for that level.
+[urgency_icons]
+low = ""
+normal = ""
+critical = ""
+icon_size = 12   # px
+
+# --- Per-header styling ------------------------------------------------------
+# Match by notification header (fnmatch glob, same syntax as action_rules,
+# first match wins). All fields optional — set only what you want.
+#
+# icon: shown immediately before the header text (e.g. an app icon).
+# background_color / background_image / thumbnail: a fallback appearance
+# for notifications from this app when path detection doesn't already
+# supply one. Priority order (highest first):
+#   1. a detected picture path (pictures.show_preview must be enabled)
+#   2. this rule's background_image / thumbnail
+#   3. a detected color in the notification's own text (entry.detect_colors)
+#   4. this rule's background_color
+#   5. normal/default appearance
+#
+# [[header_style]]
+# match_header = "Flameshot*"
+# icon = "~/.config/dunst-notif-center/icons/flameshot.svg"
+# background_color = "#2c2c54"
+# background_image = ""
+# thumbnail = ""
+
+# --- Picture previews ------------------------------------------------------
+[pictures]
+# Detected picture attachments (see path detection below) can optionally be
+# shown inline. This is opt-in and off by default — decoding/compositing
+# images is real work, so nothing extra happens unless you turn it on.
+show_preview = "none"          # none | background | thumbnail
+dim_background = 0.55          # 0.0-1.0, background mode only: darkens the
+                                # image so overlaid text stays readable
+thumbnail_size = 48             # px, thumbnail mode: collapsed row
+thumbnail_size_expanded = 128   # px, thumbnail mode: shown bigger, above the
+                                 # submenu, while the row is expanded
+max_decode_width = 512          # images are downscaled to at most this wide
+                                 # at load time, regardless of source
+                                 # resolution or which of the two modes above
+                                 # is used — keeps memory/decode cost bounded
+                                 # for e.g. large screenshots
+
+# --- Extension group overrides ------------------------------------------
+# Customize which extensions belong to which type classification (used by
+# path_actions below, and by the "group by type" grouping mode). `group`
+# either extends a built-in group (pictures/videos/music/docs/text/code/
+# archives) or, if it's a new name, defines a custom one from scratch.
+# Applied fresh from the built-ins on every load — reload d picks up
+# changes here without restarting.
+
+# [[extension_group_overrides]]
+# group = "pictures"
+# add = [".png1"]        # extensions to add to this group
+# remove = [".png"]      # extensions to remove from this group
+
+# [[extension_group_overrides]]
+# group = "some_stuff"   # not a built-in name -> defines a new custom group
+# add = [".example", ".1"]
+
+# --- Path-alias actions ------------------------------------------------------
+# If a notification's header OR body contains a filesystem path (checked in
+# the order set by [general].path_priority — first one found wins if both
+# have one), it's classified into a type alias (pictures/videos/music/docs/
+# text/code/archives/folders/executables/other — see README) and, if a
+# matching rule exists below, these actions are appended to that
+# notification's submenu alongside whatever action_rules/smart-guess already
+# produced. {path} substitutes the detected path (already shell-quoted);
+# {body}/{summary}/{appname} also work.
+
+# [[path_actions]]
+# alias = "pictures"
+# [[path_actions.actions]]
+# name = "Edit"
+# command = "gimp {path}"
+
+# --- Action rules -----------------------------------------------------------
+# Matched against the notification's "summary" (header) using shell-style
+# globbing (fnmatch), checked top to bottom, first match wins.
+# {body}, {summary}, {appname}, {icon_path} get substituted into commands.
+# If no rule matches, a smart-guess single "action" entry is generated
+# (see README for the guess order).
+
+# NOTE: placeholders are substituted already shell-quoted by the app, so do
+# NOT wrap {body}/{summary}/{appname}/{icon_path} in your own quotes below.
+
+[[action_rules]]
+match_header = "Screenshot*"
+[[action_rules.actions]]
+name = "Open folder"
+command = "xdg-open $(dirname {body})"
+[[action_rules.actions]]
+name = "View image"
+command = "xdg-open {body}"
+[[action_rules.actions]]
+name = "Copy path"
+command = "printf %s {body} | xclip -selection clipboard"
+
+[[action_rules]]
+match_header = "*Battery*"
+[[action_rules.actions]]
+name = "Open power settings"
+command = "xdg-open settings://power || gnome-control-center power"

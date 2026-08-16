@@ -445,44 +445,92 @@ static const PassphraseCacheOverride PASSPHRASE_CACHE_OVERRIDES[] = {
 /* ==================================================================
  * MTP (Android / phones)
  * ==================================================================
- * No glib/gio linked into this binary -- we shell out to the `gio`
- * command, same category of dependency as `xdg-open`. Attachment is
- * detected via a udev monitor (added to the same poll() loop as
- * everything else, so still 0% idle CPU) watching for USB devices
- * carrying the ID_MTP_DEVICE=1 property, set by the mtp-probe udev
- * rule that ships with libmtp. Mounting uses gvfs's MTP backend
- * (`gio mount mtp://...`, actively maintained, genuinely
- * bidirectional -- see mtp.h for why this replaced an earlier
- * jmtpfs-based approach). gvfs also picks its own mount path under
- * $XDG_RUNTIME_DIR/gvfs, so there's no MOUNT_DIR template to set here
- * the way there is for disks/ISOs. Requires the `gvfs` package with
- * its D-Bus service active (NixOS: `services.gvfs.enable = true;`). */
+ * Detection only is built-in (udev, watching for the ID_MTP_DEVICE=1
+ * property set by the mtp-probe rule that ships with libmtp -- folded
+ * into the daemon's existing poll() set, still 0% idle CPU). Actual
+ * mounting is entirely handed off to an external command you choose
+ * -- every in-house MTP mounting attempt (jmtpfs, then gvfs/gio) had
+ * real problems on real hardware, so rather than a third in-house
+ * attempt, this just runs whatever FUSE-based MTP tool you already
+ * know works for your phone. */
 #define ENABLE_MTP 1
 
 #define ICON_PHONE_GENERIC   "\uf10b"
 #define ICON_PHONE_MOUNTED   ""  /* "" -> falls back to ICON_PHONE_GENERIC */
 #define ICON_PHONE_UNMOUNTED ""
 
-/* Command used to invoke gvfs's `gio` tool. "gio" relies on your
- * PATH at the time this binary was spawned -- if polybar (or
- * whatever ultimately launches this module) runs with a minimal PATH
- * that doesn't include it (common with some WM/session setups,
- * especially on NixOS depending on how polybar itself was started),
- * mounting will fail immediately with "command not found". Set this
- * to an absolute path (e.g. "/run/current-system/sw/bin/gio" on
- * NixOS -- run `which gio` in a normal terminal to find yours) if
- * that happens; the failure notification will say explicitly whether
- * this was the problem. */
-#define GIO_CMD "gio"
+#define MTP_COLOR_MODE COLOR_MODE_RAMP   /* reuses SPACE_RAMP/DEVICE_COLOR_CONSTANT/DEVICE_COLOR_UNMOUNTED from above -- best-effort only, see MTP_MOUNT_PARENT_DIR below */
 
-#define MTP_COLOR_MODE COLOR_MODE_RAMP   /* reuses SPACE_RAMP/DEVICE_COLOR_CONSTANT/DEVICE_COLOR_UNMOUNTED from above -- MTP usage stats are best-effort (see README), not every phone reports them accurately */
+/* ==================================================================
+ * MOUNTING IS 100% YOURS -- this module never mounts, unmounts, or
+ * checks whether either succeeded. It shows one bar icon per attached
+ * phone (detection only, via udev) and one menu with a Mount row and
+ * an Unmount row, and both rows just run whatever shell command you
+ * put here -- exactly like a custom menu entry, no different, no
+ * MTP-specific behavior wrapped around them at all. Every prior
+ * attempt at owning the actual mount step (jmtpfs, gvfs, an external
+ * go-mtpfs wrapped with our own success detection) caused more
+ * problems than it solved. This doesn't try again. */
+#define MTP_MOUNT_SHELL_CMD   "android-mount"
+#define MTP_UNMOUNT_SHELL_CMD "android-umount"
+
+/* Run through `sh -c`, so anything valid in a shell script is valid
+ * here (pipes, &&, env vars, backgrounding) -- no placeholder
+ * substitution, no argument splitting, no path handling of any kind
+ * on our end. Whatever you type is exactly what runs. */
+
+/* The only other thing this module does with mounting is opportunistic,
+ * read-only, and never gates anything: it'll try statvfs() on this
+ * path (exactly as given -- expanded from "~", nothing else touched
+ * or appended) purely to show used/free/total in the menu *if*
+ * something happens to be mounted there when you open it. If nothing's
+ * mounted there, that just silently shows "unavailable" -- it is
+ * never used to decide what the menu shows, whether Mount/Unmount are
+ * enabled, or anything else. This is also the fixed path used for
+ * Open in File Manager, Copy Mount Path, and as the phone-side root
+ * for Download/Upload below -- again, used exactly as given. */
+#define MTP_MOUNT_PARENT_DIR "~/Android/Internal shared storage/Download"
+
+#define CONFIRM_MTP_MOUNT   0
+#define CONFIRM_MTP_UNMOUNT 0
 
 #define MENU_SHOW_MTP_SERIAL 1
-#define MENU_ACTION_MTP_MOUNT             1
-#define MENU_ACTION_MTP_UNMOUNT           1
+#define MENU_ACTION_MTP_MOUNT             1   /* the Mount row -- runs MTP_MOUNT_SHELL_CMD, nothing else */
+#define MENU_ACTION_MTP_UNMOUNT           1   /* the Unmount row -- runs MTP_UNMOUNT_SHELL_CMD, nothing else */
 #define MENU_ACTION_MTP_OPEN_FILE_MANAGER 1
 #define MENU_ACTION_MTP_COPY_MOUNT_PATH   1
 #define MENU_ACTION_MTP_RELOAD            1
+
+/* ---- Upload / Download (fmenu/filepicker-based file transfer) ---- */
+
+#define MENU_ACTION_MTP_DOWNLOAD 1   /* phone -> PC: browse MTP_MOUNT_PARENT_DIR, then browse MTP_TRANSFER_LOCAL_DIR for a destination */
+#define MENU_ACTION_MTP_UPLOAD   1   /* PC -> phone: browse MTP_TRANSFER_LOCAL_DIR, copied straight into MTP_MOUNT_PARENT_DIR */
+
+/* Starting point for both the Download destination browser and the
+ * Upload source browser -- used exactly as given, same as
+ * MTP_MOUNT_PARENT_DIR above. */
+#define MTP_TRANSFER_LOCAL_DIR "~"
+
+/* What happens when a transferred file's name already exists at the
+ * destination -- always asked interactively via a small popup
+ * (Replace / Rename (numbered) / Skip / Cancel remaining), this just
+ * controls whether that popup is skipped for a blanket default
+ * instead. NONE = always ask (default). */
+#define MTP_CONFLICT_ASK    0
+#define MTP_CONFLICT_ALWAYS_REPLACE 1
+#define MTP_CONFLICT_ALWAYS_RENAME  2
+#define MTP_CONFLICT_ALWAYS_SKIP    3
+#define MTP_CONFLICT_MODE MTP_CONFLICT_ASK
+
+#define NOTIFY_ON_MTP_TRANSFER_COMPLETE 1
+
+/* ---- scrcpy (screen mirroring) -- still handled by this module,
+ * independent of everything above: scrcpy talks to the phone over
+ * its own ADB/USB connection, nothing to do with the MTP mount. ---- */
+
+#define MTP_AUTO_SPAWN_SCRCPY 1   /* launch scrcpy automatically whenever a phone is detected */
+#define SCRCPY_CMD "scrcpy"       /* split on whitespace into argv; add your own flags here, e.g. "scrcpy --turn-screen-off --stay-awake" */
+#define MENU_ACTION_MTP_SCRCPY_TOGGLE 1   /* "Run scrcpy" / "Stop scrcpy" in the Android menu, depending on whether it's currently running for this device */
 
 static const CustomMenuEntry CUSTOM_MTP_MENU_ENTRIES[] = {
     /* { "/home/you/bin/sync-photos.sh", "Sync Photos" }, */
@@ -499,12 +547,10 @@ static const CustomMenuEntry CUSTOM_MTP_MENU_ENTRIES[] = {
 #define POLYBAR_MTP_ACTION_4  ""
 #define POLYBAR_MTP_ACTION_5  ""
 
-#define NOTIFY_ON_MTP_MOUNT_SUCCESS   1
-#define NOTIFY_ON_MTP_MOUNT_FAILURE   1
-#define NOTIFY_ON_MTP_UNMOUNT_SUCCESS 1
-#define NOTIFY_ON_MTP_ATTACHED        1  /* phone detected but not yet mounted -- no automount for MTP: MTP is too slow/quirky for a surprise background mount, always a manual click */
+#define NOTIFY_ON_MTP_ATTACHED  0  /* phone detected -- no automount, ever: always a manual click, on both Mount and Unmount */
 
 /* ==================================================================
+
  * SAFETY: dangerous actions never offered, regardless of any config
  * above or DEVICE_OVERRIDES -- this is intentionally NOT
  * configurable. A device is treated as protected if UDisks reports
@@ -535,8 +581,8 @@ static const char *PROTECTED_MOUNT_PREFIXES[] = {
 #define NOTIFY_ON_UNMOUNT_FAILURE      1
 #define NOTIFY_ON_EJECT                1
 #define NOTIFY_ON_POWER_OFF            1
-#define NOTIFY_ON_DEVICE_CONNECTED     1   /* device appeared, not yet mounted */
-#define NOTIFY_ON_DEVICE_DISCONNECTED  1   /* device physically removed */
+#define NOTIFY_ON_DEVICE_CONNECTED     0   /* device appeared, not yet mounted */
+#define NOTIFY_ON_DEVICE_DISCONNECTED  0   /* device physically removed */
 #define NOTIFY_ON_LOW_SPACE            1   /* fires once per mount session when free space first crosses LOW_SPACE_THRESHOLD_PERCENT */
 
 #define NOTIFY_APP_NAME   "Disks"
@@ -580,6 +626,15 @@ static const CustomMenuEntry CUSTOM_GENERIC_MENU_ENTRIES[] = {
 #define SHOW_MOUNTED_ISOS_IN_BAR 1
 
 #define ICON_ISO_MOUNTED "\uf1c9"
+
+/* ISOs don't have a meaningful "free space" the way a real disk does
+ * (an ISO is effectively always full) -- so no ramp, just one flat
+ * color, and no low-space warning icon in the bar for these rows.
+ * (This only affects the bar segment -- the dedicated ISO menu still
+ * shows used/free/total, since that's about the *mounted filesystem*
+ * you're browsing, not the image file itself, and can still be
+ * useful there, e.g. for a writable UDF image.) */
+#define COLOR_ISO "#83a598"
 
 #define MENU_SHOW_ISO_BACKING_FILE  1
 #define MENU_SHOW_ISO_MOUNT_POINT   1

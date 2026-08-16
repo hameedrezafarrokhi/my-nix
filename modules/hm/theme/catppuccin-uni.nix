@@ -2074,6 +2074,7 @@ in
       #${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
       systemctl --user restart xobbright.service &
       systemctl --user restart xobvol.service &
+      systemctl --user restart dunst-notif-center.service &
     '';
     xsession.profileExtra = lib.mkIf config.xsession.enable ''
       xsetroot -cursor_name left_ptr &

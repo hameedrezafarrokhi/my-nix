@@ -192,6 +192,7 @@ in
         bspc rule -a "SWGT" layer=above state=floating follow=off focus=off manage=on border=off sticky=on
         bspc rule -a "Notif_center.py" state=floating layer=above
         bspc rule -a "btop-app" layer=above state=floating
+        bspc rule -a ".scrcpy-wrapped" state=floating
 
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating

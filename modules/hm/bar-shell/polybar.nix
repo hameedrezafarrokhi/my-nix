@@ -55,6 +55,14 @@ let
     done
   '';
 
+  poly-notif-center = pkgs.writeShellScriptBin "poly-notif-center" ''
+    hide_panel() {
+     xdotool search --class 'Notif_center.py' windowfocus %@
+     xdotool key Escape
+    }
+    /home/hrf/builds/result/bin/dunst-notif-center || hide_panel
+  '';
+
   polybar-cava-dots = pkgs.writeShellScriptBin "polybar-cava-dots" ''
     config_file="/tmp/$(whoami)_cava_config"
     pipe="/tmp/$(whoami)-cava.fifo"
@@ -451,6 +459,7 @@ in
     poly-fetch
     polybar-cava
     polybar-cava-dots
+    poly-notif-center
   ];
 
  #my.poly-height = "18";
@@ -672,7 +681,7 @@ in
       };
 
       "module/cpu" = {
-        format = "%{A1:xdotool search --class 'btop-app' windowkill %@  || btop-app:}<label>%{O-7pt}%{A}";
+        format = "%{A1:xdotool search --class 'btop-app' windowkill %@  || btop-app:}%{A2:xremap-pr-count:}<label>%{O-7pt}%{A}%{A}";
         type = "internal/cpu";
         interval = 02;
         format-prefix = '' %{O-6pt}'';
@@ -800,7 +809,9 @@ in
         tail = true;
        #exec = "echo ''";
         format = "<label>%{O-8pt}";
-        click-left = "dunstctl history-pop";
+       #click-left = "dunstctl history-pop";
+       #click-left = "poly-notif-center";
+        click-left = "dunst-notif-center";
         click-right = "poly-notif";
         double-click-left = "dunstctl close-all";
         double-click-right = "dunstctl history-clear && pkill -USR1 -x poly-dnd";

@@ -12,6 +12,8 @@ let
     fi
   '';
 
+  dunst-notif-center = pkgs.callPackage ../../nixos/myPackages/dunst-notif-center/default.nix { };
+
 in
 
 { config = lib.mkIf (config.my.apps.dunst.enable) {
@@ -59,6 +61,24 @@ in
     Service = {
       ExecCondition = "${pkgs.bash}/bin/bash -c 'pgrep -u $USER i3 || pgrep -u $USER sway || || pgrep -u $USER bspwm'";
     };
+  };
+
+  systemd.user.services.dunst-notif-center = {
+    Unit = {
+     Description = "Dunst Notification Center";
+     ConditionEnvironment = "XDG_CURRENT_DESKTOP=none+bspwm";
+     X-Restart-Triggers = [ "${config.xdg.configHome}/dunst-notif-center/config.toml" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${dunst-notif-center}/bin/dunst-notif-center -d";
+      Restart = "on-failure";
+      KillMode = "mixed";
+      TimeoutStopSec = 5;
+    };
+   #Install = {
+   #  WantedBy = [ "graphical-session.target" ];
+   #};
   };
 
 };}
