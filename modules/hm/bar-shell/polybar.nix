@@ -973,10 +973,10 @@ in
        #format-prefix-padding = ${widths.large}
         click-left = "playerctl play-pause";
         double-click-left = "playerctl next";
-        click-right = "playerctl loop";
+        click-right = "playerctl loop track && notify-send -e -u low -t 5000 'Loop Status' $(playerctl loop)";
         double-click-right = "playerctl previous";
         click-middle = "playerctl stop";
-       #double-click-middle = "playerctl ";
+        double-click-middle = "notify-send -e -u low -t 5000 'Loop Status' $(playerctl loop)";
         scroll-up = "playerctl position 5+";
         scroll-down = "playerctl position 5-";
         label-maxlen = 25;

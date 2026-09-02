@@ -155,9 +155,10 @@ stdenvNoCC.mkDerivation rec {
         sleep 0.05
       done
       #sleep 0.1
+      bspc node -g follow=on focus=on manage=on layer=above
       bspc node -t fullscreen
       bspc node -g sticky=on
-
+      bspc node -g manage=off
     else
       quickshell -p "$DIR/lock_shell.qml"
     fi

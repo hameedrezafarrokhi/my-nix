@@ -285,6 +285,10 @@ let
     notify-send -e -u critical -t 3000 "Temp Session Restored"
   '';
 
+  xremap-loop = pkgs.writeShellScriptBin "xremap-loop" ''
+    playerctl loop track && notify-send -e -u low -t 5000 'Loop Status' $(playerctl loop)
+  '';
+
  #vlc-env = pkgs.writeShellScriptBin "vlc-env" ''
  #  QT_QPA_PLATFORMTHEME=qt6ct vlc
  #'';
@@ -323,6 +327,7 @@ in
     xremap-xsession-save
     xremap-pr-count
     xremap-sleep
+    xremap-loop
    #vlc-env
 
     vol-up
@@ -753,7 +758,7 @@ in
             Super-Ctrl-k:
               launch: [ "playerctl", "stop" ]
             Super-Ctrl-j:
-              launch: [ "playerctl", "loop" ]
+              launch: [ "xremap-loop" ]
             Super-Ctrl-KEY_SEMICOLON:
               launch: [ "playerctl", "previous" ]
             Super-Ctrl-KEY_APOSTROPHE:

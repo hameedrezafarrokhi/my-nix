@@ -193,6 +193,10 @@ in
         bspc rule -a "Notif_center.py" state=floating layer=above
         bspc rule -a "btop-app" layer=above state=floating
         bspc rule -a ".scrcpy-wrapped" state=floating
+        bspc rule -a "kew" state=floating layer=top rectangle=860x300+10+40
+        bspc rule -a "Playerctl_center.py" state=floating
+
+
 
 
         bspc rule -a kate:kate:"Open File" layer=above state=floating
