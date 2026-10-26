@@ -36,32 +36,32 @@
 
   pkg-config,
 
-  writeText,
-  conf ? null,
+  raylib,
+  glfw,
+  libGL,
+  libGLX,
+  libGLU,
+  glew,
+  egl-x11,
+
+  clang,
 }:
 
 stdenv.mkDerivation rec {
-  pname = "sowm";
+  pname = "ssuika";
   version = "2020-10-21";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
-    owner = "dylanaraps";
-    repo = "sowm";
-    rev = "AAA4d22bf6cf4e1abd520921eacce1fe38277741";
-    sha256 = "AAAfcxhz8m399skm7jk0348561722kgwgpqs5gk351i6sb0phglf";
+    owner = "nzuum";
+    repo = "ssuika";
+    rev = "8c942c0e9ced3ae6a912e8805e909fdc3a5c2670";
+    sha256 = "0i36lx2npkph8gwm4cdd5qrqm05s19rk7x01k0hk0jl80yh34xgj";
   };
-
-  postPatch =
-    let
-      configFile =
-        if lib.isDerivation conf || builtins.isPath conf then conf else writeText "config.def.h" conf;
-    in
-    lib.optionalString (conf != null) "cp ${configFile} config.def.h";
-
 
   nativeBuildInputs = [
     pkg-config
+    clang
   ];
 
   buildInputs = [
@@ -95,6 +95,14 @@ stdenv.mkDerivation rec {
 
     fontconfig
     freetype
+
+    raylib
+    glfw
+    libGL
+    libGLX
+    libGLU
+    glew
+    egl-x11
   ];
 
   makeFlags = [
@@ -102,30 +110,22 @@ stdenv.mkDerivation rec {
     "PREFIX=${placeholder "out"}"
   ];
 
-  buildPhase = ''
-    runHook preBuild
-
-
-
-    runHook postBuild
-  '';
-
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin
-    cp sowm $out/bin/sowm
+    cp bin/ssuika $out/bin/ssuika
 
     runHook postInstall
   '';
 
   meta = with lib; {
-    homepage = "https://codeberg.org/dylanaraps/sowm";
+    homepage = "https://codeberg.org/nzuum/ssuika";
     description = " ";
     longDescription = '' '';
     license = licenses.mit;
     maintainers = with maintainers; [ meee ];
     platforms = platforms.all;
-    mainProgram = "sowm";
+    mainProgram = "ssuika";
   };
 }

@@ -176,6 +176,8 @@ in
 
     gigi = ''nixos && git add . && git commit -m "$(date +%F_%H-%M-%S)" && git push'';
 
+    os-age = "sh -c 'echo $(( ( $(date +%s) - $(stat -c %W /) ) / 86400 ))' ";
+
   };
 
 };}
