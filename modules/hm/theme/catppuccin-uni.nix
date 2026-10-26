@@ -2074,7 +2074,7 @@ in
       #${pkgs.betterlockscreen}/bin/betterlockscreen -u ${wallpaper} --fx dimblur --dim 50 --blur 0.5 &
       systemctl --user restart xobbright.service &
       systemctl --user restart xobvol.service &
-      systemctl --user restart dunst-notif-center.service &
+      #systemctl --user restart dunst-notif-center.service &
     '';
     xsession.profileExtra = lib.mkIf config.xsession.enable ''
       xsetroot -cursor_name left_ptr &
@@ -2420,12 +2420,12 @@ in
     xsession.windowManager.bspwm = lib.mkIf config.xsession.windowManager.bspwm.enable {
       extraConfig = ''
         #fehw &
-        if hash alttab >/dev/null 2>&1; then
-          pkill alttab
-          sleep 0.5
-          alttab -mk "Alt_L" -kk grave -w 1 -d 1 -s 2 -p "center" -ck Escape -dk c -sc 1 -nk Right -pk Left -bk "Shift_L" -t 150x150 -i 60x60 -vp "focus" -s 2 -theme ${gtk-icon} -bg "${Crust}" -fg "${Text}" -frame "${Accent}" -inact "${Overlay0}" -bw 7 -bc "${TBlack}" -font "${alttabFont}" -b 1 &
-          # "-ns" for forcing the skip_taskbar hints from apps (makes SWGT show in opened windows for example)
-        fi &
+        #if hash alttab >/dev/null 2>&1; then
+        #  pkill alttab
+        #  sleep 0.5
+        #  alttab -mk "Alt_L" -kk grave -w 1 -d 1 -s 2 -p "center" -ck Escape -dk c -sc 1 -nk Right -pk Left -bk "Shift_L" -t 150x150 -i 60x60 -vp "focus" -s 2 -theme ${gtk-icon} -bg "${Crust}" -fg "${Text}" -frame "${Accent}" -inact "${Overlay0}" -bw 7 -bc "${TBlack}" -font "${alttabFont}" -b 1 &
+        #  # "-ns" for forcing the skip_taskbar hints from apps (makes SWGT show in opened windows for example)
+        #fi &
       '';
       settings = {
         border_width = 4;

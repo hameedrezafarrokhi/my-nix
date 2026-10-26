@@ -127,11 +127,11 @@ in
         systemctl --user restart bsptint.service &
         #bsp-touchegg &
 
-        if hash fusuma >/dev/null 2>&1; then
-        	  pkill fusuma
-        	  sleep 0.5
-        	  fusuma -c ${nix-path}/modules/hm/desktops/bspwm/fusuma.yaml -d &
-        fi &
+        #if hash fusuma >/dev/null 2>&1; then
+        #	  pkill fusuma
+        #	  sleep 0.5
+        #	  fusuma -c ${nix-path}/modules/hm/desktops/bspwm/fusuma.yaml -d &
+        #fi &
 
         pw-play "$HOME/.local/share/desktop-sounds/startup" &
 
@@ -320,11 +320,11 @@ in
           xbanish
         fi &
 
-        if hash dockx >/dev/null 2>&1; then
-          pkill dockx
-          sleep 0.5
-          dockx
-        fi &
+        #if hash dockx >/dev/null 2>&1; then
+        #  pkill dockx
+        #  sleep 0.5
+        #  dockx
+        #fi &
 
         cp -f ${nix-path}/modules/hm/desktops/bspwm/fittsmonrc $HOME/.config/fittsmon/fittsmonrc
 
